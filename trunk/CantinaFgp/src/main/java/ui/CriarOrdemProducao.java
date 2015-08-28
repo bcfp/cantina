@@ -2,14 +2,22 @@ package ui;
 
 import interfaces.ITelaCriar;
 
-import javax.swing.JDialog;
+import java.awt.BorderLayout;
+
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import vo.OrdemProducaoVO;
 
 public class CriarOrdemProducao extends CriarDialogView<OrdemProducaoVO> implements ITelaCriar<OrdemProducaoVO>{
+
+	private JTextField txtCodOp;
+	private JTextField txtCodProdVenda;
+	private JTextField txtProdVenda;
+	private JTextField txtQtdeProdVenda;
 	
 	public CriarOrdemProducao() {
+		super("Nova Ordem de Produção");
 		abrirJanela();
 	}
 
@@ -37,18 +45,19 @@ public class CriarOrdemProducao extends CriarDialogView<OrdemProducaoVO> impleme
 	}
 	
 	private void definicoesPagina() {
-
-		this.setLayout(null);		
 		
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-		this.setResizable(false);
-		this.setSize(800, 600);
-		this.setModal(true);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setTitle("Nova Ordem de Produção");
-		this.setVisible(true);
+		txtCodOp = new JTextField();
+		txtCodOp.setBounds(10, 10, 20, 20);
+		
+		getPanelCentro().add(txtCodOp);
 
+		this.setVisible(true);
+		
+	}
+
+	@Override
+	protected void limparCampos() {
+		
 	}
 	
 	

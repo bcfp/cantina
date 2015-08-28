@@ -10,6 +10,7 @@ import vo.ProdutoVO;
 public class CriarProdutoView extends CriarDialogView<ProdutoVO> implements ITelaCriar<ProdutoVO> {
 
 	public CriarProdutoView() {
+		super("Novo Produto");
 		abrirJanela();
 	}
 	
@@ -37,18 +38,14 @@ public class CriarProdutoView extends CriarDialogView<ProdutoVO> implements ITel
 	}
 	
 	private void definicoesPagina() {
-
-		this.setLayout(null);		
 		
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-		this.setResizable(false);
-		this.setSize(800, 600);
-		this.setModal(true);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
-		this.setTitle("Novo Produto");
 		this.setVisible(true);
 
+	}
+
+	@Override
+	protected void limparCampos() {
+		
 	}
 
 
