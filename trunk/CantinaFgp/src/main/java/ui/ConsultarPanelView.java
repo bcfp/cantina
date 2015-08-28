@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,20 +16,40 @@ import vo.GenericVO;
 
 public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
+	
+	// atributos
+
+	private JPanel pnlCabecalho;
+	private JPanel pnlCentro;
+	private JPanel pnlRodape;
+	
 	private JTable tabGeneric;
 	private DefaultTableModel modeloTabGeneric;
 	private JScrollPane barraTabGeneric;
+	
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
+	
+	// Construtor
+	
 	public ConsultarPanelView(String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt) {
-		botaoNovo();
-		botaoFechar();
-		tabGeneric(titulos, listaGenerics, espX, espY, larg, alt);
-		this.add(barraTabGeneric);
+		
+		criarPainel(titulos, listaGenerics, espX, espY, larg, alt);
+		
 	}
 	
-	private void tabGeneric(final String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
+	// métodos concretos
+	
+	private void criarPainel(final String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
+		
+		pnlCabecalho = new JPanel();
+		pnlCabecalho.setBackground(Color.BLACK);
+		
+		pnlCentro = new JPanel();
+		pnlCentro.setLayout(null);
+				
+		// tabela
 		
 		tabGeneric = new JTable();
 		modeloTabGeneric = new DefaultTableModel(){
@@ -48,17 +70,13 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		barraTabGeneric.setViewportView(tabGeneric);
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
 		
+		pnlCentro.add(barraTabGeneric);
+		
 		carregarGridItens(listaGenerics);
 		mouseClickedTab();
-	
-	}
-	
-	protected abstract void mouseClickedTab();
-	
-	protected abstract void carregarGridItens(List<T> listaGenerics);
-
-	
-	private void botaoFechar(){
+		
+		
+		// botões
 		
 		btnFechar = new JButton("Fechar Tela");
 		
@@ -75,14 +93,9 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		
 		btnFechar.setVisible(true);
 		btnFechar.setBounds(300, 10, 120, 40);
-		add(btnFechar);
 		
-	}
-	
-	protected abstract void getTelaNovo();
-		
-	private void botaoNovo(){
-		
+		pnlCentro.add(btnFechar);
+				
 		btnNovo = new JButton("Novo");
 		
 		btnNovo.addActionListener(new ActionListener() {
@@ -98,10 +111,29 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 
 		btnNovo.setBounds(10, 10, 120, 40);
 		btnNovo.setVisible(true);
-		add(btnNovo);
+		
+		pnlCentro.add(btnNovo);
+		
+		
+		// Definições página
+		
+		this.setLayout(new BorderLayout());
+		this.add(pnlCabecalho, BorderLayout.NORTH);
+		this.add(pnlCentro, BorderLayout.CENTER);
+		this.setBackground(Color.LIGHT_GRAY);
 		
 	}
+	
+	
+	// métodos abstratos
+	
+	protected abstract void getTelaNovo();	
+	protected abstract void mouseClickedTab();
+	protected abstract void carregarGridItens(List<T> listaGenerics);
 		
+	
+	// getters and setters
+	
 	protected JTable getTabGeneric() {
 		return tabGeneric;
 	}

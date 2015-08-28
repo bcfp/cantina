@@ -25,17 +25,13 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
-	{
-		pnlCentro = new JPanel();
-	}
-	
 	protected CriarDialogView(String tituloCabecalho) {
 
-		criarPanel(tituloCabecalho);
+		criarPaneis(tituloCabecalho);
 
 	}
 	
-	private void criarPanel(String tituloCabecalho){
+	private void criarPaneis(String tituloCabecalho){
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
@@ -48,6 +44,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 		pnlCabecalho.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		pnlCabecalho.setBackground(Color.BLACK);
 		
+		pnlCentro = new JPanel();
 		pnlCentro.setBackground(Color.LIGHT_GRAY);
 		pnlCentro.setLayout(null);
 		
@@ -103,7 +100,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 		this.setLayout(new BorderLayout());
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlRodape, BorderLayout.SOUTH);		
-		this.add(getPanelCentro(), BorderLayout.CENTER);
+		this.add(pnlCentro, BorderLayout.CENTER);
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(800, 600);
