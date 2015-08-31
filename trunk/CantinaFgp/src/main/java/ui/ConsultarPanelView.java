@@ -2,11 +2,14 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,37 +21,44 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
 	
 	// atributos
-
+	
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
 	private JPanel pnlRodape;
-	
+
 	private JTable tabGeneric;
 	private DefaultTableModel modeloTabGeneric;
 	private JScrollPane barraTabGeneric;
-	
+
+	private JLabel lbltituloCabecalho;
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
 	
+	
 	// Construtor
 	
-	public ConsultarPanelView(String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
 		
-		criarPainel(titulos, listaGenerics, espX, espY, larg, alt);
+		criarPainel(tituloCabecalho, titulos, listaGenericos, espX, espY, larg, alt);
 		
 	}
 	
 	// métodos concretos
 	
-	private void criarPainel(final String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
+	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
+		
 		
 		pnlCabecalho = new JPanel();
-		pnlCabecalho.setBackground(Color.BLACK);
-		
-		pnlCentro = new JPanel();
+		pnlCentro = new JPanel();	
 		pnlCentro.setLayout(null);
-				
+		pnlRodape = new JPanel();
+		pnlRodape.setLayout(new FlowLayout());
+		
+		lbltituloCabecalho = new JLabel();
+		lbltituloCabecalho.setText(tituloCabecalho);
+		pnlCabecalho.add(lbltituloCabecalho);
+		
 		// tabela
 		
 		tabGeneric = new JTable();
@@ -69,7 +79,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		
 		barraTabGeneric.setViewportView(tabGeneric);
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
-		
+
 		pnlCentro.add(barraTabGeneric);
 		
 		carregarGridItens(listaGenerics);
@@ -92,10 +102,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		});
 		
 		btnFechar.setVisible(true);
-		btnFechar.setBounds(300, 10, 120, 40);
 		
-		pnlCentro.add(btnFechar);
-				
 		btnNovo = new JButton("Novo");
 		
 		btnNovo.addActionListener(new ActionListener() {
@@ -109,18 +116,21 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 			
 		});
 
-		btnNovo.setBounds(10, 10, 120, 40);
 		btnNovo.setVisible(true);
-		
-		pnlCentro.add(btnNovo);
+
+		pnlRodape.add(btnNovo);
+		pnlRodape.add(btnFechar);
 		
 		
 		// Definições página
 		
-		this.setLayout(new BorderLayout());
+		BorderLayout borderLayout = new BorderLayout();
+		
+				
+		this.setLayout(borderLayout);
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlCentro, BorderLayout.CENTER);
-		this.setBackground(Color.LIGHT_GRAY);
+		this.add(pnlRodape, BorderLayout.SOUTH);
 		
 	}
 	

@@ -15,28 +15,15 @@ import vo.VendaVO;
 
 public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements ITelaConsultar<VendaVO>{
 
-	private JLabel lblTest;
 
 	public ConsultarVendaView() {
 		
-		super(new String[] {
+		super("Venda",new String[] {
 
 			"Código",
 			"Data"
 
 		}, BancoFake.listaVendas, 50, 100, 400, 200);
-		
-		abrirJanela();
-	}
-
-	public void abrirJanela() {
-
-		setLayout(null);
-
-		lblTest = new JLabel("Venda");
-		lblTest.setBounds(10, 10, 140, 140);
-
-		add(lblTest);
 
 	}
 

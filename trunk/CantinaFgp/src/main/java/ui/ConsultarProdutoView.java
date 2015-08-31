@@ -2,6 +2,7 @@
 
 import interfaces.ITelaConsultar;
 
+import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -15,30 +16,15 @@ import vo.ProdutoVO;
 
 public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implements ITelaConsultar<ProdutoVO>{
 
-	private JLabel lblTest;
-	
 	public ConsultarProdutoView() {
 		
-		super(new String[] {
+		super("Produto", new String[] {
 
 			"Código",
 			"Descricao"
 
 		}, BancoFake.listaProdutos, 50, 100, 400, 200);
-
-		abrirJanela();
 	
-	}
-	
-	public void abrirJanela(){
-		
-		setLayout(null);
-		
-		lblTest = new JLabel("Produto");
-		lblTest.setBounds(10, 10, 140, 140);
-		
-		add(lblTest);
-			
 	}
 
 	@Override

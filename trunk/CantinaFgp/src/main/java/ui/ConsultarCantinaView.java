@@ -14,26 +14,12 @@ import utils.BancoFake;
 import vo.CantinaVO;
 
 public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implements ITelaConsultar<CantinaVO>{
-
-	private JLabel lblTest;
 	
 	public ConsultarCantinaView() {
-		super(new String[]{
+		super("Cantina",new String[]{
 				"Código",
 				"Nome"
 		}, BancoFake.listaCantinas, 50, 100, 400, 200);
-		abrirJanela();
-	}
-	
-	public void abrirJanela(){
-		
-		setLayout(null);
-		
-		lblTest = new JLabel("Cantina");
-		lblTest.setBounds(140, 70, 140, 140);
-		
-		add(lblTest);
-		
 	}
 
 	@Override

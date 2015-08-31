@@ -15,26 +15,15 @@ import vo.CompraVO;
 
 public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements ITelaConsultar<CompraVO>{
 
-	private JLabel lblTest;
-	
 	public ConsultarCompraView() {
-		super(new String[]{
+		super("Compra",
+			new String[]{
 				"Código",
 				"Data"
-		}, BancoFake.listaCompras, 50, 100, 400, 200);
-		abrirJanela();
+			}, 
+			BancoFake.listaCompras, 50, 100, 400, 200);
 	}
 	
-	public void abrirJanela(){
-		
-		setLayout(null);
-		
-		lblTest = new JLabel("Compra");
-		lblTest.setBounds(140, 70, 140, 140);
-		
-		add(lblTest);
-		
-	}
 
 	@Override
 	public void alterar() {

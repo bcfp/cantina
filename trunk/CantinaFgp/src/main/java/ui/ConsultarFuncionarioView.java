@@ -14,27 +14,16 @@ import utils.BancoFake;
 import vo.FuncionarioVO;
 
 public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> implements ITelaConsultar<FuncionarioVO>{
-
-	private JLabel lblTest;
 	
 	public ConsultarFuncionarioView() {
-		super(new String[]{
+		super("Funcionário",
+				new String[]{
 				"Codigo",
 				"Nome"
-		}, BancoFake.listaFuncionarios, 50, 100, 400, 200);
-		abrirJanela();
+		}, 
+		BancoFake.listaFuncionarios, 50, 100, 400, 200);
 	}
-	
-	public void abrirJanela(){
-		
-		setLayout(null);
-		
-		lblTest = new JLabel("Funcionario");
-		lblTest.setBounds(140, 70, 140, 140);
-		
-		add(lblTest);
-		
-	}
+
 
 	@Override
 	public void alterar() {

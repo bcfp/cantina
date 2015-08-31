@@ -15,29 +15,18 @@ import vo.OrdemProducaoVO;
 
 public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> implements ITelaConsultar<OrdemProducaoVO> {
 
-	private JLabel lblTest;
-
 	public ConsultarOrdemProducaoView() {
-		super(new String[]{
+		super("Ordem de Produção",
+				new String[]{
 				"Código",
 				"Data",
 				"Produto",
 				"Qtde",
 				"Status"
-		}, BancoFake.listaOrdensProducao, 50, 100, 400, 200);
-		abrirJanela();
-	}
-
-	public void abrirJanela() {
-		
-		setLayout(null);
-
-		lblTest = new JLabel("Ordem de Produção");
-		lblTest.setBounds(10, 10, 140, 140);
-
-		add(lblTest);
+			}, BancoFake.listaOrdensProducao, 50, 100, 400, 200);
 
 	}
+
 
 	@Override
 	protected void getTelaNovo() {
