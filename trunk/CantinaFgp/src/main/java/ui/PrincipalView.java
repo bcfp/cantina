@@ -1,8 +1,10 @@
 ﻿package ui;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -11,8 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-public class PrincipalView extends TelaView {
-
+public class PrincipalView extends TelaView implements ComponentListener{
+	
 	private JMenuBar barraMenu;
 	private JMenu menuConsulta;
 	private JMenuItem subConsultaVendas;
@@ -32,6 +34,7 @@ public class PrincipalView extends TelaView {
 	private JMenuItem subConsultarOrdemProducao;
 	private JMenuItem subCriarOrdemProducao;
 	private JMenu menuEstoque;
+	private ConsultarPanelView panelConsultar;
 
 	// BLOCO DE INICIALIZAÇÃO
 	{
@@ -99,8 +102,6 @@ public class PrincipalView extends TelaView {
 		
 		atribuirTextos();
 		
-		this.setLayout(new BorderLayout());
-		
 		menuConsulta.add(subConsultaCantinas);
 		menuConsulta.add(subConsultaVendas);
 		menuConsulta.add(subConsultaCompras);
@@ -135,12 +136,10 @@ public class PrincipalView extends TelaView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				PrincipalView.this.getContentPane().removeAll();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarProdutoView());
+				panelConsultar = new ConsultarProdutoView();
 				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 			
@@ -152,11 +151,9 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarVendaView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarVendaView());
-				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 		});
@@ -166,11 +163,9 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarCompraView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarCompraView());
-				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 		});
@@ -180,11 +175,9 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarClienteView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarClienteView());
-				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 		});
@@ -194,11 +187,9 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarFuncionarioView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarFuncionarioView());
-				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 		});
@@ -208,11 +199,9 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarCantinaView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarCantinaView());
-				
-				PrincipalView.this.validate();
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
 				
 			}
 		});
@@ -222,12 +211,10 @@ public class PrincipalView extends TelaView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.getContentPane().removeAll();
+				panelConsultar = new ConsultarOrdemProducaoView();
 				
-				PrincipalView.this.getContentPane().add(new ConsultarOrdemProducaoView());
-				
-				PrincipalView.this.validate();
-				
+				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+					
 			}
 		});
 		
@@ -253,6 +240,25 @@ public class PrincipalView extends TelaView {
 		
 	}
 	
+	private void abrirConsultaPanel(ConsultarPanelView panel){
+		
+		this.getContentPane().removeAll();
+				
+		this.centralizarPanel(panel);
+		
+		this.getContentPane().add(panel);
+		
+		this.validate();
+		
+	}
+	
+	private void centralizarPanel(ConsultarPanelView panel){
+		
+        int pontoLargura = ((this.getWidth() / 2) - panel.getWidth() / 2) - 2; 
+                
+        panel.setLocation(pontoLargura, 0);  
+        
+	}
 	
 	protected void atribuirTextos() {
 
@@ -279,36 +285,32 @@ public class PrincipalView extends TelaView {
 
 	
 	protected void definicoesPagina() {
-		
+
+		this.setLayout(null);
 		this.setJMenuBar(barraMenu);
 		this.setTitle("Cantina FGP");
 		this.setExtendedState(PrincipalView.this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		this.setLocationRelativeTo(null);
+		this.setMinimumSize(new Dimension(800, 600));
+		this.addComponentListener(this); 
 		this.setVisible(true);
 		
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		
+		this.centralizarPanel(panelConsultar);  
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 	
 	
 }

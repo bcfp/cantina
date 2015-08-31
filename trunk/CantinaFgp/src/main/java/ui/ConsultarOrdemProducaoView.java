@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -24,7 +25,19 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 				"Qtde",
 				"Status"
 			}, BancoFake.listaOrdensProducao, 50, 100, 400, 200);
+		
+		abrirTela();
 
+	}
+	
+	public void abrirTela(){
+		
+		// Exemplo para adicionar botão
+		JButton b = new JButton();
+		b.setText("TEST");
+		
+		adicionarBotao(b);
+		
 	}
 
 

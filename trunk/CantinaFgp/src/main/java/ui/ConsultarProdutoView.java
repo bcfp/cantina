@@ -3,6 +3,7 @@
 import interfaces.ITelaConsultar;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -23,7 +24,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 			"Código",
 			"Descricao"
 
-		}, BancoFake.listaProdutos, 50, 100, 400, 200);
+		}, BancoFake.listaProdutos, 10, 100, 400, 200);
 	
 	}
 

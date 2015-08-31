@@ -2,12 +2,13 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,13 +25,14 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
-	private JPanel pnlRodape;
+	private JPanel pnlBotoes;
 
 	private JTable tabGeneric;
 	private DefaultTableModel modeloTabGeneric;
 	private JScrollPane barraTabGeneric;
 
-	private JLabel lbltituloCabecalho;
+	private JLabel lblTituloCabecalho;
+	private Font fonteCabecalho;
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
@@ -48,16 +50,25 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
 	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
 		
-		
 		pnlCabecalho = new JPanel();
-		pnlCentro = new JPanel();	
-		pnlCentro.setLayout(null);
-		pnlRodape = new JPanel();
-		pnlRodape.setLayout(new FlowLayout());
+		pnlCabecalho.setBackground(Color.BLACK);
+		pnlCabecalho.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		pnlCabecalho.setLayout(new BorderLayout());
 		
-		lbltituloCabecalho = new JLabel();
-		lbltituloCabecalho.setText(tituloCabecalho);
-		pnlCabecalho.add(lbltituloCabecalho);
+		pnlCentro = new JPanel();	
+		pnlCentro.setBackground(Color.LIGHT_GRAY);
+		pnlCentro.setLayout(null);
+		
+		pnlBotoes = new JPanel();
+		pnlBotoes.setLayout(new GridLayout(10,1));
+		pnlBotoes.setBackground(Color.WHITE);
+		
+		lblTituloCabecalho = new JLabel();
+		lblTituloCabecalho.setText(tituloCabecalho);
+		lblTituloCabecalho.setForeground(Color.LIGHT_GRAY);	
+		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
+		lblTituloCabecalho.setFont(fonteCabecalho);
+		pnlCabecalho.add(lblTituloCabecalho, BorderLayout.CENTER);
 		
 		// tabela
 		
@@ -88,20 +99,21 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		
 		// botões
 		
-		btnFechar = new JButton("Fechar Tela");
+		btnFechar = new JButton("X");
+		btnFechar.setBackground(Color.RED);
+		btnFechar.setForeground(Color.WHITE);	
 		
 		btnFechar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ConsultarPanelView.this.setVisible(false);
 				
 			}
 			
 		});
 		
-		btnFechar.setVisible(true);
 		
 		btnNovo = new JButton("Novo");
 		
@@ -116,22 +128,24 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 			
 		});
 
-		btnNovo.setVisible(true);
-
-		pnlRodape.add(btnNovo);
-		pnlRodape.add(btnFechar);
+		pnlBotoes.add(btnNovo);
+		pnlCabecalho.add(btnFechar, BorderLayout.EAST);
 		
 		
 		// Definições página
-		
-		BorderLayout borderLayout = new BorderLayout();
-		
 				
-		this.setLayout(borderLayout);
+		this.setLayout(new BorderLayout());
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlCentro, BorderLayout.CENTER);
-		this.add(pnlRodape, BorderLayout.SOUTH);
+		this.add(pnlBotoes, BorderLayout.WEST);
+		this.setSize(750, 450);
 		
+	}
+	
+	// métodos
+	
+	protected void adicionarBotao(JButton botao){
+		pnlBotoes.add(botao);
 	}
 	
 	
@@ -144,6 +158,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
 	// getters and setters
 	
+	
 	protected JTable getTabGeneric() {
 		return tabGeneric;
 	}
@@ -151,6 +166,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	protected DefaultTableModel getModeloTabGeneric() {
 		return modeloTabGeneric;
 	}
+	
+	
 
 	
 }
