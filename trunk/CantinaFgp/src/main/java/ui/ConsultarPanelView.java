@@ -89,6 +89,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		tabGeneric.setModel(modeloTabGeneric);
 		
 		barraTabGeneric.setViewportView(tabGeneric);
+		
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
 
 		pnlCentro.add(barraTabGeneric);
@@ -166,8 +167,5 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	protected DefaultTableModel getModeloTabGeneric() {
 		return modeloTabGeneric;
 	}
-	
-	
-
 	
 }

@@ -1,5 +1,7 @@
 package ui;
 
+import interfaces.ITelaCadastrar;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,13 +10,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import vo.GenericVO;
 
-public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
+public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog implements ITelaCadastrar<T> {
 
 	private JButton btnGravar;
 	private JButton btnLimpar;
@@ -25,7 +28,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
-	protected CriarDialogView(String tituloCabecalho) {
+	protected CadastrarDialogView(String tituloCabecalho) {
 
 		criarPaneis(tituloCabecalho);
 
@@ -35,7 +38,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
-		lblTituloCabecalho.setForeground(Color.LIGHT_GRAY);	
+		lblTituloCabecalho.setForeground(Color.WHITE);	
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		lblTituloCabecalho.setFont(fonteCabecalho);
 		
@@ -45,7 +48,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 		pnlCabecalho.setBackground(Color.BLACK);
 		
 		pnlCentro = new JPanel();
-		pnlCentro.setBackground(Color.LIGHT_GRAY);
+		pnlCentro.setBackground(Color.GRAY);
 		pnlCentro.setLayout(null);
 		
 		pnlRodape = new JPanel();
@@ -59,7 +62,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				CriarDialogView.this.gravar();
+				CadastrarDialogView.this.botaoGravar();
 				
 			}
 			
@@ -71,7 +74,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				CriarDialogView.this.limparCampos();
+				CadastrarDialogView.this.limparCampos();
 				
 			}
 			
@@ -83,7 +86,7 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				CriarDialogView.this.dispose();
+				CadastrarDialogView.this.dispose();
 				
 			}
 		});
@@ -109,15 +112,16 @@ public abstract class CriarDialogView<T extends GenericVO> extends JDialog {
 		
 	}
 	
-	protected abstract boolean gravar();
+	protected abstract boolean botaoGravar();
 	protected abstract void limparCampos();
 
 	
-	// getters and setters
+	// método
 	
-	public JPanel getPanelCentro(){
+	protected void incluirComponenteCentro(JComponent comp){
 		
-		return pnlCentro;
+		pnlCentro.add(comp);
 		
 	}
+	
 }

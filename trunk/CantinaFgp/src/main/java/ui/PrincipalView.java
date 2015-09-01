@@ -7,7 +7,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -95,9 +97,6 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		subCriarOrdemProducao = new JMenuItem();
 		subCriarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
-		
-		
-		
 		menuEstoque = new JMenu();
 		
 		atribuirTextos();
@@ -125,8 +124,8 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		barraMenu.add(menuOrdemProducao);
 		barraMenu.add(menuEstoque);
 		
-		definicoesPagina();
-		acoesBotoes();
+		this.definicoesPagina();
+		this.acoesBotoes();
 		
 	}
 	
@@ -136,10 +135,10 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+								
+				PrincipalView.this.panelConsultar = new ConsultarProdutoView();
 				
-				panelConsultar = new ConsultarProdutoView();
-				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 			
@@ -151,9 +150,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarVendaView();
+				PrincipalView.this.panelConsultar = new ConsultarVendaView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 		});
@@ -163,9 +162,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarCompraView();
+				PrincipalView.this.panelConsultar = new ConsultarCompraView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 		});
@@ -175,9 +174,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarClienteView();
+				PrincipalView.this.panelConsultar = new ConsultarClienteView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 		});
@@ -187,9 +186,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarFuncionarioView();
+				PrincipalView.this.panelConsultar = new ConsultarFuncionarioView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 		});
@@ -199,9 +198,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarCantinaView();
+				PrincipalView.this.panelConsultar = new ConsultarCantinaView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 				
 			}
 		});
@@ -211,9 +210,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				panelConsultar = new ConsultarOrdemProducaoView();
+				PrincipalView.this.panelConsultar = new ConsultarOrdemProducaoView();
 				
-				PrincipalView.this.abrirConsultaPanel(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelConsultar);
 					
 			}
 		});
@@ -223,7 +222,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new CriarOrdemProducao();
+				new CadastrarOrdemProducao();
 				
 			}
 		});
@@ -233,20 +232,22 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new CriarProdutoView();
+				new CadastrarProdutoView();
 				
 			}
 		});
 		
 	}
 	
-	private void abrirConsultaPanel(ConsultarPanelView panel){
+	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){
 		
 		this.getContentPane().removeAll();
-				
-		this.centralizarPanel(panel);
+		this.getContentPane().setVisible(false);
+		this.getContentPane().setVisible(true);
+						
+		this.centralizarPanel(panelConsultar);
 		
-		this.getContentPane().add(panel);
+		this.getContentPane().add(panelConsultar);
 		
 		this.validate();
 		
@@ -254,7 +255,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	
 	private void centralizarPanel(ConsultarPanelView panel){
 		
-        int pontoLargura = ((this.getWidth() / 2) - panel.getWidth() / 2) - 2; 
+        int pontoLargura = ((this.getWidth() / 2) - (panel.getWidth() / 2) - 10); 
                 
         panel.setLocation(pontoLargura, 0);  
         
@@ -297,17 +298,20 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	}
 
 	@Override
+	public void componentResized(ComponentEvent e) {
+		
+		if(panelConsultar != null){
+
+			this.centralizarPanel(panelConsultar);  
+				
+		}
+	}
+
+	@Override
 	public void componentHidden(ComponentEvent e) {}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		
-		this.centralizarPanel(panelConsultar);  
-		
-	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {}

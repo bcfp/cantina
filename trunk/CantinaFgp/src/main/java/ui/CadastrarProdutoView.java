@@ -1,15 +1,15 @@
 ﻿package ui;
 
-import interfaces.ITelaCriar;
+import interfaces.ITelaCadastrar;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import vo.ProdutoVO;
 
-public class CriarProdutoView extends CriarDialogView<ProdutoVO> implements ITelaCriar<ProdutoVO> {
+public class CadastrarProdutoView extends CadastrarDialogView<ProdutoVO>{
 
-	public CriarProdutoView() {
+	public CadastrarProdutoView() {
 		super("Novo Produto");
 		abrirJanela();
 	}
@@ -22,14 +22,14 @@ public class CriarProdutoView extends CriarDialogView<ProdutoVO> implements ITel
 	}
 
 	@Override
-	public boolean criarItem(ProdutoVO produto) {
+	public boolean cadastrar(ProdutoVO produto) {
 		
 		return false;
 		
 	}
 	
 	@Override
-	protected boolean gravar() {
+	protected boolean botaoGravar() {
 		
 		JOptionPane.showMessageDialog(null, "Produto Salvo");
 		

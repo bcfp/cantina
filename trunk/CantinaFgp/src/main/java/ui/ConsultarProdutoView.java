@@ -91,7 +91,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	@Override
 	protected void getTelaNovo() {
 		
-		new CriarProdutoView().abrirJanela();
+		new CadastrarProdutoView().abrirJanela();
 		
 	}
 }

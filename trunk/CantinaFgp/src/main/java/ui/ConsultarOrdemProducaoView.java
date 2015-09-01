@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import utils.BancoFake;
@@ -32,11 +31,12 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	
 	public void abrirTela(){
 		
-		// Exemplo para adicionar botão
 		JButton b = new JButton();
-		b.setText("TEST");
-		
+		b.setText("Teste");
+
 		adicionarBotao(b);
+		
+		
 		
 	}
 
@@ -44,7 +44,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	@Override
 	protected void getTelaNovo() {
 
-		new CriarOrdemProducao();
+		new CadastrarOrdemProducao();
 		
 	}
 
