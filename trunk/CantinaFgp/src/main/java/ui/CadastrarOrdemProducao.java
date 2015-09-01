@@ -1,12 +1,17 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import vo.OrdemProducaoVO;
 
@@ -21,11 +26,19 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 	private JLabel lblCodProdVenda;
 	private JLabel lblProdVenda;
 	private JLabel lblQtdeProdVenda;
-	private JLabel lblProduto;	
+	private JLabel lblProduto;
+	private JLabel lblMatPrima;	
 	
+	private JButton btnGerarOC;
 	private JButton btnBuscarProd;
+
+	private JTable tabMatPrimas;
+	private DefaultTableModel modeloTabMatPrimas;
+	private JScrollPane barraTabMatPrimas;
 	
-	private JPanel campos;
+	private JPanel pnlBotoes;
+	private JPanel pnlCampos;
+	
 	
 	public CadastrarOrdemProducao() {
 		super("Nova Ordem de Produção");
@@ -34,23 +47,26 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 
 	@Override
 	public void abrirJanela() {
+		
+		int widthCampos = 690;
 
-		int espXLbl = 10;
-		int espXTxt = 100;
-		int espY = 10;
+		int espXLbl = 20;
+		int espXTxt = 110;
+		int espY = 20;
 		int espEntre = 35;
 		int altura = 30;
 		
-		campos = new JPanel();
-		campos.setBounds(10,10,400,400);
-		campos.setLayout(null);
-		campos.setBackground(Color.LIGHT_GRAY);
+		pnlCampos = new JPanel();
+		pnlCampos.setBounds(10,10,widthCampos,480);
+		pnlCampos.setLayout(null);
+		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
 		lblCodOp = new JLabel("Número");
 		lblCodProdVenda = new JLabel("Código");
 		lblProdVenda = new JLabel("Produto");
 		lblQtdeProdVenda = new JLabel("Quantidade");
 		lblProduto = new JLabel("PRODUTO");
+		lblMatPrima = new JLabel("RECEITA");
 		
 		txtCodOp = new JTextField();
 		txtCodOp.setEnabled(false);
@@ -66,24 +82,69 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		
 		txtCodOp.setBounds(espXTxt, espY, 70, altura);
 		txtCodProdVenda.setBounds(espXTxt, espY+espEntre*3, 70, altura);
-		txtProdVenda.setBounds(espXTxt, espY+espEntre*4, 70, altura);
+		txtProdVenda.setBounds(espXTxt, espY+espEntre*4, 220, altura);
 		txtQtdeProdVenda.setBounds(espXTxt, espY+espEntre*5, 70, altura);
 		
 		btnBuscarProd = new JButton("Consultar");
 		btnBuscarProd.setBounds(190, espY+espEntre*3, 100, altura);
-
-		campos.add(lblCodOp);
-		campos.add(lblProduto);
-		campos.add(lblCodProdVenda);
-		campos.add(lblProdVenda);
-		campos.add(lblQtdeProdVenda);
-		campos.add(txtCodOp);
-		campos.add(txtCodProdVenda);
-		campos.add(txtProdVenda);
-		campos.add(txtQtdeProdVenda);
-		campos.add(btnBuscarProd);
 		
-		incluirComponenteCentro(campos);
+		tabMatPrimas = new JTable();
+		modeloTabMatPrimas = new DefaultTableModel(){
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		};
+		
+		modeloTabMatPrimas.setColumnIdentifiers(new String[] {
+
+				"Código",
+				"Matéria-Prima",
+				"Quantidade",
+				"Estoque"
+
+		});
+		
+		tabMatPrimas.setModel(modeloTabMatPrimas);
+		
+		barraTabMatPrimas = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		barraTabMatPrimas.setViewportView(tabMatPrimas);
+		
+		barraTabMatPrimas.setBounds(10, 270, widthCampos-20, 200);
+		
+		lblMatPrima.setBounds(espXLbl, 240, 100, altura);
+		
+		
+		pnlCampos.add(barraTabMatPrimas);
+		pnlCampos.add(lblCodOp);
+		pnlCampos.add(lblProduto);
+		pnlCampos.add(lblCodProdVenda);
+		pnlCampos.add(lblProdVenda);
+		pnlCampos.add(lblQtdeProdVenda);
+		pnlCampos.add(lblMatPrima);
+		pnlCampos.add(txtCodOp);
+		pnlCampos.add(txtCodProdVenda);
+		pnlCampos.add(txtProdVenda);
+		pnlCampos.add(txtQtdeProdVenda);
+		pnlCampos.add(btnBuscarProd);
+		
+		incluirComponenteCentro(pnlCampos);
+		
+
+		
+		pnlBotoes = new JPanel();
+		pnlBotoes.setLayout(new GridLayout(10, 1));
+		pnlBotoes.setBackground(Color.WHITE);
+		
+		btnGerarOC = new JButton("Gerar OC");
+		btnGerarOC.setBounds(10, 10, 100, 100);
+		pnlBotoes.add(btnGerarOC);
+		
+		this.add(pnlBotoes, BorderLayout.WEST);
+		
 
 		definicoesPagina();
 		

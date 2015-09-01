@@ -65,7 +65,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
-		lblTituloCabecalho.setForeground(Color.LIGHT_GRAY);	
+		lblTituloCabecalho.setForeground(Color.WHITE);	
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		lblTituloCabecalho.setFont(fonteCabecalho);
 		pnlCabecalho.add(lblTituloCabecalho, BorderLayout.CENTER);
