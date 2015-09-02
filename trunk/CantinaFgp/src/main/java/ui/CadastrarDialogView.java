@@ -106,7 +106,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(800, 600);
+		this.setSize(700, 600);
 		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,14 +15,18 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import vo.OrdemProducaoVO;
+import vo.StatusVO;
 
 public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>{
 
+	private JComboBox<StatusVO> cbxStatus;
+	
 	private JTextField txtCodOp;
 	private JTextField txtCodProdVenda;
 	private JTextField txtProdVenda;
 	private JTextField txtQtdeProdVenda;
 
+	private JLabel lblStatus;
 	private JLabel lblCodOp;
 	private JLabel lblCodProdVenda;
 	private JLabel lblProdVenda;
@@ -47,8 +52,8 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 
 	@Override
 	public void abrirJanela() {
-		
-		int widthCampos = 690;
+				
+		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
 		int espXTxt = 110;
@@ -61,6 +66,9 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
+		cbxStatus = new JComboBox<StatusVO>();
+		
+		lblStatus = new JLabel("Status");
 		lblCodOp = new JLabel("Número");
 		lblCodProdVenda = new JLabel("Código");
 		lblProdVenda = new JLabel("Produto");
@@ -74,6 +82,9 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		txtProdVenda = new JTextField();
 		txtQtdeProdVenda = new JTextField();
 
+		cbxStatus.setBounds(espXLbl+250, espY, 120, altura);
+		
+		lblStatus.setBounds(espXLbl+200, espY, 50, altura);
 		lblCodOp.setBounds(espXLbl, espY, 50, altura);
 		lblProduto.setBounds(espXLbl, espY+espEntre*2, 80, altura);
 		lblCodProdVenda.setBounds(espXLbl, espY+espEntre*3, 50, altura);
@@ -117,8 +128,9 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		
 		lblMatPrima.setBounds(espXLbl, 240, 100, altura);
 		
-		
+		pnlCampos.add(cbxStatus);
 		pnlCampos.add(barraTabMatPrimas);
+		pnlCampos.add(lblStatus);
 		pnlCampos.add(lblCodOp);
 		pnlCampos.add(lblProduto);
 		pnlCampos.add(lblCodProdVenda);
@@ -138,15 +150,13 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		pnlBotoes = new JPanel();
 		pnlBotoes.setLayout(new GridLayout(10, 1));
 		pnlBotoes.setBackground(Color.WHITE);
-		
-		btnGerarOC = new JButton("Gerar OC");
-		btnGerarOC.setBounds(10, 10, 100, 100);
-		pnlBotoes.add(btnGerarOC);
-		
-		this.add(pnlBotoes, BorderLayout.WEST);
-		
 
-		definicoesPagina();
+		btnGerarOC = new JButton("Gerar OC");
+		pnlBotoes.add(btnGerarOC);
+				
+		this.add(pnlBotoes, BorderLayout.WEST);
+
+		this.setVisible(true);
 		
 	}
 
@@ -163,13 +173,6 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		JOptionPane.showMessageDialog(null, "Ordem de Produção Salva");
 		
 		return true;
-		
-	}
-	
-	private void definicoesPagina() {
-		
-		this.setSize(800, 600);
-		this.setVisible(true);
 		
 	}
 
