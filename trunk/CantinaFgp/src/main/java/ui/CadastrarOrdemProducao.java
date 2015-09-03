@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import vo.ItemCompraVO;
+import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
 import vo.StatusVO;
 
@@ -58,7 +60,7 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 
 	@Override
 	public void abrirJanela() {
-				
+	
 		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
@@ -130,7 +132,7 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		
 		barraTabMatPrimas.setViewportView(tabMatPrimas);
 		
-		barraTabMatPrimas.setBounds(10, 270, widthCampos-20, 200);
+		barraTabMatPrimas.setBounds(10, 270, pnlCampos.getWidth()-20, 200);
 		
 		lblMatPrima.setBounds(espXLbl, 240, 100, altura);
 		
@@ -164,13 +166,24 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				
+				itensCompra = new ArrayList<ItemCompraVO>();
+				ItemCompraVO i = new ItemCompraVO();
+				MateriaPrimaVO m = new MateriaPrimaVO();
+				m.setCodProduto("01");
+				m.setDescricao("Mussarela");
+				i.setProduto(m);
+				i.setQtde(10D);
+				i.setValor(5D);
+				itensCompra.add(i);
+				
 				new CadastrarCompraView(itensCompra);
 				
 			}
 			
 		});
-				
+		
+		
 		this.add(pnlBotoes, BorderLayout.WEST);
 
 		this.setVisible(true);

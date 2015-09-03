@@ -23,7 +23,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 	private JButton btnGravar;
 	private JButton btnLimpar;
 	private JButton btnCancelar;
-	private JPanel pnlCentro;
+	protected JPanel pnlCentro;
 	private JPanel pnlCabecalho;
 	private JPanel pnlRodape;
 	private JLabel lblTituloCabecalho;
@@ -111,7 +111,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 		this.setSize(700, 600);
 		this.setModal(true);
 		this.setLocationRelativeTo(null);
-		
+
 	}
 	
 	protected abstract boolean botaoGravar();
