@@ -11,7 +11,7 @@ public class CompraVO extends GenericVO {
 	private FornecedorVO fornecedor;
 	private FuncionarioCantinaVO funcionario;
 	private FormaPgtoVO formaPgto;
-	private List<ItemCompra> itensCompra;
+	private List<ItemCompraVO> itensCompra;
 	private UnidadeProdutoVO unidade;
 	
 	public CompraVO() {
@@ -58,11 +58,11 @@ public class CompraVO extends GenericVO {
 		this.formaPgto = formaPgto;
 	}
 
-	public List<ItemCompra> getItensCompra() {
+	public List<ItemCompraVO> getItensCompra() {
 		return itensCompra;
 	}
 
-	public void setItensCompra(List<ItemCompra> itensCompra) {
+	public void setItensCompra(List<ItemCompraVO> itensCompra) {
 		this.itensCompra = itensCompra;
 	}
 

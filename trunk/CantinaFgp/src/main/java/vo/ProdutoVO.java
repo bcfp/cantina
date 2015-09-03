@@ -12,7 +12,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private Boolean status;
 	private Boolean lote;
 	private List<EstoqueProdutoVO> estoques;
-	private List<ItemCompra> itemCompras;
+	private List<ItemCompraVO> itemCompras;
 	
 	public ProdutoVO() {
 	
@@ -82,11 +82,11 @@ public abstract class ProdutoVO extends GenericVO {
 		this.unidade = unidade;
 	}
 
-	public List<ItemCompra> getItemCompras() {
+	public List<ItemCompraVO> getItemCompras() {
 		return itemCompras;
 	}
 
-	public void setItemCompras(List<ItemCompra> itemCompras) {
+	public void setItemCompras(List<ItemCompraVO> itemCompras) {
 		this.itemCompras = itemCompras;
 	}
 	

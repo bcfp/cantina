@@ -1,14 +1,14 @@
 package vo;
 
 
-public class ItensVendaVO {
+public class ItemVendaVO {
 	
 	private ProdutoVendaVO produto;
 	private VendaVO venda;
 	private Double qtde;
 	private Double valor;
 		
-	public ItensVendaVO() {
+	public ItemVendaVO() {
 
 	}
 

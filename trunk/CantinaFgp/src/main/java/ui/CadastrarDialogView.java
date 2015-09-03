@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 		criarPaneis(tituloCabecalho);
 
 	}
+	
 	
 	private void criarPaneis(String tituloCabecalho){
 		

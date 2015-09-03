@@ -12,7 +12,7 @@ public class VendaVO extends GenericVO{
 	private FormaPgtoVO formaPgto;
 	private ClienteCantinaVO clienteCantina;
 	private FuncionarioCantinaVO funcionarioCantina;
-	private List<ItensVendaVO> itensVenda;
+	private List<ItemVendaVO> itensVenda;
 
 	public VendaVO() {
 
@@ -50,11 +50,11 @@ public class VendaVO extends GenericVO{
 		this.clienteCantina = clienteCantina;
 	}
 
-	public List<ItensVendaVO> getItensVenda() {
+	public List<ItemVendaVO> getItensVenda() {
 		return itensVenda;
 	}
 
-	public void setItensVenda(List<ItensVendaVO> itensVenda) {
+	public void setItensVenda(List<ItemVendaVO> itensVenda) {
 		this.itensVenda = itensVenda;
 	}
 

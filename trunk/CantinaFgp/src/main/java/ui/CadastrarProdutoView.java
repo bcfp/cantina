@@ -1,8 +1,5 @@
 ﻿package ui;
 
-import interfaces.ITelaCadastrar;
-
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import vo.ProdutoVO;
@@ -16,8 +13,8 @@ public class CadastrarProdutoView extends CadastrarDialogView<ProdutoVO>{
 	
 	@Override
 	public void abrirJanela() {
-		
-		definicoesPagina();
+
+		this.setVisible(true);
 		
 	}
 
@@ -37,12 +34,6 @@ public class CadastrarProdutoView extends CadastrarDialogView<ProdutoVO>{
 		
 	}
 	
-	private void definicoesPagina() {
-		
-		this.setVisible(true);
-
-	}
-
 	@Override
 	protected void limparCampos() {
 		

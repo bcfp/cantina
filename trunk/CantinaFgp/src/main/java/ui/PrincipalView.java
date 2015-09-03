@@ -7,9 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -34,7 +32,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	private JMenuItem subCadastrarCantina;
 	private JMenu menuOrdemProducao;
 	private JMenuItem subConsultarOrdemProducao;
-	private JMenuItem subCriarOrdemProducao;
+	private JMenuItem subCadastrarOrdemProducao;
 	private JMenu menuEstoque;
 	private ConsultarPanelView panelConsultar;
 
@@ -94,8 +92,8 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		menuOrdemProducao = new JMenu();
 		subConsultarOrdemProducao = new JMenuItem();
 		subConsultarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
-		subCriarOrdemProducao = new JMenuItem();
-		subCriarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		subCadastrarOrdemProducao = new JMenuItem();
+		subCadastrarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
 		menuEstoque = new JMenu();
 		
@@ -117,7 +115,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		menuCadastrar.add(subCadastrarCantina);
 
 		menuOrdemProducao.add(subConsultarOrdemProducao);
-		menuOrdemProducao.add(subCriarOrdemProducao);
+		menuOrdemProducao.add(subCadastrarOrdemProducao);
 
 		barraMenu.add(menuConsulta);
 		barraMenu.add(menuCadastrar);
@@ -217,7 +215,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			}
 		});
 		
-		subCriarOrdemProducao.addActionListener(new ActionListener() {
+		subCadastrarOrdemProducao.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -237,7 +235,20 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			}
 		});
 		
-	}
+		subCadastrarCompra.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				new CadastrarCompraView();
+				
+			}
+			
+		});
+
+		
+	}		
+
 	
 	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){
 		
@@ -279,7 +290,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		subCadastrarCantina.setText("Cantina");
 		menuOrdemProducao.setText("Ordem de Produção");
 		subConsultarOrdemProducao.setText("Consultar");
-		subCriarOrdemProducao.setText("Novo");
+		subCadastrarOrdemProducao.setText("Novo");
 		menuEstoque.setText("Estoque");
 		
 	}

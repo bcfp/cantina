@@ -2,7 +2,7 @@ package vo;
 
 import enumeradores.TipoProduto;
 
-public class ItemCompra {
+public class ItemCompraVO extends GenericVO {
 
 	private CompraVO compra;
 	private ProdutoVO produto;
@@ -10,7 +10,7 @@ public class ItemCompra {
 	private Double qtde;
 	private Double valor;
 	
-	public ItemCompra() {
+	public ItemCompraVO() {
 
 	}
 

@@ -14,7 +14,7 @@ import vo.EstoqueProdutoVendaVO;
 import vo.FormaPgtoVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
-import vo.ItemCompra;
+import vo.ItemCompraVO;
 import vo.LoteVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
@@ -46,7 +46,7 @@ public class BancoFake {
 	public static LoteVO lote;
 	public static CantinaVO cantina;
 	public static CompraVO compra;
-	public static ItemCompra itemCompra;
+	public static ItemCompraVO itemCompra;
 	public static ClienteCantinaVO clienteCant;
 	public static FuncionarioCantinaVO funcCantina; 
 	public static UnidadeProdutoVO unidade;
