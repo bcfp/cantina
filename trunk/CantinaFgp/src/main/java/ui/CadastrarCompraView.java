@@ -12,33 +12,17 @@ import javax.swing.table.DefaultTableModel;
 
 import vo.CompraVO;
 import vo.ItemCompraVO;
-import vo.OrdemProducaoVO;
 
 public class CadastrarCompraView extends CadastrarDialogView<CompraVO> {
-	
-	private List<ItemCompraVO> itensCompra;
-
-	protected CadastrarCompraView() {
-		super("Nova Compra");
-		abrirJanela();
-	}
-	
-	protected CadastrarCompraView(List<ItemCompraVO> itensCompra) {
-		super("Nova Compra");
-		this.itensCompra = itensCompra;
-		abrirJanela();
-	}
-	
-	// TODO CONTINUAR DAQUI, COLOCAR TABELA PARA LISTA DE ITEM-COMPRA
 	
 	private JPanel pnlCampos;
 	private JTable tabItemCompra;
 	private DefaultTableModel modeloTabItemCompra;
 	private JScrollPane barraTabItemCompra;
-	
-	@Override
-	public void abrirJanela() {
 
+	
+	{
+		
 		int widthCampos = this.getWidth();
 		int yPnlCampos = 110;
 		
@@ -76,10 +60,25 @@ public class CadastrarCompraView extends CadastrarDialogView<CompraVO> {
 		barraTabItemCompra.setBounds(10, 240, pnlCampos.getWidth()-20, 230);
 		
 		pnlCampos.add(barraTabItemCompra);
-
-		carregarGridItens(this.itensCompra);
 		
 		incluirComponenteCentro(pnlCampos);	
+		
+	}
+	
+	protected CadastrarCompraView() {
+		super("Nova Compra");
+		abrirJanela();
+	}
+	
+	protected CadastrarCompraView(List<ItemCompraVO> itensCompra) {
+		super("Nova Compra");
+		carregarGridItens(itensCompra);
+		abrirJanela();
+	}
+	
+	
+	@Override
+	public void abrirJanela() {
 
 		this.setVisible(true);
 		
@@ -125,7 +124,7 @@ public class CadastrarCompraView extends CadastrarDialogView<CompraVO> {
 			modeloTabItemCompra.addRow(registro);	
 			
 		}
-		
+				
 	}
 	
 	
