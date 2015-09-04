@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import oracle.jdbc.OracleTypes;
 import vo.ProdutoVendaVO;
 import daoservice.IProdutoDAO;
 
@@ -37,7 +36,7 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			
 			cstm = conexao.prepareCall(sql);
 			cstm.setString(1, descricao);
-			cstm.registerOutParameter(2, OracleTypes.CURSOR);
+			//cstm.registerOutParameter(2, OracleTypes.CURSOR);
 			
 			if(!cstm.execute()){
 				 
