@@ -52,15 +52,8 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 	
 	private List<ItemCompraVO> itensCompra; // será utilizado para compra de matérias primas
 	
-	
-	public CadastrarOrdemProducao() {
-		super("Nova Ordem de Produção");
-		abrirJanela();
-	}
+	{
 
-	@Override
-	public void abrirJanela() {
-	
 		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
@@ -68,14 +61,14 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		int espY = 20;
 		int espEntre = 35;
 		int altura = 30;
-		
+
 		pnlCampos = new JPanel();
-		pnlCampos.setBounds(10,10,widthCampos,480);
+		pnlCampos.setBounds(10, 10, widthCampos, 480);
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
-		
+
 		cbxStatus = new JComboBox<StatusVO>();
-		
+
 		lblStatus = new JLabel("Status");
 		lblCodOp = new JLabel("Número");
 		lblCodProdVenda = new JLabel("Código");
@@ -83,59 +76,58 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		lblQtdeProdVenda = new JLabel("Quantidade");
 		lblProduto = new JLabel("PRODUTO");
 		lblMatPrima = new JLabel("RECEITA");
-		
+
 		txtCodOp = new JTextField();
 		txtCodOp.setEnabled(false);
 		txtCodProdVenda = new JTextField();
 		txtProdVenda = new JTextField();
 		txtQtdeProdVenda = new JTextField();
 
-		cbxStatus.setBounds(espXLbl+250, espY, 120, altura);
-		
-		lblStatus.setBounds(espXLbl+200, espY, 50, altura);
+		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
+
+		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
 		lblCodOp.setBounds(espXLbl, espY, 50, altura);
-		lblProduto.setBounds(espXLbl, espY+espEntre*2, 80, altura);
-		lblCodProdVenda.setBounds(espXLbl, espY+espEntre*3, 50, altura);
-		lblProdVenda.setBounds(espXLbl, espY+espEntre*4, 50, altura);
-		lblQtdeProdVenda.setBounds(espXLbl, espY+espEntre*5, 80, altura);
-		
+		lblProduto.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
+		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
+		lblProdVenda.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
+		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+
 		txtCodOp.setBounds(espXTxt, espY, 70, altura);
-		txtCodProdVenda.setBounds(espXTxt, espY+espEntre*3, 70, altura);
-		txtProdVenda.setBounds(espXTxt, espY+espEntre*4, 220, altura);
-		txtQtdeProdVenda.setBounds(espXTxt, espY+espEntre*5, 70, altura);
-		
+		txtCodProdVenda.setBounds(espXTxt, espY + espEntre * 3, 70, altura);
+		txtProdVenda.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
+		txtQtdeProdVenda.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+
 		btnBuscarProd = new JButton("Consultar");
-		btnBuscarProd.setBounds(190, espY+espEntre*3, 100, altura);
-		
+		btnBuscarProd.setBounds(190, espY + espEntre * 3, 100, altura);
+
 		tabMatPrimas = new JTable();
-		modeloTabMatPrimas = new DefaultTableModel(){
-			
+		modeloTabMatPrimas = new DefaultTableModel() {
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
-			
+
 		};
-		
+
 		modeloTabMatPrimas.setColumnIdentifiers(new String[] {
 
-				"Código",
-				"Matéria-Prima",
-				"Quantidade",
-				"Estoque"
+		"Código", "Matéria-Prima", "Quantidade", "Estoque"
 
 		});
-		
+
 		tabMatPrimas.setModel(modeloTabMatPrimas);
-		
-		barraTabMatPrimas = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
+		barraTabMatPrimas = new JScrollPane(
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		barraTabMatPrimas.setViewportView(tabMatPrimas);
-		
-		barraTabMatPrimas.setBounds(10, 270, pnlCampos.getWidth()-20, 200);
-		
+
+		barraTabMatPrimas.setBounds(10, 240, pnlCampos.getWidth() - 20, 230);
+
 		lblMatPrima.setBounds(espXLbl, 240, 100, altura);
-		
+
 		pnlCampos.add(cbxStatus);
 		pnlCampos.add(barraTabMatPrimas);
 		pnlCampos.add(lblStatus);
@@ -150,23 +142,21 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 		pnlCampos.add(txtProdVenda);
 		pnlCampos.add(txtQtdeProdVenda);
 		pnlCampos.add(btnBuscarProd);
-		
-		incluirComponenteCentro(pnlCampos);
-		
 
-		
+		incluirComponenteCentro(pnlCampos);
+
 		pnlBotoes = new JPanel();
 		pnlBotoes.setLayout(new GridLayout(10, 1));
 		pnlBotoes.setBackground(Color.WHITE);
 
 		btnGerarOC = new JButton("Gerar OC");
 		pnlBotoes.add(btnGerarOC);
-		
+
 		btnGerarOC.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				itensCompra = new ArrayList<ItemCompraVO>();
 				ItemCompraVO i = new ItemCompraVO();
 				MateriaPrimaVO m = new MateriaPrimaVO();
@@ -176,15 +166,26 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 				i.setQtde(10D);
 				i.setValor(5D);
 				itensCompra.add(i);
-				
+
 				new CadastrarCompraView(itensCompra);
-				
+
 			}
-			
+
 		});
-		
-		
+
 		this.add(pnlBotoes, BorderLayout.WEST);
+
+	}
+	
+	public CadastrarOrdemProducao() {
+		super("Nova Ordem de Produção");
+		abrirJanela();
+	}
+
+	@Override
+	public void abrirJanela() {
+	
+
 
 		this.setVisible(true);
 		

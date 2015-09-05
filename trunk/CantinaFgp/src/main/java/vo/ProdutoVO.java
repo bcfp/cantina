@@ -13,6 +13,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private Boolean lote;
 	private List<EstoqueProdutoVO> estoques;
 	private List<ItemCompraVO> itemCompras;
+	private List<FornecedorProdutoVO> fornecedores;
 	
 	public ProdutoVO() {
 	
@@ -88,6 +89,14 @@ public abstract class ProdutoVO extends GenericVO {
 
 	public void setItemCompras(List<ItemCompraVO> itemCompras) {
 		this.itemCompras = itemCompras;
+	}
+
+	public List<FornecedorProdutoVO> getFornecedores() {
+		return fornecedores;
+	}
+
+	public void setFornecedores(List<FornecedorProdutoVO> fornecedores) {
+		this.fornecedores = fornecedores;
 	}
 	
 }
