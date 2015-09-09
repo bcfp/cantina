@@ -50,7 +50,7 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implemen
 									
 					new DialogConfirmacaoView<CantinaVO>().abrirJanela( cantina, 
 																	  ConsultarCantinaView.this,
-																	  new DetalharCantinaView() );
+																	  null );
 
 				}
 				
