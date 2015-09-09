@@ -2,7 +2,7 @@ package interfaces;
 
 import vo.GenericVO;
 
-public interface ITelaCadastrar<T extends GenericVO> {
+public interface ITelaManter<T extends GenericVO> {
 
 	void abrirJanela();
 	boolean cadastrar(T item);
