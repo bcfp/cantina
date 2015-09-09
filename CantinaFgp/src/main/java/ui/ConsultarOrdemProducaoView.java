@@ -44,7 +44,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	@Override
 	protected void getTelaNovo() {
 
-		new CadastrarOrdemProducao();
+		new ManterOrdemProducao();
 		
 	}
 	

@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 import vo.GenericVO;
 
-public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
+public abstract class ManterDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
 
 	private JButton btnGravar;
 	private JButton btnLimpar;
@@ -28,7 +28,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
-	protected CadastrarDialogView(String tituloCabecalho) {
+	protected ManterDialogView(String tituloCabecalho) {
 
 		criarPaneis(tituloCabecalho);
 
@@ -63,7 +63,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				CadastrarDialogView.this.botaoGravar();
+				ManterDialogView.this.botaoGravar();
 				
 			}
 			
@@ -75,7 +75,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				CadastrarDialogView.this.limparCampos();
+				ManterDialogView.this.limparCampos();
 				
 			}
 			
@@ -87,7 +87,7 @@ public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog i
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				CadastrarDialogView.this.dispose();
+				ManterDialogView.this.dispose();
 				
 			}
 		});

@@ -23,7 +23,7 @@ import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
 import vo.StatusVO;
 
-public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>{
+public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO>{
 
 	private JComboBox<StatusVO> cbxStatus;
 	
@@ -167,7 +167,7 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 				i.setValor(5D);
 				itensCompra.add(i);
 
-				new CadastrarCompraView(itensCompra);
+				new ManterCompraView(itensCompra);
 
 			}
 
@@ -177,7 +177,7 @@ public class CadastrarOrdemProducao extends CadastrarDialogView<OrdemProducaoVO>
 
 	}
 	
-	public CadastrarOrdemProducao() {
+	public ManterOrdemProducao() {
 		super("Nova Ordem de Produção");
 		abrirJanela();
 	}

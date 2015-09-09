@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import vo.ProdutoVO;
 	
-	public class CadastrarProdutoView extends CadastrarDialogView<ProdutoVO>{
+	public class ManterProdutoView extends ManterDialogView<ProdutoVO>{
 		
 		private JPanel pnlCampos;
 	
@@ -103,7 +103,7 @@ import vo.ProdutoVO;
 			
 		}
 		
-		public CadastrarProdutoView() {
+		public ManterProdutoView() {
 			super("Novo Produto");
 			abrirJanela();
 		}

@@ -220,7 +220,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new CadastrarOrdemProducao();
+				new ManterOrdemProducao();
 				
 			}
 		});
@@ -230,7 +230,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new CadastrarProdutoView();
+				new ManterProdutoView();
 				
 			}
 		});
@@ -240,7 +240,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new CadastrarCompraView();
+				new ManterCompraView();
 				
 			}
 			

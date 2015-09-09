@@ -19,7 +19,7 @@ import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
 
-public class CadastrarCompraView extends CadastrarDialogView<CompraVO> {
+public class ManterCompraView extends ManterDialogView<CompraVO> {
 	
 	private JComboBox<StatusVO> cbxStatus;
 	
@@ -151,12 +151,12 @@ public class CadastrarCompraView extends CadastrarDialogView<CompraVO> {
 
 	}
 	
-	protected CadastrarCompraView() {
+	protected ManterCompraView() {
 		super("Nova Compra");
 		abrirJanela();
 	}
 	
-	protected CadastrarCompraView(List<ItemCompraVO> itensCompra) {
+	protected ManterCompraView(List<ItemCompraVO> itensCompra) {
 		super("Nova Compra");
 		carregarGridItens(itensCompra);
 		abrirJanela();
