@@ -5,6 +5,7 @@ import vo.GenericVO;
 public interface ITelaManter<T extends GenericVO> {
 
 	void abrirJanela();
-	boolean cadastrar(T item);
+	void abrirJanela(T objeto, ITelaConsultar<T> tela);
+	boolean cadastrar(T objeto);
 	
 }
