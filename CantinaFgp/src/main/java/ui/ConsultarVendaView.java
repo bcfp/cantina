@@ -41,7 +41,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 									
 					new DialogConfirmacaoView<VendaVO>().abrirJanela( venda, 
 																	  ConsultarVendaView.this,
-																	  new DetalharVendaView() );
+																	  null );
 
 				}
 				
@@ -78,13 +78,6 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	protected void getTelaNovo() {
 		
 		JOptionPane.showMessageDialog(null, "Nova Venda");
-		
-	}
-
-	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Alterar Venda");
 		
 	}
 

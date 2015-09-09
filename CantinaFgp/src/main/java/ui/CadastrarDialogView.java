@@ -1,6 +1,6 @@
 package ui;
 
-import interfaces.ITelaCadastrar;
+import interfaces.ITelaManter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 import vo.GenericVO;
 
-public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog implements ITelaCadastrar<T> {
+public abstract class CadastrarDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
 
 	private JButton btnGravar;
 	private JButton btnLimpar;

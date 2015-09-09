@@ -24,14 +24,6 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 		BancoFake.listaFuncionarios, 50, 100, 400, 200);
 	}
 
-
-	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Alterar Funcionario");
-		
-	}
-
 	@Override
 	public void deletar(FuncionarioVO funcionario) {
 
@@ -53,7 +45,7 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 									
 					new DialogConfirmacaoView<FuncionarioVO>().abrirJanela( funcionario, 
 																	  ConsultarFuncionarioView.this,
-																	  new DetalharFuncionarioView() );
+																	  null );
 
 				}
 				

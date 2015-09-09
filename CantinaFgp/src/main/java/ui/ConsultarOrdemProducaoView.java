@@ -47,14 +47,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 		new CadastrarOrdemProducao();
 		
 	}
-
-	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Alterar OP");
-		
-	}
-
+	
 	@Override
 	public void deletar(OrdemProducaoVO objeto) {
 
@@ -76,7 +69,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 									
 					new DialogConfirmacaoView<OrdemProducaoVO>().abrirJanela( op, 
 																	  ConsultarOrdemProducaoView.this,
-																	  new DetalharOrdemProducaoView() );
+																	  null );
 
 				}
 				

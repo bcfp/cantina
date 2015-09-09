@@ -64,7 +64,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 									
 					new DialogConfirmacaoView<ProdutoVO>().abrirJanela( prod, 
 																		ConsultarProdutoView.this,
-																		new DetalharProdutoView() );
+																		null );
 
 				}
 				
@@ -74,13 +74,6 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 						
 	}
 	
-	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Produto Alterado");
-		
-	}
-
 	@Override
 	public void deletar(ProdutoVO produto) {
 

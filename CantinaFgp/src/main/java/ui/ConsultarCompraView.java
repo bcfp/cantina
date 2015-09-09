@@ -23,14 +23,6 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 			}, 
 			BancoFake.listaCompras, 50, 100, 400, 200);
 	}
-	
-
-	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Alterar Compra");
-		
-	}
 
 	@Override
 	public void deletar(CompraVO compra) {
@@ -53,7 +45,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 									
 					new DialogConfirmacaoView<CompraVO>().abrirJanela( compra, 
 																	  ConsultarCompraView.this,
-																	  new DetalharCompraView() );
+																	  null );
 
 				}
 				

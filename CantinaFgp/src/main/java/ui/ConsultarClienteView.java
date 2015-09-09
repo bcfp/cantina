@@ -23,14 +23,7 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implemen
 			}, 
 			BancoFake.listaClientes, 50, 100, 400, 200);
 	}
-
-	@Override
-	public void alterar() {
-		
-		JOptionPane.showMessageDialog(null, "Alterar Cliente");
-		
-	}
-
+	
 	@Override
 	public void deletar(ClienteVO cliente) {
 		
@@ -52,7 +45,7 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implemen
 									
 					new DialogConfirmacaoView<ClienteVO>().abrirJanela( cliente, 
 																	  ConsultarClienteView.this,
-																	  new DetalharClienteView() );
+																	  null );
 
 				}
 				

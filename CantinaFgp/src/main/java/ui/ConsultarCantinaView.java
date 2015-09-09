@@ -23,13 +23,6 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implemen
 	}
 
 	@Override
-	public void alterar() {
-
-		JOptionPane.showMessageDialog(null, "Alterar Cantina");
-		
-	}
-
-	@Override
 	public void deletar(CantinaVO cantina) {
 
 		JOptionPane.showMessageDialog(null, "Deletar Cantina");
