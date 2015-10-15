@@ -20,18 +20,6 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 	}
 
 	@Override
-	public void deletar(FuncionarioVO funcionario) {
-
-		JOptionPane.showMessageDialog(null, "Deletar Funcionario");
-		
-	}
-
-	@Override
-	protected ITelaManter<FuncionarioVO> getTelaDetalhar() {
-		return new ManterFuncionarioView(TipoSolicitacao.DETALHAR, "Detalhar Funcionário");
-	}
-
-	@Override
 	protected String[] carregarGridItens(FuncionarioVO funcionario) {
 			
 			String[] registro = new String[2];
@@ -44,9 +32,19 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 	}
 
 	@Override
-	protected void getTelaNovo() {
+	protected ITelaManter<FuncionarioVO> getTelaIncluir() {
+		return new ManterFuncionarioView(TipoSolicitacao.INCLUIR, "Cadastrar Funcionário");
+	}
+	
+	@Override
+	protected ITelaManter<FuncionarioVO> getTelaAlterar() {
+		return new ManterFuncionarioView(TipoSolicitacao.DETALHAR, "Detalhar Funcionário");
+	}
 
-		new ManterFuncionarioView(TipoSolicitacao.INCLUIR, "Cadastrar Funcionário");
+	@Override
+	public void deletar(FuncionarioVO funcionario) {
+
+		JOptionPane.showMessageDialog(null, "Deletar Funcionario");
 		
 	}
 	

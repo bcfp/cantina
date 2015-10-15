@@ -39,7 +39,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	// atributos da janela
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
-	private JPanel pnlBotoes;
+	private JPanel pnlMenuLateral;
 
 	private JTable tabGeneric;
 	private DefaultTableModel modeloTabGeneric;
@@ -50,7 +50,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
-	// Lista 
+	// Lista de itens do tipo T para alimentar a tabela de consulta
 	private List<T> listaGenericos;
 	
 	
@@ -84,9 +84,9 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		pnlCentro.setBackground(Color.LIGHT_GRAY);
 		pnlCentro.setLayout(null);
 		
-		pnlBotoes = new JPanel();
-		pnlBotoes.setLayout(new GridLayout(10,1));
-		pnlBotoes.setBackground(Color.WHITE);
+		pnlMenuLateral = new JPanel();
+		pnlMenuLateral.setLayout(new GridLayout(10,1));
+		pnlMenuLateral.setBackground(Color.WHITE);
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
@@ -112,16 +112,19 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 		barraTabGeneric = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
+		// Insere títulos passados no construtor pela classe filha
 		modeloTabGeneric.setColumnIdentifiers(titulos);
 		
 		tabGeneric.setModel(modeloTabGeneric);
 		
 		barraTabGeneric.setViewportView(tabGeneric);
 		
+		// Defini posição e tamanho passados no construtor pela classe filha
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
 
 		pnlCentro.add(barraTabGeneric);
-				
+		
+		// Carrega tabela com a lista de itens pessados pela classe filha
 		carregarGridItens(listaGenericos);
 		mouseClickedTab();
 		
@@ -152,13 +155,13 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ConsultarPanelView.this.getTelaNovo();
+				ConsultarPanelView.this.getTelaIncluir().abrirJanela();
 				
 			}
 			
 		});
 
-		pnlBotoes.add(btnNovo);
+		pnlMenuLateral.add(btnNovo);
 		pnlCabecalho.add(btnFechar, BorderLayout.EAST);
 		
 		
@@ -167,23 +170,51 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		this.setLayout(new BorderLayout());
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlCentro, BorderLayout.CENTER);
-		this.add(pnlBotoes, BorderLayout.WEST);
+		this.add(pnlMenuLateral, BorderLayout.WEST);
 		this.setSize(750, 450);
 		
 	}
 	
 	// métodos
 	
+	/**
+	 * Método utilizado para filha adicionar botão no menu lateral da tela
+	 * 
+	 * @param botao - JButton
+	 */
 	protected void adicionarBotao(JButton botao){
-		pnlBotoes.add(botao);
+		pnlMenuLateral.add(botao);
 	}
 	
+	/**
+	 * Método para definir ação ao clicar em um item da tabela, método chamado por callback
+	 */
+	protected void mouseClickedTab() {
+		
+		getTabGeneric().addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
+				
+					// Traz o item do tipo T selecionado pelo usuário na tabela
+					T item = ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
+															
+					// Envia para o método abrirJanela da Dialog de opções o item selecionado, 
+					// a janela de consulta solicitante e a telaAlterar (Manter) que deverá ser chamada caso o usuário clique em 'Detalhar'
+					new DialogOpcoesView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaAlterar());
+
+				}
+			}
+		});
+	}
 	
-	// métodos abstratos
-	
-	protected abstract void getTelaNovo();
-	protected abstract String[] carregarGridItens(T item);
-	
+	/**
+	 * Insere na tabela os itens passados pela classe filha. 
+	 * 
+	 * @param listaItens - Lista de itens do tipo T
+	 */
 	private void carregarGridItens(List<T> listaItens) {
 
 		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
@@ -194,36 +225,37 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			
 			T item = iItem.next();
 			
+			// Insere na tabela item retornado do método abstrato carregarGridItens implementado na classe filha 
 			getModeloTabGeneric().addRow(carregarGridItens(item));	
 			
 		}
-		
-	}
+	}	
 	
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					T item = ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
-					
-					System.out.println(item.getClass());
-														
-					new DialogConfirmacaoView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaDetalhar());
-
-				}
-				
-			}
-			
-		});
-						
-	}
+	/**
+	 * Insere item do tipo T na tabela de consulta.
+	 * Ao implementar este método, deve ser feita a lógica para inserir os valores dos atributos do tipo T 
+	 * que devem ser apresentados na tabela de consulta.
+	 * 
+	 * @param item - Item do tipo T que deverá ser inserido na tabela
+	 * @return String[] - Deve ser retornado um vetor de String com os valores em ordem que deverão ser inseridos na tabela de consulta
+	 */
+	protected abstract String[] carregarGridItens(T item);
 	
-	protected abstract ITelaManter<T> getTelaDetalhar();
+	
+	// métodos abstratos
+	
+	/**
+	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de incluir um item do tipo T
+	 * @return
+	 */
+	protected abstract ITelaManter<T> getTelaIncluir();
+
+	/**
+	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de alterar um item do tipo T
+	 * @return
+	 */
+	protected abstract ITelaManter<T> getTelaAlterar();
+	
 	
 	
 	// getters and setters

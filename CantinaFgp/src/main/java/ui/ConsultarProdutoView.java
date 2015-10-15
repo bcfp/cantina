@@ -31,24 +31,22 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 		
 		return registro;
 	}
+
+	@Override
+	protected ITelaManter<ProdutoVO> getTelaIncluir() {
+		return new ManterProdutoView(TipoSolicitacao.INCLUIR, "Cadastrar Produto");
+	}	
 	
 	@Override
-	protected ITelaManter<ProdutoVO> getTelaDetalhar() {
+	protected ITelaManter<ProdutoVO> getTelaAlterar() {
 		return new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto");
-	}	
+	}
 
 	@Override
 	public void deletar(ProdutoVO produto) {
 
 		JOptionPane.showMessageDialog(null, "Produto Excluido");
 				
-	}
-
-	@Override
-	protected void getTelaNovo() {
-		
-		new ManterProdutoView(TipoSolicitacao.INCLUIR, "Cadastrar Produto").abrirJanela();;
-		
 	}
 
 

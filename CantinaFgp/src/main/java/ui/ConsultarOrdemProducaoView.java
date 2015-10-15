@@ -34,25 +34,6 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 		
 		
 		
-	}	
-	
-	@Override
-	protected void getTelaNovo() {
-
-		new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();
-		
-	}
-
-	@Override
-	public void deletar(OrdemProducaoVO objeto) {
-
-		JOptionPane.showMessageDialog(null, "Deletar OP");
-		
-	}
-
-	@Override
-	protected ITelaManter<OrdemProducaoVO> getTelaDetalhar() {
-		return new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
 	}
 	
 	@Override
@@ -67,6 +48,23 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 		registro[4] = ordemProducao.getStatus().getDescricao();
 		
 		return registro;
+		
+	}	
+	
+	@Override
+	protected ITelaManter<OrdemProducaoVO> getTelaIncluir() {
+		return new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção");
+	}
+
+	@Override
+	protected ITelaManter<OrdemProducaoVO> getTelaAlterar() {
+		return new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
+	}
+
+	@Override
+	public void deletar(OrdemProducaoVO objeto) {
+
+		JOptionPane.showMessageDialog(null, "Deletar OP");
 		
 	}
 	

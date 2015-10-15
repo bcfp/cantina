@@ -20,11 +20,6 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 		}, BancoFake.listaVendas, 50, 100, 400, 200);
 
 	}
-	
-	@Override
-	protected ITelaManter<VendaVO> getTelaDetalhar() {
-		return new ManterVendaView(TipoSolicitacao.DETALHAR, "Detalhar Venda");
-	}
 
 	@Override
 	protected String[] carregarGridItens(VendaVO venda) {
@@ -38,10 +33,13 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 	}
 
 	@Override
-	protected void getTelaNovo() {
-		
-		new ManterVendaView(TipoSolicitacao.INCLUIR, "Gerar Venda").abrirJanela();
-		
+	protected ITelaManter<VendaVO> getTelaIncluir() {
+		return new ManterVendaView(TipoSolicitacao.INCLUIR, "Gerar Venda");
+	}
+	
+	@Override
+	protected ITelaManter<VendaVO> getTelaAlterar() {
+		return new ManterVendaView(TipoSolicitacao.DETALHAR, "Detalhar Venda");
 	}
 
 	@Override

@@ -18,18 +18,6 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 	}
 
 	@Override
-	public void deletar(CantinaVO cantina) {
-
-		JOptionPane.showMessageDialog(null, "Deletar Cantina");
-		
-	}
-	
-	@Override
-	protected ITelaManter<CantinaVO> getTelaDetalhar() {
-		return new ManterCantinaView(TipoSolicitacao.DETALHAR, "Detalhar Cantina");
-	}
-
-	@Override
 	protected String[] carregarGridItens(CantinaVO cantina) {
 		
 		String[] registro = new String[2];
@@ -38,13 +26,23 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 		registro[1] = cantina.getNome();
 		
 		return registro;
-		
 	}
 
 	@Override
-	protected void getTelaNovo() {
-
-		new ManterCantinaView(TipoSolicitacao.INCLUIR, "Cadastrar Cantina").abrirJanela();
-		
+	protected ITelaManter<CantinaVO> getTelaIncluir() {
+		return new ManterCantinaView(TipoSolicitacao.INCLUIR, "Cadastrar Cantina");
+	}
+	
+	@Override
+	protected ITelaManter<CantinaVO> getTelaAlterar() {
+		return new ManterCantinaView(TipoSolicitacao.DETALHAR, "Detalhar Cantina");
 	}	
+
+	@Override
+	public void deletar(CantinaVO cantina) {
+
+		JOptionPane.showMessageDialog(null, "Deletar Cantina");
+		
+	}
+	
 }

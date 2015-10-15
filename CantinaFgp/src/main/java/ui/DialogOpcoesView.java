@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import vo.GenericVO;
 
-public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
+public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 
 	private JPanel panel;
 	private JButton btnDetalhar;
@@ -54,9 +54,9 @@ public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				DialogConfirmacaoView.this.dispose();
+				DialogOpcoesView.this.dispose();
 				
-				DialogConfirmacaoView.this.telaManter.abrirJanela(DialogConfirmacaoView.this.objeto);
+				DialogOpcoesView.this.telaManter.abrirJanela(DialogOpcoesView.this.objeto);
 
 			}
 
@@ -76,9 +76,9 @@ public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
 
 				if (opcao == JOptionPane.YES_OPTION) {
 
-					DialogConfirmacaoView.this.dispose();
+					DialogOpcoesView.this.dispose();
 
-					DialogConfirmacaoView.this.telaConsultar.deletar(DialogConfirmacaoView.this.objeto);
+					DialogOpcoesView.this.telaConsultar.deletar(DialogOpcoesView.this.objeto);
 
 				}
 

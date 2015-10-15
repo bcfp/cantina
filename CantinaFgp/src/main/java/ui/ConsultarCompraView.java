@@ -17,20 +17,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 				"Data"
 			}, 
 			BancoFake.listaCompras, 50, 100, 400, 200);
-	}
-
-	@Override
-	public void deletar(CompraVO compra) {
-
-		JOptionPane.showMessageDialog(null, "Deletar Compra");
-		
-	}
-
-	@Override
-	protected ITelaManter<CompraVO> getTelaDetalhar() {
-		return new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra");
-	}
-	
+	}	
 
 	@Override
 	protected String[] carregarGridItens(CompraVO compra) {
@@ -44,11 +31,21 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 		
 	}
 
+	@Override
+	protected ITelaManter<CompraVO> getTelaIncluir() {
+		return new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra");
+	}
 
 	@Override
-	protected void getTelaNovo() {
+	protected ITelaManter<CompraVO> getTelaAlterar() {
+		return new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra");
+	}
 
-		new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();
+	@Override
+	public void deletar(CompraVO compra) {
+
+		JOptionPane.showMessageDialog(null, "Deletar Compra");
 		
-	}	
+	}
+
 }

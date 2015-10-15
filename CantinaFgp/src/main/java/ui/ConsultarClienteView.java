@@ -18,18 +18,6 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 			}, 
 			BancoFake.listaClientes, 50, 100, 400, 200);
 	}
-
-	@Override
-	public void deletar(ClienteVO cliente) {
-		
-		JOptionPane.showMessageDialog(null, "Deletar Cliente");
-		
-	}
-
-	@Override
-	protected ITelaManter<ClienteVO> getTelaDetalhar() {
-		return new ManterClienteView(TipoSolicitacao.DETALHAR, "Detalhar Cliente");
-	}
 	
 	@Override
 	protected String[] carregarGridItens(ClienteVO cliente) {
@@ -44,10 +32,19 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 	}
 
 	@Override
-	protected void getTelaNovo() {
+	protected ITelaManter<ClienteVO> getTelaIncluir() {
+		return new ManterClienteView(TipoSolicitacao.INCLUIR, "Cadastrar Cliente");
+	}
+
+	@Override
+	protected ITelaManter<ClienteVO> getTelaAlterar() {
+		return new ManterClienteView(TipoSolicitacao.DETALHAR, "Detalhar Cliente");
+	}
+
+	@Override
+	public void deletar(ClienteVO cliente) {
 		
-		new ManterClienteView(TipoSolicitacao.INCLUIR, "Cadastrar Cliente").abrirJanela();
+		JOptionPane.showMessageDialog(null, "Deletar Cliente");
 		
 	}
-	
 }
