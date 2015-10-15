@@ -27,6 +27,7 @@ import vo.GenericVO;
 
 /**
  * Tela de consulta padrão. As demais telas de consulta devem herdar esta classe.
+ * As telas de consulta são utilizadas para pesquisar e excluir itens do tipo passado por Generic Type.
  * 
  * @author bruno.silva
  *
@@ -36,7 +37,8 @@ import vo.GenericVO;
 public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel implements ITelaConsultar<T>{
 	
 	
-	// atributos da janela
+	// Atributos da Janela
+	
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
 	private JPanel pnlMenuLateral;
@@ -54,7 +56,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private List<T> listaGenericos;
 	
 	
-	// Construtor
+	// Construtores
+	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
 	 * @param titulos - Títulos das colunas da tabela de consulta
@@ -70,7 +73,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 	}
 	
-	// métodos concretos
+	
+	// Métodos Concretos
 	
 	// Método utilizado para criar o panel de consulta
 	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt){
@@ -126,12 +130,13 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 		// Carrega tabela com a lista de itens pessados pela classe filha
 		carregarGridItens(listaGenericos);
+		
+		// Defini ação ao clicar em um item da coluna
 		mouseClickedTab();
 		
 		
 		
-		
-		// botões
+		// BOTÕES
 		
 		btnFechar = new JButton("X");
 		btnFechar.setBackground(Color.RED);
@@ -143,6 +148,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			public void actionPerformed(ActionEvent e) {
 
 				ConsultarPanelView.this.setVisible(false);
+				ConsultarPanelView.this.getParent().removeAll();
 				
 			}
 			
@@ -155,7 +161,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ConsultarPanelView.this.getTelaIncluir().abrirJanela();
+				ConsultarPanelView.this.getTelaIncluir().abrirJanela(); // abre tela incluir retornada pela classe filha através do método getTelaIncluir
 				
 			}
 			
@@ -175,12 +181,13 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 	}
 	
-	// métodos
+	
+	// Métodos
 	
 	/**
 	 * Método utilizado para filha adicionar botão no menu lateral da tela
 	 * 
-	 * @param botao - JButton
+	 * @param JButton - Botão que deverá ser inserido
 	 */
 	protected void adicionarBotao(JButton botao){
 		pnlMenuLateral.add(botao);
@@ -225,14 +232,14 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			
 			T item = iItem.next();
 			
-			// Insere na tabela item retornado do método abstrato carregarGridItens implementado na classe filha 
+			// Insere na tabela o item retornado do método abstrato carregarGridItens, implementado na classe filha 
 			getModeloTabGeneric().addRow(carregarGridItens(item));	
 			
 		}
 	}	
 	
 	
-	// métodos abstratos
+	// Métodos abstratos
 	
 	/**
 	 * Insere item do tipo T na tabela de consulta.
@@ -240,19 +247,19 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * que devem ser apresentados na tabela de consulta.
 	 * 
 	 * @param item - Item do tipo T que deverá ser inserido na tabela
-	 * @return String[] - Deve ser retornado um vetor de String com os valores em ordem que deverão ser inseridos na tabela de consulta
+	 * @return String[] - Deve ser retornado um vetor de String com os valores na ordem que deverão ser inseridos na tabela de consulta
 	 */
 	protected abstract String[] carregarGridItens(T item);
 		
 	/**
 	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de incluir um item do tipo T
-	 * @return
+	 * @return ITelaManter<T> - Retorna uma tela do tipo ITelaManter
 	 */
 	protected abstract ITelaManter<T> getTelaIncluir();
 
 	/**
 	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de alterar um item do tipo T
-	 * @return
+	 * @return ITelaManter<T> - Retorna uma tela do tipo ITelaManter
 	 */
 	protected abstract ITelaManter<T> getTelaAlterar();
 	
