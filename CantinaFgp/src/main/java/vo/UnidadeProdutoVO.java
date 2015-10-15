@@ -5,6 +5,7 @@ public class UnidadeProdutoVO extends GenericVO {
 	private Long idUnidadeProduto;
 	private String abreviatura;
 	private String descricao;
+	private Boolean ativo;
 	
 	public UnidadeProdutoVO() {
 	 
@@ -32,6 +33,14 @@ public class UnidadeProdutoVO extends GenericVO {
 
 	public void setAbreviatura(String abreviatura) {
 		this.abreviatura = abreviatura;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }
