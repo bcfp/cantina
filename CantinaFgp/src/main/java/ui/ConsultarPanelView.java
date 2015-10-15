@@ -24,11 +24,19 @@ import javax.swing.table.DefaultTableModel;
 
 import vo.GenericVO;
 
+
+/**
+ * Tela de consulta padrão. As demais telas de consulta devem herdar esta classe.
+ * 
+ * @author bruno.silva
+ *
+ * @param <T> - Deve ser passado como generic type um objeto do tipo GenericVO. Este objeto será utilizado para 
+ * definir o tipo dos parâmetros dos métodos da tela de consulta.
+ */
 public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel implements ITelaConsultar<T>{
 	
 	
-	// atributos
-	
+	// atributos da janela
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
 	private JPanel pnlBotoes;
@@ -42,10 +50,20 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
+	// Lista 
 	private List<T> listaGenericos;
 	
-	// Construtor
 	
+	// Construtor
+	/**
+	 * @param tituloCabecalho - Título da jabela de consulta
+	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
+	 * @param espX - Distância da lateral esquerda da tabela de consulta
+	 * @param espY - Distância do topo da tabela de consulta
+	 * @param larg - Largura da tabela de consulta
+	 * @param alt - Altura da tabela de consulta
+	 */
 	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
 		
 		criarPainel(tituloCabecalho, titulos, listaGenericos, espX, espY, larg, alt);
@@ -54,6 +72,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	
 	// métodos concretos
 	
+	// Método utilizado para criar o panel de consulta
 	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt){
 		
 		pnlCabecalho = new JPanel();
@@ -78,7 +97,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 		setListaGenericos(listaGenericos);
 		
-		// tabela
+		
+		// Tabela de consulta
 		
 		tabGeneric = new JTable();
 		modeloTabGeneric = new DefaultTableModel(){
