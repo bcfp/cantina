@@ -65,7 +65,6 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 
 	}
 	
-	
 	private void criarPaneis(String tituloCabecalho){
 		
 		lblTituloCabecalho = new JLabel();

@@ -42,7 +42,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
-	private static List<GenericVO> listaGenericos;
+	private List<T> listaGenericos;
 	
 	// Construtor
 	
@@ -76,6 +76,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		lblTituloCabecalho.setFont(fonteCabecalho);
 		pnlCabecalho.add(lblTituloCabecalho, BorderLayout.CENTER);
 		
+		setListaGenericos(listaGenericos);
+		
 		// tabela
 		
 		tabGeneric = new JTable();
@@ -99,8 +101,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
 
 		pnlCentro.add(barraTabGeneric);
-		
-		setListaGenericos((List<GenericVO>) listaGenericos);
+				
 		carregarGridItens(listaGenericos);
 		mouseClickedTab();
 		
@@ -171,7 +172,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 		while(iItem.hasNext()){
 			
-			T item = (T) iItem.next();
+			T item = iItem.next();
 			
 			getModeloTabGeneric().addRow(carregarGridItens(item));	
 			
@@ -188,7 +189,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 
 				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
 				
-					T item = (T) ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
+					T item = ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
 					
 					System.out.println(item.getClass());
 														
@@ -215,12 +216,12 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		return modeloTabGeneric;
 	}
 
-	public static List<GenericVO> getListaGenericos() {
+	public List<T> getListaGenericos() {
 		return listaGenericos;
 	}
 
-	public static void setListaGenericos(List<GenericVO> listaGenericos) {
-		ConsultarPanelView.listaGenericos = listaGenericos;
+	public void setListaGenericos(List<T> listaGenericos) {
+		this.listaGenericos = listaGenericos;
 	}
 	
 }

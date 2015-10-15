@@ -1,7 +1,5 @@
 package ui;
 
-import interfaces.ITelaConsultar;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Iterator;
@@ -17,10 +15,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import enumeradores.TipoSolicitacao;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
+import enumeradores.TipoSolicitacao;
 
 public class ManterCompraView extends ManterDialogView<CompraVO> {
 	
@@ -222,10 +220,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 	@Override
 	protected boolean habilitarCampos() {
-
-		JOptionPane.showMessageDialog(null, "Compra Alterada");
 		return false;
-	
 	}	
 
 }
