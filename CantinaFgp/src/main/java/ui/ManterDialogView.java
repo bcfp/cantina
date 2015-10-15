@@ -18,8 +18,21 @@ import javax.swing.JPanel;
 import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
+/**
+ * Tela de manter padrão. As demais telas de manter devem herdar esta classe.
+ * As telas de manter são utilizadas para detalhar e alterar um item do tipo passado por Generic Type.
+ * 
+ * @author bruno.silva
+ *
+ * @param <T> - Deve ser passado como generic type um objeto do tipo GenericVO. Este objeto será utilizado para 
+ * definir o tipo dos parâmetros dos métodos da tela de manter.
+ * 
+ */
 public abstract class ManterDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
 
+	
+	// Atributos da Janela
+	
 	private JButton btnGravar;
 	private JButton btnAlterar;
 	private JButton btnLimpar;
@@ -29,6 +42,9 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 	private JPanel pnlRodape;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
+	
+	
+	// Construtores
 	
 	protected ManterDialogView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
@@ -62,6 +78,9 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 			}
 		}
 	}
+	
+	
+	// Métodos concretos
 	
 	private void criarPaneis(String tituloCabecalho){
 		
