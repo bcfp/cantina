@@ -255,9 +255,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){
 		
 		this.getContentPane().removeAll();
-		this.getContentPane().setVisible(false);
-		this.getContentPane().setVisible(true);
-						
+		
 		this.centralizarPanel(panelConsultar);
 		
 		this.getContentPane().add(panelConsultar);
