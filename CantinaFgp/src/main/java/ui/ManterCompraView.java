@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import enumeradores.TipoManter;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
@@ -153,12 +154,12 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 	}
 	
-	protected ManterCompraView(String tituloCabecalho) {
-		super(tituloCabecalho);
+	protected ManterCompraView(TipoManter solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
 	}
 	
-	protected ManterCompraView(String tituloCabecalho, CompraVO compra) {
-		super(tituloCabecalho);
+	protected ManterCompraView(TipoManter solicitacao, String tituloCabecalho, CompraVO compra) {
+		super(solicitacao, tituloCabecalho);
 		carregarGridItens(compra.getItensCompra());
 	}
 	
@@ -178,15 +179,28 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	}
 
 	@Override
-	public boolean cadastrar(CompraVO compra) {
+	public boolean incluir(CompraVO compra) {
 			
 		return false;
 		
 	}
 
 	@Override
-	protected boolean gravar() {
+	public boolean alterar(CompraVO compra) {
+			
+		return false;
+		
+	}
+
+	@Override
+	protected boolean btnIncluir() {
 		JOptionPane.showMessageDialog(null, "Compra Salva");
+		return false;
+	}
+
+	@Override
+	protected boolean btnAlterar() {
+		JOptionPane.showMessageDialog(null, "Compra Alterada");
 		return false;
 	}
 
@@ -221,7 +235,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	}
 
 	@Override
-	protected boolean alterar() {
+	protected boolean habilitarCampos() {
 
 		JOptionPane.showMessageDialog(null, "Compra Alterada");
 		return false;

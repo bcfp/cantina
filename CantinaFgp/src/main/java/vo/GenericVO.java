@@ -1,3 +1,3 @@
 package vo;
 
-public abstract class GenericVO {}
+public class GenericVO {}

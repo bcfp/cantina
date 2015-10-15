@@ -1,15 +1,17 @@
 ﻿package ui;
 
+import interfaces.ITelaConsultar;
+
 import javax.swing.JOptionPane;
 
-import interfaces.ITelaConsultar;
 import vo.ProdutoVendaVO;
 import vo.VendaVO;
+import enumeradores.TipoManter;
 
 public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaConsultar<ProdutoVendaVO> {
 
-	protected ManterVendaView(String tituloCabecalho) {
-		super(tituloCabecalho);
+	protected ManterVendaView(TipoManter solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
 	}
 
 	@Override
@@ -27,26 +29,36 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaC
 	}
 
 	@Override
-	public void deletar(ProdutoVendaVO objeto) {
-
-		
+	public void deletar(ProdutoVendaVO produtoVenda) {
 		
 	}
 
 	@Override
-	public boolean cadastrar(VendaVO item) {
+	public boolean incluir(VendaVO venda) {
 		
 		return false;
 	}
 
 	@Override
-	protected boolean gravar() {
+	public boolean alterar(VendaVO venda) {
 		
 		return false;
 	}
 
 	@Override
-	protected boolean alterar() {
+	protected boolean btnIncluir() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean btnAlterar() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean habilitarCampos() {
 
 		JOptionPane.showMessageDialog(null, "Venda Alterada");
 		return false;

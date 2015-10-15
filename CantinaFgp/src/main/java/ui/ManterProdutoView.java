@@ -1,8 +1,6 @@
 ﻿	package ui;
 	
-	import interfaces.ITelaConsultar;
-
-import java.awt.Color;
+	import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -12,8 +10,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import vo.ItemCompraVO;
 import vo.ProdutoVO;
+import enumeradores.TipoManter;
 	
 	public class ManterProdutoView extends ManterDialogView<ProdutoVO>{
 		
@@ -107,12 +105,12 @@ import vo.ProdutoVO;
 			
 		}
 		
-		public ManterProdutoView(String tituloCabecalho) {
-			super(tituloCabecalho);
+		public ManterProdutoView(TipoManter solicitacao, String tituloCabecalho) {
+			super(solicitacao, tituloCabecalho);
 		}
 		
-		public ManterProdutoView(String tituloCabecalho, List<ProdutoVO> produtos) {
-			super(tituloCabecalho);
+		public ManterProdutoView(TipoManter solicitacao, String tituloCabecalho, List<ProdutoVO> produtos) {
+			super(solicitacao, tituloCabecalho);
 		}
 		
 		@Override
@@ -130,24 +128,41 @@ import vo.ProdutoVO;
 		}
 	
 		@Override
-		public boolean cadastrar(ProdutoVO produto) {
+		public boolean incluir(ProdutoVO produto) {
 			
-			new ManterProdutoView("");
+			new ManterProdutoView(TipoManter.INCLUIR, "");
+			return false;
+			
+		}
+	
+		@Override
+		public boolean alterar(ProdutoVO produto) {
+			
+			new ManterProdutoView(TipoManter.INCLUIR, "");
 			return false;
 			
 		}
 		
 		@Override
-		protected boolean gravar() {
+		protected boolean btnIncluir() {
 			
 			JOptionPane.showMessageDialog(null, "Produto Salvo");
 			
 			return true;
 			
 		}
+		
+		@Override
+		protected boolean btnAlterar() {
+			
+			JOptionPane.showMessageDialog(null, "Produto Alterado");
+			
+			return true;
+			
+		}
 
 		@Override
-		protected boolean alterar() {
+		protected boolean habilitarCampos() {
 
 			JOptionPane.showMessageDialog(null, "Prod Alterado");
 			return false;

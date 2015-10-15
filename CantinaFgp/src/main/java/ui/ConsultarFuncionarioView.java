@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import enumeradores.TipoManter;
 import utils.BancoFake;
 import vo.FuncionarioVO;
 
@@ -45,7 +46,7 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 									
 					new DialogConfirmacaoView<FuncionarioVO>().abrirJanela( funcionario, 
 																	  ConsultarFuncionarioView.this,
-																	  new ManterFuncionarioView("Detalhar Funcionário") );
+																	  new ManterFuncionarioView(TipoManter.DETALHAR, "Detalhar Funcionário") );
 
 				}
 				
@@ -80,7 +81,7 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 	@Override
 	protected void getTelaNovo() {
 
-		new ManterFuncionarioView("Cadastrar Funcionário");
+		new ManterFuncionarioView(TipoManter.INCLUIR, "Cadastrar Funcionário");
 		
 	}
 	

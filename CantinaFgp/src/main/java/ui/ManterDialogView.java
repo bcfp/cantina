@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import vo.GenericVO;
+import enumeradores.TipoManter;
 
 public abstract class ManterDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
 
@@ -29,9 +30,38 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
-	protected ManterDialogView(String tituloCabecalho) {
-
+	protected ManterDialogView(TipoManter solicitacao, String tituloCabecalho) {
+		
 		criarPaneis(tituloCabecalho);
+		
+		if(solicitacao.equals(TipoManter.DETALHAR)){
+			incluirBotaoAlterar();
+			btnGravar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					ManterDialogView.this.btnAlterar();
+					
+				}
+				
+			});
+		}
+		else{
+			if(solicitacao.equals(TipoManter.INCLUIR)){
+				btnGravar.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						ManterDialogView.this.btnIncluir();
+						
+					}
+					
+				});
+			}
+			
+		}
 
 	}
 	
@@ -59,28 +89,6 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		// BOTÕES
 		
 		btnGravar = new JButton("Gravar");
-		btnGravar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				ManterDialogView.this.gravar();
-				
-			}
-			
-		});
-		
-		btnAlterar = new JButton("Alterar");
-		btnAlterar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				ManterDialogView.this.alterar();
-				
-			}
-		});
-		
 
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -106,7 +114,6 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		});
 
 		pnlRodape.add(btnGravar);
-		pnlRodape.add(btnAlterar);
 		pnlRodape.add(btnLimpar);
 		pnlRodape.add(btnCancelar);
 			
@@ -124,12 +131,27 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		
 	}
 
-	protected abstract boolean gravar();
-	protected abstract boolean alterar();
+	protected abstract boolean btnIncluir();
+	protected abstract boolean btnAlterar();
+	protected abstract boolean habilitarCampos();
 	protected abstract void limparCampos();
 
 	
-	// método
+	// métodos
+
+	private void incluirBotaoAlterar(){
+		btnAlterar = new JButton("Alterar");
+		btnAlterar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				ManterDialogView.this.habilitarCampos();
+				
+			}
+		});
+		pnlRodape.add(btnAlterar);
+	}
 	
 	protected void incluirComponenteCentro(JComponent comp){
 		

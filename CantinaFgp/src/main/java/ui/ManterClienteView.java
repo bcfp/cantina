@@ -2,14 +2,15 @@
 
 import javax.swing.JOptionPane;
 
+import enumeradores.TipoManter;
 import interfaces.ITelaConsultar;
 import vo.ClienteVO;
 
 public class ManterClienteView extends ManterDialogView<ClienteVO> {
 
 
-	protected ManterClienteView(String tituloCabecalho) {
-		super(tituloCabecalho);
+	protected ManterClienteView(TipoManter solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
 	}
 
 	@Override
@@ -28,13 +29,27 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 
 
 	@Override
-	public boolean cadastrar(ClienteVO item) {
+	public boolean incluir(ClienteVO cliente) {
+		
+		return false;
+	}
+	
+	@Override
+	public boolean alterar(ClienteVO cliente) {
+		
 		
 		return false;
 	}
 
 	@Override
-	protected boolean gravar() {
+	protected boolean btnIncluir() {
+		ClienteVO c = new ClienteVO();
+		
+		return alterar(c);
+	}
+
+	@Override
+	protected boolean btnAlterar() {
 		
 		return false;
 	}
@@ -46,7 +61,7 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 	}
 
 	@Override
-	protected boolean alterar() {
+	protected boolean habilitarCampos() {
 
 		JOptionPane.showMessageDialog(null, "Cliente Alterado");
 		return false;

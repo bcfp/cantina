@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import enumeradores.TipoManter;
 import utils.BancoFake;
 import vo.OrdemProducaoVO;
 
@@ -61,7 +62,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 									
 					new DialogConfirmacaoView<OrdemProducaoVO>().abrirJanela( op, 
 																	  ConsultarOrdemProducaoView.this,
-																	  new ManterOrdemProducao("Detalhar Ordem de Produção"));
+																	  new ManterOrdemProducao(TipoManter.DETALHAR, "Detalhar Ordem de Produção"));
 
 				}
 				
@@ -74,7 +75,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	@Override
 	protected void getTelaNovo() {
 
-		new ManterOrdemProducao("Cadastrar Ordem de Produção").abrirJanela();
+		new ManterOrdemProducao(TipoManter.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();
 		
 	}
 	

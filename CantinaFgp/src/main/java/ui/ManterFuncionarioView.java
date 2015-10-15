@@ -2,13 +2,13 @@ package ui;
 
 import javax.swing.JOptionPane;
 
-import interfaces.ITelaConsultar;
 import vo.FuncionarioVO;
+import enumeradores.TipoManter;
 
 public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 
-	protected ManterFuncionarioView(String tituloCabecalho) {
-		super(tituloCabecalho);
+	protected ManterFuncionarioView(TipoManter solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
 	}
 
 	@Override
@@ -26,19 +26,31 @@ public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 	}
 
 	@Override
-	public boolean cadastrar(FuncionarioVO item) {
+	public boolean incluir(FuncionarioVO item) {
 		
 		return false;
 	}
 
 	@Override
-	protected boolean gravar() {
+	public boolean alterar(FuncionarioVO item) {
 		
 		return false;
 	}
 
 	@Override
-	protected boolean alterar() {
+	protected boolean btnIncluir() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean btnAlterar() {
+		
+		return false;
+	}
+
+	@Override
+	protected boolean habilitarCampos() {
 
 		JOptionPane.showMessageDialog(null, "Funcionario Alterado");
 		return false;

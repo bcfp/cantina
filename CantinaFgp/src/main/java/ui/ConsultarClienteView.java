@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import enumeradores.TipoManter;
 import utils.BancoFake;
 import vo.ClienteVO;
 
@@ -44,7 +45,7 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implemen
 									
 					new DialogConfirmacaoView<ClienteVO>().abrirJanela( cliente, 
 																	  ConsultarClienteView.this,
-																	  new ManterClienteView("Detalhar Cliente"));
+																	  new ManterClienteView(TipoManter.DETALHAR, "Detalhar Cliente"));
 
 				}
 				
@@ -79,7 +80,7 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implemen
 	@Override
 	protected void getTelaNovo() {
 		
-		new ManterClienteView("Cadastrar Cliente").abrirJanela();
+		new ManterClienteView(TipoManter.INCLUIR, "Cadastrar Cliente").abrirJanela();
 		
 	}
 	

@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import enumeradores.TipoManter;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
@@ -173,7 +174,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				itensCompra.add(i);
 				c.setItensCompra(itensCompra);
 				
-				new ManterCompraView("Gerar Compra", c).abrirJanela();
+				new ManterCompraView(TipoManter.INCLUIR, "Gerar Compra", c).abrirJanela();
 
 			}
 
@@ -183,8 +184,8 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 	}
 	
-	public ManterOrdemProducao(String tituloCabecalho) {
-		super(tituloCabecalho);
+	public ManterOrdemProducao(TipoManter solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
 	}
 	
 	@Override
@@ -202,14 +203,21 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	}
 
 	@Override
-	public boolean cadastrar(OrdemProducaoVO ordemProducao) {
+	public boolean incluir(OrdemProducaoVO ordemProducao) {
 		
 		return false;
 		
 	}
 
 	@Override
-	protected boolean gravar() {
+	public boolean alterar(OrdemProducaoVO ordemProducao) {
+		
+		return false;
+		
+	}
+
+	@Override
+	protected boolean btnIncluir() {
 		
 		JOptionPane.showMessageDialog(null, "Ordem de Produção Salva");
 		
@@ -218,7 +226,15 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	}
 
 	@Override
-	protected boolean alterar() {
+	protected boolean btnAlterar() {
+		
+		JOptionPane.showMessageDialog(null, "Ordem de Produção Alterada");
+		
+		return false;
+	}
+
+	@Override
+	protected boolean habilitarCampos() {
 
 		JOptionPane.showMessageDialog(null, "OP Alterada");
 		return false;
