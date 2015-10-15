@@ -171,7 +171,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	}
 
 	@Override
-	public void abrirJanela(CompraVO objeto, ITelaConsultar<CompraVO> tela) {
+	public void abrirJanela(CompraVO objeto) {
 
 		this.setVisible(true);
 		

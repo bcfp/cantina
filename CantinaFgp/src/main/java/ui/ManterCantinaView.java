@@ -19,7 +19,7 @@ public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 	}
 	
 	@Override
-	public void abrirJanela(CantinaVO objeto, ITelaConsultar<CantinaVO> tela) {
+	public void abrirJanela(CantinaVO objeto) {
 		
 		this.setVisible(true);
 		

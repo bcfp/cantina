@@ -186,7 +186,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	public ManterOrdemProducao(String tituloCabecalho) {
 		super(tituloCabecalho);
 	}
-
+	
 	@Override
 	public void abrirJanela() {
 		
@@ -195,7 +195,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	}
 
 	@Override
-	public void abrirJanela(OrdemProducaoVO objeto, ITelaConsultar<OrdemProducaoVO> tela) {
+	public void abrirJanela(OrdemProducaoVO objeto) {
 		
 		this.setVisible(true);
 		

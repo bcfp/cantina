@@ -13,7 +13,7 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 	}
 
 	@Override
-	public void abrirJanela(ClienteVO objeto, ITelaConsultar<ClienteVO> tela) {
+	public void abrirJanela(ClienteVO objeto) {
 	
 		this.setVisible(true);
 		

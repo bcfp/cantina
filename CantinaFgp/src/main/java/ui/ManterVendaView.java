@@ -13,7 +13,7 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaC
 	}
 
 	@Override
-	public void abrirJanela(VendaVO objeto, ITelaConsultar<VendaVO> tela) {
+	public void abrirJanela(VendaVO objeto) {
 		
 		this.setVisible(true);
 	

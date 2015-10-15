@@ -55,8 +55,7 @@ public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				DialogConfirmacaoView.this.telaManter.abrirJanela(
-						DialogConfirmacaoView.this.objeto, 
-						DialogConfirmacaoView.this.telaConsultar);
+						DialogConfirmacaoView.this.objeto);
 
 			}
 

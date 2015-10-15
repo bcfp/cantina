@@ -123,7 +123,7 @@ import vo.ProdutoVO;
 		}
 
 		@Override
-		public void abrirJanela(ProdutoVO produto, ITelaConsultar<ProdutoVO> tela) {
+		public void abrirJanela(ProdutoVO produto) {
 			
 			this.setVisible(true);
 			

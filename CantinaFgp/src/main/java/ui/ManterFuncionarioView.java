@@ -12,7 +12,7 @@ public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 	}
 
 	@Override
-	public void abrirJanela(FuncionarioVO objeto, ITelaConsultar<FuncionarioVO> tela) {
+	public void abrirJanela(FuncionarioVO objeto) {
 
 		this.setVisible(true);
 		
