@@ -24,32 +24,16 @@ public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 		this.setVisible(true);
 		
 	}
-	
+
 	@Override
-	public boolean incluir(CantinaVO cantina) {
-		
-		JOptionPane.showMessageDialog(null, "Cantina incluida");
-		
-		return false;
-	}
-	
-	@Override
-	public boolean alterar(CantinaVO cantina) {
-		
-		JOptionPane.showMessageDialog(null, "Cantina alterada");
-		
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Cantina incluída");
 		return false;
 	}
 
 	@Override
-	protected boolean btnIncluir() {
-		
-		return false;
-	}
-
-	@Override
-	protected boolean btnAlterar() {
-		
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Cantina alterada");		
 		return false;
 	}
 
@@ -61,9 +45,6 @@ public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 
 	@Override
 	protected boolean habilitarCampos() {
-		
-		JOptionPane.showMessageDialog(null, "Cantina Alterada");
-		
 		return false;
 	}
 

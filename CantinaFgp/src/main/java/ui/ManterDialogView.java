@@ -41,7 +41,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					ManterDialogView.this.btnAlterar();
+					ManterDialogView.this.alterar();
 					
 				}
 				
@@ -54,7 +54,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
-						ManterDialogView.this.btnIncluir();
+						ManterDialogView.this.incluir();
 						
 					}
 					
@@ -131,8 +131,6 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		
 	}
 
-	protected abstract boolean btnIncluir();
-	protected abstract boolean btnAlterar();
 	protected abstract boolean habilitarCampos();
 	protected abstract void limparCampos();
 

@@ -27,30 +27,15 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 		
 	}
 
-
 	@Override
-	public boolean incluir(ClienteVO cliente) {
-		
-		return false;
-	}
-	
-	@Override
-	public boolean alterar(ClienteVO cliente) {
-		
-		
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Cliente incluído");
 		return false;
 	}
 
 	@Override
-	protected boolean btnIncluir() {
-		ClienteVO c = new ClienteVO();
-		
-		return alterar(c);
-	}
-
-	@Override
-	protected boolean btnAlterar() {
-		
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Cliente alterado");		
 		return false;
 	}
 

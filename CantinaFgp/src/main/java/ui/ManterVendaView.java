@@ -15,7 +15,7 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaC
 	}
 
 	@Override
-	public void abrirJanela(VendaVO objeto) {
+	public void abrirJanela(VendaVO venda) {
 		
 		this.setVisible(true);
 	
@@ -34,35 +34,20 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaC
 	}
 
 	@Override
-	public boolean incluir(VendaVO venda) {
-		
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Venda Incluída");
 		return false;
 	}
 
 	@Override
-	public boolean alterar(VendaVO venda) {
-		
-		return false;
-	}
-
-	@Override
-	protected boolean btnIncluir() {
-		
-		return false;
-	}
-
-	@Override
-	protected boolean btnAlterar() {
-		
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Venda Alterada");	
 		return false;
 	}
 
 	@Override
 	protected boolean habilitarCampos() {
-
-		JOptionPane.showMessageDialog(null, "Venda Alterada");
 		return false;
-	
 	}
 
 	@Override

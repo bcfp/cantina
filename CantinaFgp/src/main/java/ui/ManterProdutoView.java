@@ -126,45 +126,22 @@ import enumeradores.TipoManter;
 			this.setVisible(true);
 			
 		}
-	
+
 		@Override
-		public boolean incluir(ProdutoVO produto) {
-			
-			new ManterProdutoView(TipoManter.INCLUIR, "");
+		public boolean incluir() {
+			JOptionPane.showMessageDialog(null, "Produto Incluído");
 			return false;
-			
 		}
-	
+
 		@Override
-		public boolean alterar(ProdutoVO produto) {
-			
-			new ManterProdutoView(TipoManter.INCLUIR, "");
+		public boolean alterar() {
+			JOptionPane.showMessageDialog(null, "Produto Alterado");	
 			return false;
-			
-		}
-		
-		@Override
-		protected boolean btnIncluir() {
-			
-			JOptionPane.showMessageDialog(null, "Produto Salvo");
-			
-			return true;
-			
-		}
-		
-		@Override
-		protected boolean btnAlterar() {
-			
-			JOptionPane.showMessageDialog(null, "Produto Alterado");
-			
-			return true;
-			
 		}
 
 		@Override
 		protected boolean habilitarCampos() {
 
-			JOptionPane.showMessageDialog(null, "Prod Alterado");
 			return false;
 		
 		}

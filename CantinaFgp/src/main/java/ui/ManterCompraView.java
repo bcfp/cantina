@@ -179,28 +179,14 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	}
 
 	@Override
-	public boolean incluir(CompraVO compra) {
-			
-		return false;
-		
-	}
-
-	@Override
-	public boolean alterar(CompraVO compra) {
-			
-		return false;
-		
-	}
-
-	@Override
-	protected boolean btnIncluir() {
-		JOptionPane.showMessageDialog(null, "Compra Salva");
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Compra incluída");
 		return false;
 	}
 
 	@Override
-	protected boolean btnAlterar() {
-		JOptionPane.showMessageDialog(null, "Compra Alterada");
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Compra alterada");		
 		return false;
 	}
 

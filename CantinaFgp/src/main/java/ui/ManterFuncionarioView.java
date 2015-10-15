@@ -26,33 +26,20 @@ public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 	}
 
 	@Override
-	public boolean incluir(FuncionarioVO item) {
-		
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Funcionario Incluído");
 		return false;
 	}
 
 	@Override
-	public boolean alterar(FuncionarioVO item) {
-		
-		return false;
-	}
-
-	@Override
-	protected boolean btnIncluir() {
-		
-		return false;
-	}
-
-	@Override
-	protected boolean btnAlterar() {
-		
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Funcionario Alterado");	
 		return false;
 	}
 
 	@Override
 	protected boolean habilitarCampos() {
 
-		JOptionPane.showMessageDialog(null, "Funcionario Alterado");
 		return false;
 	
 	}

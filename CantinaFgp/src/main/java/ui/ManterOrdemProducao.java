@@ -203,40 +203,21 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	}
 
 	@Override
-	public boolean incluir(OrdemProducaoVO ordemProducao) {
-		
+	public boolean incluir() {
+		JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 		return false;
-		
 	}
 
 	@Override
-	public boolean alterar(OrdemProducaoVO ordemProducao) {
-		
-		return false;
-		
-	}
-
-	@Override
-	protected boolean btnIncluir() {
-		
-		JOptionPane.showMessageDialog(null, "Ordem de Produção Salva");
-		
-		return true;
-		
-	}
-
-	@Override
-	protected boolean btnAlterar() {
-		
-		JOptionPane.showMessageDialog(null, "Ordem de Produção Alterada");
-		
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");	
 		return false;
 	}
+
 
 	@Override
 	protected boolean habilitarCampos() {
 
-		JOptionPane.showMessageDialog(null, "OP Alterada");
 		return false;
 	
 	}
