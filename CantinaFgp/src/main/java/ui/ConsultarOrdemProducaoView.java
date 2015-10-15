@@ -1,20 +1,19 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
+import vo.GenericVO;
 import vo.OrdemProducaoVO;
+import enumeradores.TipoSolicitacao;
 
-public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> implements ITelaConsultar<OrdemProducaoVO> {
+public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> {
 
 	public ConsultarOrdemProducaoView() {
 		super("Ordem de Produção",
@@ -39,6 +38,13 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 		
 		
 		
+	}	
+	
+	@Override
+	protected void getTelaNovo() {
+
+		new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();
+		
 	}
 
 	@Override
@@ -49,34 +55,13 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	}
 
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					OrdemProducaoVO op = BancoFake.listaOrdensProducao.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<OrdemProducaoVO>().abrirJanela( op, 
-																	  ConsultarOrdemProducaoView.this,
-																	  new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção"));
-
-				}
-				
-			}
-			
-		});
-						
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaOrdensProducao.get(getTabGeneric().getSelectedRow());
 	}
-	
-	@Override
-	protected void getTelaNovo() {
 
-		new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();
-		
+	@Override
+	protected ITelaManter<OrdemProducaoVO> getTelaDetalhar() {
+		return new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
 	}
 	
 	@Override

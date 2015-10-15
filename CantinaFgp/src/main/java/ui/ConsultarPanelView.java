@@ -1,11 +1,16 @@
 ﻿package ui;
 
+import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -18,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import vo.GenericVO;
 
-public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
+public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel implements ITelaConsultar<T>{
 	
 	
 	// atributos
@@ -117,7 +122,6 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 		
 		
 		btnNovo = new JButton("Novo");
-		
 		btnNovo.addActionListener(new ActionListener() {
 			
 			@Override
@@ -153,9 +157,32 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	// métodos abstratos
 	
 	protected abstract void getTelaNovo();	
-	protected abstract void mouseClickedTab();
+	//protected abstract void mouseClickedTab();
 	protected abstract void carregarGridItens(List<T> listaGenerics);
+	
+	protected void mouseClickedTab() {
 		
+		getTabGeneric().addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
+				
+					T item = (T) getItemDetalhar();
+									
+					new DialogConfirmacaoView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaDetalhar());
+
+				}
+				
+			}
+			
+		});
+						
+	}
+	
+	protected abstract GenericVO getItemDetalhar();
+	protected abstract ITelaManter<T> getTelaDetalhar();
 	
 	// getters and setters
 	

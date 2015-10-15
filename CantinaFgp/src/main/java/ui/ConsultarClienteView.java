@@ -1,19 +1,18 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.ClienteVO;
+import vo.GenericVO;
+import enumeradores.TipoSolicitacao;
 
-public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implements ITelaConsultar<ClienteVO>{
+public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 
 	public ConsultarClienteView() {
 		super("Cliente", 
@@ -30,29 +29,15 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO> implemen
 		JOptionPane.showMessageDialog(null, "Deletar Cliente");
 		
 	}
+	
+	@Override
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaClientes.get(getTabGeneric().getSelectedRow());
+	}
 
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					ClienteVO cliente = BancoFake.listaClientes.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<ClienteVO>().abrirJanela( cliente, 
-																	  ConsultarClienteView.this,
-																	  new ManterClienteView(TipoSolicitacao.DETALHAR, "Detalhar Cliente"));
-
-				}
-				
-			}
-			
-		});
-						
+	protected ITelaManter<ClienteVO> getTelaDetalhar() {
+		return new ManterClienteView(TipoSolicitacao.DETALHAR, "Detalhar Cliente");
 	}
 
 	@Override

@@ -130,13 +130,12 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		this.setLocationRelativeTo(null);
 		
 	}
-
-	protected abstract boolean habilitarCampos();
-	protected abstract void limparCampos();
-
 	
 	// métodos
 
+	protected abstract boolean habilitarCampos();
+	protected abstract void limparCampos();
+	
 	private void incluirBotaoAlterar(){
 		btnAlterar = new JButton("Alterar");
 		btnAlterar.addActionListener(new ActionListener() {

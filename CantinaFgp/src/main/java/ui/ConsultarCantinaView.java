@@ -1,19 +1,18 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.CantinaVO;
+import vo.GenericVO;
+import enumeradores.TipoSolicitacao;
 
-public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implements ITelaConsultar<CantinaVO>{
+public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 	
 	public ConsultarCantinaView() {
 		super("Cantina",new String[]{
@@ -28,29 +27,15 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implemen
 		JOptionPane.showMessageDialog(null, "Deletar Cantina");
 		
 	}
-
+	
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					CantinaVO cantina = BancoFake.listaCantinas.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<CantinaVO>().abrirJanela(cantina, 
-																	  ConsultarCantinaView.this,
-																	  new ManterCantinaView(TipoSolicitacao.DETALHAR, "Detalhar Cantina"));
-
-				}
-				
-			}
-			
-		});
-						
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaCantinas.get(getTabGeneric().getSelectedRow());
+	}
+	
+	@Override
+	protected ITelaManter<CantinaVO> getTelaDetalhar() {
+		return new ManterCantinaView(TipoSolicitacao.DETALHAR, "Detalhar Cantina");
 	}
 
 	@Override

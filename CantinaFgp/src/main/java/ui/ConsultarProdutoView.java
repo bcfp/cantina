@@ -1,19 +1,18 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
+import vo.GenericVO;
 import vo.ProdutoVO;
+import enumeradores.TipoSolicitacao;
 
-public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implements ITelaConsultar<ProdutoVO>{
+public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 
 	public ConsultarProdutoView() {
 		
@@ -49,28 +48,14 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	}
 
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					ProdutoVO prod = BancoFake.listaProdutos.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<ProdutoVO>().abrirJanela( prod, 
-																		ConsultarProdutoView.this,
-																		new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto"));
-
-				}
-				
-			}
-			
-		});
-						
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaProdutos.get(getTabGeneric().getSelectedRow());
 	}
+
+	@Override
+	protected ITelaManter<ProdutoVO> getTelaDetalhar() {
+		return new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto");
+	}	
 
 	@Override
 	public void deletar(ProdutoVO produto) {

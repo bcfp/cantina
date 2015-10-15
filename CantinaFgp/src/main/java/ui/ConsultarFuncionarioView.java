@@ -1,19 +1,18 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.FuncionarioVO;
+import vo.GenericVO;
+import enumeradores.TipoSolicitacao;
 
-public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> implements ITelaConsultar<FuncionarioVO>{
+public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> {
 	
 	public ConsultarFuncionarioView() {
 		super("Funcionário",
@@ -24,7 +23,6 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 		BancoFake.listaFuncionarios, 50, 100, 400, 200);
 	}
 
-
 	@Override
 	public void deletar(FuncionarioVO funcionario) {
 
@@ -33,27 +31,13 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 	}
 
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaFuncionarios.get(getTabGeneric().getSelectedRow());
+	}
 
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					FuncionarioVO funcionario = BancoFake.listaFuncionarios.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<FuncionarioVO>().abrirJanela( funcionario, 
-																	  ConsultarFuncionarioView.this,
-																	  new ManterFuncionarioView(TipoSolicitacao.DETALHAR, "Detalhar Funcionário") );
-
-				}
-				
-			}
-			
-		});
-						
+	@Override
+	protected ITelaManter<FuncionarioVO> getTelaDetalhar() {
+		return new ManterFuncionarioView(TipoSolicitacao.DETALHAR, "Detalhar Funcionário");
 	}
 
 	@Override

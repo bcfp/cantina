@@ -1,9 +1,7 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,9 +9,10 @@ import javax.swing.JOptionPane;
 
 import utils.BancoFake;
 import vo.CompraVO;
+import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
-public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements ITelaConsultar<CompraVO>{
+public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 
 	public ConsultarCompraView() {
 		super("Compra",
@@ -32,27 +31,13 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	}
 
 	@Override
-	protected void mouseClickedTab() {
-		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
+	protected GenericVO getItemDetalhar() {
+		return BancoFake.listaCompras.get(getTabGeneric().getSelectedRow());
+	}
 
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
-				
-					CompraVO compra = BancoFake.listaCompras.get(getTabGeneric().getSelectedRow());
-									
-					new DialogConfirmacaoView<CompraVO>().abrirJanela( compra, 
-																	  ConsultarCompraView.this,
-																	  new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra"));
-
-				}
-				
-			}
-			
-		});
-						
+	@Override
+	protected ITelaManter<CompraVO> getTelaDetalhar() {
+		return new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra");
 	}
 
 	@Override
@@ -82,8 +67,5 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 		new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();
 		
-	}
-
-
-	
+	}	
 }
