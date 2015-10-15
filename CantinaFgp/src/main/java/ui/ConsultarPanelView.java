@@ -231,6 +231,9 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		}
 	}	
 	
+	
+	// métodos abstratos
+	
 	/**
 	 * Insere item do tipo T na tabela de consulta.
 	 * Ao implementar este método, deve ser feita a lógica para inserir os valores dos atributos do tipo T 
@@ -240,10 +243,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * @return String[] - Deve ser retornado um vetor de String com os valores em ordem que deverão ser inseridos na tabela de consulta
 	 */
 	protected abstract String[] carregarGridItens(T item);
-	
-	
-	// métodos abstratos
-	
+		
 	/**
 	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de incluir um item do tipo T
 	 * @return
