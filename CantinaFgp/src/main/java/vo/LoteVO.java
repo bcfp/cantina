@@ -17,7 +17,7 @@ public class LoteVO {
 	private CompraVO compra;
 	private TipoGeradorLote tipoGeradorLote;
 	
-	// TODO - N√O ESQUECER DE VERIFICAR O GERADOR (ORDEM PRODU«√O / COMPRA)
+	// TODO - N√ÉO ESQUECER DE VERIFICAR O GERADOR (ORDEM PRODU√á√ÉO / COMPRA)
 
 	public LoteVO() {
 
