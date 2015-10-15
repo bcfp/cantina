@@ -2,14 +2,10 @@
 
 import interfaces.ITelaManter;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import utils.BancoFake;
-import vo.GenericVO;
 import vo.OrdemProducaoVO;
 import enumeradores.TipoSolicitacao;
 
@@ -55,37 +51,22 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	}
 
 	@Override
-	protected GenericVO getItemDetalhar() {
-		return BancoFake.listaOrdensProducao.get(getTabGeneric().getSelectedRow());
-	}
-
-	@Override
 	protected ITelaManter<OrdemProducaoVO> getTelaDetalhar() {
 		return new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
 	}
 	
 	@Override
-	protected void carregarGridItens(List<OrdemProducaoVO> listaOrdensProducao) {
+	protected String[] carregarGridItens(OrdemProducaoVO ordemProducao) {
+			
+		String[] registro = new String[5];
 
-		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
+		registro[0] = ordemProducao.getCodOrdemProducao();
+		registro[1] = ordemProducao.getData().toString();
+		registro[2] = ordemProducao.getProdutoVenda().getDescricao();
+		registro[3] = ordemProducao.getQtde().toString();
+		registro[4] = ordemProducao.getStatus().getDescricao();
 		
-		Iterator<OrdemProducaoVO> iOp = listaOrdensProducao.iterator();
-		
-		while(iOp.hasNext()){
-			
-			OrdemProducaoVO op = (OrdemProducaoVO) iOp.next();
-			
-			String[] registro = new String[5];
-
-			registro[0] = op.getCodOrdemProducao();
-			registro[1] = op.getData().toString();
-			registro[2] = op.getProdutoVenda().getDescricao();
-			registro[3] = op.getQtde().toString();
-			registro[4] = op.getStatus().getDescricao();
-			
-			getModeloTabGeneric().addRow(registro);	
-			
-		}
+		return registro;
 		
 	}
 	

@@ -2,13 +2,9 @@
 
 import interfaces.ITelaManter;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import utils.BancoFake;
-import vo.GenericVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
 
@@ -24,39 +20,22 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 		}, BancoFake.listaVendas, 50, 100, 400, 200);
 
 	}
-
-	@Override
-	protected GenericVO getItemDetalhar() {
-		return BancoFake.listaVendas.get(getTabGeneric().getSelectedRow());
-	}
-
+	
 	@Override
 	protected ITelaManter<VendaVO> getTelaDetalhar() {
 		return new ManterVendaView(TipoSolicitacao.DETALHAR, "Detalhar Venda");
 	}
 
 	@Override
-	protected void carregarGridItens(List<VendaVO> listaVendas) {
+	protected String[] carregarGridItens(VendaVO venda) {
+		
+		String[] registro = new String[2];
 
-		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
+		registro[0] = venda.getCodVenda();
+		registro[1] = venda.getData().toString();
 		
-		Iterator<VendaVO> iVenda = listaVendas.iterator();
-		
-		while(iVenda.hasNext()){
-			
-			VendaVO venda = (VendaVO) iVenda.next();
-			
-			String[] registro = new String[2];
-
-			registro[0] = venda.getCodVenda();
-			registro[1] = venda.getData().toString();
-			
-			getModeloTabGeneric().addRow(registro);	
-			
-		}
-		
+		return registro;
 	}
-
 
 	@Override
 	protected void getTelaNovo() {
@@ -71,6 +50,5 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 		JOptionPane.showMessageDialog(null, "Deletar Venda");
 		
 	}
-
 
 }

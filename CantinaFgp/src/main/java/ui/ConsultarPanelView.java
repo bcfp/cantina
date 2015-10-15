@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -41,7 +42,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private JButton btnFechar;
 	private JButton btnNovo;
 	
-	
+	private static List<GenericVO> listaGenericos;
 	
 	// Construtor
 	
@@ -99,8 +100,11 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 
 		pnlCentro.add(barraTabGeneric);
 		
+		setListaGenericos((List<GenericVO>) listaGenericos);
 		carregarGridItens(listaGenericos);
 		mouseClickedTab();
+		
+		
 		
 		
 		// botões
@@ -157,7 +161,23 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	// métodos abstratos
 	
 	protected abstract void getTelaNovo();
-	protected abstract void carregarGridItens(List<T> listaGenerics);
+	protected abstract String[] carregarGridItens(T item);
+	
+	private void carregarGridItens(List<T> listaItens) {
+
+		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
+		
+		Iterator<T> iItem = listaItens.iterator();
+		
+		while(iItem.hasNext()){
+			
+			T item = (T) iItem.next();
+			
+			getModeloTabGeneric().addRow(carregarGridItens(item));	
+			
+		}
+		
+	}
 	
 	protected void mouseClickedTab() {
 		
@@ -168,8 +188,10 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 
 				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
 				
-					T item = (T) getItemDetalhar();
-									
+					T item = (T) ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
+					
+					System.out.println(item.getClass());
+														
 					new DialogConfirmacaoView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaDetalhar());
 
 				}
@@ -180,18 +202,25 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 						
 	}
 	
-	protected abstract GenericVO getItemDetalhar();
 	protected abstract ITelaManter<T> getTelaDetalhar();
 	
+	
 	// getters and setters
-	
-	
+		
 	protected JTable getTabGeneric() {
 		return tabGeneric;
 	}
 
 	protected DefaultTableModel getModeloTabGeneric() {
 		return modeloTabGeneric;
+	}
+
+	public static List<GenericVO> getListaGenericos() {
+		return listaGenericos;
+	}
+
+	public static void setListaGenericos(List<GenericVO> listaGenericos) {
+		ConsultarPanelView.listaGenericos = listaGenericos;
 	}
 	
 }

@@ -2,14 +2,10 @@
 
 import interfaces.ITelaManter;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.JOptionPane;
 
 import utils.BancoFake;
 import vo.CompraVO;
-import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
@@ -31,36 +27,23 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 	}
 
 	@Override
-	protected GenericVO getItemDetalhar() {
-		return BancoFake.listaCompras.get(getTabGeneric().getSelectedRow());
-	}
-
-	@Override
 	protected ITelaManter<CompraVO> getTelaDetalhar() {
 		return new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra");
 	}
+	
 
 	@Override
-	protected void carregarGridItens(List<CompraVO> listaCompras) {
-
-		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
+	protected String[] carregarGridItens(CompraVO compra) {
 		
-		Iterator<CompraVO> iCompra = listaCompras.iterator();
-		
-		while(iCompra.hasNext()){
-			
-			CompraVO compra = (CompraVO) iCompra.next();
-			
-			String[] registro = new String[2];
+		String[] registro = new String[2];
 
-			registro[0] = compra.getCodCompra();
-			registro[1] = compra.getData().toString();
-			
-			getModeloTabGeneric().addRow(registro);	
-			
-		}
+		registro[0] = compra.getCodCompra();
+		registro[1] = compra.getData().toString();
+		
+		return registro;
 		
 	}
+
 
 	@Override
 	protected void getTelaNovo() {
