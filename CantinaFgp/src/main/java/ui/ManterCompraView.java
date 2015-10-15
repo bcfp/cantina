@@ -17,7 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
@@ -154,11 +154,11 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 	}
 	
-	protected ManterCompraView(TipoManter solicitacao, String tituloCabecalho) {
+	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	
-	protected ManterCompraView(TipoManter solicitacao, String tituloCabecalho, CompraVO compra) {
+	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho, CompraVO compra) {
 		super(solicitacao, tituloCabecalho);
 		carregarGridItens(compra.getItensCompra());
 	}

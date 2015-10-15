@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import vo.ProdutoVO;
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterDialogView<ProdutoVO>{
 		
@@ -105,11 +105,11 @@ import enumeradores.TipoManter;
 			
 		}
 		
-		public ManterProdutoView(TipoManter solicitacao, String tituloCabecalho) {
+		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 			super(solicitacao, tituloCabecalho);
 		}
 		
-		public ManterProdutoView(TipoManter solicitacao, String tituloCabecalho, List<ProdutoVO> produtos) {
+		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho, List<ProdutoVO> produtos) {
 			super(solicitacao, tituloCabecalho);
 		}
 		

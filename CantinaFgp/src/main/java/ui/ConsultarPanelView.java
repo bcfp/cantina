@@ -48,7 +48,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 	
 	// métodos concretos
 	
-	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenerics, int espX, int espY, int larg, int alt){
+	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt){
 		
 		pnlCabecalho = new JPanel();
 		pnlCabecalho.setBackground(Color.BLACK);
@@ -94,7 +94,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel{
 
 		pnlCentro.add(barraTabGeneric);
 		
-		carregarGridItens(listaGenerics);
+		carregarGridItens(listaGenericos);
 		mouseClickedTab();
 		
 		

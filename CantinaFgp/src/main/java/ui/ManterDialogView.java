@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import vo.GenericVO;
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 
 public abstract class ManterDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
 
@@ -30,11 +30,11 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
-	protected ManterDialogView(TipoManter solicitacao, String tituloCabecalho) {
+	protected ManterDialogView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
 		criarPaneis(tituloCabecalho);
 		
-		if(solicitacao.equals(TipoManter.DETALHAR)){
+		if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
 			incluirBotaoAlterar();
 			btnGravar.addActionListener(new ActionListener() {
 				
@@ -48,7 +48,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 			});
 		}
 		else{
-			if(solicitacao.equals(TipoManter.INCLUIR)){
+			if(solicitacao.equals(TipoSolicitacao.INCLUIR)){
 				btnGravar.addActionListener(new ActionListener() {
 					
 					@Override

@@ -13,7 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 
 public class PrincipalView extends TelaView implements ComponentListener{
 	
@@ -222,7 +222,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterOrdemProducao(TipoManter.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();;
+				new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();;
 				
 			}
 		});
@@ -232,7 +232,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterProdutoView(TipoManter.INCLUIR, "Cadastrar Produto").abrirJanela();
+				new ManterProdutoView(TipoSolicitacao.INCLUIR, "Cadastrar Produto").abrirJanela();
 				
 			}
 		});
@@ -242,7 +242,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterCompraView(TipoManter.INCLUIR, "Cadastrar Compra").abrirJanela();;
+				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();;
 				
 			}
 			

@@ -3,11 +3,11 @@
 import javax.swing.JOptionPane;
 
 import vo.CantinaVO;
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 
 public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 	
-	protected ManterCantinaView(TipoManter solicitacao, String tituloCabecalho) {
+	protected ManterCantinaView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 

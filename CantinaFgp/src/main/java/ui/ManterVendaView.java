@@ -6,11 +6,11 @@ import javax.swing.JOptionPane;
 
 import vo.ProdutoVendaVO;
 import vo.VendaVO;
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 
 public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaConsultar<ProdutoVendaVO> {
 
-	protected ManterVendaView(TipoManter solicitacao, String tituloCabecalho) {
+	protected ManterVendaView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 

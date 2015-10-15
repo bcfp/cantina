@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.CantinaVO;
 
@@ -43,7 +43,7 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implemen
 									
 					new DialogConfirmacaoView<CantinaVO>().abrirJanela(cantina, 
 																	  ConsultarCantinaView.this,
-																	  new ManterCantinaView(TipoManter.DETALHAR, "Detalhar Cantina"));
+																	  new ManterCantinaView(TipoSolicitacao.DETALHAR, "Detalhar Cantina"));
 
 				}
 				
@@ -78,7 +78,7 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO> implemen
 	@Override
 	protected void getTelaNovo() {
 
-		new ManterCantinaView(TipoManter.INCLUIR, "Cadastrar Cantina").abrirJanela();
+		new ManterCantinaView(TipoSolicitacao.INCLUIR, "Cadastrar Cantina").abrirJanela();
 		
 	}
 	

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import utils.BancoFake;
 import vo.CompraVO;
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 
 public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements ITelaConsultar<CompraVO>{
 
@@ -45,7 +45,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 									
 					new DialogConfirmacaoView<CompraVO>().abrirJanela( compra, 
 																	  ConsultarCompraView.this,
-																	  new ManterCompraView(TipoManter.DETALHAR, "Detalhar Compra"));
+																	  new ManterCompraView(TipoSolicitacao.DETALHAR, "Detalhar Compra"));
 
 				}
 				
@@ -80,7 +80,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	@Override
 	protected void getTelaNovo() {
 
-		new ManterCompraView(TipoManter.INCLUIR, "Cadastrar Compra").abrirJanela();
+		new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();
 		
 	}
 

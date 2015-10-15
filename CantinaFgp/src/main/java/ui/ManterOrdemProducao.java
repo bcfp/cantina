@@ -20,7 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
@@ -174,7 +174,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				itensCompra.add(i);
 				c.setItensCompra(itensCompra);
 				
-				new ManterCompraView(TipoManter.INCLUIR, "Gerar Compra", c).abrirJanela();
+				new ManterCompraView(TipoSolicitacao.INCLUIR, "Gerar Compra", c).abrirJanela();
 
 			}
 
@@ -184,7 +184,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 	}
 	
-	public ManterOrdemProducao(TipoManter solicitacao, String tituloCabecalho) {
+	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	

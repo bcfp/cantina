@@ -2,14 +2,14 @@
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 import interfaces.ITelaConsultar;
 import vo.ClienteVO;
 
 public class ManterClienteView extends ManterDialogView<ClienteVO> {
 
 
-	protected ManterClienteView(TipoManter solicitacao, String tituloCabecalho) {
+	protected ManterClienteView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 

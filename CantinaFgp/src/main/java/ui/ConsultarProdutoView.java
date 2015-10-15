@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import enumeradores.TipoManter;
+import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.ProdutoVO;
 
@@ -62,7 +62,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 									
 					new DialogConfirmacaoView<ProdutoVO>().abrirJanela( prod, 
 																		ConsultarProdutoView.this,
-																		new ManterProdutoView(TipoManter.DETALHAR, "Detalhar Produto"));
+																		new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto"));
 
 				}
 				
@@ -82,7 +82,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	@Override
 	protected void getTelaNovo() {
 		
-		new ManterProdutoView(TipoManter.INCLUIR, "Cadastrar Produto").abrirJanela();;
+		new ManterProdutoView(TipoSolicitacao.INCLUIR, "Cadastrar Produto").abrirJanela();;
 		
 	}
 }
