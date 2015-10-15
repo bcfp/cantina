@@ -76,9 +76,9 @@ public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
 
 				if (opcao == JOptionPane.YES_OPTION) {
 
-					DialogConfirmacaoView.this.telaConsultar.deletar(DialogConfirmacaoView.this.objeto);
-
 					DialogConfirmacaoView.this.dispose();
+
+					DialogConfirmacaoView.this.telaConsultar.deletar(DialogConfirmacaoView.this.objeto);
 
 				}
 
