@@ -54,8 +54,9 @@ public class DialogConfirmacaoView<T extends GenericVO> extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				DialogConfirmacaoView.this.telaManter.abrirJanela(
-						DialogConfirmacaoView.this.objeto);
+				DialogConfirmacaoView.this.dispose();
+				
+				DialogConfirmacaoView.this.telaManter.abrirJanela(DialogConfirmacaoView.this.objeto);
 
 			}
 
