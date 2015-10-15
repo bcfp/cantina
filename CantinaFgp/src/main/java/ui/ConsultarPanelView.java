@@ -156,8 +156,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	
 	// métodos abstratos
 	
-	protected abstract void getTelaNovo();	
-	//protected abstract void mouseClickedTab();
+	protected abstract void getTelaNovo();
 	protected abstract void carregarGridItens(List<T> listaGenerics);
 	
 	protected void mouseClickedTab() {
