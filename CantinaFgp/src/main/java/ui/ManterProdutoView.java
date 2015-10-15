@@ -41,7 +41,7 @@ import enumeradores.TipoSolicitacao;
 	
 		private JTabbedPane tbsProdutos;
 		
-		//Atributos de tela de dados do produto
+		// Atributos de tela de dados do produto
 		private JPanel pnlDados;
 		private JLabel lblPrecoCusto;
 		private JTextField txtPrecoCusto;
@@ -120,6 +120,7 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public void abrirJanela(ProdutoVO produto) {
 			
+			definicoesPagina();
 			this.setVisible(true);
 			
 		}
@@ -185,7 +186,7 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			lblTipoProduto.setText("Tipo do produto a ser inserido:");
+			lblTipoProduto.setText("Tipo:");
 			lblTipoProduto.setBounds(200, 20, 200, 30);
 			
 			lblMP.setText("Matéria Prima");
