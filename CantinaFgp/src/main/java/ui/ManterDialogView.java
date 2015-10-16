@@ -147,12 +147,8 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		
 	}
 	
-	// métodos
-
-	protected abstract boolean habilitarCampos();
-	protected abstract void limparCampos();
-	
 	private void incluirBotaoAlterar(){
+		
 		btnAlterar = new JButton("Alterar");
 		btnAlterar.addActionListener(new ActionListener() {
 			
@@ -164,6 +160,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 			}
 		});
 		pnlRodape.add(btnAlterar);
+		
 	}
 	
 	protected void incluirComponenteCentro(JComponent comp){
@@ -171,5 +168,10 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		pnlCentro.add(comp);
 		
 	}
+	
+	// métodos abstratos
+	
+	protected abstract boolean habilitarCampos();
+	protected abstract void limparCampos();
 	
 }

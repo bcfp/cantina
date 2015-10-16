@@ -12,12 +12,12 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 
 	public ConsultarVendaView() {
 		
-		super("Venda",new String[] {
-
-			"Código",
-			"Data"
-
-		}, BancoFake.listaVendas, 50, 100, 400, 200);
+		super(	
+				"Venda", 
+				new String[] {"Código",	"Data"}, 
+				BancoFake.listaVendas, 
+				50, 100, 400, 200
+			 );
 
 	}
 
@@ -34,7 +34,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 
 	@Override
 	protected ITelaManter<VendaVO> getTelaIncluir() {
-		return new ManterVendaView(TipoSolicitacao.INCLUIR, "Gerar Venda");
+		return new ManterVendaView(TipoSolicitacao.INCLUIR, "Cadastrar Venda");
 	}
 	
 	@Override

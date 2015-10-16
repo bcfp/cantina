@@ -36,7 +36,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	private JMenuItem subConsultarOrdemProducao;
 	private JMenuItem subCadastrarOrdemProducao;
 	private JMenu menuEstoque;
-	private ConsultarPanelView panelConsultar;
+	private ConsultarPanelView<?> panelConsultar;
 
 	// BLOCO DE INICIALIZAÇÃO
 	{
@@ -245,13 +245,20 @@ public class PrincipalView extends TelaView implements ComponentListener{
 				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();;
 				
 			}
-			
 		});
+		
+		subCadastrarVenda.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
+				new ManterVendaView(TipoSolicitacao.INCLUIR, "Cadastrar Venda").abrirJanela();;
+				
+			}
+		});
 		
 	}		
 
-	
 	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){
 		
 		this.getContentPane().removeAll();
@@ -272,6 +279,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
         
 	}
 	
+	@Override
 	protected void atribuirTextos() {
 
 		menuConsulta.setText("Consultar");
@@ -295,10 +303,11 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		
 	}
 
-	
+	@Override
 	protected void definicoesPagina() {
 
 		this.setLayout(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setJMenuBar(barraMenu);
 		this.setTitle("Cantina FGP");
 		this.setExtendedState(PrincipalView.this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
