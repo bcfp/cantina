@@ -257,6 +257,36 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			}
 		});
 		
+		subCadastrarCliente.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				new ManterClienteView(TipoSolicitacao.INCLUIR, "Cadastrar Cliente").abrirJanela();;
+				
+			}
+		});
+		
+		subCadastrarFuncionario.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				new ManterFuncionarioView(TipoSolicitacao.INCLUIR, "Cadastrar Funcionário").abrirJanela();;
+				
+			}
+		});
+		
+		subCadastrarCantina.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				new ManterCantinaView(TipoSolicitacao.INCLUIR, "Cadastrar Cantina").abrirJanela();;
+				
+			}
+		});
+		
 	}		
 
 	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){

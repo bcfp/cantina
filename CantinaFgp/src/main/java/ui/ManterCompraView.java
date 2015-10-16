@@ -22,19 +22,30 @@ import enumeradores.TipoSolicitacao;
 
 public class ManterCompraView extends ManterDialogView<CompraVO> {
 	
-	private JComboBox<StatusVO> cbxStatus;
+	// Atributos Tela
+	
+	private JComboBox<String> cbxStatus;
+	private JComboBox<String> cbxFormaPgto;
 	
 	private JTextField txtCodOc;
 	private JTextField txtCodProdCompra;
 	private JTextField txtProdCompra;
 	private JTextField txtQtdeProdCompra;
-
+	private JTextField txtValorProdCompra;
+	private JTextField txtCodFornCompra;
+	private JTextField txtFornCompra;
+	
+	private JLabel lblFormaPgto;
 	private JLabel lblStatus;
 	private JLabel lblCodOc;
 	private JLabel lblCodProdCompra;
 	private JLabel lblProdCompra;
 	private JLabel lblQtdeProdCompra;
-	private JLabel lblProduto;
+	private JLabel lblTitProduto;
+	private JLabel lblValorProdCompra;
+	private JLabel lblTitFornecedor;
+	private JLabel lblCodFornCompra;
+	private JLabel lblFornCompra;
 	
 	private JButton btnBuscarProd;
 	private JButton btnAddBuscarProd;
@@ -44,9 +55,6 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	private DefaultTableModel modeloTabItemCompra;
 	private JScrollPane barraTabItemCompra;
 
-	private Component lblValorProdCompra;
-
-	private Component txtValorProdCompra;
 	
 	{
 		
@@ -54,6 +62,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 		int espXLbl = 20;
 		int espXTxt = 110;
+		int	espXForn = 350;
 		int espY = 20;
 		int espEntre = 35;
 		int altura = 30;
@@ -63,28 +72,33 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 
-		cbxStatus = new JComboBox<StatusVO>();
+		cbxStatus = new JComboBox<String>();
+		cbxFormaPgto = new JComboBox<String>();
 
+		lblFormaPgto = new JLabel("Pagamento");
 		lblStatus = new JLabel("Status");
 		lblCodOc = new JLabel("Número");
 		lblCodProdCompra = new JLabel("Código");
 		lblProdCompra = new JLabel("Produto");
 		lblQtdeProdCompra = new JLabel("Quantidade");
 		lblValorProdCompra = new JLabel("Valor");
-		lblProduto = new JLabel("PRODUTO");
-
+		lblTitProduto = new JLabel("PRODUTO");
+		lblTitFornecedor = new JLabel("FORNECEDOR");
+		lblCodFornCompra = new JLabel("Código");
+		lblFornCompra = new JLabel("Fornecedor");
+		
 		txtCodOc = new JTextField();
 		txtCodOc.setEnabled(false);
 		txtCodProdCompra = new JTextField();
 		txtProdCompra = new JTextField();
 		txtQtdeProdCompra = new JTextField();
 		txtValorProdCompra = new JTextField();
+		txtCodFornCompra = new JTextField();
+		txtFornCompra = new JTextField();
+		txtFornCompra.setEnabled(false);
 
-		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
-
-		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
 		lblCodOc.setBounds(espXLbl, espY, 50, altura);
-		lblProduto.setBounds(espXLbl, espY + espEntre, 80, altura);
+		lblTitProduto.setBounds(espXLbl, espY + espEntre, 80, altura);
 		lblCodProdCompra.setBounds(espXLbl, espY + espEntre * 2, 50, altura);
 		lblProdCompra.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
 		lblQtdeProdCompra.setBounds(espXLbl, espY + espEntre * 4, 80, altura);
@@ -95,6 +109,21 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		txtProdCompra.setBounds(espXTxt, espY + espEntre * 3, 220, altura);
 		txtQtdeProdCompra.setBounds(espXTxt, espY + espEntre * 4, 70, altura);
 		txtValorProdCompra.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		
+		lblStatus.setBounds(espXLbl + espXForn, espY, 80, altura);
+		
+		cbxStatus.setBounds(espXTxt + espXForn, espY, 120, altura);
+		
+		lblTitFornecedor.setBounds(espXLbl + espXForn, espY + espEntre, 80, altura);
+		lblCodFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
+		lblFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 3, 80, altura);
+		
+		txtCodFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 2, 70, altura);
+		txtFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 3, 200, altura);
+
+		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 5, 80, altura);
+		
+		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 5, 120, altura);
 		
 		btnBuscarProd = new JButton("Consultar");
 		btnBuscarProd.setBounds(190, espY + espEntre * 2, 100, altura);
@@ -114,7 +143,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 		modeloTabItemCompra.setColumnIdentifiers(new String[] {
 
-		"Código", "Produto", "Quantidade", "Valor", "Total"
+				"Código", "Produto", "Quantidade", "Valor", "Total"
 
 		});
 
@@ -130,13 +159,20 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 		pnlCampos.add(barraTabItemCompra);
 		pnlCampos.add(cbxStatus);
+		pnlCampos.add(cbxFormaPgto);
+		pnlCampos.add(lblFormaPgto);
 		pnlCampos.add(lblStatus);
 		pnlCampos.add(lblCodOc);
-		pnlCampos.add(lblProduto);
+		pnlCampos.add(lblTitProduto);
+		pnlCampos.add(lblTitFornecedor);
+		pnlCampos.add(lblCodFornCompra);
+		pnlCampos.add(lblFornCompra);
+		pnlCampos.add(txtFornCompra);
 		pnlCampos.add(lblCodProdCompra);
 		pnlCampos.add(lblProdCompra);
 		pnlCampos.add(lblQtdeProdCompra);
 		pnlCampos.add(lblValorProdCompra);
+		pnlCampos.add(txtCodFornCompra);
 		pnlCampos.add(txtCodOc);
 		pnlCampos.add(txtCodProdCompra);
 		pnlCampos.add(txtProdCompra);

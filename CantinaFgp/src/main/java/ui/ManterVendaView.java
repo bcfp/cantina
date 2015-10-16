@@ -2,18 +2,46 @@
 
 import interfaces.ITelaConsultar;
 
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import org.jdesktop.swingx.JXDatePicker;
 
 import vo.ProdutoVendaVO;
+import vo.StatusVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaConsultar<ProdutoVendaVO> {
 
+	// Atributos Tela
+	
+	private JComboBox<String> cbxStatus;
+	
+	private JTextField txtCodVenda;
+	private JTextField txtCodProdVenda;
+	private JTextField txtProdVenda;
+	private JTextField txtQtdeProdVenda;
+	private JTextField txtValorProdVenda;
+	private JTextField txtCodCliente;
+	
+	private JLabel lblCliente;
+	
+	private JXDatePicker dtpDataVenda;
+	private JComboBox<String> cbxFormaPgto;
+	
+	
+	// Construtores
+	
 	protected ManterVendaView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 
+	
+	// Métodos Concretos
+	
 	@Override
 	public void abrirJanela(VendaVO venda) {
 		
