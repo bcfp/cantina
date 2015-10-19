@@ -26,7 +26,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	
 	// Atributos Tela
 	
-	private JComboBox<String> cbxStatus;
+	private JComboBox<String> cbxStatusCompra;
 	private JComboBox<String> cbxFormaPgto;
 	
 	private JXDatePicker dtpDataCompra;
@@ -40,7 +40,8 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	private JTextField txtFornCompra;
 	
 	private JLabel lblFormaPgto;
-	private JLabel lblStatus;
+	private JLabel lblStatusCompra;
+	private JLabel lblDataCompra;
 	private JLabel lblCodOc;
 	private JLabel lblCodProdCompra;
 	private JLabel lblProdCompra;
@@ -79,11 +80,12 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 		dtpDataCompra = new JXDatePicker();
 		
-		cbxStatus = new JComboBox<String>();
+		cbxStatusCompra = new JComboBox<String>();
 		cbxFormaPgto = new JComboBox<String>();
 
 		lblFormaPgto = new JLabel("Pagamento");
-		lblStatus = new JLabel("Status");
+		lblStatusCompra = new JLabel("Status");
+		lblDataCompra = new JLabel("Data");
 		lblCodOc = new JLabel("Número");
 		lblCodProdCompra = new JLabel("Código");
 		lblProdCompra = new JLabel("Produto");
@@ -122,10 +124,11 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		
 		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
 		
-		lblStatus.setBounds(espXLbl + espXForn, espY, 80, altura);
-		cbxStatus.setBounds(espXTxt + espXForn, espY, 120, altura);
+		lblStatusCompra.setBounds(480, espY, 80, altura);
+		cbxStatusCompra.setBounds(530, espY, 130, altura);
 		
-		dtpDataCompra.setBounds(espXTxt + 180, espY, 140, altura);
+		lblDataCompra.setBounds(250, espY, 80, altura);
+		dtpDataCompra.setBounds(290, espY, 140, altura);
 		
 		lblTitFornecedor.setBounds(espXLbl + espXForn, espY + espEntre, 80, altura);
 		lblCodFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
@@ -169,11 +172,12 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		barraTabItemCompra.setBounds(10, 240, pnlCampos.getWidth() - 20, 230);
 
 		pnlCampos.add(barraTabItemCompra);
-		pnlCampos.add(cbxStatus);
+		pnlCampos.add(cbxStatusCompra);
 		pnlCampos.add(dtpDataCompra);
 		pnlCampos.add(cbxFormaPgto);
 		pnlCampos.add(lblFormaPgto);
-		pnlCampos.add(lblStatus);
+		pnlCampos.add(lblStatusCompra);
+		pnlCampos.add(lblDataCompra);
 		pnlCampos.add(lblCodOc);
 		pnlCampos.add(lblTitProduto);
 		pnlCampos.add(lblTitFornecedor);
@@ -203,11 +207,6 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	
 	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
-	}
-	
-	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho, CompraVO compra) {
-		super(solicitacao, tituloCabecalho);
-		carregarGridItens(compra.getItensCompra());
 	}
 	
 	

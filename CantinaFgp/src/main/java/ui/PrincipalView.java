@@ -1,6 +1,7 @@
 ﻿package ui;
 
 import java.awt.Dimension;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import enumeradores.TipoSolicitacao;
@@ -36,7 +38,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	private JMenuItem subConsultarOrdemProducao;
 	private JMenuItem subCadastrarOrdemProducao;
 	private JMenu menuEstoque;
-	private ConsultarPanelView<?> panelConsultar;
+	private JMenuItem subConsultarEstoque;
+	
+	private JPanel panelCentro;
 
 	// BLOCO DE INICIALIZAÇÃO
 	{
@@ -52,6 +56,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	public void abrirJanela() {
 		
 		barraMenu = new JMenuBar();
+		
 		menuConsulta = new JMenu();
 		
 		subConsultaVendas = new JMenuItem();
@@ -73,6 +78,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		subConsultaCantinas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.SHIFT_MASK));
 		
 		menuCadastrar = new JMenu();
+		
 		subCadastrarVenda = new JMenuItem();
 		subCadastrarVenda.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
 		
@@ -92,12 +98,17 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		subCadastrarCantina.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 		
 		menuOrdemProducao = new JMenu();
+		
 		subConsultarOrdemProducao = new JMenuItem();
 		subConsultarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+		
 		subCadastrarOrdemProducao = new JMenuItem();
 		subCadastrarOrdemProducao.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
 		menuEstoque = new JMenu();
+		
+		subConsultarEstoque = new JMenuItem();
+		subConsultarEstoque.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.SHIFT_MASK));
 		
 		atribuirTextos();
 		
@@ -119,6 +130,8 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		menuOrdemProducao.add(subConsultarOrdemProducao);
 		menuOrdemProducao.add(subCadastrarOrdemProducao);
 
+		menuEstoque.add(subConsultarEstoque);
+
 		barraMenu.add(menuConsulta);
 		barraMenu.add(menuCadastrar);
 		barraMenu.add(menuOrdemProducao);
@@ -131,14 +144,16 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	
 	private void acoesBotoes(){
 		
+		// Consultar 
+		
 		subConsultaProdutos.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 								
-				PrincipalView.this.panelConsultar = new ConsultarProdutoView();
+				PrincipalView.this.panelCentro = new ConsultarProdutoView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 			
@@ -150,9 +165,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarVendaView();
+				PrincipalView.this.panelCentro = new ConsultarVendaView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 		});
@@ -162,9 +177,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarCompraView();
+				PrincipalView.this.panelCentro = new ConsultarCompraView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 		});
@@ -174,9 +189,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarClienteView();
+				PrincipalView.this.panelCentro = new ConsultarClienteView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 		});
@@ -186,9 +201,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarFuncionarioView();
+				PrincipalView.this.panelCentro = new ConsultarFuncionarioView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 		});
@@ -198,9 +213,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarCantinaView();
+				PrincipalView.this.panelCentro = new ConsultarCantinaView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 				
 			}
 		});
@@ -210,12 +225,38 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				PrincipalView.this.panelConsultar = new ConsultarOrdemProducaoView();
+				PrincipalView.this.panelCentro = new ConsultarOrdemProducaoView();
 				
-				PrincipalView.this.abrirPanelConsulta(panelConsultar);
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
 					
 			}
 		});
+		
+		subConsultarOrdemProducao.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				PrincipalView.this.panelCentro = new ConsultarOrdemProducaoView();
+				
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
+					
+			}
+		});
+		
+		subConsultarEstoque.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				PrincipalView.this.panelCentro = new ConsultarEstoqueView();
+				
+				PrincipalView.this.abrirPanelConsulta(panelCentro);
+					
+			}
+		});
+		
+		// Cadastrar
 		
 		subCadastrarOrdemProducao.addActionListener(new ActionListener() {
 			
@@ -242,7 +283,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();;
+				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela();
 				
 			}
 		});
@@ -289,7 +330,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		
 	}		
 
-	private void abrirPanelConsulta(ConsultarPanelView panelConsultar){
+	private void abrirPanelConsulta(JPanel panelConsultar){
 		
 		this.getContentPane().removeAll();
 		
@@ -301,7 +342,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		
 	}
 	
-	private void centralizarPanel(ConsultarPanelView panel){
+	private void centralizarPanel(JPanel panel){
 		
         int pontoLargura = ((this.getWidth() / 2) - (panel.getWidth() / 2) - 10); 
                 
@@ -330,6 +371,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		subConsultarOrdemProducao.setText("Consultar");
 		subCadastrarOrdemProducao.setText("Novo");
 		menuEstoque.setText("Estoque");
+		subConsultarEstoque.setText("Consultar");
 		
 	}
 
@@ -350,9 +392,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	@Override
 	public void componentResized(ComponentEvent e) {
 		
-		if(panelConsultar != null){
+		if(panelCentro != null){
 
-			this.centralizarPanel(panelConsultar);  
+			this.centralizarPanel(panelCentro);  
 				
 		}
 	}

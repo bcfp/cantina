@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import enumeradores.TipoProduto;
 import vo.CantinaVO;
 import vo.ClienteCantinaVO;
 import vo.ClienteVO;
@@ -34,7 +35,7 @@ public class BancoFake {
 	public static List<CantinaVO> listaCantinas;
 	public static List<FuncionarioVO> listaFuncionarios;
 	public static List<OrdemProducaoVO> listaOrdensProducao;
-	public static List<EstoqueProdutoVO> estoqueProdutoVO;
+	public static List<EstoqueProdutoVO> listaEstoqueProduto;
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static ProdutoVendaVO prodVenda;
@@ -80,6 +81,7 @@ public class BancoFake {
 		
 		prodVenda = new ProdutoVendaVO();
 		prodVenda.setDescricao("Coxinha");
+		prodVenda.setCodProduto("01");
 		prodVenda.setDiasVencimento(3);
 		prodVenda.setFabricado(true);
 		prodVenda.setCodProduto("01");
@@ -88,13 +90,16 @@ public class BancoFake {
 		prodVenda.setStatus(true);
 		prodVenda.setUnidade(unidade);
 		prodVenda.setLote(true);
+		prodVenda.setTipo(TipoProduto.PRODUCAO);
 		
 		matPrima = new MateriaPrimaVO();
 		matPrima.setDescricao("Frango");
+		matPrima.setCodProduto("02");
 		matPrima.setLote(true);
 		matPrima.setPrecoCusto(2D);
 		matPrima.setStatus(true);
 		matPrima.setUnidade(unidade);
+		matPrima.setTipo(TipoProduto.MATERIA_PRIMA);
 		
 		receita = new ReceitaVO();
 		receita.setCodReceita("01");
@@ -103,6 +108,8 @@ public class BancoFake {
 		receita.setQtde(0.3D);
 		receita.setUnidade(unidade);
 		
+		listaEstoqueProduto = new ArrayList<EstoqueProdutoVO>();
+		
 		estMatPrima = new EstoqueMateriaPrimaVO();
 		estMatPrima.setCantina(cantina);
 		estMatPrima.setProduto(matPrima);
@@ -110,12 +117,16 @@ public class BancoFake {
 		estMatPrima.setQtdeMinima(5D);
 		estMatPrima.setQtdeMaxima(15D);
 		
+		listaEstoqueProduto.add(estMatPrima);
+		
 		estProdVenda = new EstoqueProdutoVendaVO();
 		estProdVenda.setCantina(cantina);
-		estProdVenda.setProduto(matPrima);
+		estProdVenda.setProduto(prodVenda);
 		estProdVenda.setQtdeAtual(9D);
 		estProdVenda.setQtdeMinima(10D);
 		estProdVenda.setQtdeMaxima(20D);
+
+		listaEstoqueProduto.add(estProdVenda);
 		
 		lote = new LoteVO();
 		lote.setCodLote("01");

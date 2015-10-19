@@ -320,7 +320,7 @@ import enumeradores.TipoSolicitacao;
 
 			modeloTabMatPrimas.setColumnIdentifiers(new String[] {
 
-			"Código", "Matéria-Prima", "Quantidade"
+					"Código", "Matéria-Prima", "Quantidade"
 
 			});
 

@@ -98,7 +98,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		lblTituloCabecalho.setFont(fonteCabecalho);
 		pnlCabecalho.add(lblTituloCabecalho, BorderLayout.CENTER);
-		
+
 		setListaGenericos(listaGenericos);
 		
 		
@@ -141,7 +141,6 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		btnFechar = new JButton("X");
 		btnFechar.setBackground(Color.RED);
 		btnFechar.setForeground(Color.WHITE);	
-		
 		btnFechar.addActionListener(new ActionListener() {
 			
 			@Override

@@ -12,7 +12,6 @@ public class LoteVO {
 	private Double qtde;
 	private Date dataVencimento;
 	private EstoqueProdutoVO estoqueProduto;
-	private TipoProduto tipoProduto;
 	private OrdemProducaoVO ordemProducao;
 	private CompraVO compra;
 	private TipoGeradorLote tipoGeradorLote;
@@ -69,14 +68,6 @@ public class LoteVO {
 
 	public void setTipoGeradorLote(TipoGeradorLote tipoGeradorLote) {
 		this.tipoGeradorLote = tipoGeradorLote;
-	}
-
-	public TipoProduto getTipoProduto() {
-		return tipoProduto;
-	}
-
-	public void setTipoProduto(TipoProduto tipoProduto) {
-		this.tipoProduto = tipoProduto;
 	}
 
 	public OrdemProducaoVO getOrdemProducao() {

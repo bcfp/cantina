@@ -11,10 +11,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 	
 	public ConsultarCantinaView() {
-		super("Cantina",new String[]{
-				"Código",
-				"Nome"
-		}, BancoFake.listaCantinas, 50, 100, 400, 200);
+		super(
+				"Cantina",
+				new String[]{ "Código", "Cantina"}, 
+				BancoFake.listaCantinas, 
+				50, 100, 400, 200);
 	}
 
 	@Override

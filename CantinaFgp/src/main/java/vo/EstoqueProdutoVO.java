@@ -2,9 +2,12 @@ package vo;
 
 import java.util.List;
 
-public abstract class EstoqueProdutoVO {
+import enumeradores.TipoProduto;
+
+public class EstoqueProdutoVO extends GenericVO{
 	
 	private Long idEstoque;
+	private String codEstoque;
 	private ProdutoVO produto;
 	private CantinaVO cantina;
 	private Double qtdeMinima;
@@ -71,5 +74,12 @@ public abstract class EstoqueProdutoVO {
 	public void setLotes(List<LoteVO> lotes) {
 		this.lotes = lotes;
 	}
-	
+
+	public String getCodEstoque() {
+		return codEstoque;
+	}
+
+	public void setCodEstoque(String codEstoque) {
+		this.codEstoque = codEstoque;
+	}	
 }

@@ -1,7 +1,5 @@
 package ui;
 
-import interfaces.ITelaConsultar;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -20,12 +18,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import enumeradores.TipoSolicitacao;
 import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
 import vo.StatusVO;
+import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
@@ -51,7 +49,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private DefaultTableModel modeloTabMatPrimas;
 	private JScrollPane barraTabMatPrimas;
 	
-	private JPanel pnlBotoes;
+	private JPanel pnlMenuLateral;
 	private JPanel pnlCampos;
 	
 	private List<ItemCompraVO> itensCompra; // será utilizado para compra de matérias primas
@@ -149,13 +147,13 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 		incluirComponenteCentro(pnlCampos);
 
-		pnlBotoes = new JPanel();
-		pnlBotoes.setLayout(new GridLayout(10, 1));
-		pnlBotoes.setBackground(Color.WHITE);
+		pnlMenuLateral = new JPanel();
+		pnlMenuLateral.setLayout(new GridLayout(10, 1));
+		pnlMenuLateral.setBackground(Color.WHITE);
 
 		btnGerarOC = new JButton("Gerar OC");
 		//btnGerarOC.setEnabled(false);
-		pnlBotoes.add(btnGerarOC);
+		pnlMenuLateral.add(btnGerarOC);
 
 		btnGerarOC.addActionListener(new ActionListener() {
 
@@ -174,13 +172,13 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				itensCompra.add(i);
 				c.setItensCompra(itensCompra);
 				
-				new ManterCompraView(TipoSolicitacao.INCLUIR, "Gerar Compra", c).abrirJanela();
+				JOptionPane.showMessageDialog(null, "Fazer tela intermediária para compras");
 
 			}
 
 		});
 
-		this.add(pnlBotoes, BorderLayout.WEST);
+		this.add(pnlMenuLateral, BorderLayout.WEST);
 
 	}
 	

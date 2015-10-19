@@ -6,7 +6,6 @@ public class ItemCompraVO extends GenericVO {
 
 	private CompraVO compra;
 	private ProdutoVO produto;
-	private TipoProduto tipoProd;
 	private Double qtde;
 	private Double valor;
 	
@@ -44,14 +43,6 @@ public class ItemCompraVO extends GenericVO {
 
 	public void setProduto(ProdutoVO produto) {
 		this.produto = produto;
-	}
-
-	public TipoProduto getTipoProd() {
-		return tipoProd;
-	}
-
-	public void setTipoProd(TipoProduto tipoProd) {
-		this.tipoProd = tipoProd;
 	}
 	
 }

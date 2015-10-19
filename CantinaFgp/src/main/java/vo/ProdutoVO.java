@@ -2,6 +2,8 @@ package vo;
 
 import java.util.List;
 
+import enumeradores.TipoProduto;
+
 public abstract class ProdutoVO extends GenericVO {
 	
 	private Long idProduto;
@@ -14,6 +16,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private List<EstoqueProdutoVO> estoques;
 	private List<ItemCompraVO> itemCompras;
 	private List<FornecedorProdutoVO> fornecedores;
+	private TipoProduto tipo;
 	
 	public ProdutoVO() {
 	
@@ -97,6 +100,14 @@ public abstract class ProdutoVO extends GenericVO {
 
 	public void setFornecedores(List<FornecedorProdutoVO> fornecedores) {
 		this.fornecedores = fornecedores;
+	}
+
+	public TipoProduto getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoProduto tipo) {
+		this.tipo = tipo;
 	}
 	
 }
