@@ -3,7 +3,6 @@ package daoimpl;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +23,10 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 	}
 	
 	@Override
-	public List<ProdutoVendaVO> consultarPorDescricao(String descricao){
+	public List<ProdutoVendaVO> consultarPorNomeECodigo(String nome, String cod){
 		
 		List<ProdutoVendaVO> listaProdutos = new ArrayList<ProdutoVendaVO>();
-		boolean flagSucesso = false;
+		/*boolean flagSucesso = false;
 		
 		try {
 			
@@ -35,7 +34,7 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			conexao = fabrica.getConexao();
 			
 			cstm = conexao.prepareCall(sql);
-			cstm.setString(1, descricao);
+			cstm.setString(1, nome);
 			//cstm.registerOutParameter(2, OracleTypes.CURSOR);
 			
 			if(!cstm.execute()){
@@ -72,7 +71,16 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			
 			return null;
 			
-		}
+		}*/
+		
+		ProdutoVendaVO produto = new ProdutoVendaVO();
+		produto.setDescricao("Coxinha");
+		produto.setCodProduto("1");
+		produto.setIdProduto(1l);
+		
+		listaProdutos.add(produto);
+		
+		return listaProdutos;
 		
 	}
 

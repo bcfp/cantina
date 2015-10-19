@@ -22,7 +22,10 @@ import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
+import vo.ReceitaVO;
 import vo.StatusVO;
+import bo.ProdutoVendaBO;
+import bo.ReceitaBO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
@@ -33,6 +36,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JTextField txtCodProdVenda;
 	private JTextField txtProdVenda;
 	private JTextField txtQtdeProdVenda;
+	private JTextField txtNomeFunc;
 
 	private JLabel lblStatus;
 	private JLabel lblCodOp;
@@ -41,6 +45,8 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JLabel lblQtdeProdVenda;
 	private JLabel lblProduto;
 	private JLabel lblMatPrima;	
+	private JLabel lblFuncionario;
+	private JLabel lblNomeFuncionario;
 	
 	private JButton btnGerarOC;
 	private JButton btnBuscarProd;
@@ -51,11 +57,135 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	
 	private JPanel pnlMenuLateral;
 	private JPanel pnlCampos;
+	private JPanel pnlBotoes;
+	
+	private ProdutoVendaBO produtoVendaBO;
+	private ReceitaBO receitaBO;
 	
 	private List<ItemCompraVO> itensCompra; // será utilizado para compra de matérias primas
 	
 	{
+		
+		pnlCampos = new JPanel();
+		cbxStatus = new JComboBox<StatusVO>();
+		lblStatus = new JLabel("Status");
+		lblCodOp = new JLabel("Número");
+		lblCodProdVenda = new JLabel("Código");
+		lblProdVenda = new JLabel("Produto");
+		lblQtdeProdVenda = new JLabel("Quantidade");
+		lblProduto = new JLabel("PRODUTO");
+		lblFuncionario = new JLabel("FUNCIONARIO");
+		lblMatPrima = new JLabel("RECEITA");
+		lblNomeFuncionario = new JLabel("Nome:");
 
+		txtCodOp = new JTextField();
+		txtCodOp.setEnabled(false);
+		txtCodProdVenda = new JTextField();
+		txtProdVenda = new JTextField();
+		txtQtdeProdVenda = new JTextField();
+		txtNomeFunc = new JTextField();
+		
+		btnBuscarProd = new JButton("Consultar");
+		tabMatPrimas = new JTable();
+		pnlBotoes = new JPanel();
+		produtoVendaBO = new ProdutoVendaBO();
+		receitaBO = new ReceitaBO();
+		pnlMenuLateral = new JPanel();
+	}
+	
+	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
+		super(solicitacao, tituloCabecalho);
+	}
+	
+	@Override
+	public void abrirJanela() {
+		
+		definicoesPagina();
+		
+		btnGerarOC.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				CompraVO c = new CompraVO();
+				itensCompra = new ArrayList<ItemCompraVO>();
+				ItemCompraVO i = new ItemCompraVO();
+				MateriaPrimaVO m = new MateriaPrimaVO();
+				m.setCodProduto("01");
+				m.setDescricao("Mussarela");
+				i.setProduto(m);
+				i.setQtde(10D);
+				i.setValor(5D);
+				itensCompra.add(i);
+				c.setItensCompra(itensCompra);
+				
+				new ManterCompraView(TipoSolicitacao.INCLUIR, "Ordem de Compra").abrirJanela();;
+				//TODO janela para escolher produtos
+			}
+
+		});
+		
+		btnBuscarProd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				new ConsultarProdutosDialogView().abrirJanela(txtCodProdVenda.getText(), txtNomeFunc.getText());
+				
+				ReceitaVO receita = receitaBO.buscaReceitaPorIdProduto(1l);
+				
+				String[] registro = new String[4];
+				
+				registro[0] = receita.getMateriaPrima().getCodProduto();
+				registro[1] = receita.getMateriaPrima().getDescricao();
+				registro[2] = String.valueOf(receita.getQtde());
+				
+				modeloTabMatPrimas.addRow(registro);
+				
+				
+			}
+		});
+		
+		this.setVisible(true);
+		
+	}
+
+	@Override
+	public void abrirJanela(OrdemProducaoVO objeto) {
+		
+		this.setVisible(true);
+		
+	}
+
+	@Override
+	public boolean incluir() {
+		
+		
+		JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+		return false;
+	}
+
+	@Override
+	public boolean alterar() {
+		JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");	
+		return false;
+	}
+
+
+	@Override
+	protected boolean habilitarCampos() {
+
+		return false;
+	
+	}
+
+	@Override
+	protected void limparCampos() {
+		
+	}
+	
+	private void definicoesPagina(){
+		
 		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
@@ -64,32 +194,20 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		int espEntre = 35;
 		int altura = 30;
 
-		pnlCampos = new JPanel();
+	
 		pnlCampos.setBounds(10, 10, widthCampos, 480);
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
-
-		cbxStatus = new JComboBox<StatusVO>();
-
-		lblStatus = new JLabel("Status");
-		lblCodOp = new JLabel("Número");
-		lblCodProdVenda = new JLabel("Código");
-		lblProdVenda = new JLabel("Produto");
-		lblQtdeProdVenda = new JLabel("Quantidade");
-		lblProduto = new JLabel("PRODUTO");
-		lblMatPrima = new JLabel("RECEITA");
-
-		txtCodOp = new JTextField();
-		txtCodOp.setEnabled(false);
-		txtCodProdVenda = new JTextField();
-		txtProdVenda = new JTextField();
-		txtQtdeProdVenda = new JTextField();
+		
+		
 
 		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
 
 		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
 		lblCodOp.setBounds(espXLbl, espY, 50, altura);
 		lblProduto.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
+		lblFuncionario.setBounds(espXLbl + 350, espY + espEntre * 2, 80, altura );
+		lblNomeFuncionario.setBounds(espXLbl + 350, espY + espEntre * 3, 80, altura);
 		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
 		lblProdVenda.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
 		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
@@ -98,11 +216,12 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		txtCodProdVenda.setBounds(espXTxt, espY + espEntre * 3, 70, altura);
 		txtProdVenda.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
 		txtQtdeProdVenda.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		txtNomeFunc.setBounds(espXTxt + 300, espY + espEntre * 3, 150, altura);
 
-		btnBuscarProd = new JButton("Consultar");
+		
 		btnBuscarProd.setBounds(190, espY + espEntre * 3, 100, altura);
 
-		tabMatPrimas = new JTable();
+		
 		modeloTabMatPrimas = new DefaultTableModel() {
 
 			@Override
@@ -144,84 +263,23 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		pnlCampos.add(txtProdVenda);
 		pnlCampos.add(txtQtdeProdVenda);
 		pnlCampos.add(btnBuscarProd);
+		pnlCampos.add(lblFuncionario);
+		pnlCampos.add(lblNomeFuncionario);
+		pnlCampos.add(txtNomeFunc);
 
 		incluirComponenteCentro(pnlCampos);
 
-		pnlMenuLateral = new JPanel();
-		pnlMenuLateral.setLayout(new GridLayout(10, 1));
-		pnlMenuLateral.setBackground(Color.WHITE);
+		pnlBotoes = new JPanel();
+		pnlBotoes.setLayout(new GridLayout(10, 1));
+		pnlBotoes.setBackground(Color.WHITE);
 
 		btnGerarOC = new JButton("Gerar OC");
 		//btnGerarOC.setEnabled(false);
-		pnlMenuLateral.add(btnGerarOC);
+		pnlBotoes.add(btnGerarOC);
 
-		btnGerarOC.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				CompraVO c = new CompraVO();
-				itensCompra = new ArrayList<ItemCompraVO>();
-				ItemCompraVO i = new ItemCompraVO();
-				MateriaPrimaVO m = new MateriaPrimaVO();
-				m.setCodProduto("01");
-				m.setDescricao("Mussarela");
-				i.setProduto(m);
-				i.setQtde(10D);
-				i.setValor(5D);
-				itensCompra.add(i);
-				c.setItensCompra(itensCompra);
-				
-				JOptionPane.showMessageDialog(null, "Fazer tela intermediária para compras");
-
-			}
-
-		});
-
+		
+		pnlMenuLateral.add(pnlBotoes);
 		this.add(pnlMenuLateral, BorderLayout.WEST);
-
-	}
-	
-	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
-		super(solicitacao, tituloCabecalho);
-	}
-	
-	@Override
-	public void abrirJanela() {
-		
-		this.setVisible(true);
-		
-	}
-
-	@Override
-	public void abrirJanela(OrdemProducaoVO objeto) {
-		
-		this.setVisible(true);
-		
-	}
-
-	@Override
-	public boolean incluir() {
-		JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
-		return false;
-	}
-
-	@Override
-	public boolean alterar() {
-		JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");	
-		return false;
-	}
-
-
-	@Override
-	protected boolean habilitarCampos() {
-
-		return false;
-	
-	}
-
-	@Override
-	protected void limparCampos() {
 		
 	}
 

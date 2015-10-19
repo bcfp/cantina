@@ -6,6 +6,6 @@ import vo.ProdutoVO;
 
 public interface IProdutoDAO<T extends ProdutoVO> extends IDAO<T> {
 
-	List<T> consultarPorDescricao(String descricao);
+	List<T> consultarPorNomeECodigo(String nome, String cod);
 	
 }
