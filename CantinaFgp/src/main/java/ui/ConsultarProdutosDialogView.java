@@ -48,20 +48,22 @@ public class ConsultarProdutosDialogView extends JDialog{
 		pnlPesquisa.setBounds(0,0,700,200);
 		pnlPesquisa.setBackground(Color.BLACK);
 		
-		modeloTabProdutos = new DefaultTableModel() {
-
+		modeloTabProdutos = new DefaultTableModel(){
+			
 			@Override
-			public boolean isCellEditable(int row, int column) {
+			public boolean isCellEditable(int row, int column) { // faz com que os itens da grid não sejam editados
 				return false;
 			}
-
+			
 		};
-
+		
 		modeloTabProdutos.setColumnIdentifiers(new String[] {
 
 		"Código", "Nome", "Valor de venda"
 
 		});
+		
+		tabelaProdutos.getTableHeader().setReorderingAllowed(false);
 		
 		tabelaProdutos.setModel(modeloTabProdutos);
 

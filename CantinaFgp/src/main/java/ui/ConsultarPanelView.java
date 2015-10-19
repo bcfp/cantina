@@ -73,27 +73,24 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
 	 * @param titulos - Títulos das colunas da tabela de consulta
-	 * @param espX - Distância da lateral esquerda da tabela de consulta
-	 * @param espY - Distância do topo da tabela de consulta
-	 * @param larg - Largura da tabela de consulta
-	 * @param alt - Altura da tabela de consulta
+	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos, int espX, int espY, int larg, int alt) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos) {
 		
-		criarPainel(tituloCabecalho, null, titulos, espX, espY, larg, alt);
+		criarPainel(tituloCabecalho, listaGenericos, titulos, 10, 190, 665, 190);
 		
 	}
 	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
 	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
 	 * @param espX - Distância da lateral esquerda da tabela de consulta
 	 * @param espY - Distância do topo da tabela de consulta
 	 * @param larg - Largura da tabela de consulta
 	 * @param alt - Altura da tabela de consulta
-	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos, int espX, int espY, int larg, int alt, List<T> listaGenericos) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
 		
 		criarPainel(tituloCabecalho, listaGenericos, titulos, espX, espY, larg, alt);
 		
@@ -134,6 +131,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		// Tabela de consulta
 		
 		tabGeneric = new JTable();
+		tabGeneric.getTableHeader().setReorderingAllowed(false);
+		
 		modeloTabGeneric = new DefaultTableModel(){
 			
 			@Override
@@ -149,6 +148,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		modeloTabGeneric.setColumnIdentifiers(titulos);
 		
 		tabGeneric.setModel(modeloTabGeneric);
+		tabGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		
 		barraTabGeneric.setViewportView(tabGeneric);
 		
