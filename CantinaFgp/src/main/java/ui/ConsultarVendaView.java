@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -12,17 +14,12 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 
 	public ConsultarVendaView() {
 		
-		super(	
-				"Venda", 
-				new String[] {"Código",	"Data"}, 
-				BancoFake.listaVendas, 
-				50, 100, 400, 200
-			 );
+		super("Venda", new String[] {"Código",	"Data"});
 
 	}
 
 	@Override
-	protected String[] carregarGridItens(VendaVO venda) {
+	protected String[] definirGridItens(VendaVO venda) {
 		
 		String[] registro = new String[2];
 
@@ -47,6 +44,11 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> {
 
 		JOptionPane.showMessageDialog(null, "Deletar Venda");
 		
+	}
+
+	@Override
+	public List<VendaVO> consultar() {
+		return BancoFake.listaVendas;
 	}
 
 }

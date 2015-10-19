@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -11,16 +13,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 
 	public ConsultarClienteView() {
-		super("Cliente", 
-			new String[]{
-				"Código",
-				"Nome"
-			}, 
-			BancoFake.listaClientes, 50, 100, 400, 200);
+		super("Cliente", new String[]{ "Código", "Nome" });
 	}
 	
 	@Override
-	protected String[] carregarGridItens(ClienteVO cliente) {
+	protected String[] definirGridItens(ClienteVO cliente) {
 		
 		String[] registro = new String[2];
 
@@ -46,5 +43,10 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 		
 		JOptionPane.showMessageDialog(null, "Deletar Cliente");
 		
+	}
+
+	@Override
+	public List<ClienteVO> consultar() {
+		return BancoFake.listaClientes;
 	}
 }

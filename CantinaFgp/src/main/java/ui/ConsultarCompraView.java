@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -11,16 +13,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 
 	public ConsultarCompraView() {
-		super("Compra",
-			new String[]{
-				"Código",
-				"Data"
-			}, 
-			BancoFake.listaCompras, 50, 100, 400, 200);
+		super("Compra", new String[]{ "Código", "Data"});
 	}	
 
 	@Override
-	protected String[] carregarGridItens(CompraVO compra) {
+	protected String[] definirGridItens(CompraVO compra) {
 		
 		String[] registro = new String[2];
 
@@ -46,6 +43,11 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 
 		JOptionPane.showMessageDialog(null, "Deletar Compra");
 		
+	}
+
+	@Override
+	public List<CompraVO> consultar() {
+		return BancoFake.listaCompras;
 	}
 
 }

@@ -42,6 +42,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
 	private JPanel pnlMenuLateral;
+	private JPanel pnlRodape;
 
 	private JTable tabGeneric;
 	private DefaultTableModel modeloTabGeneric;
@@ -51,25 +52,50 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	private Font fonteCabecalho;
 	private JButton btnFechar;
 	private JButton btnNovo;
+	private JButton btnConsultar;
 	
 	// Lista de itens do tipo T para alimentar a tabela de consulta
 	private List<T> listaGenericos;
 	
 	
-	// Construtores
+		// Construtores
 	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
 	 * @param titulos - Títulos das colunas da tabela de consulta
-	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
+	 */
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos) {
+		
+		criarPainel(tituloCabecalho, null, titulos, 10, 190, 665, 190);
+		
+	}
+	
+	/**
+	 * @param tituloCabecalho - Título da jabela de consulta
+	 * @param titulos - Títulos das colunas da tabela de consulta
 	 * @param espX - Distância da lateral esquerda da tabela de consulta
 	 * @param espY - Distância do topo da tabela de consulta
 	 * @param larg - Largura da tabela de consulta
 	 * @param alt - Altura da tabela de consulta
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos, int espX, int espY, int larg, int alt) {
 		
-		criarPainel(tituloCabecalho, titulos, listaGenericos, espX, espY, larg, alt);
+		criarPainel(tituloCabecalho, null, titulos, espX, espY, larg, alt);
+		
+	}
+	
+	/**
+	 * @param tituloCabecalho - Título da jabela de consulta
+	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param espX - Distância da lateral esquerda da tabela de consulta
+	 * @param espY - Distância do topo da tabela de consulta
+	 * @param larg - Largura da tabela de consulta
+	 * @param alt - Altura da tabela de consulta
+	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
+	 */
+	public ConsultarPanelView(String tituloCabecalho, String[] titulos, int espX, int espY, int larg, int alt, List<T> listaGenericos) {
+		
+		criarPainel(tituloCabecalho, listaGenericos, titulos, espX, espY, larg, alt);
 		
 	}
 	
@@ -77,7 +103,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	// Métodos Concretos
 	
 	// Método utilizado para criar o panel de consulta
-	private void criarPainel(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt){
+	private void criarPainel(String tituloCabecalho, List<T> listaGenericos, String[] titulos,  int espX, int espY, int larg, int alt){
 		
 		pnlCabecalho = new JPanel();
 		pnlCabecalho.setBackground(Color.BLACK);
@@ -91,6 +117,9 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		pnlMenuLateral = new JPanel();
 		pnlMenuLateral.setLayout(new GridLayout(10,1));
 		pnlMenuLateral.setBackground(Color.WHITE);
+		
+		pnlRodape = new JPanel();
+		pnlRodape.setBackground(Color.WHITE);
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
@@ -123,12 +152,12 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		
 		barraTabGeneric.setViewportView(tabGeneric);
 		
-		// Defini posição e tamanho passados no construtor pela classe filha
+		// Defini posição e tamanho passados no construtor
 		barraTabGeneric.setBounds(espX, espY, larg, alt);
-
+		
 		pnlCentro.add(barraTabGeneric);
 		
-		// Carrega tabela com a lista de itens pessados pela classe filha
+		// Carrega tabela com a lista de itens através da lista passada no construtor pela classe filha 
 		carregarGridItens(listaGenericos);
 		
 		// Defini ação ao clicar em um item da coluna
@@ -169,6 +198,19 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		pnlMenuLateral.add(btnNovo);
 		pnlCabecalho.add(btnFechar, BorderLayout.EAST);
 		
+		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				ConsultarPanelView.this.carregarGridItens(consultar());
+				
+			}
+			
+		});
+		
+		pnlRodape.add(btnConsultar);
 		
 		// Definições página
 				
@@ -176,6 +218,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.add(pnlMenuLateral, BorderLayout.WEST);
+		this.add(pnlRodape, BorderLayout.SOUTH);
 		this.setSize(750, 450);
 		
 	}
@@ -217,7 +260,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	}
 	
 	/**
-	 * Insere na tabela os itens passados pela classe filha. 
+	 * Insere na tabela os itens passados como parâmetro. 
 	 * 
 	 * @param listaItens - Lista de itens do tipo T
 	 */
@@ -225,16 +268,20 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 
 		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
 		
-		Iterator<T> iItem = listaItens.iterator();
-		
-		while(iItem.hasNext()){
+		if(listaItens != null){
 			
-			T item = iItem.next();
+			Iterator<T> iItem = listaItens.iterator();
 			
-			// Insere na tabela o item retornado do método abstrato carregarGridItens, implementado na classe filha 
-			getModeloTabGeneric().addRow(carregarGridItens(item));	
-			
+			while(iItem.hasNext()){
+				
+				T item = iItem.next();
+				
+				// Insere na tabela o item retornado do método abstrato carregarGridItens, implementado na classe filha 
+				getModeloTabGeneric().addRow(definirGridItens(item));	
+				
+			}
 		}
+		
 	}	
 	
 	
@@ -248,7 +295,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * @param item - Item do tipo T que deverá ser inserido na tabela
 	 * @return String[] - Deve ser retornado um vetor de String com os valores na ordem que deverão ser inseridos na tabela de consulta
 	 */
-	protected abstract String[] carregarGridItens(T item);
+	protected abstract String[] definirGridItens(T item);
 		
 	/**
 	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de incluir um item do tipo T

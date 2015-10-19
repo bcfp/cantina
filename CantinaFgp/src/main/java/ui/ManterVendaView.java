@@ -14,7 +14,7 @@ import vo.StatusVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaConsultar<ProdutoVendaVO> {
+public class ManterVendaView extends ManterDialogView<VendaVO> {
 
 	// Atributos Tela
 	
@@ -53,11 +53,6 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaC
 	public void abrirJanela() {
 		
 		this.setVisible(true);
-		
-	}
-
-	@Override
-	public void deletar(ProdutoVendaVO produtoVenda) {
 		
 	}
 

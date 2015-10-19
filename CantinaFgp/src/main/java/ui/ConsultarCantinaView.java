@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -11,15 +13,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 	
 	public ConsultarCantinaView() {
-		super(
-				"Cantina",
-				new String[]{ "Código", "Cantina"}, 
-				BancoFake.listaCantinas, 
-				50, 100, 400, 200);
+		super("Cantina", new String[]{ "Código", "Cantina"});
 	}
 
 	@Override
-	protected String[] carregarGridItens(CantinaVO cantina) {
+	protected String[] definirGridItens(CantinaVO cantina) {
 		
 		String[] registro = new String[2];
 
@@ -44,6 +42,11 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 
 		JOptionPane.showMessageDialog(null, "Deletar Cantina");
 		
+	}
+
+	@Override
+	public List<CantinaVO> consultar() {
+		return BancoFake.listaCantinas;
 	}
 	
 }

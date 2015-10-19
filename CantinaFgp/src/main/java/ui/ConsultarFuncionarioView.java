@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -11,16 +13,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> {
 	
 	public ConsultarFuncionarioView() {
-		super("Funcionário",
-				new String[]{
-				"Codigo",
-				"Nome"
-		}, 
-		BancoFake.listaFuncionarios, 50, 100, 400, 200);
+		super("Funcionário", new String[]{ "Codigo", "Nome" });
 	}
 
 	@Override
-	protected String[] carregarGridItens(FuncionarioVO funcionario) {
+	protected String[] definirGridItens(FuncionarioVO funcionario) {
 			
 			String[] registro = new String[2];
 
@@ -46,6 +43,11 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 
 		JOptionPane.showMessageDialog(null, "Deletar Funcionario");
 		
+	}
+
+	@Override
+	public List<FuncionarioVO> consultar() {
+		return BancoFake.listaFuncionarios;
 	}
 	
 }

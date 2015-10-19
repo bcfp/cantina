@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JOptionPane;
@@ -12,17 +14,12 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 
 	public ConsultarProdutoView() {
 		
-		super("Produto", new String[] {
-
-			"Código",
-			"Descricao"
-
-		}, BancoFake.listaProdutos, 10, 100, 400, 200);
+		super("Produto", new String[] {"Código", "Descricao"});
 	
 	}
 
 	@Override
-	protected String[] carregarGridItens(ProdutoVO produto) {
+	protected String[] definirGridItens(ProdutoVO produto) {
 		
 		String[] registro = new String[2];
 
@@ -47,6 +44,11 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 
 		JOptionPane.showMessageDialog(null, "Produto Excluido");
 				
+	}
+
+	@Override
+	public List<ProdutoVO> consultar() {
+		return BancoFake.listaProdutos;
 	}
 
 

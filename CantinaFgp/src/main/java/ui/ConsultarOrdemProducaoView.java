@@ -1,5 +1,7 @@
 ﻿package ui;
 
+import java.util.List;
+
 import interfaces.ITelaManter;
 
 import javax.swing.JButton;
@@ -12,32 +14,11 @@ import enumeradores.TipoSolicitacao;
 public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> {
 
 	public ConsultarOrdemProducaoView() {
-		super("Ordem de Produção",
-				new String[]{
-				"Código",
-				"Data",
-				"Produto",
-				"Qtde",
-				"Status"
-			}, BancoFake.listaOrdensProducao, 50, 100, 400, 200);
-		
-		abrirTela();
-
-	}
-	
-	public void abrirTela(){
-		
-		JButton b = new JButton();
-		b.setText("Teste");
-
-		adicionarBotao(b);
-		
-		
-		
+		super("Ordem de Produção", new String[]{ "Código", "Data", "Produto", "Qtde", "Status"});
 	}
 	
 	@Override
-	protected String[] carregarGridItens(OrdemProducaoVO ordemProducao) {
+	protected String[] definirGridItens(OrdemProducaoVO ordemProducao) {
 			
 		String[] registro = new String[5];
 
@@ -66,6 +47,11 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 
 		JOptionPane.showMessageDialog(null, "Deletar OP");
 		
+	}
+
+	@Override
+	public List<OrdemProducaoVO> consultar() {
+		return BancoFake.listaOrdensProducao;
 	}
 	
 }
