@@ -172,7 +172,7 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u where u.id_unidade = pv.id_unidade");
+					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
 			
 			rs = pstm.executeQuery();
 			
@@ -182,18 +182,18 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 				
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
-				produtoVenda.setDescricao(rs.getString("pv.descricao"));
+				produtoVenda.setDescricao(rs.getString("descricao"));
 				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
 				produtoVenda.setFabricado(rs.getBoolean("fabricado"));
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
-				produtoVenda.setStatus(rs.getBoolean("pv.ativo"));
+				produtoVenda.setStatus(rs.getBoolean("ativo"));
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
-				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("u.id_unidade"));
-				produtoVenda.getUnidade().setDescricao(rs.getString("u.descricao"));
-				produtoVenda.getUnidade().setStatus(rs.getBoolean("u.ativo"));
+				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
+				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
+				produtoVenda.getUnidade().setStatus(rs.getBoolean("ativo"));
 				
 				listaProdutosVenda.add(produtoVenda);
 				

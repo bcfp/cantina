@@ -8,40 +8,38 @@ public class ConnectionFactory {
 
 	private static ConnectionFactory fabrica;
 	private Connection conexao;
-	
-	private ConnectionFactory(){
-		
-		
+
+	private ConnectionFactory() {
+
 	}
-	
+
 	public static ConnectionFactory getInstance() {
-		
-		if(fabrica == null){
-			
+
+		if (fabrica == null) {
+
 			fabrica = new ConnectionFactory();
-			
+
 		}
-		
+
 		return fabrica;
-		
+
 	}
-	
+
 	public Connection getConexao() throws ClassNotFoundException, SQLException{
 		
 		Class.forName("net.sourceforge.jtds.jdbc.Driver");
-		conexao = DriverManager.getConnection("jdbc:jdts:sqlserver://localhost:1433","sa","sql");
-		
+		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "cantina", "123");
 		return conexao;
 		
 	}
-	
-	public void fecharConexao() throws SQLException{
-		
-		if(conexao != null){
-			
+
+	public void fecharConexao() throws SQLException {
+
+		if (conexao != null) {
+
 			conexao.close();
 		}
-		
+
 	}
-	
+
 }
