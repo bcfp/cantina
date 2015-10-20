@@ -1,9 +1,11 @@
 package vo;
 
+import interfaces.IGeradorCompra;
+
 import java.util.Date;
 import java.util.List;
 
-public class FuncionarioCantinaVO  {
+public class FuncionarioCantinaVO extends GenericVO implements IGeradorCompra {
 
 	private Integer idFuncionarioCantina;
 	private FuncionarioVO funcionario;

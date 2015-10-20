@@ -1,8 +1,12 @@
 package ui;
 
+import interfaces.IGeradorCompra;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -18,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
+import vo.CompraVO;
 import vo.EstoqueProdutoVO;
 import vo.ItemCompraVO;
 import vo.ProdutoVO;
@@ -38,9 +43,12 @@ public class GerarCompraView extends JDialog {
 	private DefaultTableModel modeloTabProdCompra;
 	private JScrollPane barraTabProdCompra;
 
-	public void abrirJanela(List<ItemCompraVO> listaItensCompra) {
+	private IGeradorCompra geradorCompra;
+	
+	public void abrirJanela(IGeradorCompra geradorCompra, List<ItemCompraVO> listaItensCompra) {
 
-		this.listaItensCompra = listaItensCompra;
+		this.geradorCompra = geradorCompra;
+		this.setListaItensCompra(listaItensCompra);
 
 		lblTituloCabecalho = new JLabel("Gerar Compra");
 		lblTituloCabecalho.setForeground(Color.WHITE);	
@@ -56,6 +64,16 @@ public class GerarCompraView extends JDialog {
 		pnlRodape.setBackground(Color.WHITE);
 		
 		btnGerarCompra = new JButton("Gerar");
+		btnGerarCompra.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(
+						new CompraVO(GerarCompraView.this.geradorCompra, getListaItensCompra()));
+				
+			}
+		});
+		
 		pnlRodape.add(btnGerarCompra);
 		
 		// Tabela de produtos
@@ -123,6 +141,14 @@ public class GerarCompraView extends JDialog {
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 
+	}
+
+	public List<ItemCompraVO> getListaItensCompra() {
+		return listaItensCompra;
+	}
+
+	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
+		this.listaItensCompra = listaItensCompra;
 	}
 
 }

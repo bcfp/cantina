@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
 import vo.EstoqueProdutoVO;
+import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
 import vo.ProdutoVO;
 import enumeradores.TipoSolicitacao;
@@ -198,7 +199,7 @@ public class ConsultarEstoqueView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new GerarCompraView().abrirJanela(getListaItensCompra());
+				new GerarCompraView().abrirJanela(new FuncionarioCantinaVO(), getListaItensCompra());
 			}
 			
 		});

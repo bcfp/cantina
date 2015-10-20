@@ -7,7 +7,7 @@ import vo.EstoqueMateriaPrimaVO;
 import vo.MateriaPrimaVO;
 import vo.ProdutoMateriaPrimaVO;
 
-public class ReceitaDAO {
+public class ProdutoMateriaPrimaDAO {
 	
 	public ProdutoMateriaPrimaVO consultarPorIdProduto(Long idProduto){
 		

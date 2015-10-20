@@ -1,8 +1,10 @@
 package vo;
 
+import interfaces.IGeradorCompra;
+
 import java.util.Date;
 
-public class OrdemProducaoVO extends GenericVO {
+public class OrdemProducaoVO extends GenericVO implements IGeradorCompra {
 
 	private Long idOrdemProducao;
 	private String codOrdemProducao;

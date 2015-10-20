@@ -1,5 +1,7 @@
 package vo;
 
+import interfaces.IGeradorCompra;
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,13 +11,18 @@ public class CompraVO extends GenericVO {
 	private String codCompra;
 	private Date data;
 	private FornecedorVO fornecedor;
-	private FuncionarioCantinaVO funcionario;
+	private IGeradorCompra geradorCompra;
 	private FormaPgtoVO formaPgto;
 	private List<ItemCompraVO> itensCompra;
 	private UnidadeProdutoVO unidade;
 	
 	public CompraVO() {
 
+	}
+	
+	public CompraVO(IGeradorCompra geradorCompra, List<ItemCompraVO> itensCompra) {
+		this.itensCompra = itensCompra;
+		this.geradorCompra = geradorCompra;
 	}
 
 	public Long getIdCompra() {
@@ -74,12 +81,12 @@ public class CompraVO extends GenericVO {
 		this.unidade = unidade;
 	}
 
-	public FuncionarioCantinaVO getFuncionario() {
-		return funcionario;
+	public IGeradorCompra getGeradorCompra() {
+		return geradorCompra;
 	}
 
-	public void setFuncionario(FuncionarioCantinaVO funcionario) {
-		this.funcionario = funcionario;
+	public void setGeradorCompra(IGeradorCompra geradorCompra) {
+		this.geradorCompra = geradorCompra;
 	}
 	
 }

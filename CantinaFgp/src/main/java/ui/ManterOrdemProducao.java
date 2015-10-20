@@ -25,7 +25,7 @@ import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import bo.ProdutoVendaBO;
-import bo.ReceitaBO;
+import bo.ProdutoMateriaPrimaBO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
@@ -59,7 +59,9 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JPanel pnlCampos;;
 	
 	private ProdutoVendaBO produtoVendaBO;
-	private ReceitaBO receitaBO;
+	private ProdutoMateriaPrimaBO produtoMateriaPrimaBO;
+	
+	private List<ItemCompraVO> listaItemCompra;
 	
 	private List<ItemCompraVO> itensCompra; // será utilizado para compra de matérias primas
 	
@@ -87,7 +89,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		btnBuscarProd = new JButton("Consultar");
 		tabMatPrimas = new JTable();
 		produtoVendaBO = new ProdutoVendaBO();
-		receitaBO = new ReceitaBO();
+		produtoMateriaPrimaBO = new ProdutoMateriaPrimaBO();
 		pnlMenuLateral = new JPanel();
 		
 	}
@@ -106,7 +108,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new GerarCompraView().abrirJanela(null);
+				new GerarCompraView().abrirJanela(new OrdemProducaoVO(), null);
 				
 			}
 
@@ -119,7 +121,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				
 				new ConsultarProdutosDialogView().abrirJanela(txtCodProdVenda.getText(), txtNomeFunc.getText());
 				
-				ProdutoMateriaPrimaVO receita = receitaBO.buscaReceitaPorIdProduto(1l);
+				ProdutoMateriaPrimaVO receita = produtoMateriaPrimaBO.buscaReceitaPorIdProduto(1l);
 				
 				String[] registro = new String[4];
 				

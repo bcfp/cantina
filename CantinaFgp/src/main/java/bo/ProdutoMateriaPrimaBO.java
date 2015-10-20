@@ -1,15 +1,15 @@
 package bo;
 
 import vo.ProdutoMateriaPrimaVO;
-import daoimpl.ReceitaDAO;
+import daoimpl.ProdutoMateriaPrimaDAO;
 
-public class ReceitaBO {
+public class ProdutoMateriaPrimaBO {
 	
-	private ReceitaDAO receitaDao;
+	private ProdutoMateriaPrimaDAO receitaDao;
 
 	
 	{
-		receitaDao = new ReceitaDAO();
+		receitaDao = new ProdutoMateriaPrimaDAO();
 	
 	}
 	
