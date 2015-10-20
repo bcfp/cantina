@@ -56,8 +56,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JScrollPane barraTabMatPrimas;
 	
 	private JPanel pnlMenuLateral;
-	private JPanel pnlCampos;
-	private JPanel pnlBotoes;
+	private JPanel pnlCampos;;
 	
 	private ProdutoVendaBO produtoVendaBO;
 	private ReceitaBO receitaBO;
@@ -87,10 +86,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		
 		btnBuscarProd = new JButton("Consultar");
 		tabMatPrimas = new JTable();
-		pnlBotoes = new JPanel();
 		produtoVendaBO = new ProdutoVendaBO();
 		receitaBO = new ReceitaBO();
 		pnlMenuLateral = new JPanel();
+		
 	}
 	
 	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
@@ -107,7 +106,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new GerarCompra().abrirJanela(null);
+				new GerarCompraView().abrirJanela(null);
 				
 			}
 
@@ -257,16 +256,12 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 		incluirComponenteCentro(pnlCampos);
 
-		pnlBotoes = new JPanel();
-		pnlBotoes.setLayout(new GridLayout(10, 1));
-		pnlBotoes.setBackground(Color.WHITE);
-
 		btnGerarOC = new JButton("Gerar OC");
 		//btnGerarOC.setEnabled(false);
-		pnlBotoes.add(btnGerarOC);
-
+		pnlMenuLateral.add(btnGerarOC);
+		pnlMenuLateral.setBackground(Color.WHITE);
+		pnlMenuLateral.setLayout(new GridLayout(10,1));
 		
-		pnlMenuLateral.add(pnlBotoes);
 		this.add(pnlMenuLateral, BorderLayout.WEST);
 		
 	}

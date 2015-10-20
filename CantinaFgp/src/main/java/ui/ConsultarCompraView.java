@@ -49,5 +49,6 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> {
 	public List<CompraVO> consultar() {
 		return BancoFake.listaCompras;
 	}
+	
 
 }

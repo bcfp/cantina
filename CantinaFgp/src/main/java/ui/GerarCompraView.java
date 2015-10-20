@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import enumeradores.TipoSolicitacao;
 import utils.BancoFake;
 import vo.EstoqueProdutoVO;
+import vo.ItemCompraVO;
 import vo.ProdutoVO;
 
 public class GerarCompraView extends JDialog {
@@ -26,26 +28,29 @@ public class GerarCompraView extends JDialog {
 	private JPanel pnlCentro;
 	private JPanel pnlRodape;
 	private JLabel lblTituloCabecalho;
+	private Font fonteCabecalho;
 	
 	private JButton btnGerarCompra;
 	
-	private List<ProdutoVO> listaProdutos;
+	private List<ItemCompraVO> listaItensCompra;
 
 	private JTable tabProdCompra;
 	private DefaultTableModel modeloTabProdCompra;
 	private JScrollPane barraTabProdCompra;
 
-	public void abrirJanela(List<ProdutoVO> listaProdutos) {
+	public void abrirJanela(List<ItemCompraVO> listaItensCompra) {
 
-		this.listaProdutos = listaProdutos;
+		this.listaItensCompra = listaItensCompra;
 
 		lblTituloCabecalho = new JLabel("Gerar Compra");
+		lblTituloCabecalho.setForeground(Color.WHITE);	
+		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
+		lblTituloCabecalho.setFont(fonteCabecalho);
 		
 		pnlCabecalho = new JPanel();
 		pnlCabecalho.add(lblTituloCabecalho, BorderLayout.CENTER);
 		pnlCabecalho.setBackground(Color.BLACK);
 		pnlCabecalho.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		pnlCabecalho.setLayout(new BorderLayout());
 				
 		pnlRodape = new JPanel();
 		pnlRodape.setBackground(Color.WHITE);
@@ -96,9 +101,10 @@ public class GerarCompraView extends JDialog {
 
 		barraTabProdCompra.setViewportView(tabProdCompra);
 
-		barraTabProdCompra.setBounds(10, 190, 645, 185);
+		barraTabProdCompra.setBounds(10, 100, 475, 290);
 		
 		pnlCentro = new JPanel();
+		pnlCentro.setLayout(null);
 		pnlCentro.add(barraTabProdCompra);
 		
 		definicoesPagina();
@@ -112,7 +118,7 @@ public class GerarCompraView extends JDialog {
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.add(pnlRodape, BorderLayout.SOUTH);
 		this.setResizable(false);
-		this.setSize(700, 600);
+		this.setSize(500, 500);
 		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

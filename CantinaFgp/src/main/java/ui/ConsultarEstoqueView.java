@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
 import vo.EstoqueProdutoVO;
+import vo.ItemCompraVO;
 import vo.ProdutoVO;
 import enumeradores.TipoSolicitacao;
 
@@ -61,10 +62,8 @@ public class ConsultarEstoqueView extends JPanel{
 	private JButton btnConsultar;
 	
 	private List<EstoqueProdutoVO> ListaEstoqueProdutos;
-	private List<ProdutoVO> listaProdutosCompra;
-	
-	
-	
+	private List<ItemCompraVO> listaItensCompra;
+		
 	
 	// Construtor
 	
@@ -199,7 +198,7 @@ public class ConsultarEstoqueView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new GerarCompra().abrirJanela(getListaProdutosCompra());
+				new GerarCompraView().abrirJanela(getListaItensCompra());
 			}
 			
 		});
@@ -297,13 +296,15 @@ public class ConsultarEstoqueView extends JPanel{
 	}
 
 
-	public List<ProdutoVO> getListaProdutosCompra() {
-		return listaProdutosCompra;
+	public List<ItemCompraVO> getListaItensCompra() {
+		return listaItensCompra;
 	}
 
 
-	public void setListaProdutosCompra(List<ProdutoVO> listaProdutosCompra) {
-		this.listaProdutosCompra = listaProdutosCompra;
+	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
+		this.listaItensCompra = listaItensCompra;
 	}
+
+	
 
 }
