@@ -326,7 +326,7 @@ import enumeradores.TipoSolicitacao;
 			List<UnidadeProdutoVO> listaUnidades = new ArrayList<UnidadeProdutoVO>();
 			
 			UnidadeProdutoVO unidade = new UnidadeProdutoVO();
-			unidade.setAtivo(true);
+			unidade.setStatus(true);
 			unidade.setDescricao("Litro");
 			unidade.setAbreviatura("L");
 			unidade.setIdUnidadeProduto(1l); 
@@ -334,7 +334,7 @@ import enumeradores.TipoSolicitacao;
 			listaUnidades.add(unidade);
 			
 			unidade = new UnidadeProdutoVO();
-			unidade.setAtivo(true);
+			unidade.setStatus(true);
 			unidade.setDescricao("Kilo");
 			unidade.setAbreviatura("Kg");
 			unidade.setIdUnidadeProduto(2l); 

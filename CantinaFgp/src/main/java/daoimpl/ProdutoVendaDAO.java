@@ -1,19 +1,21 @@
 package daoimpl;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import vo.ProdutoVendaVO;
+import vo.UnidadeProdutoVO;
 import daoservice.IProdutoDAO;
 
 public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;
-	private CallableStatement cstm;
+	private	PreparedStatement pstm;
 	private ResultSet rs;
 	
 	{
@@ -25,7 +27,66 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 	@Override
 	public List<ProdutoVendaVO> consultarPorNomeECodigo(String nome, String cod){
 		
-		List<ProdutoVendaVO> listaProdutos = new ArrayList<ProdutoVendaVO>();
+		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
+		
+		try {
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
+					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u where u.id_unidade = pv.id_unidade"
+					+ "and pv.cod_produto like '(?)' and pv.descricao like '(?)'");
+			
+			pstm.setString(1, cod);
+			pstm.setString(2, nome);
+		
+			rs = pstm.executeQuery();
+			
+			ProdutoVendaVO produtoVenda = null;
+			
+			if(rs.next()){
+				
+				produtoVenda = new ProdutoVendaVO();
+				produtoVenda.setCodProduto(rs.getString("cod_produto"));
+				produtoVenda.setDescricao(rs.getString("pv.descricao"));
+				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
+				produtoVenda.setFabricado(rs.getBoolean("fabricado"));
+				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
+				produtoVenda.setLote(rs.getBoolean("lote"));
+				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
+				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
+				produtoVenda.setStatus(rs.getBoolean("pv.ativo"));
+				produtoVenda.setUnidade(new UnidadeProdutoVO());
+				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("u.id_unidade"));
+				produtoVenda.getUnidade().setDescricao(rs.getString("u.descricao"));
+				produtoVenda.getUnidade().setStatus(rs.getBoolean("u.ativo"));
+				
+				listaProdutosVenda.add(produtoVenda);
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs != null){
+					
+					rs.close();
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+		return listaProdutosVenda;
 		/*boolean flagSucesso = false;
 		
 		try {
@@ -73,14 +134,13 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			
 		}*/
 		
-		ProdutoVendaVO produto = new ProdutoVendaVO();
-		produto.setDescricao("Coxinha");
-		produto.setCodProduto("1");
-		produto.setIdProduto(1l);
-		
-		listaProdutos.add(produto);
-		
-		return listaProdutos;
+//		ProdutoVendaVO produto = new ProdutoVendaVO();
+//		produto.setDescricao("Coxinha");
+//		produto.setCodProduto("1");
+//		produto.setIdProduto(1l);
+//		
+//		listaProdutos.add(produto);
+//		
 		
 	}
 
@@ -101,11 +161,66 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+ 
 	@Override
 	public List<ProdutoVendaVO> consultarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
+		
+		try {
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
+					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u where u.id_unidade = pv.id_unidade");
+			
+			rs = pstm.executeQuery();
+			
+			ProdutoVendaVO produtoVenda = null;
+			
+			if(rs.next()){
+				
+				produtoVenda = new ProdutoVendaVO();
+				produtoVenda.setCodProduto(rs.getString("cod_produto"));
+				produtoVenda.setDescricao(rs.getString("pv.descricao"));
+				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
+				produtoVenda.setFabricado(rs.getBoolean("fabricado"));
+				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
+				produtoVenda.setLote(rs.getBoolean("lote"));
+				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
+				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
+				produtoVenda.setStatus(rs.getBoolean("pv.ativo"));
+				produtoVenda.setUnidade(new UnidadeProdutoVO());
+				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("u.id_unidade"));
+				produtoVenda.getUnidade().setDescricao(rs.getString("u.descricao"));
+				produtoVenda.getUnidade().setStatus(rs.getBoolean("u.ativo"));
+				
+				listaProdutosVenda.add(produtoVenda);
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs != null){
+					
+					rs.close();
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+		return listaProdutosVenda;
 	}
 
 	@Override

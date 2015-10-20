@@ -27,5 +27,10 @@ public class ProdutoVendaBO {
 		
 	}
 	
+	public List<ProdutoVendaVO> consultarTodosProdutos(){
+		
+		return produtoDao.consultarTodos();
+	}
+	
 
 }
