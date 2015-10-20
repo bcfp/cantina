@@ -8,6 +8,7 @@ public class ProdutoVendaVO extends ProdutoVO{
 	private Boolean fabricado;
 	private Integer diasVencimento;
  	private List<OrdemProducaoVO> ordensProducao;
+ 	private List<ProdutoMateriaPrimaVO> receita;
 	
 	public ProdutoVendaVO() {
 	 
@@ -43,6 +44,14 @@ public class ProdutoVendaVO extends ProdutoVO{
 
 	public void setDiasVencimento(Integer diasVencimento) {
 		this.diasVencimento = diasVencimento;
+	}
+
+	public List<ProdutoMateriaPrimaVO> getReceita() {
+		return receita;
+	}
+
+	public void setReceita(List<ProdutoMateriaPrimaVO> receita) {
+		this.receita = receita;
 	}
 
 }

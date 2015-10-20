@@ -5,11 +5,11 @@ import java.util.List;
 
 import vo.EstoqueMateriaPrimaVO;
 import vo.MateriaPrimaVO;
-import vo.ReceitaVO;
+import vo.ProdutoMateriaPrimaVO;
 
 public class ReceitaDAO {
 	
-	public ReceitaVO consultarPorIdProduto(Long idProduto){
+	public ProdutoMateriaPrimaVO consultarPorIdProduto(Long idProduto){
 		
 		
 		
@@ -19,7 +19,7 @@ public class ReceitaDAO {
 		materiaPrima.setCodProduto("1");
 		materiaPrima.setDescricao("Farinha");
 		
-		ReceitaVO receita = new ReceitaVO();
+		ProdutoMateriaPrimaVO receita = new ProdutoMateriaPrimaVO();
 		receita.setQtde(20d);
 		receita.setMateriaPrima(materiaPrima);
 		

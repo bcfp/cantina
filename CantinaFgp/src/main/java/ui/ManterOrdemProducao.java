@@ -22,7 +22,7 @@ import vo.CompraVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
-import vo.ReceitaVO;
+import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import bo.ProdutoVendaBO;
 import bo.ReceitaBO;
@@ -132,7 +132,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				
 				new ConsultarProdutosDialogView().abrirJanela(txtCodProdVenda.getText(), txtNomeFunc.getText());
 				
-				ReceitaVO receita = receitaBO.buscaReceitaPorIdProduto(1l);
+				ProdutoMateriaPrimaVO receita = receitaBO.buscaReceitaPorIdProduto(1l);
 				
 				String[] registro = new String[4];
 				

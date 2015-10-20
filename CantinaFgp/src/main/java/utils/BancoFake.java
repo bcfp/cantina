@@ -21,7 +21,7 @@ import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
-import vo.ReceitaVO;
+import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import vo.UnidadeProdutoVO;
 import vo.VendaVO;
@@ -39,7 +39,7 @@ public class BancoFake {
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static ProdutoVendaVO prodVenda;
-	public static ReceitaVO receita;
+	public static ProdutoMateriaPrimaVO receita;
 	public static FuncionarioVO func;
 	public static ClienteVO cliente;
 	public static EstoqueMateriaPrimaVO estMatPrima;
@@ -101,10 +101,9 @@ public class BancoFake {
 		matPrima.setUnidade(unidade);
 		matPrima.setTipo(TipoProduto.MATERIA_PRIMA);
 		
-		receita = new ReceitaVO();
+		receita = new ProdutoMateriaPrimaVO();
 		receita.setCodReceita("01");
 		receita.setMateriaPrima(matPrima);
-		receita.setProduto(prodVenda);
 		receita.setQtde(0.3D);
 		receita.setUnidade(unidade);
 		

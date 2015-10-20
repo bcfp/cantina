@@ -1,6 +1,6 @@
 package bo;
 
-import vo.ReceitaVO;
+import vo.ProdutoMateriaPrimaVO;
 import daoimpl.ReceitaDAO;
 
 public class ReceitaBO {
@@ -13,7 +13,7 @@ public class ReceitaBO {
 	
 	}
 	
-	public ReceitaVO buscaReceitaPorIdProduto(Long idProduto){
+	public ProdutoMateriaPrimaVO buscaReceitaPorIdProduto(Long idProduto){
 		
 		return receitaDao.consultarPorIdProduto(idProduto);
 	}

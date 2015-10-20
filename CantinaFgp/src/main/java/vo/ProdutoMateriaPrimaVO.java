@@ -1,40 +1,31 @@
 package vo;
 
-public class ReceitaVO {
+public class ProdutoMateriaPrimaVO {
 	
-	private Long idReceita;
-	private String codReceita;
-	private ProdutoVendaVO produto;
+	private Long idProdutoMateriaPrima;
+	private String codProdutoMateriaPrima;
 	private MateriaPrimaVO materiaPrima;
 	private Double qtde;
 	private UnidadeProdutoVO unidade;
 	
-	public ReceitaVO() {
+	public ProdutoMateriaPrimaVO() {
 
 	}
 
 	public Long getIdReceita() {
-		return idReceita;
+		return idProdutoMateriaPrima;
 	}
 
 	public void setIdReceita(Long idReceita) {
-		this.idReceita = idReceita;
+		this.idProdutoMateriaPrima = idReceita;
 	}
 
 	public String getCodReceita() {
-		return codReceita;
+		return codProdutoMateriaPrima;
 	}
 
 	public void setCodReceita(String codReceita) {
-		this.codReceita = codReceita;
-	}
-
-	public ProdutoVendaVO getProduto() {
-		return produto;
-	}
-
-	public void setProduto(ProdutoVendaVO produto) {
-		this.produto = produto;
+		this.codProdutoMateriaPrima = codReceita;
 	}
 
 	public MateriaPrimaVO getMateriaPrima() {
