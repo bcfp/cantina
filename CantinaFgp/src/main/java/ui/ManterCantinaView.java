@@ -34,7 +34,7 @@ public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Cantina alterada");		
-		return false;
+		return true;
 	}
 
 	@Override

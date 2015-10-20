@@ -36,7 +36,7 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Cliente alterado");		
-		return false;
+		return true;
 	}
 
 	@Override

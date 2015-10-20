@@ -204,9 +204,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ConsultarPanelView.this.setListaGenericos(consultar());
-				
-				ConsultarPanelView.this.carregarGridItens(consultar());
+				setListaGenericos(consultar());
+				carregarGridItens(getListaGenericos());
 				
 			}
 			

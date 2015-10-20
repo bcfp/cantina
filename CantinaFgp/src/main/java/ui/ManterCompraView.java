@@ -233,7 +233,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Compra alterada");		
-		return false;
+		return true;
 	}
 
 	@Override

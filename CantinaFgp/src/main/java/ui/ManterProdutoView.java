@@ -144,7 +144,7 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean alterar() {
 			JOptionPane.showMessageDialog(null, "Produto Alterado");	
-			return false;
+			return true;
 		}
 
 		@Override

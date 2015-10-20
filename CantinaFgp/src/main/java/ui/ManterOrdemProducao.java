@@ -168,7 +168,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");	
-		return false;
+		return true;
 	}
 
 

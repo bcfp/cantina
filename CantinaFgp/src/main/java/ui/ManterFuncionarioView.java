@@ -34,7 +34,7 @@ public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Funcionario Alterado");	
-		return false;
+		return true;
 	}
 
 	@Override

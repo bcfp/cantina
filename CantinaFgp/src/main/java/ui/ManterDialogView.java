@@ -51,16 +51,35 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		criarPaneis(tituloCabecalho);
 		
 		if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
-			incluirBotaoAlterar();
+			
+			btnAlterar = new JButton("Alterar");
+			
+			btnAlterar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+
+					btnAlterar.setEnabled(false);
+					btnGravar.setEnabled(true);
+					ManterDialogView.this.habilitarCampos();
+					
+				}
+			});
+			
+			pnlRodape.add(btnAlterar);
+			
+			btnGravar.setEnabled(false);
 			btnGravar.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					ManterDialogView.this.alterar();
+					if(ManterDialogView.this.alterar()){
+						btnAlterar.setEnabled(true);
+						btnGravar.setEnabled(false);
+					}
 					
 				}
-				
 			});
 		}
 		else{
@@ -146,22 +165,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		this.setLocationRelativeTo(null);
 		
 	}
-	
-	private void incluirBotaoAlterar(){
-		
-		btnAlterar = new JButton("Alterar");
-		btnAlterar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
 
-				ManterDialogView.this.habilitarCampos();
-				
-			}
-		});
-		pnlRodape.add(btnAlterar);
-		
-	}
 	
 	protected void incluirComponenteCentro(JComponent comp){
 		

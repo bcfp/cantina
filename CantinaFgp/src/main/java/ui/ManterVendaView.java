@@ -65,7 +65,7 @@ public class ManterVendaView extends ManterDialogView<VendaVO> {
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Venda Alterada");	
-		return false;
+		return true;
 	}
 
 	@Override
