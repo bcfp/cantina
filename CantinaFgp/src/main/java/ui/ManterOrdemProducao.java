@@ -107,20 +107,8 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				CompraVO c = new CompraVO();
-				itensCompra = new ArrayList<ItemCompraVO>();
-				ItemCompraVO i = new ItemCompraVO();
-				MateriaPrimaVO m = new MateriaPrimaVO();
-				m.setCodProduto("01");
-				m.setDescricao("Mussarela");
-				i.setProduto(m);
-				i.setQtde(10D);
-				i.setValor(5D);
-				itensCompra.add(i);
-				c.setItensCompra(itensCompra);
+				new GerarCompra().abrirJanela(null);
 				
-				new ManterCompraView(TipoSolicitacao.INCLUIR, "Ordem de Compra").abrirJanela();;
-				//TODO janela para escolher produtos
 			}
 
 		});

@@ -60,6 +60,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 				public void actionPerformed(ActionEvent e) {
 
 					btnAlterar.setEnabled(false);
+					btnLimpar.setEnabled(true);
 					btnGravar.setEnabled(true);
 					ManterDialogView.this.habilitarCampos();
 					
@@ -67,7 +68,8 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 			});
 			
 			pnlRodape.add(btnAlterar);
-			
+
+			btnLimpar.setEnabled(false);
 			btnGravar.setEnabled(false);
 			btnGravar.addActionListener(new ActionListener() {
 				
@@ -76,6 +78,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 					
 					if(ManterDialogView.this.alterar()){
 						btnAlterar.setEnabled(true);
+						btnLimpar.setEnabled(false);
 						btnGravar.setEnabled(false);
 					}
 					
@@ -158,7 +161,6 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		this.add(pnlCabecalho, BorderLayout.NORTH);
 		this.add(pnlRodape, BorderLayout.SOUTH);		
 		this.add(pnlCentro, BorderLayout.CENTER);
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(700, 600);
 		this.setModal(true);

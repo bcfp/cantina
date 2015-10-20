@@ -6,13 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +16,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -29,8 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
-import vo.CantinaVO;
 import vo.EstoqueProdutoVO;
+import vo.ProdutoVO;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarEstoqueView extends JPanel{
@@ -66,7 +60,10 @@ public class ConsultarEstoqueView extends JPanel{
 	
 	private JButton btnConsultar;
 	
-	private List<EstoqueProdutoVO> estoqueProdutos;
+	private List<EstoqueProdutoVO> ListaEstoqueProdutos;
+	private List<ProdutoVO> listaProdutosCompra;
+	
+	
 	
 	
 	// Construtor
@@ -96,8 +93,7 @@ public class ConsultarEstoqueView extends JPanel{
 		pnlRodape = new JPanel();
 		pnlRodape.setBackground(Color.WHITE);
 		
-		lblTituloCabecalho = new JLabel();
-		lblTituloCabecalho.setText("Estoque");
+		lblTituloCabecalho = new JLabel("Estoque");
 		lblTituloCabecalho.setForeground(Color.WHITE);	
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		lblTituloCabecalho.setFont(fonteCabecalho);
@@ -165,7 +161,6 @@ public class ConsultarEstoqueView extends JPanel{
 
 				"Código","Produto",	"Tipo",	"Qtde", "Mínima", "Qtde Maxima"
 
-
 		});
 		
 		modeloTabEstoque.setNumRows(0); // funciona para zerar o q tinha antes
@@ -204,7 +199,7 @@ public class ConsultarEstoqueView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Fazer tela intermediária para compras");
+				new GerarCompra().abrirJanela(getListaProdutosCompra());
 			}
 			
 		});
@@ -240,9 +235,7 @@ public class ConsultarEstoqueView extends JPanel{
 				
 			}
 		});
-		
-		pnlCentro.add(btnConsultar);
-		
+				
 		pnlRodape.add(btnConsultar);
 		
 		// Definições página
@@ -295,12 +288,22 @@ public class ConsultarEstoqueView extends JPanel{
 
 
 	public List<EstoqueProdutoVO> getEstoqueProdutos() {
-		return estoqueProdutos;
+		return ListaEstoqueProdutos;
 	}
 
 
 	public void setListaEstoqueProdutos(List<EstoqueProdutoVO> estoqueProdutos) {
-		this.estoqueProdutos = estoqueProdutos;
+		this.ListaEstoqueProdutos = estoqueProdutos;
+	}
+
+
+	public List<ProdutoVO> getListaProdutosCompra() {
+		return listaProdutosCompra;
+	}
+
+
+	public void setListaProdutosCompra(List<ProdutoVO> listaProdutosCompra) {
+		this.listaProdutosCompra = listaProdutosCompra;
 	}
 
 }

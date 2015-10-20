@@ -47,8 +47,6 @@ public class ManterClienteView extends ManterDialogView<ClienteVO> {
 
 	@Override
 	protected boolean habilitarCampos() {
-
-		JOptionPane.showMessageDialog(null, "Cliente Alterado");
 		return false;
 	}
 	
