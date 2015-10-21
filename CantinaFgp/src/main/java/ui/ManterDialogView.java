@@ -62,7 +62,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 					btnAlterar.setEnabled(false);
 					btnLimpar.setEnabled(true);
 					btnGravar.setEnabled(true);
-					ManterDialogView.this.habilitarCampos();
+					habilitarCampos();
 					
 				}
 			});
@@ -92,7 +92,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
-						ManterDialogView.this.incluir();
+						incluir();
 						
 					}
 					
