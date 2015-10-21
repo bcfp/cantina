@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +35,8 @@ public class GerarCompraView extends JDialog {
 	private JPanel pnlRodape;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
+	
+	private JCheckBox ccxListarTodos;
 	
 	private JButton btnGerarCompra;
 	
@@ -119,11 +122,18 @@ public class GerarCompraView extends JDialog {
 
 		barraTabProdCompra.setViewportView(tabProdCompra);
 
-		barraTabProdCompra.setBounds(10, 100, 475, 290);
+		barraTabProdCompra.setBounds(10, 40, 475, 290);
 		
 		pnlCentro = new JPanel();
+		
+		ccxListarTodos = new JCheckBox("Listar Todos");
+		ccxListarTodos.setFocusPainted(false);
+		ccxListarTodos.setBounds(10, 10, 100, 20);
+		
+		
 		pnlCentro.setLayout(null);
 		pnlCentro.add(barraTabProdCompra);
+		pnlCentro.add(ccxListarTodos);
 		
 		definicoesPagina();
 
@@ -136,7 +146,7 @@ public class GerarCompraView extends JDialog {
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.add(pnlRodape, BorderLayout.SOUTH);
 		this.setResizable(false);
-		this.setSize(500, 500);
+		this.setSize(500, 450);
 		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
