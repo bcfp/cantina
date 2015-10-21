@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -71,8 +72,26 @@ public class GerarCompraView extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				ItemCompraVO ic = new ItemCompraVO();
+				
+				// TODO CONTINUAR AQUI
+				
+				System.out.println(tabProdCompra.getValueAt(tabProdCompra.getSelectedRow(), 0));
+				
+				for(int x = 1; x < tabProdCompra.getRowCount(); x++){
+					
+					//System.out.println(BancoFake.listaEstoqueProduto.get(tabProdCompra.getRowHeight(x)).getProduto());
+					
+				}
+				
+					ic.setProduto(BancoFake.listaEstoqueProduto.get(tabProdCompra.getSelectedRow()).getProduto());
+				
+				GerarCompraView.this.listaItensCompra.add(ic);		
+				
 				new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(
 						new CompraVO(GerarCompraView.this.geradorCompra, getListaItensCompra()));
+				
+				GerarCompraView.this.dispose();
 				
 			}
 		});
@@ -99,9 +118,7 @@ public class GerarCompraView extends JDialog {
 
 		});
 
-		modeloTabProdCompra.setNumRows(0); 
-
-		// carregarGridItens(BancoFake.listaEstoqueProduto);
+		carregarGridItens(getListaItensCompra());
 
 		tabProdCompra.setModel(modeloTabProdCompra);
 
@@ -112,9 +129,7 @@ public class GerarCompraView extends JDialog {
 
 				if (tabProdCompra.getSelectedRow() != -1) {
 
-					EstoqueProdutoVO estoque = BancoFake.listaEstoqueProduto.get(tabProdCompra.getSelectedRow());
-
-					new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela(estoque.getProduto());
+			
 
 				}
 			}
@@ -138,6 +153,36 @@ public class GerarCompraView extends JDialog {
 		definicoesPagina();
 
 	}
+	
+	/**
+	 * Insere na tabela os itens passados como parâmetro. 
+	 * 
+	 * @param estoqueProduto - 
+	 */
+	private void carregarGridItens(List<ItemCompraVO> listaItensCompra) {
+
+		modeloTabProdCompra.setNumRows(0);
+		
+		if(listaItensCompra != null){
+			
+			Iterator<ItemCompraVO> iListaItensCompra = listaItensCompra.iterator();
+			
+			while(iListaItensCompra.hasNext()){
+				
+				ItemCompraVO itemCompra = iListaItensCompra.next();
+				
+				String[] registro = new String[2];
+
+				registro[0] = itemCompra.getProduto().getCodProduto();
+				registro[1] = itemCompra.getProduto().getDescricao();
+				
+				modeloTabProdCompra.addRow(registro);	
+				
+			}
+		}
+		
+	}
+
 
 	private void definicoesPagina() {
 

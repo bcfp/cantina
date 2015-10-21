@@ -196,9 +196,12 @@ public class ConsultarEstoqueView extends JPanel{
 		btnGerarCompra = new JButton("Gerar OC");
 		
 		btnGerarCompra.addActionListener(new ActionListener() {
-			
+						
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				setListaItensCompra(BancoFake.listaItensCompra);
+				
 				new GerarCompraView().abrirJanela(new FuncionarioCantinaVO(), getListaItensCompra());
 			}
 			

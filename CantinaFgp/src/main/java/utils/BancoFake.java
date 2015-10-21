@@ -36,6 +36,7 @@ public class BancoFake {
 	public static List<FuncionarioVO> listaFuncionarios;
 	public static List<OrdemProducaoVO> listaOrdensProducao;
 	public static List<EstoqueProdutoVO> listaEstoqueProduto;
+	public static List<ItemCompraVO> listaItensCompra;
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static ProdutoVendaVO prodVenda;
@@ -106,6 +107,23 @@ public class BancoFake {
 		receita.setMateriaPrima(matPrima);
 		receita.setQtde(0.3D);
 		receita.setUnidade(unidade);
+		
+		listaItensCompra = new ArrayList<ItemCompraVO>();
+		
+		ItemCompraVO ic = new ItemCompraVO();
+		ic.setProduto(matPrima);
+		ic.setQtde(2d);
+		ic.setValor(5d);
+		
+		listaItensCompra.add(ic);
+		
+		ic = new ItemCompraVO();
+		ic.setProduto(prodVenda);
+		ic.setQtde(2d);
+		ic.setValor(5d);
+		
+		listaItensCompra.add(ic);
+		listaItensCompra.add(ic);
 		
 		listaEstoqueProduto = new ArrayList<EstoqueProdutoVO>();
 		
