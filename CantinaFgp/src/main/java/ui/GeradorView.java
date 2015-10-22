@@ -91,8 +91,13 @@ public class GeradorView extends JDialog {
 	// Construtores
 	
 	public GeradorView(IGeradorCompra geradorCompra, List<ItemCompraVO> listaItensCompra) {
-	
+			
 		ccxListarTodos = new JCheckBox("Listar Todos");
+
+		ccxListarTodos.setFocusPainted(false);
+		ccxListarTodos.setBounds(380, 10, 100, 20);
+		pnlCentro.add(ccxListarTodos);
+		
 		lblTituloCabecalho.setText("Gerar Compra");
 		lblSelecione.setText("Selecione um ou mais produtos");
 		this.geradorCompra = geradorCompra;
@@ -133,13 +138,7 @@ public class GeradorView extends JDialog {
 		
 		lblSelecione.setBounds(10, 10, 200, 20);
 		pnlCentro.add(lblSelecione);
-		
-		if(listaItensCompra != null){
-			ccxListarTodos.setFocusPainted(false);
-			ccxListarTodos.setBounds(380, 10, 100, 20);
-			pnlCentro.add(ccxListarTodos);
-		}
-		
+				
 		tabProdutos.setModel(modeloTabProdCompra);
 		
 		barraTabProdCompra.setViewportView(tabProdutos);
@@ -178,9 +177,9 @@ public class GeradorView extends JDialog {
 					JOptionPane.showMessageDialog(null, "Favor selecionar ao menos um produto.");				
 				}
 				else{
+					GeradorView.this.dispose();
 					new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(
 							new CompraVO(GeradorView.this.geradorCompra, listaItensCompraSelecionados));
-					GeradorView.this.dispose();
 				}
 				
 			}
@@ -215,9 +214,9 @@ public class GeradorView extends JDialog {
 					JOptionPane.showMessageDialog(null, "Favor selecionar um produto");
 				}
 				else{
+					GeradorView.this.dispose();
 					new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
 					.abrirJanela(getListaOrdensProducao().get(tabProdutos.getSelectedRow()));
-					GeradorView.this.dispose();	
 				}
 				
 			}

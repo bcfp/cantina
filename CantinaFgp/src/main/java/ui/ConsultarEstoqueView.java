@@ -45,6 +45,7 @@ public class ConsultarEstoqueView extends JPanel{
 	private JButton btnGerarCompra;
 	private JButton btnGerarOrdemProd;
 	private JButton btnConsultar;
+	private JButton btnFechar;	
 
 	private JTable tabEstoque;
 	private DefaultTableModel modeloTabEstoque;
@@ -52,7 +53,6 @@ public class ConsultarEstoqueView extends JPanel{
 
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
-	private JButton btnFechar;	
 	
 	private JTextField txtCodProdPesq;
 	private JTextField txtDescricaoProd;

@@ -57,7 +57,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JScrollPane barraTabMatPrimas;
 	
 	private JPanel pnlMenuLateral;
-	private JPanel pnlCampos;;
+	private JPanel pnlCampos;	
 	
 	private ProdutoVendaBO produtoVendaBO;
 	private ProdutoMateriaPrimaBO produtoMateriaPrimaBO;
@@ -100,6 +100,11 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			}
 
 		};
+		modeloTabMatPrimas.setColumnIdentifiers(new String[] {
+
+				"Código", "Matéria-Prima", "Quantidade", "Estoque"
+
+		});
 		barraTabMatPrimas = new JScrollPane(
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -176,16 +181,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private void carregarGridReceita(List<ProdutoMateriaPrimaVO> receita) {
 
 		modeloTabMatPrimas.setNumRows(0);
-		
-		// TODO - CONTINUAR AQUI
-		
-		System.out.println("Receita Nula? " + receita != null);
-		
+						
 		if(receita != null){
 			
 			Iterator<ProdutoMateriaPrimaVO> iReceita = receita.iterator();
-			
-			System.out.println(iReceita.hasNext());
 			
 			while(iReceita.hasNext()){
 				
@@ -233,13 +232,15 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	
 	private void definicoesPagina(){
 		
+		txtProdVenda.setEditable(false);
+		
 		if(getOrdemProducao()!=null){
 			btnConsultarProd.setVisible(false);
 			txtCodProdVenda.setEditable(false);
 		}
-		
-		txtProdVenda.setEditable(false);
-		btnGerarOC.setEnabled(false);
+		else{
+			btnGerarOC.setEnabled(false);
+		}
 		
 		int widthCampos = this.getWidth() - 110;
 
@@ -272,13 +273,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 		
 		btnConsultarProd.setBounds(190, espY + espEntre * 3, 100, altura);
-		
-
-		modeloTabMatPrimas.setColumnIdentifiers(new String[] {
-
-				"Código", "Matéria-Prima", "Quantidade", "Estoque"
-
-		});
+				
 
 		tabMatPrimas.setModel(modeloTabMatPrimas);
 
