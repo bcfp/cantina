@@ -67,7 +67,7 @@ public class GeradorView extends JDialog {
 		pnlCentro = new JPanel();
 		pnlRodape = new JPanel();
 		lblTituloCabecalho = new JLabel();
-		lblTituloCabecalho = new JLabel();
+		lblSelecione = new JLabel();
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		btnGerarCompra = new JButton("Gerar");
 		tabProdutos = new JTable();
@@ -94,6 +94,7 @@ public class GeradorView extends JDialog {
 	
 		ccxListarTodos = new JCheckBox("Listar Todos");
 		lblTituloCabecalho.setText("Gerar Compra");
+		lblSelecione.setText("Selecione um ou mais produtos");
 		this.geradorCompra = geradorCompra;
 		setListaItensCompra(listaItensCompra);
 		
@@ -104,19 +105,19 @@ public class GeradorView extends JDialog {
 	public GeradorView(FuncionarioCantinaVO funcionario, List<OrdemProducaoVO> listaOrdensProducao) {
 	
 		lblTituloCabecalho.setText("Gerar Ordem de Produção");		
-		
+		lblSelecione.setText("Selecione um produto");
 		geradorCompra = funcionario;
 		setListaOrdensProducao(listaOrdensProducao);
 		tabProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		gerarOrdemProducao(funcionario, listaOrdensProducao);
+		gerarOrdemProducao();
 		
 	}
 	
 	// Métodos
 	
 	public void abrirTela(){
-		
+				
 		lblTituloCabecalho.setForeground(Color.WHITE);	
 		lblTituloCabecalho.setFont(fonteCabecalho);
 		
@@ -126,15 +127,18 @@ public class GeradorView extends JDialog {
 		
 		pnlCentro.setLayout(null);
 		pnlCentro.add(barraTabProdCompra);
-		
-		if(listaItensCompra != null){
-			ccxListarTodos.setFocusPainted(false);
-			ccxListarTodos.setBounds(10, 10, 100, 20);
-			pnlCentro.add(ccxListarTodos);
-		}
 						
 		pnlRodape.setBackground(Color.WHITE);
 		pnlRodape.add(btnGerarCompra);
+		
+		lblSelecione.setBounds(10, 10, 200, 20);
+		pnlCentro.add(lblSelecione);
+		
+		if(listaItensCompra != null){
+			ccxListarTodos.setFocusPainted(false);
+			ccxListarTodos.setBounds(380, 10, 100, 20);
+			pnlCentro.add(ccxListarTodos);
+		}
 		
 		tabProdutos.setModel(modeloTabProdCompra);
 		
@@ -201,17 +205,21 @@ public class GeradorView extends JDialog {
 		
 	}
 		
-	private void gerarOrdemProducao(FuncionarioCantinaVO funcionario, List<OrdemProducaoVO> listaOrdensProducao) {
+	private void gerarOrdemProducao() {
 				
 		btnGerarCompra.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
+				if(tabProdutos.getSelectedRow() == -1){
+					JOptionPane.showMessageDialog(null, "Favor selecionar um produto");
+				}
+				else{
+					new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
 					.abrirJanela(getListaOrdensProducao().get(tabProdutos.getSelectedRow()));
-
-				GeradorView.this.dispose();	
-
+					GeradorView.this.dispose();	
+				}
+				
 			}
 		});
 		

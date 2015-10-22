@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -49,7 +50,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JLabel lblNomeFuncionario;
 	
 	private JButton btnGerarOC;
-	private JButton btnBuscarProd;
+	private JButton btnConsultarProd;
 
 	private JTable tabMatPrimas;
 	private DefaultTableModel modeloTabMatPrimas;
@@ -61,9 +62,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private ProdutoVendaBO produtoVendaBO;
 	private ProdutoMateriaPrimaBO produtoMateriaPrimaBO;
 	
-	private List<ItemCompraVO> listaItemCompra;
+	private OrdemProducaoVO ordemProducao;
 	
-	private List<ItemCompraVO> itensCompra; // será utilizado para compra de matérias primas
+	
+	// Bloco de Inicialização
 	
 	{
 		
@@ -86,22 +88,39 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		txtQtdeProdVenda = new JTextField();
 		txtNomeFunc = new JTextField();
 		
-		btnBuscarProd = new JButton("Consultar");
+		btnGerarOC = new JButton("Gerar OC");
+		
+		btnConsultarProd = new JButton("Consultar");
 		tabMatPrimas = new JTable();
+		modeloTabMatPrimas = new DefaultTableModel() {
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+
+		};
+		barraTabMatPrimas = new JScrollPane(
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
 		produtoVendaBO = new ProdutoVendaBO();
 		produtoMateriaPrimaBO = new ProdutoMateriaPrimaBO();
 		pnlMenuLateral = new JPanel();
 		
 	}
 	
+	// Construtores
+	
 	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	
+	
+	// Métodos
+	
 	@Override
 	public void abrirJanela() {
-		
-		definicoesPagina();
 		
 		btnGerarOC.addActionListener(new ActionListener() {
 
@@ -114,7 +133,8 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 		});
 		
-		btnBuscarProd.addActionListener(new ActionListener() {
+		
+		btnConsultarProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,24 +151,62 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 				
 				modeloTabMatPrimas.addRow(registro);
 				
-				
 			}
 		});
 		
-		this.setVisible(true);
+		definicoesPagina();
 		
 	}
 
 	@Override
-	public void abrirJanela(OrdemProducaoVO objeto) {
+	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
-		this.setVisible(true);
+		setOrdemProducao(ordemProducao);
+		
+		txtCodProdVenda.setText(ordemProducao.getProdutoVenda().getCodProduto());
+		txtProdVenda.setText(ordemProducao.getProdutoVenda().getDescricao());
+		txtQtdeProdVenda.setText(ordemProducao.getQtde().toString());
+		
+		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
+		
+		abrirJanela();
+		
+	}
+	
+	private void carregarGridReceita(List<ProdutoMateriaPrimaVO> receita) {
+
+		modeloTabMatPrimas.setNumRows(0);
+		
+		// TODO - CONTINUAR AQUI
+		
+		System.out.println("Receita Nula? " + receita != null);
+		
+		if(receita != null){
+			
+			Iterator<ProdutoMateriaPrimaVO> iReceita = receita.iterator();
+			
+			System.out.println(iReceita.hasNext());
+			
+			while(iReceita.hasNext()){
+				
+				ProdutoMateriaPrimaVO produtoMateriaPrima = iReceita.next();
+				
+				String[] registro = new String[4];
+
+				registro[0] = produtoMateriaPrima.getMateriaPrima().getCodProduto();
+				registro[1] = produtoMateriaPrima.getMateriaPrima().getDescricao();
+				registro[2] = produtoMateriaPrima.getQtde().toString();
+				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual().toString();
+				
+				modeloTabMatPrimas.addRow(registro);	
+				
+			}
+		}
 		
 	}
 
 	@Override
 	public boolean incluir() {
-		
 		
 		JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 		return false;
@@ -175,6 +233,14 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	
 	private void definicoesPagina(){
 		
+		if(getOrdemProducao()!=null){
+			btnConsultarProd.setVisible(false);
+			txtCodProdVenda.setEditable(false);
+		}
+		
+		txtProdVenda.setEditable(false);
+		btnGerarOC.setEnabled(false);
+		
 		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
@@ -183,13 +249,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		int espEntre = 35;
 		int altura = 30;
 
-	
 		pnlCampos.setBounds(10, 10, widthCampos, 480);
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
-		
-
 		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
 
 		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
@@ -208,29 +271,16 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		txtNomeFunc.setBounds(espXTxt + 300, espY + espEntre * 3, 150, altura);
 
 		
-		btnBuscarProd.setBounds(190, espY + espEntre * 3, 100, altura);
-
+		btnConsultarProd.setBounds(190, espY + espEntre * 3, 100, altura);
 		
-		modeloTabMatPrimas = new DefaultTableModel() {
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-
-		};
 
 		modeloTabMatPrimas.setColumnIdentifiers(new String[] {
 
-		"Código", "Matéria-Prima", "Quantidade", "Estoque"
+				"Código", "Matéria-Prima", "Quantidade", "Estoque"
 
 		});
 
 		tabMatPrimas.setModel(modeloTabMatPrimas);
-
-		barraTabMatPrimas = new JScrollPane(
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		barraTabMatPrimas.setViewportView(tabMatPrimas);
 
@@ -251,21 +301,33 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		pnlCampos.add(txtCodProdVenda);
 		pnlCampos.add(txtProdVenda);
 		pnlCampos.add(txtQtdeProdVenda);
-		pnlCampos.add(btnBuscarProd);
+		pnlCampos.add(btnConsultarProd);
 		pnlCampos.add(lblFuncionario);
 		pnlCampos.add(lblNomeFuncionario);
 		pnlCampos.add(txtNomeFunc);
 
 		incluirComponenteCentro(pnlCampos);
-
-		btnGerarOC = new JButton("Gerar OC");
-		//btnGerarOC.setEnabled(false);
+		
 		pnlMenuLateral.add(btnGerarOC);
 		pnlMenuLateral.setBackground(Color.WHITE);
 		pnlMenuLateral.setLayout(new GridLayout(10,1));
 		
 		this.add(pnlMenuLateral, BorderLayout.WEST);
 		
+		this.setVisible(true);
+		
 	}
+	
+
+
+	public OrdemProducaoVO getOrdemProducao() {
+		return ordemProducao;
+	}
+
+
+	public void setOrdemProducao(OrdemProducaoVO ordemProducao) {
+		this.ordemProducao = ordemProducao;
+	}
+
 
 }
