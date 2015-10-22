@@ -52,13 +52,30 @@ public class ConsultarProdutosDialogView extends JDialog{
 	public void abrirJanela(String cod, String produto){
 		
 		definicoesPagina();
+		txtNomeProduto.setText(produto);
+		txtCodProduto.setText(cod);
+//		
+//		if(cod.trim() != "" || produto.trim() != ""){
+//			new ActionListener() {
+//				
+//				@Override
+//			public void actionPerformed(ActionEvent e) {
+//				List<ProdutoVendaVO> listaProdutos = produtoVendaBO.filtarPorNomeECodigo(txtNomeProduto.getText(), txtCodProduto.getText());	
+//				carregarGrid(listaProdutos);	
+//				
+//				
+//				}
+//			};
+//			
+//		}
+//TODO continuar daqui CAINÃ
 		btnPesquisar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-//				List<ProdutoVendaVO> listaProdutos = produtoVendaBO.filtarPorNomeECodigo(txtNomeProduto.getText(), txtCodProduto.getText());
-				List<ProdutoVendaVO> listaProdutos = produtoVendaBO.consultarTodosProdutos();
+				List<ProdutoVendaVO> listaProdutos = produtoVendaBO.filtarPorNomeECodigo(txtNomeProduto.getText(), txtCodProduto.getText());
+				//List<ProdutoVendaVO> listaProdutos = produtoVendaBO.consultarTodosProdutos();
 				carregarGrid(listaProdutos);
 				
 			}

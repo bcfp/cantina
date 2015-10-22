@@ -31,14 +31,6 @@ public class ConnectionFactory {
 		//CONEXAO CAINÃ NOTE conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "cantina", "123");
 		//CONEXAO CAINÃ FABRICA
 		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "caina123");
-		
-		if(conexao != null){
-		
-			System.out.println("CONECTOO");
-			
-		}
-		
-		
 		return conexao;
 		
 	}
