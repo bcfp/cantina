@@ -5,6 +5,7 @@ public class ProdutoMateriaPrimaVO {
 	private Long idProdutoMateriaPrima;
 	private String codProdutoMateriaPrima;
 	private MateriaPrimaVO materiaPrima;
+	private ProdutoVendaVO produtoFabricado;
 	private Double qtde;
 	private UnidadeProdutoVO unidade;
 	
@@ -50,6 +51,14 @@ public class ProdutoMateriaPrimaVO {
 
 	public void setUnidade(UnidadeProdutoVO unidade) {
 		this.unidade = unidade;
+	}
+
+	public ProdutoVendaVO getProdutoFabricado() {
+		return produtoFabricado;
+	}
+
+	public void setProdutoFabricado(ProdutoVendaVO produtoFabricado) {
+		this.produtoFabricado = produtoFabricado;
 	}
 		
 }

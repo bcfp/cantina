@@ -11,7 +11,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private String descricao;
 	private Double precoCusto;
 	private UnidadeProdutoVO unidade;
-	private Boolean status;
+	private Boolean ativo;
 	private Boolean lote;
 	private List<EstoqueProdutoVO> estoques;
 	private List<ItemCompraVO> itemCompras;
@@ -46,12 +46,12 @@ public abstract class ProdutoVO extends GenericVO {
 		this.precoCusto = precoCusto;
 	}
 
-	public Boolean getStatus() {
-		return status;
+	public Boolean getAtivo() {
+		return ativo;
 	}
 
-	public void setStatus(Boolean status) {
-		this.status = status;
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public String getCodProduto() {

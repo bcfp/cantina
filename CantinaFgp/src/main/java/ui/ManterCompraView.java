@@ -219,6 +219,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 
 	@Override
 	public void abrirJanela(CompraVO compra) {
+		carregarGridItens(compra.getItensCompra());
 		this.setVisible(true);
 	}
 

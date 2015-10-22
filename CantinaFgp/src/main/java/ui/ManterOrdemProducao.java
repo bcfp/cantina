@@ -108,7 +108,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new GerarCompraView().abrirJanela(new OrdemProducaoVO(), null);
+				new GeradorView(new OrdemProducaoVO(), null).abrirTela();
 				
 			}
 

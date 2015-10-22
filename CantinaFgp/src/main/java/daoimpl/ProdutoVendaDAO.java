@@ -10,6 +10,7 @@ import java.util.List;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IProdutoDAO;
+import enumeradores.TipoProduto;
 
 public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 	
@@ -50,12 +51,22 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("pv.descricao"));
 				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
-				produtoVenda.setFabricado(rs.getBoolean("fabricado"));
+				if(rs.getBoolean("fabricado")){
+					produtoVenda.setTipo(TipoProduto.PRODUCAO);
+				}
+				else{
+					if(rs.getBoolean("revenda")){
+						produtoVenda.setTipo(TipoProduto.REVENDA);
+					}
+					else{
+						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
+					}
+				}
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
-				produtoVenda.setStatus(rs.getBoolean("pv.ativo"));
+				produtoVenda.setAtivo(rs.getBoolean("pv.ativo"));
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("u.id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("u.descricao"));
@@ -184,12 +195,22 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
 				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
-				produtoVenda.setFabricado(rs.getBoolean("fabricado"));
+				if(rs.getBoolean("fabricado")){
+					produtoVenda.setTipo(TipoProduto.PRODUCAO);
+				}
+				else{
+					if(rs.getBoolean("revenda")){
+						produtoVenda.setTipo(TipoProduto.REVENDA);
+					}
+					else{
+						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
+					}
+				}
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
-				produtoVenda.setStatus(rs.getBoolean("ativo"));
+				produtoVenda.setAtivo(rs.getBoolean("ativo"));
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));

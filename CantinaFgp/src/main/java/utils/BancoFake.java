@@ -40,7 +40,9 @@ public class BancoFake {
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static ProdutoVendaVO prodVenda;
-	public static ProdutoMateriaPrimaVO receita;
+	public static ProdutoVendaVO prodVenda2;
+	public static ProdutoVendaVO prodVenda3;
+	public static ProdutoMateriaPrimaVO produtoMateriaPrima;
 	public static FuncionarioVO func;
 	public static ClienteVO cliente;
 	public static EstoqueMateriaPrimaVO estMatPrima;
@@ -84,29 +86,48 @@ public class BancoFake {
 		prodVenda.setDescricao("Coxinha");
 		prodVenda.setCodProduto("01");
 		prodVenda.setDiasVencimento(3);
-		prodVenda.setFabricado(true);
-		prodVenda.setCodProduto("01");
 		prodVenda.setPrecoCusto(1D);
 		prodVenda.setPrecoVenda(3D);
-		prodVenda.setStatus(true);
+		prodVenda.setAtivo(true);
 		prodVenda.setUnidade(unidade);
 		prodVenda.setLote(true);
 		prodVenda.setTipo(TipoProduto.PRODUCAO);
 		
+		prodVenda2 = new ProdutoVendaVO();
+		prodVenda2.setDescricao("Esfiha Arabe");
+		prodVenda2.setCodProduto("02");
+		prodVenda2.setDiasVencimento(3);
+		prodVenda2.setPrecoCusto(1.5D);
+		prodVenda2.setPrecoVenda(3D);
+		prodVenda2.setAtivo(true);
+		prodVenda2.setUnidade(unidade);
+		prodVenda2.setLote(true);
+		prodVenda2.setTipo(TipoProduto.PRODUCAO);
+		
+		prodVenda3 = new ProdutoVendaVO();
+		prodVenda3.setDescricao("Halls Cereja");
+		prodVenda3.setCodProduto("03");
+		prodVenda3.setPrecoCusto(0.7D);
+		prodVenda3.setPrecoVenda(1.5D);
+		prodVenda3.setAtivo(true);
+		prodVenda3.setUnidade(unidade);
+		prodVenda3.setLote(true);
+		prodVenda3.setTipo(TipoProduto.REVENDA);
+		
 		matPrima = new MateriaPrimaVO();
 		matPrima.setDescricao("Frango");
-		matPrima.setCodProduto("02");
+		matPrima.setCodProduto("04");
 		matPrima.setLote(true);
 		matPrima.setPrecoCusto(2D);
-		matPrima.setStatus(true);
+		matPrima.setAtivo(true);
 		matPrima.setUnidade(unidade);
 		matPrima.setTipo(TipoProduto.MATERIA_PRIMA);
 		
-		receita = new ProdutoMateriaPrimaVO();
-		receita.setCodReceita("01");
-		receita.setMateriaPrima(matPrima);
-		receita.setQtde(0.3D);
-		receita.setUnidade(unidade);
+		produtoMateriaPrima = new ProdutoMateriaPrimaVO();
+		produtoMateriaPrima.setCodReceita("01");
+		produtoMateriaPrima.setMateriaPrima(matPrima);
+		produtoMateriaPrima.setQtde(0.3D);
+		produtoMateriaPrima.setUnidade(unidade);
 		
 		listaItensCompra = new ArrayList<ItemCompraVO>();
 		
@@ -130,7 +151,7 @@ public class BancoFake {
 		estMatPrima = new EstoqueMateriaPrimaVO();
 		estMatPrima.setCantina(cantina);
 		estMatPrima.setProduto(matPrima);
-		estMatPrima.setQtdeAtual(10D);
+		estMatPrima.setQtdeAtual(4D);
 		estMatPrima.setQtdeMinima(5D);
 		estMatPrima.setQtdeMaxima(15D);
 		
@@ -142,6 +163,24 @@ public class BancoFake {
 		estProdVenda.setQtdeAtual(9D);
 		estProdVenda.setQtdeMinima(10D);
 		estProdVenda.setQtdeMaxima(20D);
+
+		listaEstoqueProduto.add(estProdVenda);
+		
+		estProdVenda = new EstoqueProdutoVendaVO();
+		estProdVenda.setCantina(cantina);
+		estProdVenda.setProduto(prodVenda2);
+		estProdVenda.setQtdeAtual(9D);
+		estProdVenda.setQtdeMinima(10D);
+		estProdVenda.setQtdeMaxima(20D);
+
+		listaEstoqueProduto.add(estProdVenda);
+		
+		estProdVenda = new EstoqueProdutoVendaVO();
+		estProdVenda.setCantina(cantina);
+		estProdVenda.setProduto(prodVenda3);
+		estProdVenda.setQtdeAtual(5D);
+		estProdVenda.setQtdeMinima(6D);
+		estProdVenda.setQtdeMaxima(10D);
 
 		listaEstoqueProduto.add(estProdVenda);
 		

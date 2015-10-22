@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,10 +25,14 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
+import utils.UtilFuncoes;
 import vo.EstoqueProdutoVO;
 import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
+import vo.OrdemProducaoVO;
 import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarEstoqueView extends JPanel{
@@ -39,6 +45,8 @@ public class ConsultarEstoqueView extends JPanel{
 	private JPanel pnlRodape;
  
 	private JButton btnGerarCompra;
+	private JButton btnGerarOrdemProd;
+	private JButton btnConsultar;
 
 	private JTable tabEstoque;
 	private DefaultTableModel modeloTabEstoque;
@@ -60,11 +68,20 @@ public class ConsultarEstoqueView extends JPanel{
 	private JLabel lblProdPesq;
 	private JLabel lblTipoProduto;
 	
-	private JButton btnConsultar;
 	
-	private List<EstoqueProdutoVO> ListaEstoqueProdutos;
+	private List<EstoqueProdutoVO> listaEstoqueProdutos;
 	private List<ItemCompraVO> listaItensCompra;
+	private List<OrdemProducaoVO> listaOrdemProducao;
 		
+	{
+		listaItensCompra = new ArrayList<ItemCompraVO>();
+		listaOrdemProducao = new ArrayList<OrdemProducaoVO>();
+		btnGerarCompra = new JButton("Gerar OC");
+		btnGerarCompra.setEnabled(false);
+		btnGerarOrdemProd = new JButton("Gerar OP");
+		btnGerarOrdemProd.setEnabled(false);
+	}
+	
 	
 	// Construtor
 	
@@ -164,8 +181,6 @@ public class ConsultarEstoqueView extends JPanel{
 		});
 		
 		modeloTabEstoque.setNumRows(0); // funciona para zerar o q tinha antes
-
-		//carregarGridItens(BancoFake.listaEstoqueProduto);
 		
 		tabEstoque.setModel(modeloTabEstoque);		
 		
@@ -193,21 +208,95 @@ public class ConsultarEstoqueView extends JPanel{
 		
 		// BOTÕES
 		
-		btnGerarCompra = new JButton("Gerar OC");
+		btnGerarOrdemProd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				getListaOrdemProducao().clear();
+				
+				Iterator<EstoqueProdutoVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				OrdemProducaoVO ordemProducao;
+				EstoqueProdutoVO estoqueProduto;
+				
+				while(iEstoqueProduto.hasNext()){
+					
+					estoqueProduto = iEstoqueProduto.next();
+					
+					if(estoqueProduto.getProduto().getTipo() == TipoProduto.PRODUCAO){
+						
+						int qtdeMin = UtilFuncoes.doubleToInteger(estoqueProduto.getQtdeMinima());
+						int qtdeMax = UtilFuncoes.doubleToInteger(estoqueProduto.getQtdeMaxima());
+						int qtdeAtual = UtilFuncoes.doubleToInteger(estoqueProduto.getQtdeAtual());
+						
+						if(qtdeAtual < qtdeMin){
+							
+							ordemProducao = new OrdemProducaoVO();
+														
+							ordemProducao.setProdutoVenda((ProdutoVendaVO) estoqueProduto.getProduto());
+							ordemProducao.setQtde(qtdeMax - qtdeAtual);
+							
+							getListaOrdemProducao().add(ordemProducao);
+						
+						}
+						
+					}
+					
+				}
+				
+				if(getListaOrdemProducao().size() > 0){
+					new GeradorView(null, getListaOrdemProducao()).abrirTela();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
+				}
+				
+			}
+			
+		});
 		
 		btnGerarCompra.addActionListener(new ActionListener() {
 						
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				setListaItensCompra(BancoFake.listaItensCompra);
+				getListaItensCompra().clear();
+								
+				Iterator<EstoqueProdutoVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				ItemCompraVO itemCompra;
+				EstoqueProdutoVO estoqueProduto;
 				
-				new GerarCompraView().abrirJanela(new FuncionarioCantinaVO(), getListaItensCompra());
+				while(iEstoqueProduto.hasNext()){
+					
+					estoqueProduto = iEstoqueProduto.next();
+					
+					if(estoqueProduto.getProduto().getTipo() != TipoProduto.PRODUCAO){
+						
+						if(estoqueProduto.getQtdeAtual() < estoqueProduto.getQtdeMinima()){
+							itemCompra = new ItemCompraVO();
+							itemCompra.setProduto(estoqueProduto.getProduto());
+							itemCompra.setQtde(estoqueProduto.getQtdeMaxima() - estoqueProduto.getQtdeAtual());
+							itemCompra.setValor(estoqueProduto.getProduto().getPrecoCusto());
+							getListaItensCompra().add(itemCompra);
+						}
+						
+					}
+					
+				}
+				
+				if(getListaItensCompra().size() > 0){
+					new GeradorView(null, getListaItensCompra()).abrirTela();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
+				}
+				
 			}
 			
 		});
 		
 		pnlMenuLateral.add(btnGerarCompra);
+		pnlMenuLateral.add(btnGerarOrdemProd);
 		
 		btnFechar = new JButton("X");
 		btnFechar.setBackground(Color.RED);
@@ -232,11 +321,15 @@ public class ConsultarEstoqueView extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+
+				btnGerarCompra.setEnabled(true);
+				btnGerarOrdemProd.setEnabled(true);
 				
 				setListaEstoqueProdutos(consultar());				
-				carregarGridItens(getEstoqueProdutos());
+				carregarGridItens(getListaEstoqueProdutos());
 				
 			}
+			
 		});
 				
 		pnlRodape.add(btnConsultar);
@@ -290,13 +383,13 @@ public class ConsultarEstoqueView extends JPanel{
 	}
 
 
-	public List<EstoqueProdutoVO> getEstoqueProdutos() {
-		return ListaEstoqueProdutos;
+	public List<EstoqueProdutoVO> getListaEstoqueProdutos() {
+		return listaEstoqueProdutos;
 	}
 
 
 	public void setListaEstoqueProdutos(List<EstoqueProdutoVO> estoqueProdutos) {
-		this.ListaEstoqueProdutos = estoqueProdutos;
+		this.listaEstoqueProdutos = estoqueProdutos;
 	}
 
 
@@ -307,6 +400,16 @@ public class ConsultarEstoqueView extends JPanel{
 
 	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
 		this.listaItensCompra = listaItensCompra;
+	}
+
+
+	public List<OrdemProducaoVO> getListaOrdemProducao() {
+		return listaOrdemProducao;
+	}
+
+
+	public void setListaOrdemProducao(List<OrdemProducaoVO> listaOrdemProducao) {
+		this.listaOrdemProducao = listaOrdemProducao;
 	}
 
 	
