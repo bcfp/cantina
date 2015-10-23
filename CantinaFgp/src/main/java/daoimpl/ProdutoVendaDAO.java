@@ -56,12 +56,7 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
 				else{
-					if(rs.getBoolean("revenda")){
-						produtoVenda.setTipo(TipoProduto.REVENDA);
-					}
-					else{
-						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
-					}
+					produtoVenda.setTipo(TipoProduto.REVENDA);
 				}
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
@@ -247,8 +242,74 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 
 	@Override
 	public ProdutoVendaVO consultarPorId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ProdutoVendaVO produtoVenda = new ProdutoVendaVO();
+		
+		try {
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
+					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv where id_produto_venda = ? inner join unidade u on u.id_unidade = pv.id_unidade");
+			
+			
+			pstm.setLong(1, id);
+			
+			rs = pstm.executeQuery();
+		
+			
+			if(rs.next()){
+				
+				produtoVenda = new ProdutoVendaVO();
+				produtoVenda.setCodProduto(rs.getString("cod_produto"));
+				produtoVenda.setDescricao(rs.getString("descricao"));
+				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
+				if(rs.getBoolean("fabricado")){
+					produtoVenda.setTipo(TipoProduto.PRODUCAO);
+				}
+				else{
+					if(rs.getBoolean("revenda")){
+						produtoVenda.setTipo(TipoProduto.REVENDA);
+					}
+					else{
+						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
+					}
+				}
+				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
+				produtoVenda.setLote(rs.getBoolean("lote"));
+				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
+				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
+				produtoVenda.setAtivo(rs.getBoolean("ativo"));
+				produtoVenda.setUnidade(new UnidadeProdutoVO());
+				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
+				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
+				produtoVenda.getUnidade().setStatus(rs.getBoolean("ativo"));
+				
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs != null){
+					
+					rs.close();
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+		return produtoVenda;
 	}
 
 }

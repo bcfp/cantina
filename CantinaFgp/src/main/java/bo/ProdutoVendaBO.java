@@ -21,7 +21,7 @@ public class ProdutoVendaBO {
 		
 	}
 	
-	public List<ProdutoVendaVO> filtarPorNomeECodigo(String nome, String cod){
+	public List<ProdutoVendaVO> filtarProdutoVendaPorNomeECodigo(String nome, String cod){
 		
 		return produtoDao.consultarPorNomeECodigo(nome, cod);
 		
@@ -30,6 +30,11 @@ public class ProdutoVendaBO {
 	public List<ProdutoVendaVO> consultarTodosProdutos(){
 		
 		return produtoDao.consultarTodos();
+	}
+	
+	public ProdutoVendaVO consultarProdutoPorId(Long id){
+		
+		return produtoDao.consultarPorId(id);
 	}
 	
 
