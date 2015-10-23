@@ -169,7 +169,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 	}
 
 	
-	protected void incluirComponenteCentro(JComponent comp){
+	protected void adicionarComponenteCentro(JComponent comp){
 		
 		pnlCentro.add(comp);
 		

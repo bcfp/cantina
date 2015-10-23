@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,6 +42,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
+
 	private JPanel pnlMenuLateral;
 	private JPanel pnlRodape;
 
@@ -226,6 +228,12 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	
 	
 	// Métodos
+	
+	protected void adicionarComponenteCentro(JComponent comp){
+		
+		pnlCentro.add(comp);
+		
+	}
 	
 	/**
 	 * Método utilizado para filha adicionar botão no menu lateral da tela

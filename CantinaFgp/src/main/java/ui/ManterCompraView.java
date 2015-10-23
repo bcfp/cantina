@@ -201,7 +201,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
-		incluirComponenteCentro(pnlCampos);
+		adicionarComponenteCentro(pnlCampos);
 
 	}
 	

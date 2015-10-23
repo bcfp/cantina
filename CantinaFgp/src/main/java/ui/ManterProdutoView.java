@@ -418,7 +418,7 @@ import enumeradores.TipoSolicitacao;
 			
 			pnlCampos.add(tbsProdutos);
 			
-			incluirComponenteCentro(pnlCampos);
+			adicionarComponenteCentro(pnlCampos);
 			
 		}
 	

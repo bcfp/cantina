@@ -34,7 +34,7 @@ import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
-	private JComboBox<StatusVO> cbxStatus;
+	private JComboBox<String> cbxStatus;
 	
 	private JTextField txtCodOp;
 	private JTextField txtCodProdVenda;
@@ -74,7 +74,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	{
 		
 		pnlCampos = new JPanel();
-		cbxStatus = new JComboBox<StatusVO>();
+		cbxStatus = new JComboBox<String>();
 		lblStatus = new JLabel("Status");
 		lblCodOp = new JLabel("Número");
 		lblCodProdVenda = new JLabel("Código");
@@ -333,7 +333,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		pnlCampos.add(lblNomeFuncionario);
 		pnlCampos.add(txtNomeFunc);
 
-		incluirComponenteCentro(pnlCampos);
+		adicionarComponenteCentro(pnlCampos);
 		
 		pnlMenuLateral.add(btnGerarOC);
 		pnlMenuLateral.setBackground(Color.WHITE);
