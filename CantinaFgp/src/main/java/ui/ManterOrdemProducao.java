@@ -19,7 +19,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import utils.UtilFuncoes;
 import vo.CompraVO;
+import vo.EstoqueProdutoVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
@@ -27,6 +29,7 @@ import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import bo.ProdutoVendaBO;
 import bo.ProdutoMateriaPrimaBO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
@@ -62,11 +65,12 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private ProdutoVendaBO produtoVendaBO;
 	private ProdutoMateriaPrimaBO produtoMateriaPrimaBO;
 	
-	private OrdemProducaoVO ordemProducao;
-	
+	private List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima;
+ 	private OrdemProducaoVO ordemProducao;
+	private List<ItemCompraVO> listaItensCompra;
 	
 	// Bloco de Inicialização
-	
+
 	{
 		
 		pnlCampos = new JPanel();
@@ -113,6 +117,8 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		produtoMateriaPrimaBO = new ProdutoMateriaPrimaBO();
 		pnlMenuLateral = new JPanel();
 		
+		listaItensCompra = new ArrayList<>();
+		
 	}
 	
 	// Construtores
@@ -131,8 +137,33 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				getListaItensCompra().clear();
+								
+				Iterator<ProdutoMateriaPrimaVO> iProdutosMateriaPrima = getListaProdutosMateriaPrima().iterator();
+				ItemCompraVO itemCompra;
+				ProdutoMateriaPrimaVO produtoMateriaPrima;
+				
+				while(iProdutosMateriaPrima.hasNext()){
+										
+					produtoMateriaPrima = iProdutosMateriaPrima.next();
 
-				new GeradorView(new OrdemProducaoVO(), null).abrirTela();
+					if (produtoMateriaPrima.getQtde() < produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual()) {
+						itemCompra = new ItemCompraVO();
+						itemCompra.setProduto(produtoMateriaPrima.getMateriaPrima());
+						itemCompra.setQtde(produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual() - produtoMateriaPrima.getQtde());
+						itemCompra.setValor(produtoMateriaPrima.getMateriaPrima().getPrecoCusto());
+						getListaItensCompra().add(itemCompra);
+					}
+					
+				}
+				
+				if(getListaItensCompra().size() > 0){
+					new GeradorView(null, getListaItensCompra()).abrirTela();
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
+				}
 				
 			}
 
@@ -167,11 +198,12 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
 		setOrdemProducao(ordemProducao);
-		
+						
 		txtCodProdVenda.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtProdVenda.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProdVenda.setText(ordemProducao.getQtde().toString());
 		
+		setListaProdutosMateriaPrima(getOrdemProducao().getProdutoVenda().getReceita());
 		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
 		
 		abrirJanela();
@@ -322,6 +354,27 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 
 	public void setOrdemProducao(OrdemProducaoVO ordemProducao) {
 		this.ordemProducao = ordemProducao;
+	}
+
+
+	public List<ProdutoMateriaPrimaVO> getListaProdutosMateriaPrima() {
+		return listaProdutosMateriaPrima;
+	}
+
+
+	public void setListaProdutosMateriaPrima(
+			List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima) {
+		this.listaProdutosMateriaPrima = listaProdutosMateriaPrima;
+	}
+
+
+	public List<ItemCompraVO> getListaItensCompra() {
+		return listaItensCompra;
+	}
+
+
+	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
+		this.listaItensCompra = listaItensCompra;
 	}
 
 
