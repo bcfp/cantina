@@ -237,7 +237,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	}
 	
 	/**
-	 * Método para definir ação ao clicar em um item da tabela, método chamado por callback
+	 * Método para definir ação dar duplo clique em um item da tabela, método chamado por callback
 	 */
 	protected void mouseClickedTab() {
 		
@@ -245,17 +245,20 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-				if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
 				
-					// Traz o item do tipo T selecionado pelo usuário na tabela
-					T item = ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
-															
-					// Envia para o método abrirJanela da Dialog de opções o item selecionado, 
-					// a janela de consulta solicitante e a telaAlterar (Manter) que deverá ser chamada caso o usuário clique em 'Detalhar'
-					new DialogOpcoesView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaAlterar());
+				if (e.getClickCount() == 2) { 
+					if(getTabGeneric().getSelectedRow() != -1){ // acerto ref. clique com botão direito
+						
+						// Traz o item do tipo T selecionado pelo usuário na tabela
+						T item = ConsultarPanelView.this.getListaGenericos().get(getTabGeneric().getSelectedRow());	
+																
+						// Envia para o método abrirJanela da Dialog de opções o item selecionado, 
+						// a janela de consulta solicitante e a telaAlterar (Manter) que deverá ser chamada caso o usuário clique em 'Detalhar'
+						new DialogOpcoesView<T>().abrirJanela(item, ConsultarPanelView.this, getTelaAlterar());
 
+					}
 				}
+				
 			}
 		});
 	}

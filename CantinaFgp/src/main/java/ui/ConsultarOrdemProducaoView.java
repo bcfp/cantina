@@ -1,11 +1,12 @@
 ﻿package ui;
 
-import java.util.List;
-
 import interfaces.ITelaManter;
 
-import javax.swing.JButton;
+import java.util.List;
+
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import utils.BancoFake;
 import vo.OrdemProducaoVO;
@@ -13,9 +14,47 @@ import enumeradores.TipoSolicitacao;
 
 public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> {
 
+	// Atributos tela
+
+	private JLabel lblFiltro;
+	private JLabel lblCodOrdemProd;
+	private JLabel lblCodProd;
+	private JLabel lblStatus;
+	private JLabel lblDataInicial;
+	private JLabel lblDataFinal;
+	
+	private JTextField txtCodOrdemProd;
+	private JTextField txtCodProd;
+	private JTextField txtStatus;
+	private JTextField txtDataInicial;
+	private JTextField txtDataFinal;
+	
+	// Bloco de inicialização
+	
+	{
+
+		lblFiltro = new JLabel();
+		lblCodOrdemProd = new JLabel();
+		lblCodProd = new JLabel();
+		lblStatus = new JLabel();
+		lblDataInicial = new JLabel();
+		lblDataFinal = new JLabel();
+
+		txtCodOrdemProd = new JTextField();
+		txtCodOrdemProd = new JTextField();
+		txtCodOrdemProd = new JTextField();
+		txtCodOrdemProd = new JTextField();
+		txtCodOrdemProd = new JTextField();
+		
+	}
+	
+	// Construtores
+	
 	public ConsultarOrdemProducaoView() {
 		super("Ordem de Produção", new String[]{ "Código", "Data", "Produto", "Qtde", "Status"});
 	}
+	
+	// Métodos
 	
 	@Override
 	protected String[] definirGridItens(OrdemProducaoVO ordemProducao) {

@@ -72,12 +72,13 @@ public class ConsultarEstoqueView extends JPanel{
 	private List<OrdemProducaoVO> listaOrdemProducao;
 		
 	{
-		listaItensCompra = new ArrayList<ItemCompraVO>();
-		listaOrdemProducao = new ArrayList<OrdemProducaoVO>();
 		btnGerarCompra = new JButton("Gerar OC");
 		btnGerarCompra.setEnabled(false);
 		btnGerarOrdemProd = new JButton("Gerar OP");
 		btnGerarOrdemProd.setEnabled(false);
+		
+		listaItensCompra = new ArrayList<ItemCompraVO>();
+		listaOrdemProducao = new ArrayList<OrdemProducaoVO>();
 	}
 	
 	
@@ -187,13 +188,16 @@ public class ConsultarEstoqueView extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if(tabEstoque.getSelectedRow() != -1){
+				if(e.getClickCount()==2){
+					if(tabEstoque.getSelectedRow() != -1){
 
-					EstoqueProdutoVO estoque = BancoFake.listaEstoqueProduto.get(tabEstoque.getSelectedRow());	
-															
-					new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela(estoque.getProduto());
+						EstoqueProdutoVO estoque = BancoFake.listaEstoqueProduto.get(tabEstoque.getSelectedRow());	
+																
+						new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela(estoque.getProduto());
 
+					}
 				}
+				
 			}
 		});
 		
