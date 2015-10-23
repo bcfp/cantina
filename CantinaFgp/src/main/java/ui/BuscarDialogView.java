@@ -73,8 +73,9 @@ public class BuscarDialogView extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				
 				Map<String, String> parametros = new HashMap<String, String>();
-				
-				parametros.put(txtCodItem.getName(), txtCodItem.getText());
+
+				parametros.put(lblCodItem.getText(), txtCodItem.getText());
+				parametros.put(lblNomeItem.getText(), txtNomeItem.getText());
 				
 				listaItens = telaBuscar.pesquisar(parametros);
 				
@@ -91,7 +92,7 @@ public class BuscarDialogView extends JDialog{
 				if(e.getClickCount()==2){
 					if(tabItens.getSelectedRow() != -1){
 
-						telaBuscar.carregarItem(listaItens.get(tabItens.getSelectedRow()));
+						telaBuscar.carregarItemSelecionado(listaItens.get(tabItens.getSelectedRow()));
 						BuscarDialogView.this.dispose();
 						
 					}
@@ -105,22 +106,15 @@ public class BuscarDialogView extends JDialog{
 	}
 
 	private void carregarGridItens(List<GenericVO> listaItens) {
-
-		System.out.println("Carregou");
 		
 		modeloTabItens.setNumRows(0);
 		
 		if(listaItens != null){
 			
-			Iterator<GenericVO> iItem = listaItens.iterator();
-			
-			while(iItem.hasNext()){
-				
-				GenericVO item = iItem.next();
-				
-				modeloTabItens.addRow(telaBuscar.definirGridItens(item));	
-				
+			for (GenericVO item : listaItens) {
+				modeloTabItens.addRow(telaBuscar.definirGridBusca(item));
 			}
+
 		}
 		
 	}

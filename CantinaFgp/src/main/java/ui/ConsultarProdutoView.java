@@ -48,10 +48,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 
 	@Override
 	public List<ProdutoVO> consultar() {
-		
-		
-		
-		return null;
+		return BancoFake.listaProdutos;
 	}
 
 

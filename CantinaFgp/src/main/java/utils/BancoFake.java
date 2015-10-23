@@ -30,7 +30,8 @@ import vo.VendaVO;
 public class BancoFake {
 	
 	public static List<CompraVO> listaCompras;
-	public static List<GenericVO> listaProdutos; 
+	public static List<GenericVO> listaProdutosGeneric; 
+	public static List<ProdutoVO> listaProdutos; 
 	public static List<VendaVO> listaVendas; 
 	public static List<ClienteVO> listaClientes;
 	public static List<CantinaVO> listaCantinas;
@@ -39,6 +40,7 @@ public class BancoFake {
 	public static List<EstoqueProdutoVO> listaEstoqueProduto;
 	public static List<ItemCompraVO> listaItensCompra;
 	public static List<ProdutoMateriaPrimaVO> receita;
+	public static List<GenericVO> listaFuncCantinaGeneric;
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static MateriaPrimaVO matPrima2;
@@ -68,13 +70,21 @@ public class BancoFake {
 		cantina.setIdCantina(1l);
 		cantina.setNome("Cantina FGP");
 
+		// Funcionario
+		
 		func = new FuncionarioVO();
 		func.setCodPessoa("01");
 		func.setNome("Fabiano");
 		
+		// FuncCantina
+		
 		funcCantina = new FuncionarioCantinaVO();
 		funcCantina.setFuncionario(func);
 		funcCantina.setCantina(cantina);
+		
+		listaFuncCantinaGeneric = new ArrayList<GenericVO>();
+		
+		listaFuncCantinaGeneric.add(funcCantina);
 		
 		
 		// ordens producao
@@ -327,10 +337,15 @@ public class BancoFake {
 		cliente.setNome("Marcia Fernandes");
 		
 		listaClientes.add(cliente);
-		
-		listaProdutos = new ArrayList<GenericVO>();
 
+		listaProdutosGeneric = new ArrayList<GenericVO>();
+		listaProdutos = new ArrayList<ProdutoVO>();
+
+		listaProdutosGeneric.add(prodVenda);
+		listaProdutosGeneric.add(prodVenda2);
 		listaProdutos.add(prodVenda);
+		listaProdutos.add(prodVenda2);
+		listaProdutos.add(prodVenda3);
 
 		// -----
 

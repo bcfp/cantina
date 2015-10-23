@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
+import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
@@ -71,6 +72,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 	private List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima;
  	private OrdemProducaoVO ordemProducao;
 	private List<ItemCompraVO> listaItensCompra;
+	
+	private String acaoPesquisar;
+	private static final String PESQ_FUNC = "funcionario";
+	private static final String PESQ_PRODUTO = "produto";
 	
 	// Bloco de Inicialização
 
@@ -147,14 +152,10 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 				
 				getListaItensCompra().clear();
 								
-				Iterator<ProdutoMateriaPrimaVO> iProdutosMateriaPrima = getListaProdutosMateriaPrima().iterator();
 				ItemCompraVO itemCompra;
-				ProdutoMateriaPrimaVO produtoMateriaPrima;
 				
-				while(iProdutosMateriaPrima.hasNext()){
-										
-					produtoMateriaPrima = iProdutosMateriaPrima.next();
-
+				for (ProdutoMateriaPrimaVO produtoMateriaPrima : getListaProdutosMateriaPrima()) {
+					
 					if (produtoMateriaPrima.getQtde() < produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual()) {
 						itemCompra = new ItemCompraVO();
 						itemCompra.setProduto(produtoMateriaPrima.getMateriaPrima());
@@ -164,7 +165,6 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 					}
 					
 				}
-				
 				if(getListaItensCompra().size() > 0){
 					new GeradorView(null, getListaItensCompra()).abrirTela();
 				}
@@ -182,8 +182,24 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				acaoPesquisar = PESQ_PRODUTO;
+				
 				new BuscarDialogView(ManterOrdemProducao.this, 
 						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+												
+			}
+		});
+		
+		
+		btnConsultarFunc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				acaoPesquisar = PESQ_FUNC;
+				
+				new BuscarDialogView(ManterOrdemProducao.this, 
+						new String[] {"Código", "Nome"}).abrirJanela();
 												
 			}
 		});
@@ -195,12 +211,40 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 	
 	// Métodos Tela Busca
 	
+	/**
+	 * Carrega na tela ManterOrdemProducao o item selecionado na tela de consulta
+	 */
 	@Override
-	public void carregarItem(GenericVO item) {
+	public void carregarItemSelecionado(GenericVO item) {
 		
-		ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+		if(item instanceof ProdutoVendaVO){
+			
+			modeloTabMatPrimas.setNumRows(0);
+			
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			
+			txtCodProd.setText(produtoVenda.getCodProduto());
+			txtDescProd.setText(produtoVenda.getDescricao());
+			
+			List<ProdutoMateriaPrimaVO> receita = produtoVenda.getReceita();
+			
+			setListaProdutosMateriaPrima(receita);
+			carregarGridReceita(receita);
+			
+			btnGerarOC.setEnabled(true);
+
+		}
+		else{
+			if(item instanceof FuncionarioCantinaVO){
+				
+				FuncionarioCantinaVO funcionario = (FuncionarioCantinaVO) item;
+				
+				txtCodFunc.setText(funcionario.getFuncionario().getCodPessoa());
+				txtNomeFunc.setText(funcionario.getFuncionario().getNome());
+				
+			}
+		}
 		
-		txtCodProd.setText(produtoVenda.getCodProduto());
 		
 	}
 	
@@ -208,26 +252,56 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 	@Override
 	public List<GenericVO> pesquisar(Map<String, String> parametros) {
 		
-		System.out.println("Pesquisou");
-		return BancoFake.listaProdutos;
+		switch (acaoPesquisar) {
+		
+			case PESQ_PRODUTO:
+								
+				return BancoFake.listaProdutosGeneric;
+				
+			case PESQ_FUNC:
+				
+				return BancoFake.listaFuncCantinaGeneric;
+				
+			default:
+				
+				return null;
+				
+			}
 		
 	}
 
 
 	@Override
-	public String[] definirGridItens(GenericVO item) {
-		
-		System.out.println("Definiu grid");
-		
-		ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
-		
-		String[] registro = new String[3];
+	public String[] definirGridBusca(GenericVO item) {
+			
+		if(item instanceof ProdutoVendaVO){
+			
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			
+			String[] registro = new String[3];
 
-		registro[0] = produtoVenda.getCodProduto().toString();
-		registro[1] = produtoVenda.getDescricao();
-		registro[2] = produtoVenda.getPrecoVenda().toString();
+			registro[0] = produtoVenda.getCodProduto().toString();
+			registro[1] = produtoVenda.getDescricao();
+			registro[2] = produtoVenda.getPrecoVenda().toString();
+			
+			return registro;
+			
+		}
+		else if(item instanceof FuncionarioCantinaVO){
+				
+			FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) item;
+
+			String[] registro = new String[2];
+
+			registro[0] = funcionarioCantina.getFuncionario().getCodPessoa();
+			registro[1] = funcionarioCantina.getFuncionario().getNome();
+
+			return registro;
+			
+		}
+				
+		return null;
 		
-		return registro;
 	}
 
 	// Fim Métodos Tela Busca
@@ -320,7 +394,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 		int espXTxt = espXLbl + 90;
 		int espXTxt2 = espXTxt + 300;
 		int espY = 20;
-		int espEntre = 35;
+		int espEntre = 35;	
 		int altura = 30;
 
 		pnlCampos.setBounds(10, 10, widthCampos, 480);
