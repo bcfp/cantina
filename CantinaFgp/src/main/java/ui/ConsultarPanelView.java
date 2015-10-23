@@ -64,37 +64,37 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
-	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param titulosTab - Títulos das colunas da tabela de consulta
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulosTab) {
 		
-		criarPainel(tituloCabecalho, null, titulos, 10, 190, 665, 190);
+		criarPainel(tituloCabecalho, null, titulosTab, 10, 190, 665, 190);
 		
 	}
 	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
-	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param titulosTab - Títulos das colunas da tabela de consulta
 	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulosTab, List<T> listaGenericos) {
 		
-		criarPainel(tituloCabecalho, listaGenericos, titulos, 10, 190, 665, 190);
+		criarPainel(tituloCabecalho, listaGenericos, titulosTab, 10, 190, 665, 190);
 		
 	}
 	
 	/**
 	 * @param tituloCabecalho - Título da jabela de consulta
-	 * @param titulos - Títulos das colunas da tabela de consulta
+	 * @param titulosTab - Títulos das colunas da tabela de consulta
 	 * @param listaGenericos - Lista de itens do tipo definido no Generic Type que serão carregados na tabela
 	 * @param espX - Distância da lateral esquerda da tabela de consulta
 	 * @param espY - Distância do topo da tabela de consulta
 	 * @param larg - Largura da tabela de consulta
 	 * @param alt - Altura da tabela de consulta
 	 */
-	public ConsultarPanelView(String tituloCabecalho, String[] titulos, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
+	public ConsultarPanelView(String tituloCabecalho, String[] titulosTab, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
 		
-		criarPainel(tituloCabecalho, listaGenericos, titulos, espX, espY, larg, alt);
+		criarPainel(tituloCabecalho, listaGenericos, titulosTab, espX, espY, larg, alt);
 		
 	}
 	
@@ -102,7 +102,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	// Métodos Concretos
 	
 	// Método utilizado para criar o panel de consulta
-	private void criarPainel(String tituloCabecalho, List<T> listaGenericos, String[] titulos,  int espX, int espY, int larg, int alt){
+	private void criarPainel(String tituloCabecalho, List<T> listaGenericos, String[] titulosTab,  int espX, int espY, int larg, int alt){
 		
 		pnlCabecalho = new JPanel();
 		pnlCabecalho.setBackground(Color.BLACK);
@@ -147,7 +147,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		barraTabGeneric = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		// Insere títulos passados no construtor pela classe filha
-		modeloTabGeneric.setColumnIdentifiers(titulos);
+		modeloTabGeneric.setColumnIdentifiers(titulosTab);
 		
 		tabGeneric.setModel(modeloTabGeneric);
 		tabGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);

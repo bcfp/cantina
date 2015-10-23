@@ -15,6 +15,7 @@ import vo.EstoqueProdutoVendaVO;
 import vo.FormaPgtoVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
+import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.LoteVO;
 import vo.MateriaPrimaVO;
@@ -29,7 +30,7 @@ import vo.VendaVO;
 public class BancoFake {
 	
 	public static List<CompraVO> listaCompras;
-	public static List<ProdutoVO> listaProdutos; 
+	public static List<GenericVO> listaProdutos; 
 	public static List<VendaVO> listaVendas; 
 	public static List<ClienteVO> listaClientes;
 	public static List<CantinaVO> listaCantinas;
@@ -327,7 +328,7 @@ public class BancoFake {
 		
 		listaClientes.add(cliente);
 		
-		listaProdutos = new ArrayList<ProdutoVO>();
+		listaProdutos = new ArrayList<GenericVO>();
 
 		listaProdutos.add(prodVenda);
 

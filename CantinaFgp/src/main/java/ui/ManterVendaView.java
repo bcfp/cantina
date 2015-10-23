@@ -1,7 +1,5 @@
 ﻿package ui;
 
-import interfaces.ITelaConsultar;
-
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -9,8 +7,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import vo.ProdutoVendaVO;
-import vo.StatusVO;
+import vo.GenericVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
 

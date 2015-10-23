@@ -3,6 +3,7 @@
 import javax.swing.JOptionPane;
 
 import vo.CantinaVO;
+import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterCantinaView extends ManterDialogView<CantinaVO> {
@@ -47,7 +48,6 @@ public class ManterCantinaView extends ManterDialogView<CantinaVO> {
 	protected boolean habilitarCampos() {
 		return false;
 	}
-
 
 
 }

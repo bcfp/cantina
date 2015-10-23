@@ -2,6 +2,9 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXDatePicker;
 
 import vo.CompraVO;
+import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
 import enumeradores.TipoSolicitacao;
@@ -51,9 +55,12 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	private JLabel lblTitFornecedor;
 	private JLabel lblCodFornCompra;
 	private JLabel lblFornCompra;
+	private JLabel lblValorTotal;
+	private JLabel lblTotal;
+	private Font fonteTotal;
 	
-	private JButton btnBuscarProd;
-	private JButton btnBuscarForn;
+	private JButton btnConsultarProd;
+	private JButton btnConsultarForn;
 	private JButton btnAddBuscarProd;
 	
 	private JPanel pnlCampos;
@@ -65,13 +72,6 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	{
 		
 		int widthCampos = this.getWidth();
-
-		int espXLbl = 20;
-		int espXTxt = 110;
-		int	espXForn = 350;
-		int espY = 20;
-		int espEntre = 35;
-		int altura = 30;
 
 		pnlCampos = new JPanel();
 		pnlCampos.setBounds(10, 10, widthCampos-25, 480);
@@ -95,6 +95,11 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		lblTitFornecedor = new JLabel("FORNECEDOR");
 		lblCodFornCompra = new JLabel("Código");
 		lblFornCompra = new JLabel("Fornecedor");
+		lblTotal = new JLabel("TOTAL");	
+		fonteTotal = new Font("Verdana", Font.BOLD, 20);
+		lblTotal.setFont(fonteTotal);
+		lblValorTotal = new JLabel("R$ 0,00");
+		lblValorTotal.setFont(fonteTotal);
 		
 		txtCodOc = new JTextField();
 		txtCodOc.setEnabled(false);
@@ -106,8 +111,25 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		txtFornCompra = new JTextField();
 		txtFornCompra.setEnabled(false);
 
-		btnBuscarForn = new JButton("Consultar");
-		btnBuscarProd = new JButton("Consultar");
+		btnConsultarForn = new JButton("Consultar");
+		btnConsultarProd = new JButton("Consultar");
+		btnConsultarProd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				
+			}
+			
+		});
+		
+		int espXLbl = 20;
+		int espXTxt = espXLbl + 90;
+		int	espXForn = 350;
+		int espY = 20;
+		int espEntre = 35;
+		int altura = 30;
 		
 		lblCodOc.setBounds(espXLbl, espY, 50, altura);
 		lblTitProduto.setBounds(espXLbl, espY + espEntre, 80, altura);
@@ -122,7 +144,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		txtQtdeProdCompra.setBounds(espXTxt, espY + espEntre * 4, 70, altura);
 		txtValorProdCompra.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
 		
-		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
+		btnConsultarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
 		
 		lblStatusCompra.setBounds(480, espY, 80, altura);
 		cbxStatusCompra.setBounds(530, espY, 130, altura);
@@ -137,10 +159,13 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		txtCodFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 2, 70, altura);
 		txtFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 3, 200, altura);
 
-		btnBuscarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
+		btnConsultarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
 		
-		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 5, 80, altura);
-		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 5, 120, altura);
+		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
+		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 4, 120, altura);
+
+		lblTotal.setBounds(espXLbl + espXForn, espY + espEntre * 5 + 5, 80, altura);
+		lblValorTotal.setBounds(espXTxt + espXForn, espY + espEntre * 5 + 5, 120, altura);
 		
 		btnAddBuscarProd = new JButton("+");
 		btnAddBuscarProd.setBounds(190, espY + espEntre * 5, 50, altura);
@@ -175,6 +200,8 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		pnlCampos.add(cbxStatusCompra);
 		pnlCampos.add(dtpDataCompra);
 		pnlCampos.add(cbxFormaPgto);
+		pnlCampos.add(lblValorTotal);
+		pnlCampos.add(lblTotal);
 		pnlCampos.add(lblFormaPgto);
 		pnlCampos.add(lblStatusCompra);
 		pnlCampos.add(lblDataCompra);
@@ -194,8 +221,8 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 		pnlCampos.add(txtProdCompra);
 		pnlCampos.add(txtQtdeProdCompra);
 		pnlCampos.add(txtValorProdCompra);
-		pnlCampos.add(btnBuscarProd);
-		pnlCampos.add(btnBuscarForn);
+		pnlCampos.add(btnConsultarProd);
+		pnlCampos.add(btnConsultarForn);
 		pnlCampos.add(btnAddBuscarProd);
 
 		pnlCampos.setLayout(null);
@@ -268,6 +295,6 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	@Override
 	protected boolean habilitarCampos() {
 		return false;
-	}	
+	}
 
 }

@@ -51,7 +51,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 		
 		
 		
-		return BancoFake.listaProdutos;
+		return null;
 	}
 
 

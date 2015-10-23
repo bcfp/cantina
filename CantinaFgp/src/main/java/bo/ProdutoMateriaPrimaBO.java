@@ -1,5 +1,7 @@
 package bo;
 
+import java.util.List;
+
 import vo.ProdutoMateriaPrimaVO;
 import daoimpl.ProdutoMateriaPrimaDAO;
 
@@ -13,8 +15,8 @@ public class ProdutoMateriaPrimaBO {
 	
 	}
 	
-	public ProdutoMateriaPrimaVO buscaReceitaPorIdProduto(Long idProduto){
+	public List<ProdutoMateriaPrimaVO> buscaReceitaPorIdProduto(Long idProduto){
 		
-		return receitaDao.consultarPorIdProduto(idProduto);
+		return receitaDao.consultarReceitaPorIdProduto(idProduto);
 	}
 }

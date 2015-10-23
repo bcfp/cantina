@@ -3,6 +3,7 @@ package ui;
 import javax.swing.JOptionPane;
 
 import vo.FuncionarioVO;
+import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
@@ -48,6 +49,6 @@ public class ManterFuncionarioView extends ManterDialogView<FuncionarioVO> {
 	protected void limparCampos() {
 		
 		
-	}	
+	}
 
 }

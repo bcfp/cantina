@@ -1,5 +1,7 @@
 package ui;
 
+import interfaces.ITelaBuscar;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -8,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,27 +22,25 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import utils.UtilFuncoes;
-import vo.CompraVO;
-import vo.EstoqueProdutoVO;
+import utils.BancoFake;
+import vo.GenericVO;
 import vo.ItemCompraVO;
-import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
-import vo.StatusVO;
-import bo.ProdutoVendaBO;
+import vo.ProdutoVendaVO;
 import bo.ProdutoMateriaPrimaBO;
-import enumeradores.TipoProduto;
+import bo.ProdutoVendaBO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
+public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> implements ITelaBuscar {
 
 	private JComboBox<String> cbxStatus;
 	
 	private JTextField txtCodOp;
-	private JTextField txtCodProdVenda;
-	private JTextField txtProdVenda;
-	private JTextField txtQtdeProdVenda;
+	private JTextField txtCodProd;
+	private JTextField txtDescProd;
+	private JTextField txtQtdeProd;
+	private JTextField txtCodFunc;
 	private JTextField txtNomeFunc;
 
 	private JLabel lblStatus;
@@ -50,10 +51,12 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	private JLabel lblProduto;
 	private JLabel lblMatPrima;	
 	private JLabel lblFuncionario;
-	private JLabel lblNomeFuncionario;
+	private JLabel lblCodFunc;
+	private JLabel lblNomeFunc;
 	
 	private JButton btnGerarOC;
 	private JButton btnConsultarProd;
+	private JButton btnConsultarFunc;
 
 	private JTable tabMatPrimas;
 	private DefaultTableModel modeloTabMatPrimas;
@@ -83,18 +86,22 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		lblProduto = new JLabel("PRODUTO");
 		lblFuncionario = new JLabel("FUNCIONARIO");
 		lblMatPrima = new JLabel("RECEITA");
-		lblNomeFuncionario = new JLabel("Nome:");
+		lblCodFunc = new JLabel("Código");
+		lblNomeFunc = new JLabel("Nome");
 
 		txtCodOp = new JTextField();
 		txtCodOp.setEnabled(false);
-		txtCodProdVenda = new JTextField();
-		txtProdVenda = new JTextField();
-		txtQtdeProdVenda = new JTextField();
+		txtCodProd = new JTextField();
+		txtDescProd = new JTextField();
+		txtQtdeProd = new JTextField();
+		txtCodFunc = new JTextField();
 		txtNomeFunc = new JTextField();
 		
 		btnGerarOC = new JButton("Gerar OC");
 		
 		btnConsultarProd = new JButton("Consultar");
+		btnConsultarFunc = new JButton("Consultar");
+		
 		tabMatPrimas = new JTable();
 		modeloTabMatPrimas = new DefaultTableModel() {
 
@@ -175,33 +182,64 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				new ConsultarProdutosDialogView().abrirJanela(txtCodProdVenda.getText(), txtNomeFunc.getText());
-				
-				ProdutoMateriaPrimaVO receita = produtoMateriaPrimaBO.buscaReceitaPorIdProduto(1l);
-				
-				String[] registro = new String[4];
-				
-				registro[0] = receita.getMateriaPrima().getCodProduto();
-				registro[1] = receita.getMateriaPrima().getDescricao();
-				registro[2] = String.valueOf(receita.getQtde());
-				
-				modeloTabMatPrimas.addRow(registro);
-				
+				new BuscarDialogView(ManterOrdemProducao.this, 
+						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+												
 			}
 		});
 		
 		definicoesPagina();
 		
 	}
+	
+	
+	// Métodos Tela Busca
+	
+	@Override
+	public void carregarItem(GenericVO item) {
+		
+		ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+		
+		txtCodProd.setText(produtoVenda.getCodProduto());
+		
+	}
+	
 
+	@Override
+	public List<GenericVO> pesquisar(Map<String, String> parametros) {
+		
+		System.out.println("Pesquisou");
+		return BancoFake.listaProdutos;
+		
+	}
+
+
+	@Override
+	public String[] definirGridItens(GenericVO item) {
+		
+		System.out.println("Definiu grid");
+		
+		ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+		
+		String[] registro = new String[3];
+
+		registro[0] = produtoVenda.getCodProduto().toString();
+		registro[1] = produtoVenda.getDescricao();
+		registro[2] = produtoVenda.getPrecoVenda().toString();
+		
+		return registro;
+	}
+
+	// Fim Métodos Tela Busca
+	
 	@Override
 	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
 		setOrdemProducao(ordemProducao);
 						
-		txtCodProdVenda.setText(ordemProducao.getProdutoVenda().getCodProduto());
-		txtProdVenda.setText(ordemProducao.getProdutoVenda().getDescricao());
-		txtQtdeProdVenda.setText(ordemProducao.getQtde().toString());
+		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
+		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
+		txtQtdeProd.setText(ordemProducao.getQtde().toString());
 		
 		setListaProdutosMateriaPrima(getOrdemProducao().getProdutoVenda().getReceita());
 		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
@@ -263,12 +301,13 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	}
 	
 	private void definicoesPagina(){
-		
-		txtProdVenda.setEditable(false);
+
+		txtDescProd.setEditable(false);
+		txtNomeFunc.setEditable(false);
 		
 		if(getOrdemProducao()!=null){
 			btnConsultarProd.setVisible(false);
-			txtCodProdVenda.setEditable(false);
+			txtCodProd.setEditable(false);
 		}
 		else{
 			btnGerarOC.setEnabled(false);
@@ -277,7 +316,9 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		int widthCampos = this.getWidth() - 110;
 
 		int espXLbl = 20;
-		int espXTxt = 110;
+		int espXLbl2 = 350;
+		int espXTxt = espXLbl + 90;
+		int espXTxt2 = espXTxt + 300;
 		int espY = 20;
 		int espEntre = 35;
 		int altura = 30;
@@ -286,27 +327,31 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
-		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
 
-		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
 		lblCodOp.setBounds(espXLbl, espY, 50, altura);
+		txtCodOp.setBounds(espXTxt, espY, 70, altura);
+		
+		lblStatus.setBounds(espXLbl + 200, espY, 50, altura);
+		cbxStatus.setBounds(espXLbl + 250, espY, 120, altura);
+		
 		lblProduto.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
-		lblFuncionario.setBounds(espXLbl + 350, espY + espEntre * 2, 80, altura );
-		lblNomeFuncionario.setBounds(espXLbl + 350, espY + espEntre * 3, 80, altura);
 		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
 		lblProdVenda.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
 		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
-
-		txtCodOp.setBounds(espXTxt, espY, 70, altura);
-		txtCodProdVenda.setBounds(espXTxt, espY + espEntre * 3, 70, altura);
-		txtProdVenda.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
-		txtQtdeProdVenda.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
-		txtNomeFunc.setBounds(espXTxt + 300, espY + espEntre * 3, 150, altura);
-
 		
-		btnConsultarProd.setBounds(190, espY + espEntre * 3, 100, altura);
-				
+		txtCodProd.setBounds(espXTxt, espY + espEntre * 3, 50, altura);
+		btnConsultarProd.setBounds(espXTxt + 60, espY + espEntre * 3, 90, altura);
+		txtDescProd.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
+		txtQtdeProd.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
 
+		lblFuncionario.setBounds(espXLbl2, espY + espEntre * 2, 80, altura);
+		lblCodFunc.setBounds(espXLbl2, espY + espEntre * 3, 80, altura);
+		lblNomeFunc.setBounds(espXLbl2, espY + espEntre * 4, 80, altura);
+
+		txtCodFunc.setBounds(espXTxt2, espY + espEntre * 3, 50, altura);
+		btnConsultarFunc.setBounds(espXTxt2 + 60, espY + espEntre * 3, 90, altura);
+		txtNomeFunc.setBounds(espXTxt2, espY + espEntre * 4, 150, altura);
+		
 		tabMatPrimas.setModel(modeloTabMatPrimas);
 
 		barraTabMatPrimas.setViewportView(tabMatPrimas);
@@ -325,12 +370,15 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 		pnlCampos.add(lblQtdeProdVenda);
 		pnlCampos.add(lblMatPrima);
 		pnlCampos.add(txtCodOp);
-		pnlCampos.add(txtCodProdVenda);
-		pnlCampos.add(txtProdVenda);
-		pnlCampos.add(txtQtdeProdVenda);
+		pnlCampos.add(txtCodProd);
+		pnlCampos.add(txtDescProd);
+		pnlCampos.add(txtQtdeProd);
 		pnlCampos.add(btnConsultarProd);
+		pnlCampos.add(btnConsultarFunc);
 		pnlCampos.add(lblFuncionario);
-		pnlCampos.add(lblNomeFuncionario);
+		pnlCampos.add(lblCodFunc);
+		pnlCampos.add(lblNomeFunc);
+		pnlCampos.add(txtCodFunc);
 		pnlCampos.add(txtNomeFunc);
 
 		adicionarComponenteCentro(pnlCampos);
@@ -376,6 +424,11 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> {
 	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
 		this.listaItensCompra = listaItensCompra;
 	}
+
+
+
+
+
 
 
 }

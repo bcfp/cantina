@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 import sun.management.jdp.JdpGenericPacket;
+import vo.GenericVO;
 import vo.ProdutoVO;
 import vo.UnidadeProdutoVO;
 import enumeradores.TipoSolicitacao;

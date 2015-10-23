@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import enumeradores.TipoSolicitacao;
 import interfaces.ITelaConsultar;
 import vo.ClienteVO;
+import vo.GenericVO;
 
 public class ManterClienteView extends ManterDialogView<ClienteVO> {
 
