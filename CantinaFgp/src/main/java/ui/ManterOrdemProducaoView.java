@@ -23,17 +23,20 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
+import vo.FornecedorProdutoVO;
+import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
+import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
 import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> implements ITelaBuscar {
+public class ManterOrdemProducaoView extends ManterDialogView<OrdemProducaoVO> implements ITelaBuscar {
 
 	private JComboBox<String> cbxStatus;
 	
@@ -135,7 +138,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 	
 	// Construtores
 	
-	public ManterOrdemProducao(TipoSolicitacao solicitacao, String tituloCabecalho) {
+	public ManterOrdemProducaoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	
@@ -181,13 +184,14 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+								
 				acaoPesquisar = PESQ_PRODUTO;
 				
-				new BuscarDialogView(ManterOrdemProducao.this, 
+				new BuscarDialogView(ManterOrdemProducaoView.this, 
 						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
 												
 			}
+			
 		});
 		
 		
@@ -198,7 +202,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 				
 				acaoPesquisar = PESQ_FUNC;
 				
-				new BuscarDialogView(ManterOrdemProducao.this, 
+				new BuscarDialogView(ManterOrdemProducaoView.this, 
 						new String[] {"Código", "Nome"}).abrirJanela();
 												
 			}
@@ -272,7 +276,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 
 
 	@Override
-	public String[] definirGridTelaBusca(GenericVO item) {
+	public String[] carregarGridTelaBusca(GenericVO item) {
 			
 		if(item instanceof ProdutoVendaVO){
 			

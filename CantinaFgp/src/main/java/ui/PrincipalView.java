@@ -263,7 +263,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();;
+				new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela();;
 				
 			}
 		});

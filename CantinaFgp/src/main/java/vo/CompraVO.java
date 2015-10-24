@@ -17,7 +17,7 @@ public class CompraVO extends GenericVO {
 	private UnidadeProdutoVO unidade;
 	
 	public CompraVO() {
-
+		
 	}
 	
 	public CompraVO(IGeradorCompra geradorCompra, List<ItemCompraVO> itensCompra) {

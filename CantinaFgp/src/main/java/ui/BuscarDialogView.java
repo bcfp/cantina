@@ -112,7 +112,7 @@ public class BuscarDialogView extends JDialog{
 		if(listaItens != null){
 			
 			for (GenericVO item : listaItens) {
-				modeloTabItens.addRow(telaBuscar.definirGridTelaBusca(item));
+				modeloTabItens.addRow(telaBuscar.carregarGridTelaBusca(item));
 			}
 
 		}

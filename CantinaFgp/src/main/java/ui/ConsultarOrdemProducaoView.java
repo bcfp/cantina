@@ -126,12 +126,12 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	
 	@Override
 	protected ITelaManter<OrdemProducaoVO> getTelaIncluir() {
-		return new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção");
+		return new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção");
 	}
 
 	@Override
 	protected ITelaManter<OrdemProducaoVO> getTelaAlterar() {
-		return new ManterOrdemProducao(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
+		return new ManterOrdemProducaoView(TipoSolicitacao.DETALHAR, "Detalhar Ordem de Produção");
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import vo.GenericVO;
 public interface ITelaBuscar {
 
 	List<GenericVO> pesquisarItem(Map<String, String> parametros);
-	void carregarItemSelecionado(GenericVO objeto);
-	String[] definirGridTelaBusca(GenericVO item);
+	void carregarItemSelecionado(GenericVO item);
+	String[] carregarGridTelaBusca(GenericVO item);
 	
 }

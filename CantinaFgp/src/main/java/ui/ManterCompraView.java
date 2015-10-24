@@ -23,9 +23,15 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import utils.BancoFake;
 import vo.CompraVO;
+import vo.FornecedorProdutoVO;
+import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
+import vo.ProdutoMateriaPrimaVO;
+import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import enumeradores.TipoSolicitacao;
 
@@ -70,6 +76,12 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 	private JTable tabItemCompra;
 	private DefaultTableModel modeloTabItemCompra;
 	private JScrollPane barraTabItemCompra;
+	
+	private String acaoPesquisar;
+	private static final String PESQ_FUNC = "funcionario";
+	private static final String PESQ_PRODUTO = "produto";
+	
+	private List<ItemCompraVO> listaItensCmpra;
 
 	
 	{
@@ -119,10 +131,13 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		btnConsultarProd.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				
+				acaoPesquisar = PESQ_PRODUTO;
 				
-				
+				new BuscarDialogView(ManterCompraView.this, 
+						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+												
 			}
 			
 		});
@@ -304,20 +319,77 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 
 	@Override
 	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
+				
+		switch (acaoPesquisar) {
+			
+			case PESQ_PRODUTO:
+				
+				return BancoFake.listaProdutosGeneric;
+				
+			case PESQ_FUNC:
+				
+				return BancoFake.listaFuncCantinaGeneric;
+
+		}
 		
 		return null;
 	}
 
 
 	@Override
-	public void carregarItemSelecionado(GenericVO objeto) {
+	public void carregarItemSelecionado(GenericVO item) {
 		
+		
+		if(item instanceof ProdutoVendaVO){
+						
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			
+			txtCodProdCompra.setText(produtoVenda.getCodProduto());
+			txtProdCompra.setText(produtoVenda.getDescricao());
+			
+		}
+		else{
+			if(item instanceof FornecedorVO){
+			
+				FornecedorVO fornecedor = (FornecedorVO) item;
+				
+				// TODO continuar aqui - Bruno
+				
+				txtCodFornCompra.setText("");
+				
+			}
+			
+		}
 		
 	}
 
 
 	@Override
-	public String[] definirGridTelaBusca(GenericVO item) {
+	public String[] carregarGridTelaBusca(GenericVO item) {
+		
+		if(item instanceof ProdutoVendaVO){
+			
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			
+			String[] registro = new String[3];
+
+			registro[0] = produtoVenda.getCodProduto().toString();
+			registro[1] = produtoVenda.getDescricao();
+			registro[2] = produtoVenda.getPrecoVenda().toString();
+			
+			return registro;
+			
+		}
+		else{
+			if(item instanceof FornecedorVO){
+			
+				
+				
+				txtCodFornCompra.setText("");
+				
+			}
+			
+		}
 		
 		return null;
 	}

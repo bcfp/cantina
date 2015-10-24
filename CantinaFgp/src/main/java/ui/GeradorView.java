@@ -215,7 +215,7 @@ public class GeradorView extends JDialog {
 				}
 				else{
 					GeradorView.this.dispose();
-					new ManterOrdemProducao(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
+					new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
 					.abrirJanela(getListaOrdensProducao().get(tabProdutos.getSelectedRow()));
 				}
 				
