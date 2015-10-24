@@ -77,7 +77,7 @@ public class BuscarDialogView extends JDialog{
 				parametros.put(lblCodItem.getText(), txtCodItem.getText());
 				parametros.put(lblNomeItem.getText(), txtNomeItem.getText());
 				
-				listaItens = telaBuscar.pesquisar(parametros);
+				listaItens = telaBuscar.pesquisarItem(parametros);
 				
 				carregarGridItens(listaItens);
 				
@@ -112,7 +112,7 @@ public class BuscarDialogView extends JDialog{
 		if(listaItens != null){
 			
 			for (GenericVO item : listaItens) {
-				modeloTabItens.addRow(telaBuscar.definirGridBusca(item));
+				modeloTabItens.addRow(telaBuscar.definirGridTelaBusca(item));
 			}
 
 		}

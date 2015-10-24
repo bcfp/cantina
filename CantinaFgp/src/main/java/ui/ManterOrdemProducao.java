@@ -250,7 +250,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 	
 
 	@Override
-	public List<GenericVO> pesquisar(Map<String, String> parametros) {
+	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
 		
 		switch (acaoPesquisar) {
 		
@@ -272,7 +272,7 @@ public class ManterOrdemProducao extends ManterDialogView<OrdemProducaoVO> imple
 
 
 	@Override
-	public String[] definirGridBusca(GenericVO item) {
+	public String[] definirGridTelaBusca(GenericVO item) {
 			
 		if(item instanceof ProdutoVendaVO){
 			

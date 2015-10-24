@@ -1,5 +1,7 @@
 package ui;
 
+import interfaces.ITelaBuscar;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -7,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,7 +29,7 @@ import vo.ItemCompraVO;
 import vo.StatusVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterCompraView extends ManterDialogView<CompraVO> {
+public class ManterCompraView extends ManterDialogView<CompraVO> implements ITelaBuscar {
 	
 	// Atributos Tela
 	
@@ -295,6 +298,28 @@ public class ManterCompraView extends ManterDialogView<CompraVO> {
 	@Override
 	protected boolean habilitarCampos() {
 		return false;
+	}
+
+	// Métodos ITelaBuscar
+
+	@Override
+	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
+		
+		return null;
+	}
+
+
+	@Override
+	public void carregarItemSelecionado(GenericVO objeto) {
+		
+		
+	}
+
+
+	@Override
+	public String[] definirGridTelaBusca(GenericVO item) {
+		
+		return null;
 	}
 
 }
