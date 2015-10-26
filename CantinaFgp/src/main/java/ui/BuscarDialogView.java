@@ -126,7 +126,6 @@ public class BuscarDialogView extends JDialog{
 		
 		pnlPesquisa.setLayout(null);
 		pnlPesquisa.setBounds(0,0,700,200);
-		pnlPesquisa.setBackground(Color.BLACK);
 		
 		modeloTabItens = new DefaultTableModel() {
 
