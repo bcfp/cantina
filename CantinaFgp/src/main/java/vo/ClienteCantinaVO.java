@@ -2,7 +2,7 @@ package vo;
 
 import java.util.List;
 
-public class ClienteCantinaVO {
+public class ClienteCantinaVO extends GenericVO {
 
 	private Long idClienteCantina;
 	private ClienteVO cliente;

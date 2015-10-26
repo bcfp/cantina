@@ -7,6 +7,7 @@ import interfaces.ITelaManter;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import ui.templates.ConsultarPanelView;
 import utils.BancoFake;
 import vo.CantinaVO;
 import enumeradores.TipoSolicitacao;

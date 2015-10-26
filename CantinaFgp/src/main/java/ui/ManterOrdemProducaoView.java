@@ -22,6 +22,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import ui.templates.BuscarDialogView;
+import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.FornecedorProdutoVO;
 import vo.FornecedorVO;
@@ -36,7 +38,7 @@ import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterOrdemProducaoView extends ManterDialogView<OrdemProducaoVO> implements ITelaBuscar {
+public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
 
 	private JComboBox<String> cbxStatus;
 	

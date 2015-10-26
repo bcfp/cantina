@@ -1,4 +1,4 @@
-﻿package ui;
+﻿package ui.templates;
 
 import interfaces.ITelaConsultar;
 import interfaces.ITelaManter;
@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import ui.DialogOpcoesView;
 import vo.GenericVO;
 
 
@@ -93,6 +94,20 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * @param alt - Altura da tabela de consulta
 	 */
 	public ConsultarPanelView(String tituloCabecalho, String[] titulosTab, List<T> listaGenericos, int espX, int espY, int larg, int alt) {
+		
+		criarPainel(tituloCabecalho, listaGenericos, titulosTab, espX, espY, larg, alt);
+		
+	}
+	
+	/**
+	 * @param tituloCabecalho - Título da jabela de consulta
+	 * @param titulosTab - Títulos das colunas da tabela de consulta
+	 * @param espX - Distância da lateral esquerda da tabela de consulta
+	 * @param espY - Distância do topo da tabela de consulta
+	 * @param larg - Largura da tabela de consulta
+	 * @param alt - Altura da tabela de consulta
+	 */
+	public ConsultarPanelView(String tituloCabecalho, String[] titulosTab, int espX, int espY, int larg, int alt) {
 		
 		criarPainel(tituloCabecalho, listaGenericos, titulosTab, espX, espY, larg, alt);
 		

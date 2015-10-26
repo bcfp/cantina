@@ -21,16 +21,17 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BuscarDialogView;
+import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.ClienteVO;
-import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.ItemVendaVO;
 import vo.ProdutoVendaVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaBuscar {
+public class ManterVendaView extends ManterPanelView<VendaVO> implements ITelaBuscar {
 
 	// Atributos Tela
 	
@@ -61,7 +62,6 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 	private JLabel lblCodCliente;
 	private JLabel lblCliente;
 	private JLabel lblCodFuncionario;
-	private JLabel lblFuncionario;
 	private JLabel lblStatusVenda;
 	private JLabel lblDataVenda;
 	private JLabel lblFormaPgto;
@@ -117,17 +117,22 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 		lblTotal.setFont(fonteTotal);
 		lblValorTotal = new JLabel("R$ 0,00");
 		lblValorTotal.setFont(fonteTotal);
+		lblDescProdVenda = new JLabel("Desconto");
+		lblCodFuncionario = new JLabel("Funcionário");
 		
 		txtCodVenda = new JTextField();
 		txtCodProdVenda = new JTextField();
 		txtProdVenda = new JTextField();
+		txtProdVenda.setEditable(false);
 		txtQtdeProdVenda = new JTextField();
 		txtValorProdVenda = new JTextField();
 		txtDescProdVenda = new JTextField();
 		txtCodCliente = new JTextField();
 		txtCliente = new JTextField();
+		txtCliente.setEditable(false);
 		txtCodFuncionario = new JTextField();
 		txtFuncionario = new JTextField();
+		txtFuncionario.setEditable(false);
 		
 		btnBuscarCliente = new JButton("Consultar");
 		btnBuscarCliente.addActionListener(new ActionListener() {
@@ -164,46 +169,50 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 		int espEntre = 35;
 		int altura = 30;
 		
+		lblStatusVenda.setBounds(400, espY + espEntre, 70, altura);
+		cbxStatusVenda.setBounds(460, espY + espEntre, 180, altura);
+		
+		lblDataVenda.setBounds(400, espY, 80, altura);
+		dtpDataVenda.setBounds(460, espY, 130, altura);
+
 		lblCodVenda.setBounds(espXLbl, espY, 50, altura);
-		lblTitProduto.setBounds(espXLbl, espY + espEntre, 80, altura);
-		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 2, 50, altura);
-		lblProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
-		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 4, 80, altura);
-		lblValorProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+		lblCodFuncionario.setBounds(espXLbl, espY + espEntre, 80, altura);
+		lblTitProduto.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
+		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
+		lblProdVenda.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
+		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+		lblValorProdVenda.setBounds(espXLbl, espY + espEntre * 6, 80, altura);
 
 		txtCodVenda.setBounds(espXTxt, espY, 70, altura);
-		txtCodProdVenda.setBounds(espXTxt, espY + espEntre * 2, 70, altura);
-		txtProdVenda.setBounds(espXTxt, espY + espEntre * 3, 220, altura);
-		txtQtdeProdVenda.setBounds(espXTxt, espY + espEntre * 4, 70, altura);
-		txtValorProdVenda.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		txtCodFuncionario.setBounds(espXTxt, espY + espEntre, 70, altura);
+		txtFuncionario.setBounds(espXTxt + 75, espY + espEntre, 180, altura);
+		txtCodProdVenda.setBounds(espXTxt, espY + espEntre * 3, 70, altura);
+		txtProdVenda.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
+		txtQtdeProdVenda.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		txtValorProdVenda.setBounds(espXTxt, espY + espEntre * 6, 70, altura);
 		
-		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 3, 100, altura);
 		
-		lblStatusVenda.setBounds(480, espY, 80, altura);
-		cbxStatusVenda.setBounds(530, espY, 130, altura);
+		lblTitCliente.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
+		lblCodCliente.setBounds(espXLbl + espXForn, espY + espEntre * 3, 80, altura);
+		lblCliente.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
 		
-		lblDataVenda.setBounds(250, espY, 80, altura);
-		dtpDataVenda.setBounds(290, espY, 140, altura);
-		
-		lblTitCliente.setBounds(espXLbl + espXForn, espY + espEntre, 80, altura);
-		lblCodCliente.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
-		lblCliente.setBounds(espXLbl + espXForn, espY + espEntre * 3, 80, altura);
-		
-		txtCodCliente.setBounds(espXTxt + espXForn, espY + espEntre * 2, 70, altura);
-		txtCliente.setBounds(espXTxt + espXForn, espY + espEntre * 3, 200, altura);
+		txtCodCliente.setBounds(espXTxt + espXForn, espY + espEntre * 3, 70, altura);
+		txtCliente.setBounds(espXTxt + espXForn, espY + espEntre * 4, 200, altura);
 
-		btnBuscarCliente.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarCliente.setBounds(espXTxt + espXForn + 80, espY + espEntre * 3, 100, altura);
 		
-		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
-		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 4, 120, altura);
+		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 5, 80, altura);
+		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 5, 120, altura);
 
-		lblTotal.setBounds(espXLbl + espXForn, espY + espEntre * 5 + 5, 80, altura);
-		lblValorTotal.setBounds(espXTxt + espXForn, espY + espEntre * 5 + 5, 120, altura);
+		lblDescProdVenda.setBounds(espXLbl + espXForn - 100, espY + espEntre * 6 + 5, 80, altura);
+		txtDescProdVenda.setBounds(espXLbl + espXForn - 30, espY + espEntre * 6 + 5, 80, altura);
+		
+		lblTotal.setBounds(espXLbl + espXForn + 80, espY + espEntre * 6 + 5, 80, altura);
+		lblValorTotal.setBounds(espXTxt + espXForn + 80, espY + espEntre * 6 + 5, 120, altura);
 		
 		btnAddProd = new JButton("+");
-		btnAddProd.setBounds(190, espY + espEntre * 5, 50, altura);
-
-		
+		btnAddProd.setBounds(190, espY + espEntre * 6, 50, altura);
 
 		tabItemCompra = new JTable();
 		modeloTabItemCompra = new DefaultTableModel() {
@@ -229,7 +238,7 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 
 		barraTabItemCompra.setViewportView(tabItemCompra);
 
-		barraTabItemCompra.setBounds(10, 240, pnlCampos.getWidth() - 20, 230);
+		barraTabItemCompra.setBounds(10, 275, pnlCampos.getWidth() - 20, 195);
 
 		pnlCampos.add(btnBuscarCliente);
 		pnlCampos.add(btnBuscarProd);
@@ -250,6 +259,7 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 		pnlCampos.add(txtCliente);
 		pnlCampos.add(txtCodFuncionario);
 		pnlCampos.add(txtFuncionario);
+		pnlCampos.add(txtDescProdVenda);
 		
 		pnlCampos.add(lblCodVenda);
 		pnlCampos.add(lblCodProdVenda);
@@ -257,12 +267,11 @@ public class ManterVendaView extends ManterDialogView<VendaVO> implements ITelaB
 		pnlCampos.add(lblProdVenda);
 		pnlCampos.add(lblQtdeProdVenda);
 		pnlCampos.add(lblValorProdVenda);
-		//pnlCampos.add(lblDescProdVenda);
+		pnlCampos.add(lblDescProdVenda);
 		pnlCampos.add(lblTitCliente);
 		pnlCampos.add(lblCodCliente);
 		pnlCampos.add(lblCliente);
-		//pnlCampos.add(lblCodFuncionario);
-		//pnlCampos.add(lblFuncionario);
+		pnlCampos.add(lblCodFuncionario);
 		pnlCampos.add(lblStatusVenda);
 		pnlCampos.add(lblDataVenda);
 		pnlCampos.add(lblFormaPgto);

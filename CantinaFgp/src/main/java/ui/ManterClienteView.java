@@ -4,10 +4,11 @@ import javax.swing.JOptionPane;
 
 import enumeradores.TipoSolicitacao;
 import interfaces.ITelaConsultar;
+import ui.templates.ManterPanelView;
 import vo.ClienteVO;
 import vo.GenericVO;
 
-public class ManterClienteView extends ManterDialogView<ClienteVO> {
+public class ManterClienteView extends ManterPanelView<ClienteVO> {
 
 
 	protected ManterClienteView(TipoSolicitacao solicitacao, String tituloCabecalho) {

@@ -23,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BuscarDialogView;
+import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.CompraVO;
 import vo.FornecedorProdutoVO;
@@ -35,7 +37,7 @@ import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterCompraView extends ManterDialogView<CompraVO> implements ITelaBuscar {
+public class ManterCompraView extends ManterPanelView<CompraVO> implements ITelaBuscar {
 	
 	// Atributos Tela
 	

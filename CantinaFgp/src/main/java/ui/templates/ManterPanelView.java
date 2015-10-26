@@ -1,4 +1,4 @@
-package ui;
+package ui.templates;
 
 import interfaces.ITelaManter;
 
@@ -28,7 +28,7 @@ import enumeradores.TipoSolicitacao;
  * definir o tipo dos parâmetros dos métodos da tela de manter.
  * 
  */
-public abstract class ManterDialogView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
+public abstract class ManterPanelView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
 
 	
 	// Atributos da Janela
@@ -46,7 +46,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JFrame imple
 	
 	// Construtores
 	
-	protected ManterDialogView(TipoSolicitacao solicitacao, String tituloCabecalho) {
+	protected ManterPanelView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
 		criarPaneis(tituloCabecalho);
 		
@@ -76,7 +76,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JFrame imple
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					if(ManterDialogView.this.alterar()){
+					if(ManterPanelView.this.alterar()){
 						btnAlterar.setEnabled(true);
 						btnLimpar.setEnabled(false);
 						btnGravar.setEnabled(false);
@@ -134,7 +134,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JFrame imple
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ManterDialogView.this.limparCampos();
+				ManterPanelView.this.limparCampos();
 				
 			}
 			
@@ -146,7 +146,7 @@ public abstract class ManterDialogView<T extends GenericVO> extends JFrame imple
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				ManterDialogView.this.dispose();
+				ManterPanelView.this.dispose();
 				
 			}
 		});
