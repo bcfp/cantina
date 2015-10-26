@@ -459,7 +459,7 @@ public class ManterOrdemProducaoView extends ManterDialogView<OrdemProducaoVO> i
 		pnlCampos.add(txtCodFunc);
 		pnlCampos.add(txtNomeFunc);
 
-		adicionarComponenteCentro(pnlCampos);
+		adicionarComponentesCentro(pnlCampos);
 		
 		pnlMenuLateral.add(btnGerarOC);
 		pnlMenuLateral.setBackground(Color.WHITE);

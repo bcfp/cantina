@@ -2,6 +2,7 @@ package vo;
 
 public class FornecedorVO extends GenericVO {
 
+	private String codFornecedor;
 	private String nome;
 	private String contato;
 	private Boolean ativo;
@@ -10,28 +11,36 @@ public class FornecedorVO extends GenericVO {
 
 	}
 
-	protected String getNome() {
+	public String getNome() {
 		return nome;
 	}
 
-	protected void setNome(String nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	protected String getContato() {
+	public String getContato() {
 		return contato;
 	}
 
-	protected void setContato(String contato) {
+	public void setContato(String contato) {
 		this.contato = contato;
 	}
 
-	protected Boolean getAtivo() {
+	public Boolean getAtivo() {
 		return ativo;
 	}
 
-	protected void setAtivo(Boolean ativo) {
+	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public String getCodFornecedor() {
+		return codFornecedor;
+	}
+
+	public void setCodFornecedor(String codFornecedor) {
+		this.codFornecedor = codFornecedor;
 	}
 	
 }

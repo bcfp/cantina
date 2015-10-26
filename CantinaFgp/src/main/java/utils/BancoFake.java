@@ -13,6 +13,7 @@ import vo.EstoqueMateriaPrimaVO;
 import vo.EstoqueProdutoVO;
 import vo.EstoqueProdutoVendaVO;
 import vo.FormaPgtoVO;
+import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
 import vo.GenericVO;
@@ -28,12 +29,14 @@ import vo.UnidadeProdutoVO;
 import vo.VendaVO;
 
 public class BancoFake {
-	
+
 	public static List<CompraVO> listaCompras;
+	public static List<GenericVO> listaFornecedorGeneric;
 	public static List<GenericVO> listaProdutosGeneric; 
 	public static List<ProdutoVO> listaProdutos; 
 	public static List<VendaVO> listaVendas; 
 	public static List<ClienteVO> listaClientes;
+	public static List<GenericVO> listaClientesGeneric;
 	public static List<CantinaVO> listaCantinas;
 	public static List<FuncionarioVO> listaFuncionarios;
 	public static List<OrdemProducaoVO> listaOrdensProducao;
@@ -60,10 +63,39 @@ public class BancoFake {
 	public static FuncionarioCantinaVO funcCantina; 
 	public static UnidadeProdutoVO unidade;
 	public static FormaPgtoVO formaPgto;
+	public static FornecedorVO fornecedor;
 
 	// BLOCO DE INICIALIZAÇÃO
 
 	static {
+		
+		// fornecedor
+
+		listaFornecedorGeneric = new ArrayList<GenericVO>();
+		
+		fornecedor = new FornecedorVO();
+		fornecedor.setAtivo(true);
+		fornecedor.setCodFornecedor("01");
+		fornecedor.setNome("Fornecedor A");
+		fornecedor.setContato("Contato Forn A");
+		
+		listaFornecedorGeneric.add(fornecedor);
+		
+		fornecedor = new FornecedorVO();
+		fornecedor.setAtivo(true);
+		fornecedor.setCodFornecedor("02");
+		fornecedor.setNome("Fornecedor B");
+		fornecedor.setContato("Contato Forn B");
+		
+		listaFornecedorGeneric.add(fornecedor);
+		
+		fornecedor = new FornecedorVO();
+		fornecedor.setAtivo(true);
+		fornecedor.setCodFornecedor("03");
+		fornecedor.setNome("Fornecedor C");
+		fornecedor.setContato("Contato Forn C");
+		
+		listaFornecedorGeneric.add(fornecedor);
 		
 		// cantina
 		cantina = new CantinaVO();
@@ -321,22 +353,25 @@ public class BancoFake {
 		cantina.setIdCantina(2L);
 
 		listaCantinas.add(cantina);
-		
+
 		listaClientes = new ArrayList<ClienteVO>();
+		listaClientesGeneric = new ArrayList<GenericVO>();
 				
 		cliente = new ClienteVO();
 		
 		cliente.setCodPessoa("01");
 		cliente.setNome("Bruno Silva");
-		
+
 		listaClientes.add(cliente);
+		listaClientesGeneric.add(cliente);
 		
 		cliente = new ClienteVO();
 		
 		cliente.setCodPessoa("02");
 		cliente.setNome("Marcia Fernandes");
-		
+
 		listaClientes.add(cliente);
+		listaClientesGeneric.add(cliente);
 
 		listaProdutosGeneric = new ArrayList<GenericVO>();
 		listaProdutos = new ArrayList<ProdutoVO>();

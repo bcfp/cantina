@@ -68,9 +68,9 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 	private JLabel lblTotal;
 	private Font fonteTotal;
 	
-	private JButton btnConsultarProd;
-	private JButton btnConsultarForn;
-	private JButton btnAddBuscarProd;
+	private JButton btnBuscarProd;
+	private JButton btnBuscarForn;
+	private JButton btnAddProd;
 	
 	private JPanel pnlCampos;
 	private JTable tabItemCompra;
@@ -78,11 +78,13 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 	private JScrollPane barraTabItemCompra;
 	
 	private String acaoPesquisar;
-	private static final String PESQ_FUNC = "funcionario";
+	private static final String PESQ_FORNECEDOR = "fornecedor";
 	private static final String PESQ_PRODUTO = "produto";
 	
-	private List<ItemCompraVO> listaItensCmpra;
+	private List<ItemCompraVO> listaItensCompra;
 
+	
+	// Bloco de inicialização
 	
 	{
 		
@@ -117,26 +119,40 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		lblValorTotal.setFont(fonteTotal);
 		
 		txtCodOc = new JTextField();
-		txtCodOc.setEnabled(false);
 		txtCodProdCompra = new JTextField();
 		txtProdCompra = new JTextField();
 		txtQtdeProdCompra = new JTextField();
 		txtValorProdCompra = new JTextField();
 		txtCodFornCompra = new JTextField();
 		txtFornCompra = new JTextField();
-		txtFornCompra.setEnabled(false);
+		
+		txtCodOc.setEditable(false);
+		txtProdCompra.setEditable(false);
+		txtFornCompra.setEditable(false);
 
-		btnConsultarForn = new JButton("Consultar");
-		btnConsultarProd = new JButton("Consultar");
-		btnConsultarProd.addActionListener(new ActionListener() {
+		btnBuscarForn = new JButton("Consultar");
+		btnBuscarForn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				acaoPesquisar = PESQ_FORNECEDOR;
+				
+				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome", "Contato"}).abrirJanela();
+				
+			}
+			
+		});
+		
+		btnBuscarProd = new JButton("Consultar");
+		btnBuscarProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				acaoPesquisar = PESQ_PRODUTO;
 				
-				new BuscarDialogView(ManterCompraView.this, 
-						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
 												
 			}
 			
@@ -162,7 +178,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		txtQtdeProdCompra.setBounds(espXTxt, espY + espEntre * 4, 70, altura);
 		txtValorProdCompra.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
 		
-		btnConsultarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
 		
 		lblStatusCompra.setBounds(480, espY, 80, altura);
 		cbxStatusCompra.setBounds(530, espY, 130, altura);
@@ -177,7 +193,7 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		txtCodFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 2, 70, altura);
 		txtFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 3, 200, altura);
 
-		btnConsultarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
 		
 		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
 		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 4, 120, altura);
@@ -185,8 +201,8 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		lblTotal.setBounds(espXLbl + espXForn, espY + espEntre * 5 + 5, 80, altura);
 		lblValorTotal.setBounds(espXTxt + espXForn, espY + espEntre * 5 + 5, 120, altura);
 		
-		btnAddBuscarProd = new JButton("+");
-		btnAddBuscarProd.setBounds(190, espY + espEntre * 5, 50, altura);
+		btnAddProd = new JButton("+");
+		btnAddProd.setBounds(190, espY + espEntre * 5, 50, altura);
 
 		tabItemCompra = new JTable();
 		modeloTabItemCompra = new DefaultTableModel() {
@@ -239,14 +255,14 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		pnlCampos.add(txtProdCompra);
 		pnlCampos.add(txtQtdeProdCompra);
 		pnlCampos.add(txtValorProdCompra);
-		pnlCampos.add(btnConsultarProd);
-		pnlCampos.add(btnConsultarForn);
-		pnlCampos.add(btnAddBuscarProd);
+		pnlCampos.add(btnBuscarProd);
+		pnlCampos.add(btnBuscarForn);
+		pnlCampos.add(btnAddProd);
 
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
-		adicionarComponenteCentro(pnlCampos);
+		adicionarComponentesCentro(pnlCampos);
 
 	}
 	
@@ -326,9 +342,9 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 				
 				return BancoFake.listaProdutosGeneric;
 				
-			case PESQ_FUNC:
+			case PESQ_FORNECEDOR:
 				
-				return BancoFake.listaFuncCantinaGeneric;
+				return BancoFake.listaFornecedorGeneric;
 
 		}
 		
@@ -353,9 +369,8 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 			
 				FornecedorVO fornecedor = (FornecedorVO) item;
 				
-				// TODO continuar aqui - Bruno
-				
-				txtCodFornCompra.setText("");
+				txtCodFornCompra.setText(fornecedor.getCodFornecedor());
+				txtFornCompra.setText(fornecedor.getNome());
 				
 			}
 			
@@ -366,14 +381,14 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 
 	@Override
 	public String[] carregarGridTelaBusca(GenericVO item) {
-		
+				
 		if(item instanceof ProdutoVendaVO){
 			
 			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
 			
 			String[] registro = new String[3];
 
-			registro[0] = produtoVenda.getCodProduto().toString();
+			registro[0] = produtoVenda.getCodProduto();
 			registro[1] = produtoVenda.getDescricao();
 			registro[2] = produtoVenda.getPrecoVenda().toString();
 			
@@ -382,10 +397,16 @@ public class ManterCompraView extends ManterDialogView<CompraVO> implements ITel
 		}
 		else{
 			if(item instanceof FornecedorVO){
-			
+							
+				FornecedorVO fornecedor = (FornecedorVO) item;
 				
+				String[] registro = new String[3];
+
+				registro[0] = fornecedor.getCodFornecedor();
+				registro[1] = fornecedor.getNome();
+				registro[2] = fornecedor.getContato();
 				
-				txtCodFornCompra.setText("");
+				return registro;
 				
 			}
 			

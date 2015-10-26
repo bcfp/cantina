@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -28,7 +28,7 @@ import enumeradores.TipoSolicitacao;
  * definir o tipo dos parâmetros dos métodos da tela de manter.
  * 
  */
-public abstract class ManterDialogView<T extends GenericVO> extends JDialog implements ITelaManter<T> {
+public abstract class ManterDialogView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
 
 	
 	// Atributos da Janela
@@ -163,13 +163,12 @@ public abstract class ManterDialogView<T extends GenericVO> extends JDialog impl
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.setResizable(false);
 		this.setSize(700, 600);
-		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		
 	}
 
 	
-	protected void adicionarComponenteCentro(JComponent comp){
+	protected void adicionarComponentesCentro(JComponent comp){
 		
 		pnlCentro.add(comp);
 		
