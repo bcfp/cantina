@@ -4,10 +4,9 @@ import java.util.List;
 
 import enumeradores.TipoProduto;
 
-public class EstoqueProdutoVO extends GenericVO{
+public class ProdutoCantinaVO extends GenericVO{
 	
 	private Long idEstoque;
-	private String codEstoque;
 	private ProdutoVO produto;
 	private CantinaVO cantina;
 	private Double qtdeMinima;
@@ -15,7 +14,7 @@ public class EstoqueProdutoVO extends GenericVO{
 	private Double qtdeAtual;
 	private List<LoteVO> lotes;
 	
-	public EstoqueProdutoVO() {
+	public ProdutoCantinaVO() {
 	
 	}
 
@@ -75,11 +74,4 @@ public class EstoqueProdutoVO extends GenericVO{
 		this.lotes = lotes;
 	}
 
-	public String getCodEstoque() {
-		return codEstoque;
-	}
-
-	public void setCodEstoque(String codEstoque) {
-		this.codEstoque = codEstoque;
-	}	
 }

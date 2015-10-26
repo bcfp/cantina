@@ -11,7 +11,7 @@ public class LoteVO {
 	private String codLote;
 	private Double qtde;
 	private Date dataVencimento;
-	private EstoqueProdutoVO estoqueProduto;
+	private ProdutoCantinaVO estoqueProduto;
 	private OrdemProducaoVO ordemProducao;
 	private CompraVO compra;
 	private TipoGeradorLote tipoGeradorLote;
@@ -54,11 +54,11 @@ public class LoteVO {
 		this.dataVencimento = dataVencimento;
 	}
 
-	public EstoqueProdutoVO getEstoqueProduto() {
+	public ProdutoCantinaVO getEstoqueProduto() {
 		return estoqueProduto;
 	}
 
-	public void setEstoqueProduto(EstoqueProdutoVO estoqueProduto) {
+	public void setEstoqueProduto(ProdutoCantinaVO estoqueProduto) {
 		this.estoqueProduto = estoqueProduto;
 	}
 

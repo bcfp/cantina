@@ -1,5 +1,5 @@
 package vo;
 
-public class EstoqueMateriaPrimaVO extends EstoqueProdutoVO{
+public class EstoqueMateriaPrimaVO extends ProdutoCantinaVO{
 	
 }

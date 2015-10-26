@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vo.ProdutoCantinaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IProdutoDAO;
@@ -39,14 +40,12 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 			
 			pstm.setString(1, "%" + cod + "%");
 			pstm.setString(2, "%" + nome + "%");
-			
-			System.out.println(pstm);
 		
 			rs = pstm.executeQuery();
 			
 			ProdutoVendaVO produtoVenda = null;
 			
-			if(rs.next()){
+			while(rs.next()){
 				
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));

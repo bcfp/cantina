@@ -10,7 +10,7 @@ import vo.ClienteCantinaVO;
 import vo.ClienteVO;
 import vo.CompraVO;
 import vo.EstoqueMateriaPrimaVO;
-import vo.EstoqueProdutoVO;
+import vo.ProdutoCantinaVO;
 import vo.EstoqueProdutoVendaVO;
 import vo.FormaPgtoVO;
 import vo.FornecedorVO;
@@ -40,7 +40,7 @@ public class BancoFake {
 	public static List<CantinaVO> listaCantinas;
 	public static List<FuncionarioVO> listaFuncionarios;
 	public static List<OrdemProducaoVO> listaOrdensProducao;
-	public static List<EstoqueProdutoVO> listaEstoqueProduto;
+	public static List<ProdutoCantinaVO> listaEstoqueProduto;
 	public static List<ItemCompraVO> listaItensCompra;
 	public static List<ProdutoMateriaPrimaVO> receita;
 	public static List<GenericVO> listaFuncCantinaGeneric;
@@ -224,7 +224,7 @@ public class BancoFake {
 		listaItensCompra.add(ic);
 		listaItensCompra.add(ic);
 		
-		listaEstoqueProduto = new ArrayList<EstoqueProdutoVO>();
+		listaEstoqueProduto = new ArrayList<ProdutoCantinaVO>();
 		
 		estMatPrima = new EstoqueMateriaPrimaVO();
 		estMatPrima.setCantina(cantina);
@@ -232,7 +232,6 @@ public class BancoFake {
 		estMatPrima.setQtdeAtual(4D);
 		estMatPrima.setQtdeMinima(5D);
 		estMatPrima.setQtdeMaxima(15D);
-		matPrima.setEstoques(listaEstoqueProduto);
 		
 		listaEstoqueProduto.add(estMatPrima);
 		
@@ -242,7 +241,6 @@ public class BancoFake {
 		estMatPrima.setQtdeAtual(100D);
 		estMatPrima.setQtdeMinima(1000D);
 		estMatPrima.setQtdeMaxima(3000D);
-		matPrima2.setEstoques(listaEstoqueProduto);
 		
 		listaEstoqueProduto.add(estMatPrima);
 		
@@ -252,7 +250,6 @@ public class BancoFake {
 		estProdVenda.setQtdeAtual(9D);
 		estProdVenda.setQtdeMinima(10D);
 		estProdVenda.setQtdeMaxima(20D);
-		prodVenda.setEstoques(listaEstoqueProduto);
 		
 		listaEstoqueProduto.add(estProdVenda);
 		
@@ -262,8 +259,6 @@ public class BancoFake {
 		estProdVenda.setQtdeAtual(9D);
 		estProdVenda.setQtdeMinima(10D);
 		estProdVenda.setQtdeMaxima(20D);
-		prodVenda2.setEstoques(listaEstoqueProduto);
-		
 
 		listaEstoqueProduto.add(estProdVenda);
 		
@@ -273,7 +268,6 @@ public class BancoFake {
 		estProdVenda.setQtdeAtual(5D);
 		estProdVenda.setQtdeMinima(6D);
 		estProdVenda.setQtdeMaxima(10D);
-		prodVenda3.setEstoques(listaEstoqueProduto);
 
 		listaEstoqueProduto.add(estProdVenda);
 		

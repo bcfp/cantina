@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
 import utils.UtilFuncoes;
-import vo.EstoqueProdutoVO;
+import vo.ProdutoCantinaVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
 import vo.ProdutoVendaVO;
@@ -67,7 +67,7 @@ public class ConsultarEstoqueView extends JPanel{
 	private JLabel lblTipoProduto;
 	
 	
-	private List<EstoqueProdutoVO> listaEstoqueProdutos;
+	private List<ProdutoCantinaVO> listaEstoqueProdutos;
 	private List<ItemCompraVO> listaItensCompra;
 	private List<OrdemProducaoVO> listaOrdemProducao;
 		
@@ -191,7 +191,7 @@ public class ConsultarEstoqueView extends JPanel{
 				if(e.getClickCount()==2){
 					if(tabEstoque.getSelectedRow() != -1){
 
-						EstoqueProdutoVO estoque = BancoFake.listaEstoqueProduto.get(tabEstoque.getSelectedRow());	
+						ProdutoCantinaVO estoque = BancoFake.listaEstoqueProduto.get(tabEstoque.getSelectedRow());	
 																
 						new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela(estoque.getProduto());
 
@@ -217,9 +217,9 @@ public class ConsultarEstoqueView extends JPanel{
 				
 				getListaOrdemProducao().clear();
 				
-				Iterator<EstoqueProdutoVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				Iterator<ProdutoCantinaVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
 				OrdemProducaoVO ordemProducao;
-				EstoqueProdutoVO estoqueProduto;
+				ProdutoCantinaVO estoqueProduto;
 				
 				while(iEstoqueProduto.hasNext()){
 					
@@ -264,9 +264,9 @@ public class ConsultarEstoqueView extends JPanel{
 				
 				getListaItensCompra().clear();
 								
-				Iterator<EstoqueProdutoVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				Iterator<ProdutoCantinaVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
 				ItemCompraVO itemCompra;
-				EstoqueProdutoVO estoqueProduto;
+				ProdutoCantinaVO estoqueProduto;
 				
 				while(iEstoqueProduto.hasNext()){
 					
@@ -352,17 +352,17 @@ public class ConsultarEstoqueView extends JPanel{
 	 * 
 	 * @param estoqueProduto - 
 	 */
-	private void carregarGridItens(List<EstoqueProdutoVO> estoqueProduto) {
+	private void carregarGridItens(List<ProdutoCantinaVO> estoqueProduto) {
 
 		modeloTabEstoque.setNumRows(0);
 		
 		if(estoqueProduto != null){
 			
-			Iterator<EstoqueProdutoVO> iEstoqueProduto = estoqueProduto.iterator();
+			Iterator<ProdutoCantinaVO> iEstoqueProduto = estoqueProduto.iterator();
 			
 			while(iEstoqueProduto.hasNext()){
 				
-				EstoqueProdutoVO estoque = iEstoqueProduto.next();
+				ProdutoCantinaVO estoque = iEstoqueProduto.next();
 				
 				String[] registro = new String[6];
 
@@ -380,17 +380,17 @@ public class ConsultarEstoqueView extends JPanel{
 		
 	}
 
-	public List<EstoqueProdutoVO> consultar() {
+	public List<ProdutoCantinaVO> consultar() {
 		return BancoFake.listaEstoqueProduto;
 	}
 
 
-	public List<EstoqueProdutoVO> getListaEstoqueProdutos() {
+	public List<ProdutoCantinaVO> getListaEstoqueProdutos() {
 		return listaEstoqueProdutos;
 	}
 
 
-	public void setListaEstoqueProdutos(List<EstoqueProdutoVO> estoqueProdutos) {
+	public void setListaEstoqueProdutos(List<ProdutoCantinaVO> estoqueProdutos) {
 		this.listaEstoqueProdutos = estoqueProdutos;
 	}
 

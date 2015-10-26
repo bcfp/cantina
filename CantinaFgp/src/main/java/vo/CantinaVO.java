@@ -9,7 +9,7 @@ public class CantinaVO extends GenericVO {
 	private Boolean ativo;
 	private List<ClienteCantinaVO> clientesCantina;
 	private List<FuncionarioCantinaVO> funcionariosCantina;
-	private List<EstoqueProdutoVO> estoqueProdutos;
+	private List<ProdutoCantinaVO> estoqueProdutos;
 	
 	public CantinaVO() {
 
@@ -31,11 +31,11 @@ public class CantinaVO extends GenericVO {
 		this.nome = nome;
 	}
 
-	public List<EstoqueProdutoVO> getEstoqueProdutos() {
+	public List<ProdutoCantinaVO> getEstoqueProdutos() {
 		return estoqueProdutos;
 	}
 
-	public void setEstoqueProdutos(List<EstoqueProdutoVO> estoqueProdutos) {
+	public void setEstoqueProdutos(List<ProdutoCantinaVO> estoqueProdutos) {
 		this.estoqueProdutos = estoqueProdutos;
 	}
 

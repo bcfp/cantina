@@ -1,6 +1,6 @@
 package vo;
 
-public class ProdutoMateriaPrimaVO {
+public class ProdutoMateriaPrimaVO extends GenericVO{
 	
 	private Long idProdutoMateriaPrima;
 	private String codProdutoMateriaPrima;

@@ -17,6 +17,6 @@ public class ProdutoMateriaPrimaBO {
 	
 	public List<ProdutoMateriaPrimaVO> buscaReceitaPorIdProduto(Long idProduto){
 		
-		return receitaDao.consultarReceitaPorIdProduto(idProduto);
+		return receitaDao.consultarPorIdProduto(idProduto);
 	}
 }

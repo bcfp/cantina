@@ -70,7 +70,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private JPanel pnlCampos;	
 	
 	private ProdutoVendaBO produtoVendaBO;
-	private ProdutoMateriaPrimaBO produtoMateriaPrimaBO;
+	private ProdutoMateriaPrimaBO receitaBO;
 	
 	private List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima;
  	private OrdemProducaoVO ordemProducao;
@@ -129,7 +129,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		produtoVendaBO = new ProdutoVendaBO();
-		produtoMateriaPrimaBO = new ProdutoMateriaPrimaBO();
+		receitaBO = new ProdutoMateriaPrimaBO();
 		pnlMenuLateral = new JPanel();
 		
 		listaItensCompra = new ArrayList<>();
@@ -148,6 +148,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela() {
 		
+		
+		
 		btnGerarOC.addActionListener(new ActionListener() {
 
 			@Override
@@ -159,10 +161,10 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				for (ProdutoMateriaPrimaVO produtoMateriaPrima : getListaProdutosMateriaPrima()) {
 					
-					if (produtoMateriaPrima.getQtde() < produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual()) {
+					if (produtoMateriaPrima.getQtde() > produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual()) {
 						itemCompra = new ItemCompraVO();
 						itemCompra.setProduto(produtoMateriaPrima.getMateriaPrima());
-						itemCompra.setQtde(produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual() - produtoMateriaPrima.getQtde());
+						itemCompra.setQtde(produtoMateriaPrima.getQtde() - produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual() );
 						itemCompra.setValor(produtoMateriaPrima.getMateriaPrima().getPrecoCusto());
 						getListaItensCompra().add(itemCompra);
 					}
@@ -187,8 +189,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 								
 				acaoPesquisar = PESQ_PRODUTO;
 				
-				new BuscarDialogView(ManterOrdemProducaoView.this, 
-						new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
 												
 			}
 			
@@ -202,8 +203,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				acaoPesquisar = PESQ_FUNC;
 				
-				new BuscarDialogView(ManterOrdemProducaoView.this, 
-						new String[] {"Código", "Nome"}).abrirJanela();
+				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome"}).abrirJanela();
 												
 			}
 		});
@@ -230,7 +230,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			txtCodProd.setText(produtoVenda.getCodProduto());
 			txtDescProd.setText(produtoVenda.getDescricao());
 			
-			List<ProdutoMateriaPrimaVO> receita = produtoVenda.getReceita();
+			List<ProdutoMateriaPrimaVO> receita = receitaBO.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
 			
 			setListaProdutosMateriaPrima(receita);
 			carregarGridReceita(receita);
@@ -256,15 +256,29 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
 		
+		List<GenericVO> listaGenericos = new ArrayList<GenericVO>();
 		switch (acaoPesquisar) {
 		
 			case PESQ_PRODUTO:
-								
-				return BancoFake.listaProdutosGeneric;
+				List<ProdutoVendaVO> listaProdutos	= produtoVendaBO.filtarProdutoVendaPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));	
+				
+				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
+					
+					listaGenericos.add(produtoVendaVO);
+				}
+				
+				return listaGenericos;
 				
 			case PESQ_FUNC:
 				
-				return BancoFake.listaFuncCantinaGeneric;
+				List<FuncionarioCantinaVO> listaFuncionarios	= new ArrayList<FuncionarioCantinaVO>();
+				
+				for (FuncionarioCantinaVO funcionarioVendaVO : listaFuncionarios) {
+					
+					listaGenericos.add(funcionarioVendaVO);
+				}
+				
+				return listaGenericos;
 				
 			default:
 				
@@ -343,7 +357,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				registro[0] = produtoMateriaPrima.getMateriaPrima().getCodProduto();
 				registro[1] = produtoMateriaPrima.getMateriaPrima().getDescricao();
 				registro[2] = produtoMateriaPrima.getQtde().toString();
-				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoques().get(0).getQtdeAtual().toString();
+				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual().toString();
 				
 				modeloTabMatPrimas.addRow(registro);	
 				
