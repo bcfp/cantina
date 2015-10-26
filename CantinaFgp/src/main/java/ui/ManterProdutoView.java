@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 import sun.management.jdp.JdpGenericPacket;
+import ui.templates.ManterPanelView;
 import vo.GenericVO;
 import vo.ProdutoVO;
 import vo.UnidadeProdutoVO;

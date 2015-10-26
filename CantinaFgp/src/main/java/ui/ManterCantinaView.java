@@ -2,6 +2,7 @@
 
 import javax.swing.JOptionPane;
 
+import ui.templates.ManterPanelView;
 import vo.CantinaVO;
 import vo.GenericVO;
 import enumeradores.TipoSolicitacao;

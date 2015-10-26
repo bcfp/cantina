@@ -1,4 +1,4 @@
-package ui;
+package ui.templates;
 
 import interfaces.ITelaBuscar;
 

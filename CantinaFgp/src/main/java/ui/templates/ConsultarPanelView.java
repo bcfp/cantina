@@ -1,4 +1,4 @@
-﻿package ui;
+﻿package ui.templates;
 
 import interfaces.ITelaConsultar;
 import interfaces.ITelaManter;
@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import ui.DialogOpcoesView;
 import vo.GenericVO;
 
 
