@@ -6,11 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ComboBoxModel;
-import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,12 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
-import sun.management.jdp.JdpGenericPacket;
 import ui.templates.ManterPanelView;
-import vo.GenericVO;
 import vo.ProdutoVO;
 import vo.UnidadeProdutoVO;
 import enumeradores.TipoSolicitacao;
@@ -176,15 +170,41 @@ import enumeradores.TipoSolicitacao;
 			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
 			pnlCampos.setLayout(null);
 			
-			lblNome.setText("Nome:");
-			lblNome.setBounds(10,20,100,30);
+			lblNome.setText("Nome");
+			lblLote.setText("Lote");
+			lblCod.setText("Código:");
+			lblTipoProduto.setText("Tipo do produto:");
+			lblMP.setText("Matéria Prima");
+			lblPP.setText("Produto Produzido");
+			lblPR.setText("Produto Revenda"); 
 			
-			txtNome.setBounds(50,20,300,30);
+			int espXLbl = 20;
+			int espXTxt = espXLbl + 70;
+			int espXLbl2 = 450;
+			int espY = 20;
+			int espEntre = 35;
+			int altura = 30;			
+
+			lblCod.setBounds(espXLbl, espY, 80, altura);
+			lblNome.setBounds(espXLbl, espY + espEntre, 100, altura);
+			lblLote.setBounds(espXLbl, espY + espEntre * 2, 100, altura);
 			
-			lblLote.setText("Lote:");
-			lblLote.setBounds(10,60,100,30);
+			txtCod.setBounds(espXTxt, espY, 50, altura);
+			txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
+			radioLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
 			
-			radioLote.setBounds(50,60,50,30);
+			lblTipoProduto.setBounds(espXLbl2 - 20, espY, 200, altura);
+			lblMP.setBounds(espXLbl2, espY + espEntre, 150, altura);
+			lblPP.setBounds(espXLbl2, espY + espEntre * 2, 150, altura);
+			lblPR.setBounds(espXLbl2, espY + espEntre * 3, 150, altura);
+						
+			radioMP.setBounds(espXLbl2 - 20, espY + espEntre, 20, altura);
+			radioPP.setBounds(espXLbl2 - 20, espY + espEntre * 2, 20, altura);
+			radioPR.setBounds(espXLbl2 - 20, espY + espEntre * 3, 20, altura);
+			
+
+			
+			
 			radioLote.setBackground(Color.WHITE);
 			radioLote.addActionListener(new ActionListener() {
 				
@@ -203,21 +223,9 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			
-			lblCod.setText("Código:");
-			lblCod.setBounds(10, 100, 80,30);
-			
-			txtCod.setBounds(60, 100, 80,30);
 			txtCod.setEnabled(false);
 			
-			lblTipoProduto.setText("Tipo do produto:");
-			lblTipoProduto.setBounds(400, 20, 200, 30);
-			
-			lblMP.setText("Matéria Prima");
-			lblMP.setBounds(440,50,150,30);
-			
 			radioMP.setBackground(Color.WHITE);
-			radioMP.setBounds(420,50,20,30);
 			radioMP.addActionListener(new ActionListener() {
 				
 				@Override
@@ -237,11 +245,8 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			lblPP.setText("Produto Produzido");
-			lblPP.setBounds(440, 80, 150, 30);
 			
 			radioPP.setBackground(Color.WHITE);
-			radioPP.setBounds(420,80,20,30);
 			radioPP.addActionListener(new ActionListener() {
 				
 				@Override
@@ -262,11 +267,8 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			lblPR.setText("Produto Revenda");
-			lblPR.setBounds(440,110,150,30);
 			
 			radioPR.setBackground(Color.WHITE);
-			radioPR.setBounds(420,110,20,30); 
 			radioPR.addActionListener(new ActionListener() {
 				
 				@Override
@@ -313,7 +315,6 @@ import enumeradores.TipoSolicitacao;
 			lblPrecoCusto.setText("Preço de custo:");
 			lblPrecoCusto.setBounds(10,20,100,30);
 			
-			txtPrecoCusto.setBounds(110,20,80,30);
 			
 			lblPrecoVenda.setText("Preço de venda:");
 			lblPrecoVenda.setBounds(10, 60, 100, 30);

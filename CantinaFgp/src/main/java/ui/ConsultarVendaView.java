@@ -31,7 +31,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	// Atributos
 	
 	private JLabel lblFiltrar;
-	private JLabel lblCodVenda;
+	private JLabel lblNumVenda;
 	private JLabel lblDataInicial;
 	private JLabel lblDataFinal;
 	private JLabel lblCodProduto;
@@ -49,7 +49,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	private JComboBox<String> cbxStatusVenda;
 	private JComboBox<String> cbxFormaPgto;
 	
-	private JTextField txtCodVenda;
+	private JTextField txtNumVenda;
 	private JTextField txtCodProduto;
 	private JTextField txtProduto;
 	private JTextField txtCodCliente;
@@ -71,7 +71,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	{
 				
 		lblFiltrar = new JLabel("FILTRAR");
-		lblCodVenda = new JLabel("Código Venda");
+		lblNumVenda = new JLabel("Número");
 		lblCodCliente = new JLabel("Código");
 		lblCliente = new JLabel("Cliente");
 		lblCodProduto = new JLabel("Código");
@@ -89,7 +89,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		cbxStatusVenda = new JComboBox<String>();
 		cbxFormaPgto = new JComboBox<String>();
 		
-		txtCodVenda = new JTextField();
+		txtNumVenda = new JTextField();
 		txtCodCliente = new JTextField();
 		txtCliente = new JTextField();
 		txtCodProduto = new JTextField();
@@ -152,25 +152,26 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		int altura = 30;
 
 		lblFiltrar.setBounds(espXLbl, espY, 50, altura);
-		lblCodCliente.setBounds(espXLbl, espY + espEntre, 50, altura);
-		lblCliente.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
-		lblCodProduto.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
-		lblProduto.setBounds(espXLbl, espY + espEntre * 4, 80, altura);
-		lblFormaPgto.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+		lblNumVenda.setBounds(espXLbl, espY + espEntre, 50, altura);
+		lblCodCliente.setBounds(espXLbl, espY + espEntre * 2, 50, altura);
+		lblCliente.setBounds(espXLbl, espY + espEntre * 3, 80, altura);
+		lblCodProduto.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
+		lblProduto.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
 
-		txtCodCliente.setBounds(espXTxt, espY + espEntre, 50, altura);
-		btnBuscarCliente.setBounds(espXTxt + 60, espY + espEntre, 100, altura);
-		txtCliente.setBounds(espXTxt, espY + espEntre * 2, 180, altura);
-		txtCodProduto.setBounds(espXTxt, espY + espEntre * 3, 50, altura);
-		btnBuscarProd.setBounds(espXTxt + 60, espY + espEntre * 3, 100, altura);
-		txtProduto.setBounds(espXTxt, espY + espEntre * 4, 180, altura);
-		cbxFormaPgto.setBounds(espXTxt, espY + espEntre * 5, 130, altura);
+		txtNumVenda.setBounds(espXTxt, espY + espEntre, 50, altura);
+		txtCodCliente.setBounds(espXTxt, espY + espEntre * 2, 50, altura);
+		btnBuscarCliente.setBounds(espXTxt + 60, espY + espEntre * 2, 100, altura);
+		txtCliente.setBounds(espXTxt, espY + espEntre * 3, 180, altura);
+		txtCodProduto.setBounds(espXTxt, espY + espEntre * 4, 50, altura);
+		btnBuscarProd.setBounds(espXTxt + 60, espY + espEntre * 4, 100, altura);
+		txtProduto.setBounds(espXTxt, espY + espEntre * 5, 180, altura);
 		
 		lblCodFuncionario.setBounds(espXLbl2, espY + espEntre, 50, altura);
 		lblFuncionario.setBounds(espXLbl2, espY + espEntre * 2, 80, altura);
 		lblDataInicial.setBounds(espXLbl2, espY + espEntre * 3, 80, altura);
 		lblDataFinal.setBounds(espXLbl2, espY + espEntre * 4, 80, altura);
 		lblStatus.setBounds(espXLbl2, espY + espEntre * 5, 80, altura);
+		lblFormaPgto.setBounds(espXLbl2, espY + espEntre * 6, 80, altura);
 		
 		txtCodFuncionario.setBounds(espXTxt2, espY + espEntre, 50, altura);
 		btnBuscarFunc.setBounds(espXTxt2 + 60, espY + espEntre, 100, altura);
@@ -178,11 +179,12 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		dtpDataInicial.setBounds(espXTxt2, espY + espEntre * 3, 130, altura);
 		dtpDataFinal.setBounds(espXTxt2, espY + espEntre * 4, 130, altura);
 		cbxStatusVenda.setBounds(espXTxt2, espY + espEntre * 5, 130, altura);
+		cbxFormaPgto.setBounds(espXTxt2, espY + espEntre * 6, 130, altura);
 		
 		adicionarComponenteCentro(cbxStatusVenda);
 		adicionarComponenteCentro(cbxFormaPgto);
 		adicionarComponenteCentro(lblFiltrar);
-		adicionarComponenteCentro(lblCodVenda);
+		adicionarComponenteCentro(lblNumVenda);
 		adicionarComponenteCentro(lblDataInicial);
 		adicionarComponenteCentro(lblDataFinal);
 		adicionarComponenteCentro(lblCodProduto);
@@ -195,7 +197,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		adicionarComponenteCentro(lblFuncionario);
 		adicionarComponenteCentro(dtpDataFinal);
 		adicionarComponenteCentro(dtpDataInicial);
-		adicionarComponenteCentro(txtCodVenda);
+		adicionarComponenteCentro(txtNumVenda);
 		adicionarComponenteCentro(dtpDataInicial);
 		adicionarComponenteCentro(dtpDataFinal);
 		adicionarComponenteCentro(txtCodProduto);
@@ -214,8 +216,8 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	
 	public ConsultarVendaView() {
 		
-		super("Venda", new String[] {"Código",	"Data"}, 10, 240, 665, 190);
-		this.setSize(750, 500);
+		super("Venda", new String[] {"Código",	"Data"}, 10, 275, 665, 190);
+		this.setSize(750, 535);
 		
 	}
 	
