@@ -16,8 +16,6 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import ui.templates.BuscarDialogView;
-import ui.templates.ConsultarPanelView;
 import utils.BancoFake;
 import vo.ClienteVO;
 import vo.FuncionarioCantinaVO;

@@ -1,4 +1,4 @@
-package ui.templates;
+package ui;
 
 import interfaces.ITelaManter;
 

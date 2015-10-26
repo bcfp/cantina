@@ -22,8 +22,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import ui.templates.BuscarDialogView;
-import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.FornecedorProdutoVO;
 import vo.FornecedorVO;

@@ -4,7 +4,6 @@ import javax.swing.JOptionPane;
 
 import enumeradores.TipoSolicitacao;
 import interfaces.ITelaConsultar;
-import ui.templates.ManterPanelView;
 import vo.ClienteVO;
 import vo.GenericVO;
 

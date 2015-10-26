@@ -23,8 +23,6 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import ui.templates.BuscarDialogView;
-import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.CompraVO;
 import vo.FornecedorProdutoVO;

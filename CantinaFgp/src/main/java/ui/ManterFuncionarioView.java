@@ -2,7 +2,6 @@ package ui;
 
 import javax.swing.JOptionPane;
 
-import ui.templates.ManterPanelView;
 import vo.FuncionarioVO;
 import vo.GenericVO;
 import enumeradores.TipoSolicitacao;

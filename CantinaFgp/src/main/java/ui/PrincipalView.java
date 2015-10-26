@@ -331,6 +331,9 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	}		
 
 	private void abrirPanelConsulta(JPanel panelConsultar){
+
+		this.getContentPane().setVisible(false);
+		this.getContentPane().setVisible(true);
 		
 		this.getContentPane().removeAll();
 		
@@ -344,11 +347,30 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	
 	private void centralizarPanel(JPanel panel){
 		
-        int pontoLargura = ((this.getWidth() / 2) - (panel.getWidth() / 2) - 10); 
+        int pontoLargura = ((getWidth() / 2) - (panel.getWidth() / 2) - 10); 
                 
         panel.setLocation(pontoLargura, 0);  
         
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		
+		if(panelCentro != null){
+
+			this.centralizarPanel(panelCentro);  
+				
+		}
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 	
 	@Override
 	protected void atribuirTextos() {
@@ -388,25 +410,6 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		this.setVisible(true);
 		
 	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		
-		if(panelCentro != null){
-
-			this.centralizarPanel(panelCentro);  
-				
-		}
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
 	
 	
 }
