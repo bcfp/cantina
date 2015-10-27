@@ -422,12 +422,19 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					adicionarMatPrima(materiaPrima);
-					
-					txtCodMatPrimaRec.setText("");
-					txtMatPrimaRec.setText("");
-					txtQtdeMatPrima.setText("");
-					//cbxUnidMatPrima.setSelectedIndex(0);
+					if(materiaPrima!=null){
+						
+						if(adicionarMatPrima(materiaPrima)){
+						
+							txtCodMatPrimaRec.setText("");
+							txtMatPrimaRec.setText("");
+							txtQtdeMatPrima.setText("");
+							//cbxUnidMatPrima.setSelectedIndex(0);
+							
+							btnAdicionarMatPrima.setEnabled(false);
+						
+						}
+					}
 					
 				}
 				
@@ -532,40 +539,68 @@ import enumeradores.TipoSolicitacao;
 			tbsProdutos.setEnabledAt(2, false);
 			tbsProdutos.setEnabledAt(3, false);
 			
+			btnAdicionarMatPrima.setEnabled(false);
+			
 			adicionarComponentesCentro(pnlCampos);
 			
 		}
 		
-		private void adicionarMatPrima(MateriaPrimaVO materiaPrima){
+		private boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
 			
-			Double qtdeInserida = Double.parseDouble(txtQtdeMatPrima.getText());
-			Double qtdeReceita = 0d;
-			int sizeReceita = receita.size();
-			boolean itemNaReceita = false;
-						
-			prodMatPrima = new ProdutoMateriaPrimaVO();
-			prodMatPrima.setMateriaPrima(materiaPrima);
-			prodMatPrima.setQtde(qtdeInserida);
+			String qtdeTxt = txtQtdeMatPrima.getText();
 			
-			for (int l = 0; l < sizeReceita; l++) {
-	
-				if (materiaPrima.getCodProduto() == receita.get(l).getMateriaPrima().getCodProduto()) {
-	
-					itemNaReceita = true;
+			if(qtdeTxt.trim().equals("")){
+				
+				JOptionPane.showMessageDialog(null, "Favor informar uma quantidade", "Campo Vazio", JOptionPane.YES_OPTION);
+				
+			}
+			else{
+				
+				Double qtde = Double.parseDouble(qtdeTxt);
+				
+				if(qtde <= 0){
 					
-					qtdeReceita = receita.get(l).getQtde();
-	
-					receita.get(l).setQtde(qtdeReceita + qtdeInserida);
-	
+					JOptionPane.showMessageDialog(null, "Favor informar uma quantidade maior que zero", "Quantidade Inválida", JOptionPane.YES_OPTION);
+					
 				}
-	
+				else{
+					
+					Double qtdeInserida = qtde;
+					Double qtdeReceita = 0d;
+					int sizeReceita = receita.size();
+					boolean itemNaReceita = false;
+								
+					prodMatPrima = new ProdutoMateriaPrimaVO();
+					prodMatPrima.setMateriaPrima(materiaPrima);
+					prodMatPrima.setQtde(qtdeInserida);
+					
+					for (int l = 0; l < sizeReceita; l++) {
+			
+						if (materiaPrima.getCodProduto() == receita.get(l).getMateriaPrima().getCodProduto()) {
+			
+							itemNaReceita = true;
+							
+							qtdeReceita = receita.get(l).getQtde();
+			
+							receita.get(l).setQtde(qtdeReceita + qtdeInserida);
+			
+						}
+			
+					}
+					
+					if(!itemNaReceita){
+						receita.add(prodMatPrima);
+					}
+					
+					carregarGridMatPrima(receita);
+					
+					return true;
+				
+				}
+			
 			}
 			
-			if(!itemNaReceita){
-				receita.add(prodMatPrima);
-			}
-			
-			carregarGridMatPrima(receita);
+			return false;
 			
 		}
 		
@@ -675,6 +710,8 @@ import enumeradores.TipoSolicitacao;
 			switch (acaoPesquisar) {
 			
 				case PESQ_MAT_PRIMA:
+					
+					btnAdicionarMatPrima.setEnabled(true);
 					
 					materiaPrima = (MateriaPrimaVO) item;
 
