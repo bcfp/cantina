@@ -89,13 +89,11 @@ public class BuscarDialogView extends JDialog{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if(e.getClickCount()==2){
-					if(tabItens.getSelectedRow() != -1){
+				if(tabItens.getSelectedRow() != -1 && e.getClickCount()==2){
 
-						telaBuscar.carregarItemSelecionado(listaItens.get(tabItens.getSelectedRow()));
-						BuscarDialogView.this.dispose();
-						
-					}
+					telaBuscar.carregarItemSelecionado(listaItens.get(tabItens.getSelectedRow()));
+					BuscarDialogView.this.dispose();
+					
 				}
 				
 			}

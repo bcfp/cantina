@@ -5,6 +5,9 @@ import interfaces.ITelaBuscar;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +24,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
+import utils.BancoFake;
+import vo.FornecedorVO;
 import vo.GenericVO;
+import vo.MateriaPrimaVO;
+import vo.ProdutoCantinaVO;
+import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterPanelView<ProdutoVO> implements ITelaBuscar{
@@ -118,10 +128,26 @@ import enumeradores.TipoSolicitacao;
 		private DefaultTableModel modeloTabLotes;
 		private JScrollPane barraTabLotes;
 
-	
 		
+		// ITelaBusca
+		
+		private String acaoPesquisar;
+		private static final String PESQ_MAT_PRIMA = "materiaPrima";
+		private static final String PESQ_FORNECEDOR = "fornecedor";
+		
+		
+		// Atributos
+		
+		private ProdutoVendaVO produtoFabricado;
+		private MateriaPrimaVO materiaPrima;
+		private ProdutoMateriaPrimaVO prodMatPrima;
+		private List<ProdutoMateriaPrimaVO> receita;		
 		
 		{
+			
+			receita = new ArrayList<ProdutoMateriaPrimaVO>();
+			
+			// PRINCIPAL
 			
 			int widthCampos = this.getWidth() - 25;
 			int heightCampos = this.getHeight() - 122;
@@ -135,8 +161,6 @@ import enumeradores.TipoSolicitacao;
 			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
 			pnlCampos.setLayout(null);
 			
-			
-			// PRINCIPAL
 			
 			lblCod = new JLabel("Código");
 			lblNome = new JLabel("Nome");
@@ -379,17 +403,35 @@ import enumeradores.TipoSolicitacao;
 			lblUnidMatPrima.setBounds(espXLblRec2, espY, 50, altura);
 			
 			cbxUnidMatPrima.setBounds(espXTxtRec2, espY, 120, altura);
+			
+			btnBuscarMatPrima.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					acaoPesquisar = PESQ_MAT_PRIMA;
 
-			pnlReceita.add(lblCodMatPrimaRec);
-			pnlReceita.add(lblMatPrimaRec);
-			pnlReceita.add(lblQtdeMatPrima);
-			pnlReceita.add(lblUnidMatPrima);
-			pnlReceita.add(txtCodMatPrimaRec);
-			pnlReceita.add(txtMatPrimaRec);
-			pnlReceita.add(txtQtdeMatPrima);
-			pnlReceita.add(cbxUnidMatPrima);
-			pnlReceita.add(btnBuscarMatPrima);
-			pnlReceita.add(btnAdicionarMatPrima);
+					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Matéria Prima", "Unidade"}).abrirJanela();
+					
+				}
+				
+			});
+			
+			btnAdicionarMatPrima.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					adicionarMatPrima(materiaPrima);
+					
+					txtCodMatPrimaRec.setText("");
+					txtMatPrimaRec.setText("");
+					txtQtdeMatPrima.setText("");
+					//cbxUnidMatPrima.setSelectedIndex(0);
+					
+				}
+				
+			});
 			
 			// Tabela
 			tabMatPrimas = new JTable();
@@ -402,9 +444,42 @@ import enumeradores.TipoSolicitacao;
 			barraTabMatPrimas.setViewportView(tabMatPrimas);
 			int yTabMatPrima = 130;
 			barraTabMatPrimas.setBounds(0, yTabMatPrima, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabMatPrima);
-
-			pnlReceita.add(barraTabMatPrimas);
 			
+			tabMatPrimas.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+					if(tabMatPrimas.getSelectedRow() != -1 && e.getClickCount() == 2){
+						
+						int x = JOptionPane.showConfirmDialog(null, 
+															"Deseja realmente excluir a matéria-prima?", 
+															"Confirmação", 
+															JOptionPane.YES_OPTION);
+						
+						if(x== JOptionPane.YES_NO_OPTION){
+							
+							receita.remove(tabMatPrimas.getSelectedRow());
+							carregarGridMatPrima(receita);
+							
+						}
+						
+					}
+					
+				}
+			});
+			
+			pnlReceita.add(barraTabMatPrimas);
+			pnlReceita.add(lblCodMatPrimaRec);
+			pnlReceita.add(lblMatPrimaRec);
+			pnlReceita.add(lblQtdeMatPrima);
+			pnlReceita.add(lblUnidMatPrima);
+			pnlReceita.add(txtCodMatPrimaRec);
+			pnlReceita.add(txtMatPrimaRec);
+			pnlReceita.add(txtQtdeMatPrima);
+			pnlReceita.add(cbxUnidMatPrima);
+			pnlReceita.add(btnBuscarMatPrima);
+			pnlReceita.add(btnAdicionarMatPrima);
 			
 			// FORNECEDORES
 			
@@ -461,6 +536,66 @@ import enumeradores.TipoSolicitacao;
 			
 		}
 		
+		private void adicionarMatPrima(MateriaPrimaVO materiaPrima){
+			
+			Double qtdeInserida = Double.parseDouble(txtQtdeMatPrima.getText());
+			Double qtdeReceita = 0d;
+			int sizeReceita = receita.size();
+			boolean itemNaReceita = false;
+						
+			prodMatPrima = new ProdutoMateriaPrimaVO();
+			prodMatPrima.setMateriaPrima(materiaPrima);
+			prodMatPrima.setQtde(qtdeInserida);
+			
+			for (int l = 0; l < sizeReceita; l++) {
+	
+				if (materiaPrima.getCodProduto() == receita.get(l).getMateriaPrima().getCodProduto()) {
+	
+					itemNaReceita = true;
+					
+					qtdeReceita = receita.get(l).getQtde();
+	
+					receita.get(l).setQtde(qtdeReceita + qtdeInserida);
+	
+				}
+	
+			}
+			
+			if(!itemNaReceita){
+				receita.add(prodMatPrima);
+			}
+			
+			carregarGridMatPrima(receita);
+			
+		}
+		
+		public void carregarGridMatPrima(List<ProdutoMateriaPrimaVO> receita) {
+					
+			modeloTabMatPrimas.setNumRows(0);
+						
+			if (receita != null) {
+				
+				String[] registro = new String[4];
+				
+				for (ProdutoMateriaPrimaVO itemReceita : receita) {
+					
+					registro[0] = itemReceita.getMateriaPrima().getCodProduto();
+					registro[1] = itemReceita.getMateriaPrima().getDescricao();
+					registro[2] = itemReceita.getQtde().toString();
+					//registro[3] = cbxUnidMatPrima.getSelectedItem().toString();
+					
+					modeloTabMatPrimas.addRow(registro);
+					
+				}
+	
+			}
+	
+		}
+		
+		
+		
+		
+		
 		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 			super(solicitacao, tituloCabecalho);
 		}
@@ -513,24 +648,86 @@ import enumeradores.TipoSolicitacao;
 		}
 		
 		
-		// Métodos ITelaBuscar TODO continuar aqui Bruno
+		// Métodos ITelaBuscar
 
 		@Override
 		public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
 			
+			switch (acaoPesquisar) {
+			
+			case PESQ_MAT_PRIMA:
+				
+				return BancoFake.listaMatPrimaGeneric;
+				
+			case PESQ_FORNECEDOR:
+			
+				return BancoFake.listaFornecedorGeneric;
+
+		}
+		
 			return null;
+			
 		}
 
 		@Override
 		public void carregarItemSelecionado(GenericVO item) {
+			
+			switch (acaoPesquisar) {
+			
+				case PESQ_MAT_PRIMA:
+					
+					materiaPrima = (MateriaPrimaVO) item;
 
+					txtCodMatPrimaRec.setText(materiaPrima.getCodProduto());
+					txtMatPrimaRec.setText(materiaPrima.getDescricao());
+					
+				break;
+					
+				case PESQ_FORNECEDOR:
+				
+					
+					
+				break;
+	
+			}
 			
 		}
 
 		@Override
 		public String[] carregarGridTelaBusca(GenericVO item) {
 
-			return null;
+			String[] registro = null;
+			
+			switch (acaoPesquisar) {
+			
+				case PESQ_MAT_PRIMA:
+					
+					MateriaPrimaVO materiaPriam = (MateriaPrimaVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = materiaPriam.getCodProduto().toString();
+					registro[1] = materiaPriam.getDescricao();
+					registro[2] = materiaPriam.getUnidade().getAbreviatura();
+										
+				return registro;
+					
+				case PESQ_FORNECEDOR:
+					
+					FornecedorVO fornecedor = (FornecedorVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = fornecedor.getCodFornecedor().toString();
+					registro[1] = fornecedor.getNome();
+					registro[2] = fornecedor.getContato();
+					
+					
+				return registro;
+
+			}
+			
+			return registro;
 		}
 		
 	}

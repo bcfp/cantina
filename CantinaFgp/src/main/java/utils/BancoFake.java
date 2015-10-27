@@ -33,6 +33,7 @@ public class BancoFake {
 	public static List<CompraVO> listaCompras;
 	public static List<GenericVO> listaFornecedorGeneric;
 	public static List<GenericVO> listaProdutosGeneric; 
+	public static List<GenericVO> listaMatPrimaGeneric; 
 	public static List<ProdutoVO> listaProdutos; 
 	public static List<VendaVO> listaVendas; 
 	public static List<ClienteVO> listaClientes;
@@ -177,6 +178,11 @@ public class BancoFake {
 		matPrima2.setAtivo(true);
 		matPrima2.setUnidade(unidade);
 		matPrima2.setTipo(TipoProduto.MATERIA_PRIMA);
+		
+		listaMatPrimaGeneric = new ArrayList<GenericVO>();
+
+		listaMatPrimaGeneric.add(matPrima);
+		listaMatPrimaGeneric.add(matPrima2);
 		
 		receita = new ArrayList<ProdutoMateriaPrimaVO>();
 		

@@ -358,11 +358,7 @@ public class ConsultarEstoqueView extends JPanel{
 		
 		if(estoqueProduto != null){
 			
-			Iterator<ProdutoCantinaVO> iEstoqueProduto = estoqueProduto.iterator();
-			
-			while(iEstoqueProduto.hasNext()){
-				
-				ProdutoCantinaVO estoque = iEstoqueProduto.next();
+			for (ProdutoCantinaVO estoque : estoqueProduto) {
 				
 				String[] registro = new String[6];
 
@@ -376,6 +372,7 @@ public class ConsultarEstoqueView extends JPanel{
 				modeloTabEstoque.addRow(registro);	
 				
 			}
+
 		}
 		
 	}
