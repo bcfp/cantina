@@ -30,7 +30,6 @@ import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
-import vo.ProdutoCantinaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
@@ -112,6 +111,17 @@ import enumeradores.TipoSolicitacao;
 		// FORNECEDORES
 		
 		private JPanel pnlFornecedores;
+		
+		private JLabel lblCodFornecedor;
+		private JLabel lblFornecedor;
+		private JLabel lblContatoForn;
+		
+		private JTextField txtCodFornecedor;
+		private JTextField txtFornecedor;
+		private JTextField txtContatoForn;
+				
+		private JButton btnBuscarFornecedor;
+		private JButton btnAdicionarForn;
 
 		private JTable tabForn;
 		private DefaultTableModel modeloTabForn;
@@ -141,11 +151,15 @@ import enumeradores.TipoSolicitacao;
 		private ProdutoVendaVO produtoFabricado;
 		private MateriaPrimaVO materiaPrima;
 		private ProdutoMateriaPrimaVO prodMatPrima;
-		private List<ProdutoMateriaPrimaVO> receita;		
+		private List<ProdutoMateriaPrimaVO> receita;
+		
+		private FornecedorVO fornecedor;
+		private List<FornecedorVO> listaFornecedores;
 		
 		{
 			
 			receita = new ArrayList<ProdutoMateriaPrimaVO>();
+			listaFornecedores = new ArrayList<FornecedorVO>();
 			
 			// PRINCIPAL
 			
@@ -493,6 +507,70 @@ import enumeradores.TipoSolicitacao;
 			pnlFornecedores = new JPanel();
 			pnlFornecedores.setLayout(null);
 			
+			lblCodFornecedor = new JLabel("Código");
+			lblFornecedor = new JLabel("Fornecedor");
+			lblContatoForn = new JLabel("Contato");
+
+			txtCodFornecedor = new JTextField();
+			txtFornecedor = new JTextField();
+			txtContatoForn = new JTextField();
+						
+			btnBuscarFornecedor = new JButton("Buscar");
+			btnAdicionarForn = new JButton(" + ");
+						
+			int espXLblForn = 20;
+			int espXTxtForn = 120;
+
+			lblCodFornecedor.setBounds(espXLblRec, espY, 50, altura);
+			lblFornecedor.setBounds(espXLblRec, espY + espEntre, 80, altura);
+			lblContatoForn.setBounds(espXLblRec, espY + espEntre * 2, 80, altura);
+
+			txtCodFornecedor.setBounds(espXTxtRec, espY, 50, altura);
+			btnBuscarFornecedor.setBounds(espXTxtRec + 60, espY, 80, altura);
+			txtFornecedor.setBounds(espXTxtRec, espY + espEntre, 170, altura);
+			txtContatoForn.setBounds(espXTxtRec, espY + espEntre * 2, 50, altura);
+			btnAdicionarForn.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
+			
+			int espXLblForn2 = 350;
+			int espXTxtForn2 = 420;
+			
+			btnBuscarFornecedor.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					acaoPesquisar = PESQ_FORNECEDOR;
+
+					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Fornecedor", "Contato"}).abrirJanela();
+					
+				}
+				
+			});
+			
+			btnAdicionarForn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(fornecedor!=null){
+						
+						if(adicionarFornecedor(fornecedor)){
+						
+							txtCodFornecedor.setText("");
+							txtFornecedor.setText("");
+							txtContatoForn.setText("");
+							
+							btnAdicionarForn.setEnabled(false);
+						
+						}
+					}
+					
+				}
+				
+			});
+			
+			
+			
 			// Tabela forn
 			tabForn = new JTable();
 			modeloTabForn = new DefaultTableModel() {
@@ -505,7 +583,16 @@ import enumeradores.TipoSolicitacao;
 			int yTabForn = 130;
 			barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
 
+
 			pnlFornecedores.add(barraTabForn);
+			pnlFornecedores.add(lblCodFornecedor);
+			pnlFornecedores.add(lblFornecedor);
+			pnlFornecedores.add(lblContatoForn);
+			pnlFornecedores.add(txtCodFornecedor);
+			pnlFornecedores.add(txtFornecedor);
+			pnlFornecedores.add(txtContatoForn);
+			pnlFornecedores.add(btnBuscarFornecedor);
+			pnlFornecedores.add(btnAdicionarForn);
 			
 			
 			// LOTES
@@ -540,6 +627,7 @@ import enumeradores.TipoSolicitacao;
 			tbsProdutos.setEnabledAt(3, false);
 			
 			btnAdicionarMatPrima.setEnabled(false);
+			btnAdicionarForn.setEnabled(false);
 			
 			adicionarComponentesCentro(pnlCampos);
 			
@@ -604,6 +692,49 @@ import enumeradores.TipoSolicitacao;
 			
 		}
 		
+		private boolean adicionarFornecedor(FornecedorVO fornecedor) {
+	
+			int qtdeFornecedores = listaFornecedores.size();
+			boolean fornVinculado = false;
+			int i = 0;
+			
+			if(qtdeFornecedores == 0){
+				listaFornecedores.add(fornecedor);
+			}
+			else{
+					
+				do {
+					
+					if (fornecedor.getCodFornecedor() == listaFornecedores.get(i).getCodFornecedor()) {
+						
+						fornVinculado = true;
+						break;
+						
+					}
+					
+					if(++i < qtdeFornecedores ){
+						break;
+					}
+					
+				} while (!fornVinculado);
+	
+		
+				if (fornVinculado) {
+					return false;
+				}
+				else{
+					listaFornecedores.add(fornecedor);
+				}
+		
+			}
+		
+			carregarGridFornecedor(listaFornecedores);
+	
+			return true;
+			
+		}
+		
+		
 		public void carregarGridMatPrima(List<ProdutoMateriaPrimaVO> receita) {
 					
 			modeloTabMatPrimas.setNumRows(0);
@@ -620,6 +751,29 @@ import enumeradores.TipoSolicitacao;
 					//registro[3] = cbxUnidMatPrima.getSelectedItem().toString();
 					
 					modeloTabMatPrimas.addRow(registro);
+					
+				}
+	
+			}
+	
+		}
+		
+		
+		public void carregarGridFornecedor(List<FornecedorVO> listaFornecedores) {
+					
+			modeloTabForn.setNumRows(0);
+						
+			if (listaFornecedores != null) {
+				
+				String[] registro = new String[4];
+				
+				for (FornecedorVO fornecedor : listaFornecedores) {
+					
+					registro[0] = fornecedor.getCodFornecedor();
+					registro[1] = fornecedor.getNome();
+					registro[2] = fornecedor.getContato();
+					
+					modeloTabForn.addRow(registro);
 					
 				}
 	
@@ -722,7 +876,13 @@ import enumeradores.TipoSolicitacao;
 					
 				case PESQ_FORNECEDOR:
 				
+					btnAdicionarForn.setEnabled(true);
 					
+					fornecedor = (FornecedorVO) item;
+					
+					txtCodFornecedor.setText(fornecedor.getCodFornecedor());
+					txtFornecedor.setText(fornecedor.getNome());
+					txtContatoForn.setText(fornecedor.getContato());
 					
 				break;
 	
@@ -743,7 +903,7 @@ import enumeradores.TipoSolicitacao;
 					
 					registro = new String[3];
 
-					registro[0] = materiaPriam.getCodProduto().toString();
+					registro[0] = materiaPriam.getCodProduto();
 					registro[1] = materiaPriam.getDescricao();
 					registro[2] = materiaPriam.getUnidade().getAbreviatura();
 										
@@ -755,7 +915,7 @@ import enumeradores.TipoSolicitacao;
 					
 					registro = new String[3];
 
-					registro[0] = fornecedor.getCodFornecedor().toString();
+					registro[0] = fornecedor.getCodFornecedor();
 					registro[1] = fornecedor.getNome();
 					registro[2] = fornecedor.getContato();
 					
