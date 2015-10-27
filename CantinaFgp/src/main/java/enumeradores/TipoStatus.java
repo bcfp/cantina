@@ -2,7 +2,7 @@ package enumeradores;
 
 public enum TipoStatus {
 
-	ORDEM_COMPRA("OC"), ORDEM_PRODUCAO("OP"), VENDA("VD");
+	ORDEM_COMPRA("OC"), ORDEM_PRODUCAO("OP"), VENDA("VD"), GENERICO("Gen");
 	
 	private String tipo;
 	

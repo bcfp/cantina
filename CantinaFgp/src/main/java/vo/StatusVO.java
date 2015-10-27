@@ -2,7 +2,7 @@ package vo;
 
 import enumeradores.TipoStatus;
 
-public class StatusVO {
+public class StatusVO extends GenericVO{
 	
 	private Long idStatus;
 	private String descricao;

@@ -1,6 +1,7 @@
 ﻿package principal;
 
 import ui.PrincipalView;
+import utils.UtilFuncoes;
 
 public class Principal {
 

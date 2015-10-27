@@ -24,18 +24,18 @@ import javax.swing.table.DefaultTableModel;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
-import utils.BancoFake;
-import vo.FornecedorProdutoVO;
-import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
+import vo.FuncionarioVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
-import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
+import vo.StatusVO;
+import bo.FuncionarioBO;
 import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
+import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
@@ -73,6 +73,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	
 	private ProdutoVendaBO produtoVendaBO;
 	private ProdutoMateriaPrimaBO receitaBO;
+	private StatusBO statusBO;
+	private FuncionarioBO funcionarioBO;
 	
 	private List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima;
  	private OrdemProducaoVO ordemProducao;
@@ -132,6 +134,9 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 		produtoVendaBO = new ProdutoVendaBO();
 		receitaBO = new ProdutoMateriaPrimaBO();
+		statusBO = new StatusBO();
+		funcionarioBO = new FuncionarioBO();
+		
 		pnlMenuLateral = new JPanel();
 		
 		listaItensCompra = new ArrayList<>();
@@ -210,6 +215,15 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			}
 		});
 		
+		List<StatusVO> listaStatus = statusBO.consultarTodosStatus();
+		
+		for (StatusVO statusVO : listaStatus) {
+			
+			cbxStatus.addItem(statusVO.getDescricao());
+		}
+		cbxStatus.setSelectedIndex(4);
+		cbxStatus.setEnabled(false);
+		
 		definicoesPagina();
 		
 	}
@@ -241,12 +255,12 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 		}
 		else{
-			if(item instanceof FuncionarioCantinaVO){
+			if(item instanceof FuncionarioVO){
 				
-				FuncionarioCantinaVO funcionario = (FuncionarioCantinaVO) item;
+				FuncionarioVO funcionario = (FuncionarioVO) item;
 				
-				txtCodFunc.setText(funcionario.getFuncionario().getCodPessoa());
-				txtNomeFunc.setText(funcionario.getFuncionario().getNome());
+				txtCodFunc.setText(funcionario.getCodPessoa());
+				txtNomeFunc.setText(funcionario.getNome());
 				
 			}
 		}
@@ -273,11 +287,10 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 			case PESQ_FUNC:
 				
-				List<FuncionarioCantinaVO> listaFuncionarios	= new ArrayList<FuncionarioCantinaVO>();
-				
-				for (FuncionarioCantinaVO funcionarioVendaVO : listaFuncionarios) {
+				List<FuncionarioVO> listaFuncionarios = funcionarioBO.filtarFuncionariosPorNomeECodigo(parametros.get("Código"), parametros.get("Nome"));
+				for (FuncionarioVO funcionarioVO : listaFuncionarios) {
 					
-					listaGenericos.add(funcionarioVendaVO);
+					listaGenericos.add(funcionarioVO);
 				}
 				
 				return listaGenericos;
@@ -307,14 +320,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			return registro;
 			
 		}
-		else if(item instanceof FuncionarioCantinaVO){
+		else if(item instanceof FuncionarioVO){
 				
-			FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) item;
+			FuncionarioVO funcionarioCantina = (FuncionarioVO) item;
 
 			String[] registro = new String[2];
 
-			registro[0] = funcionarioCantina.getFuncionario().getCodPessoa();
-			registro[1] = funcionarioCantina.getFuncionario().getNome();
+			registro[0] = funcionarioCantina.getCodPessoa();
+			registro[1] = funcionarioCantina.getNome();
 
 			return registro;
 			
