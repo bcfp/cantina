@@ -75,7 +75,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private StatusBO statusBO;
 	private FuncionarioBO funcionarioBO;
 	
-	private List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima;
+	private List<ProdutoMateriaPrimaVO> listaProdutosMatPrima;
  	private OrdemProducaoVO ordemProducao;
 	private List<ItemCompraVO> listaItensCompra;
 	
@@ -512,13 +512,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 
 	public List<ProdutoMateriaPrimaVO> getListaProdutosMateriaPrima() {
-		return listaProdutosMateriaPrima;
+		return listaProdutosMatPrima;
 	}
 
 
 	public void setListaProdutosMateriaPrima(
 			List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima) {
-		this.listaProdutosMateriaPrima = listaProdutosMateriaPrima;
+		this.listaProdutosMatPrima = listaProdutosMateriaPrima;
 	}
 
 

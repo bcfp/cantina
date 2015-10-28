@@ -15,9 +15,10 @@ public class UtilFuncoes {
 
 	public static boolean isNumOuLetra(String campo) {
 	
-		return campo.matches("[a-zA-Z0-9]+");
+		return campo.matches("[a-zA-Z0-9]");
 	
 	}
+
 		
 	public static Integer doubleToInteger(Double valor){
 		return valor.intValue();
