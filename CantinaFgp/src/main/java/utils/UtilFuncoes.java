@@ -6,13 +6,19 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class UtilFuncoes {
-		
-	public static Boolean isVazio(String campo){
-		  
-		  return campo == null || campo.equals("");
-		  
-	}
+
+	public static boolean isCampoVazio(String campo) {
 	
+		return campo == null || campo.trim().equals("");
+	
+	}
+
+	public static boolean isNumOuLetra(String campo) {
+	
+		return campo.matches("[a-zA-Z0-9]+");
+	
+	}
+		
 	public static Integer doubleToInteger(Double valor){
 		return valor.intValue();
 	}

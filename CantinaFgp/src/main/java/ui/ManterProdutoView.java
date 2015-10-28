@@ -24,15 +24,17 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
 import utils.BancoFake;
+import utils.UtilFuncoes;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
-import vo.ProdutoVendaVO;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterPanelView<ProdutoVO> implements ITelaBuscar{
@@ -45,9 +47,6 @@ import enumeradores.TipoSolicitacao;
 		private JLabel lblNome;
 		private JLabel lblLote;
 		private JLabel lblTipoProduto;
-		private JLabel lblMatPrima;
-		private JLabel lblProdProduzido;
-		private JLabel lblProdRevenda;
 
 		private JTextField txtCod;
 		private JTextField txtNome;
@@ -56,6 +55,11 @@ import enumeradores.TipoSolicitacao;
 		private JRadioButton rdoMatPrima;
 		private JRadioButton rdoProdProduzido;
 		private JRadioButton rdoProdRevenda;
+
+		private static final Integer ABA_DADOS = 0;
+		private static final Integer ABA_FORNECEDORES = 1;
+		private static final Integer ABA_RECEITA = 2;
+		private static final Integer ABA_LOTES = 3;
 		
 		private ButtonGroup btgTipoProdutoGroup;
 	
@@ -131,8 +135,25 @@ import enumeradores.TipoSolicitacao;
 		
 		private JPanel pnlLotes;
 		
-		private JLabel lblDiasVencimento;
-		private JTextField txtDiasVencimento;
+		private JLabel lblFiltrarLotes;
+		private JLabel lblCodLote;
+		private JLabel lblOrigemLote;
+		private JLabel lblCodOrigem;
+		private JLabel lblDatasLote;
+		private JLabel lblDataVctoMin;
+		private JLabel lblDataVctoMax;
+		
+		private JTextField txtCodLote;
+		private JTextField txtCodOrigem;
+		
+		private JRadioButton rdoEstoqueLote;
+		
+		private JComboBox<String> cbxOrigemLote;
+
+		private JXDatePicker dtpDataVctoMin;
+		private JXDatePicker dtpDataVctoMax;
+		
+		private JButton btnFiltrarLotes;
 
 		private JTable tabLotes;
 		private DefaultTableModel modeloTabLotes;
@@ -146,9 +167,8 @@ import enumeradores.TipoSolicitacao;
 		private static final String PESQ_FORNECEDOR = "fornecedor";
 		
 		
-		// Atributos
+		// Atributos 
 		
-		private ProdutoVendaVO produtoFabricado;
 		private MateriaPrimaVO materiaPrima;
 		private ProdutoMateriaPrimaVO prodMatPrima;
 		private List<ProdutoMateriaPrimaVO> receita;
@@ -156,161 +176,32 @@ import enumeradores.TipoSolicitacao;
 		private FornecedorVO fornecedor;
 		private List<FornecedorVO> listaFornecedores;
 		
+		private TipoSolicitacao solicitacao;
+		
+		// Bloco de Inicialização
+		
 		{
 			
+			// PRINCIPAL
+	
 			receita = new ArrayList<ProdutoMateriaPrimaVO>();
 			listaFornecedores = new ArrayList<FornecedorVO>();
-			
-			// PRINCIPAL
-			
-			int widthCampos = this.getWidth() - 25;
-			int heightCampos = this.getHeight() - 122;
-			
+	
 			tbsProdutos = new JTabbedPane();
-			int yTbsProd = 150;
-			tbsProdutos.setBounds(10, yTbsProd, widthCampos-20, heightCampos-yTbsProd-10);
-
 			pnlCampos = new JPanel();
-			pnlCampos.setBackground(Color.WHITE);
-			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
-			pnlCampos.setLayout(null);
-			
-			
 			lblCod = new JLabel("Código");
 			lblNome = new JLabel("Nome");
 			lblLote = new JLabel("Lote");
 			lblTipoProduto = new JLabel("TIPO");
-			lblMatPrima = new JLabel("Matéria Prima");
-			lblProdProduzido = new JLabel("Produto Produzido");
-			lblProdRevenda = new JLabel("Produto Revenda");
-			
 			txtCod = new JTextField();
 			txtNome = new JTextField();
 			rdoLote = new JRadioButton();
 			btgTipoProdutoGroup = new ButtonGroup();
-			rdoMatPrima = new JRadioButton();
-			rdoProdProduzido = new JRadioButton();
-			rdoProdRevenda = new JRadioButton();
+			rdoMatPrima = new JRadioButton("Matéria Prima");
+			rdoProdProduzido = new JRadioButton("Produto Produzido");
+			rdoProdRevenda = new JRadioButton("Produto Revenda");
+			rdoProdRevenda.setSelected(true);
 			
-			txtCod.setEnabled(false);
-			
-			int espXLbl = 20;
-			int espXTxt = espXLbl + 70;
-			int espXLbl2 = 450;
-			int espY = 20;
-			int espEntre = 35;
-			int altura = 30;			
-
-			lblCod.setBounds(espXLbl, espY, 80, altura);
-			lblNome.setBounds(espXLbl, espY + espEntre, 100, altura);
-			lblLote.setBounds(espXLbl, espY + espEntre * 2, 100, altura);
-			
-			txtCod.setBounds(espXTxt, espY, 50, altura);
-			txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
-			rdoLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
-			
-			lblTipoProduto.setBounds(espXLbl2 - 20, espY, 200, altura);
-			lblMatPrima.setBounds(espXLbl2, espY + espEntre, 150, altura);
-			lblProdProduzido.setBounds(espXLbl2, espY + espEntre * 2, 150, altura);
-			lblProdRevenda.setBounds(espXLbl2, espY + espEntre * 3, 150, altura);
-						
-			rdoMatPrima.setBounds(espXLbl2 - 20, espY + espEntre, 20, altura);
-			rdoProdProduzido.setBounds(espXLbl2 - 20, espY + espEntre * 2, 20, altura);
-			rdoProdRevenda.setBounds(espXLbl2 - 20, espY + espEntre * 3, 20, altura);
-			
-			rdoLote.setBackground(Color.WHITE);
-			rdoLote.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(rdoLote.isSelected()){
-						tbsProdutos.setEnabledAt(3, true);
-					}
-					else{
-						tbsProdutos.setEnabledAt(3, false);
-						tbsProdutos.setSelectedIndex(0);
-					}
-	
-				}
-			});
-			
-			rdoMatPrima.setBackground(Color.WHITE);
-			rdoMatPrima.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(rdoMatPrima.isSelected()){
-						
-						tbsProdutos.setEnabledAt(2, true);
-						tbsProdutos.setEnabledAt(1, false);
-						
-						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
-							
-							tbsProdutos.setSelectedComponent(pnlDados);
-						}
-					}
-					
-				}
-			});
-			
-			rdoProdProduzido.setBackground(Color.WHITE);
-			rdoProdProduzido.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(rdoProdProduzido.isSelected()){
-						
-						tbsProdutos.setEnabledAt(2, false);
-						tbsProdutos.setEnabledAt(1, true);
-						
-						if(tbsProdutos.getSelectedComponent().equals(pnlFornecedores)){
-							tbsProdutos.setSelectedComponent(pnlDados);
-						}
-						
-					}
-					
-				}
-			});
-			
-			rdoProdRevenda.setBackground(Color.WHITE);
-			rdoProdRevenda.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(rdoProdRevenda.isSelected()){
-						
-						tbsProdutos.setEnabledAt(2, true);
-						tbsProdutos.setEnabledAt(1, false);
-						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
-							tbsProdutos.setSelectedComponent(pnlDados);
-						}
-					}
-					
-				}
-			});
-			
-			btgTipoProdutoGroup.add(rdoMatPrima);
-			btgTipoProdutoGroup.add(rdoProdProduzido);
-			btgTipoProdutoGroup.add(rdoProdRevenda);
-
-			pnlCampos.add(lblCod);
-			pnlCampos.add(txtCod);
-			pnlCampos.add(lblNome);
-			pnlCampos.add(txtNome);
-			pnlCampos.add(lblLote);
-			pnlCampos.add(rdoLote);
-			pnlCampos.add(lblTipoProduto);
-			pnlCampos.add(lblMatPrima);
-			pnlCampos.add(lblProdProduzido);
-			pnlCampos.add(lblProdRevenda);
-			pnlCampos.add(rdoMatPrima);
-			pnlCampos.add(rdoProdProduzido);
-			pnlCampos.add(rdoProdRevenda);
-			pnlCampos.add(tbsProdutos);
 			
 			// TABS
 			
@@ -334,6 +225,215 @@ import enumeradores.TipoSolicitacao;
 			txtQtdeMax = new JTextField();
 			txtQtdeMin = new JTextField();
 			cbxUnidade = new JComboBox<String>();
+			
+			
+			// FORNECEDORES
+			
+			pnlFornecedores = new JPanel();
+			pnlFornecedores.setLayout(null);
+			
+			lblCodFornecedor = new JLabel("Código");
+			lblFornecedor = new JLabel("Fornecedor");
+			lblContatoForn = new JLabel("Contato");
+
+			txtCodFornecedor = new JTextField();
+			txtFornecedor = new JTextField();
+			txtContatoForn = new JTextField();
+						
+			btnBuscarFornecedor = new JButton("Buscar");
+			btnAdicionarForn = new JButton(" + ");
+			
+			tabForn = new JTable();
+			
+			
+			// RECEITA
+			
+			pnlReceita = new JPanel();
+			
+			lblCodMatPrimaRec = new JLabel("Código");
+			lblMatPrimaRec = new JLabel("Matéria Prima");
+			lblQtdeMatPrima = new JLabel("Quantidade");
+			lblUnidMatPrima = new JLabel("Unidade");
+
+			txtCodMatPrimaRec = new JTextField();
+			txtMatPrimaRec = new JTextField();
+			txtQtdeMatPrima = new JTextField();
+			
+			cbxUnidMatPrima = new JComboBox<String>();
+			
+			btnBuscarMatPrima = new JButton("Buscar");
+			btnAdicionarMatPrima = new JButton(" + ");
+			
+			tabMatPrimas = new JTable();
+			
+		}
+		
+		// Construtores
+		
+		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
+
+			super(solicitacao, tituloCabecalho);
+			
+			this.solicitacao = solicitacao;
+						
+		}
+		
+		// Métodos
+		
+		@Override
+		public void abrirJanela(){
+						
+			definicoesPagina();
+			
+		}
+		
+
+		@Override
+		public void abrirJanela(ProdutoVO produto) {
+			
+			definicoesPagina();
+			
+		}
+		
+		private void definicoesPagina(){
+			
+			// PRINCIPAL
+			
+			txtCod.setEnabled(false);
+			
+			int widthCampos = this.getWidth() - 25;
+			int heightCampos = this.getHeight() - 122;
+			
+			pnlCampos.setBackground(Color.WHITE);
+			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
+			pnlCampos.setLayout(null);
+			
+			int yTbsProd = 150;
+			tbsProdutos.setBounds(10, yTbsProd, widthCampos-20, heightCampos-yTbsProd-10);
+			
+			int espXLbl = 20;
+			int espXTxt = espXLbl + 70;
+			int espXLbl2 = 450;
+			int espY = 20;
+			int espEntre = 35;
+			int altura = 30;			
+
+			lblCod.setBounds(espXLbl, espY, 80, altura);
+			lblNome.setBounds(espXLbl, espY + espEntre, 100, altura);
+			lblLote.setBounds(espXLbl, espY + espEntre * 2, 100, altura);
+			
+			txtCod.setBounds(espXTxt, espY, 50, altura);
+			txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
+			rdoLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
+			
+			lblTipoProduto.setBounds(espXLbl2 - 20, espY, 200, altura);
+						
+			rdoProdRevenda.setBounds(espXLbl2 - 20, espY + espEntre, 125, altura);
+			rdoProdProduzido.setBounds(espXLbl2 - 20, espY + espEntre * 2, 130, altura);
+			rdoMatPrima.setBounds(espXLbl2 - 20, espY + espEntre * 3, 105, altura);
+			
+			rdoLote.setBackground(pnlCampos.getBackground());
+			
+			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
+				
+				rdoLote.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if(rdoLote.isSelected()){
+							tbsProdutos.setEnabledAt(ABA_LOTES, true);
+							tbsProdutos.setSelectedIndex(ABA_LOTES);
+						}
+						else{
+							tbsProdutos.setEnabledAt(ABA_LOTES, false);
+							tbsProdutos.setSelectedIndex(ABA_DADOS);
+						}
+					}
+					
+				});
+				
+			}
+						
+			rdoMatPrima.setBackground(pnlCampos.getBackground());
+			rdoMatPrima.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(rdoMatPrima.isSelected()){
+						
+						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+						
+						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
+							tbsProdutos.setSelectedComponent(pnlDados);
+						}
+						
+					}
+					
+				}
+			});
+			
+			rdoProdProduzido.setBackground(pnlCampos.getBackground());
+			rdoProdProduzido.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(rdoProdProduzido.isSelected()){
+						
+						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
+						tbsProdutos.setEnabledAt(ABA_RECEITA, true);
+						
+						if(tbsProdutos.getSelectedComponent().equals(pnlFornecedores)){
+							tbsProdutos.setSelectedComponent(pnlDados);
+						}
+						
+					}
+					
+				}
+			});
+			
+			rdoProdRevenda.setBackground(pnlCampos.getBackground());
+			rdoProdRevenda.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(rdoProdRevenda.isSelected()){
+						
+						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+						
+						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
+							tbsProdutos.setSelectedComponent(pnlDados);
+						}
+						
+					}
+					
+				}
+			});
+			
+			btgTipoProdutoGroup.add(rdoMatPrima);
+			btgTipoProdutoGroup.add(rdoProdProduzido);
+			btgTipoProdutoGroup.add(rdoProdRevenda);
+			
+			pnlCampos.add(lblCod);
+			pnlCampos.add(txtCod);
+			pnlCampos.add(lblNome);
+			pnlCampos.add(txtNome);
+			pnlCampos.add(lblLote);
+			pnlCampos.add(rdoLote);
+			pnlCampos.add(lblTipoProduto);
+			pnlCampos.add(rdoMatPrima);
+			pnlCampos.add(rdoProdProduzido);
+			pnlCampos.add(rdoProdRevenda);
+			pnlCampos.add(tbsProdutos);
+			
+			
+			// TABS
+			
+			// DADOS
 			
 			lblTitValores.setText("VALORES");
 			lblPrecoCusto.setText("Preço de custo");
@@ -378,25 +478,118 @@ import enumeradores.TipoSolicitacao;
 			pnlDados.add(txtQtdeMin);
 			pnlDados.add(txtQtdeMax);
 
+			tbsProdutos.addTab("Dados", pnlDados);
+			tbsProdutos.setEnabledAt(ABA_DADOS, true);
+			
+			
+			// FORNECEDORES
+			
+			btnAdicionarForn.setEnabled(false);
+						
+			int espXLblForn = 20;
+			int espXTxtForn = 120;
+
+			lblCodFornecedor.setBounds(espXLblForn, espY, 50, altura);
+			lblFornecedor.setBounds(espXLblForn, espY + espEntre, 80, altura);
+			lblContatoForn.setBounds(espXLblForn, espY + espEntre * 2, 80, altura);
+
+			txtCodFornecedor.setBounds(espXTxtForn, espY, 50, altura);
+			btnBuscarFornecedor.setBounds(espXTxtForn + 60, espY, 80, altura);
+			txtFornecedor.setBounds(espXTxtForn, espY + espEntre, 210, altura);
+			txtContatoForn.setBounds(espXTxtForn, espY + espEntre * 2, 150, altura);
+			btnAdicionarForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
+			
+			btnBuscarFornecedor.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					acaoPesquisar = PESQ_FORNECEDOR;
+
+					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Fornecedor", "Contato"}).abrirJanela();
+					
+				}
+				
+			});
+			
+			btnAdicionarForn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					if(fornecedor!=null){
+						
+						if(adicionarFornecedor(fornecedor)){
+						
+							txtCodFornecedor.setText("");
+							txtFornecedor.setText("");
+							txtContatoForn.setText("");
+							
+							btnAdicionarForn.setEnabled(false);
+						
+						}
+						
+					}
+					
+				}
+				
+			});
+			
+			// Tabela forn
+			
+			modeloTabForn = new DefaultTableModel() {
+				@Override public boolean isCellEditable(int row, int column) { return false; }
+			};
+			modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
+			tabForn.setModel(modeloTabForn);
+			barraTabForn = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			barraTabForn.setViewportView(tabForn);
+			int yTabForn = 130;
+			barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
+			
+			tabForn.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+					if(tabForn.getSelectedRow() != -1 && e.getClickCount() == 2){
+						
+						int x = JOptionPane.showConfirmDialog(null, 
+															"Deseja realmente excluir o fornecedor?", 
+															"Confirmação", 
+															JOptionPane.YES_OPTION);
+						
+						if(x == JOptionPane.YES_NO_OPTION){
+							
+							listaFornecedores.remove(tabForn.getSelectedRow());
+							carregarGridFornecedor(listaFornecedores);
+							
+						}
+						
+					}
+					
+				}
+			});
+
+			pnlFornecedores.add(barraTabForn);
+			pnlFornecedores.add(lblCodFornecedor);
+			pnlFornecedores.add(lblFornecedor);
+			pnlFornecedores.add(lblContatoForn);
+			pnlFornecedores.add(txtCodFornecedor);
+			pnlFornecedores.add(txtFornecedor);
+			pnlFornecedores.add(txtContatoForn);
+			pnlFornecedores.add(btnBuscarFornecedor);
+			pnlFornecedores.add(btnAdicionarForn);
+
+			tbsProdutos.addTab("Fornecedores", pnlFornecedores);
+			tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+			
 			
 			// RECEITA
-			
-			pnlReceita = new JPanel();
+
 			pnlReceita.setLayout(null);
 			
-			lblCodMatPrimaRec = new JLabel("Código");
-			lblMatPrimaRec = new JLabel("Matéria Prima");
-			lblQtdeMatPrima = new JLabel("Quantidade");
-			lblUnidMatPrima = new JLabel("Unidade");
-
-			txtCodMatPrimaRec = new JTextField();
-			txtMatPrimaRec = new JTextField();
-			txtQtdeMatPrima = new JTextField();
-			
-			cbxUnidMatPrima = new JComboBox<String>();
-			
-			btnBuscarMatPrima = new JButton("Buscar");
-			btnAdicionarMatPrima = new JButton(" + ");
+			btnAdicionarMatPrima.setEnabled(false);
 						
 			int espXLblRec = 20;
 			int espXTxtRec = 120;
@@ -455,7 +648,7 @@ import enumeradores.TipoSolicitacao;
 			});
 			
 			// Tabela
-			tabMatPrimas = new JTable();
+			
 			modeloTabMatPrimas = new DefaultTableModel() {
 				@Override public boolean isCellEditable(int row, int column) { return false; }
 			};
@@ -478,7 +671,7 @@ import enumeradores.TipoSolicitacao;
 															"Confirmação", 
 															JOptionPane.YES_OPTION);
 						
-						if(x== JOptionPane.YES_NO_OPTION){
+						if(x == JOptionPane.YES_NO_OPTION){
 							
 							receita.remove(tabMatPrimas.getSelectedRow());
 							carregarGridMatPrima(receita);
@@ -502,142 +695,204 @@ import enumeradores.TipoSolicitacao;
 			pnlReceita.add(btnBuscarMatPrima);
 			pnlReceita.add(btnAdicionarMatPrima);
 			
-			// FORNECEDORES
-			
-			pnlFornecedores = new JPanel();
-			pnlFornecedores.setLayout(null);
-			
-			lblCodFornecedor = new JLabel("Código");
-			lblFornecedor = new JLabel("Fornecedor");
-			lblContatoForn = new JLabel("Contato");
-
-			txtCodFornecedor = new JTextField();
-			txtFornecedor = new JTextField();
-			txtContatoForn = new JTextField();
-						
-			btnBuscarFornecedor = new JButton("Buscar");
-			btnAdicionarForn = new JButton(" + ");
-						
-			int espXLblForn = 20;
-			int espXTxtForn = 120;
-
-			lblCodFornecedor.setBounds(espXLblRec, espY, 50, altura);
-			lblFornecedor.setBounds(espXLblRec, espY + espEntre, 80, altura);
-			lblContatoForn.setBounds(espXLblRec, espY + espEntre * 2, 80, altura);
-
-			txtCodFornecedor.setBounds(espXTxtRec, espY, 50, altura);
-			btnBuscarFornecedor.setBounds(espXTxtRec + 60, espY, 80, altura);
-			txtFornecedor.setBounds(espXTxtRec, espY + espEntre, 170, altura);
-			txtContatoForn.setBounds(espXTxtRec, espY + espEntre * 2, 50, altura);
-			btnAdicionarForn.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
-			
-			int espXLblForn2 = 350;
-			int espXTxtForn2 = 420;
-			
-			btnBuscarFornecedor.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					acaoPesquisar = PESQ_FORNECEDOR;
-
-					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Fornecedor", "Contato"}).abrirJanela();
-					
-				}
-				
-			});
-			
-			btnAdicionarForn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(fornecedor!=null){
-						
-						if(adicionarFornecedor(fornecedor)){
-						
-							txtCodFornecedor.setText("");
-							txtFornecedor.setText("");
-							txtContatoForn.setText("");
-							
-							btnAdicionarForn.setEnabled(false);
-						
-						}
-					}
-					
-				}
-				
-			});
-			
-			
-			
-			// Tabela forn
-			tabForn = new JTable();
-			modeloTabForn = new DefaultTableModel() {
-				@Override public boolean isCellEditable(int row, int column) { return false; }
-			};
-			modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
-			tabForn.setModel(modeloTabForn);
-			barraTabForn = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			barraTabForn.setViewportView(tabForn);
-			int yTabForn = 130;
-			barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
-
-
-			pnlFornecedores.add(barraTabForn);
-			pnlFornecedores.add(lblCodFornecedor);
-			pnlFornecedores.add(lblFornecedor);
-			pnlFornecedores.add(lblContatoForn);
-			pnlFornecedores.add(txtCodFornecedor);
-			pnlFornecedores.add(txtFornecedor);
-			pnlFornecedores.add(txtContatoForn);
-			pnlFornecedores.add(btnBuscarFornecedor);
-			pnlFornecedores.add(btnAdicionarForn);
+			tbsProdutos.addTab("Receita", pnlReceita);
+			tbsProdutos.setEnabledAt(ABA_RECEITA, false);
 			
 			
 			// LOTES
 			
-			pnlLotes = new JPanel();
-			pnlLotes.setLayout(null);
-			
-			// Tabela lote
-			tabLotes = new JTable();
-			modeloTabLotes = new DefaultTableModel() {
-				@Override public boolean isCellEditable(int row, int column) { return false; }
-			};
-			modeloTabLotes.setColumnIdentifiers(new String[] {"Código", "Lote", "Qtde", "Vencimento"});
-			tabLotes.setModel(modeloTabLotes);
-			barraTabLotes = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			barraTabLotes.setViewportView(tabLotes);
-			int yTabLotes = 130;
-			barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabLotes);
-			
-			pnlLotes.add(barraTabLotes);
-			
-						
-			// TABS
-			
-			tbsProdutos.addTab("Dados", pnlDados);
-			tbsProdutos.addTab("Receita", pnlReceita);
-			tbsProdutos.addTab("Fornecedores", pnlFornecedores);
-			tbsProdutos.addTab("Lotes", pnlLotes);
-			
-			tbsProdutos.setEnabledAt(1, false);
-			tbsProdutos.setEnabledAt(2, false);
-			tbsProdutos.setEnabledAt(3, false);
-			
-			btnAdicionarMatPrima.setEnabled(false);
-			btnAdicionarForn.setEnabled(false);
+			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
+				
+				pnlLotes = new JPanel();
+				pnlLotes.setLayout(null);
+				
+				lblFiltrarLotes = new JLabel("FILTRAR");
+				lblCodLote = new JLabel("Lote");
+				lblOrigemLote = new JLabel("Origem");
+				lblCodOrigem = new JLabel("Número");
+				lblDatasLote = new JLabel("Vencimentos");
+				lblDataVctoMin = new JLabel("Inicial");
+				lblDataVctoMax = new JLabel("Final");
+				
+				txtCodLote = new JTextField();
+				txtCodOrigem = new JTextField();
+				
+				rdoEstoqueLote = new JRadioButton("Com estoque");
+				rdoEstoqueLote.setSelected(true);
+				
+				cbxOrigemLote = new JComboBox<String>();
+	
+				dtpDataVctoMin = new JXDatePicker();
+				dtpDataVctoMax = new JXDatePicker();
+				
+				btnFiltrarLotes = new JButton("Filtrar");
+				
+				int espYLot = 10;
+				int espXLblLot = 20;
+				int espXTxtLot = 80;
+				
+				lblFiltrarLotes.setBounds(espXLblLot, espYLot, 50, altura);
+				lblCodLote.setBounds(espXLblLot, espYLot + espEntre, 50, altura);
+				lblOrigemLote.setBounds(espXLblLot, espYLot + espEntre * 2, 50, altura);
+				
+				txtCodLote.setBounds(espXTxtLot, espYLot + espEntre, 50, altura);
+				cbxOrigemLote.setBounds(espXTxtLot, espYLot + espEntre * 2, 120, altura);
+				
+				int espXLblLot2 = 210;
+				int espXTxtLot2 = 260;
+				
+				lblCodOrigem.setBounds(espXLblLot2, espYLot + espEntre * 2, 50, altura);
+				txtCodOrigem.setBounds(espXTxtLot2, espYLot + espEntre * 2, 50, altura);
+				
+				int espXLblLot3 = 340;
+				int espXTxtLot3 = 380;
+	
+				lblDatasLote.setBounds(espXLblLot3, espYLot, 80, altura);
+				lblDataVctoMin.setBounds(espXLblLot3, espYLot + espEntre, 80, altura);
+				lblDataVctoMax.setBounds(espXLblLot3, espYLot + espEntre * 2, 80, altura);
+				
+				dtpDataVctoMin.setBounds(espXTxtLot3, espYLot + espEntre, 130, altura);
+				dtpDataVctoMax.setBounds(espXTxtLot3, espYLot + espEntre * 2, 130, altura);
+				
+				int espXTxtLot4 = 530;
+	
+				rdoEstoqueLote.setBounds(espXTxtLot4, espYLot + espEntre, 100, altura);
+				btnFiltrarLotes.setBounds(espXTxtLot4, espYLot + espEntre * 2, 80, altura);
+				
+				
+				// Tabela lote
+				tabLotes = new JTable();
+				modeloTabLotes = new DefaultTableModel() {
+					@Override public boolean isCellEditable(int row, int column) { return false; }
+				};
+				modeloTabLotes.setColumnIdentifiers(new String[] {"Lote", "Qtde", "Vencimento", "Origem", "Número"});
+				tabLotes.setModel(modeloTabLotes);
+				barraTabLotes = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				barraTabLotes.setViewportView(tabLotes);
+				int yTabLotes = 130;
+				barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabLotes);
+				
+				pnlLotes.add(barraTabLotes);
+				pnlLotes.add(lblFiltrarLotes);
+				pnlLotes.add(lblCodLote);
+				pnlLotes.add(rdoEstoqueLote);
+				pnlLotes.add(lblOrigemLote);
+				pnlLotes.add(lblCodOrigem);
+				pnlLotes.add(lblDatasLote);
+				pnlLotes.add(lblDataVctoMin);
+				pnlLotes.add(lblDataVctoMax);
+				pnlLotes.add(txtCodLote);
+				pnlLotes.add(txtCodOrigem);
+				pnlLotes.add(cbxOrigemLote);
+				pnlLotes.add(dtpDataVctoMin);
+				pnlLotes.add(dtpDataVctoMax);
+				pnlLotes.add(btnFiltrarLotes);
+				
+				tbsProdutos.addTab("Lotes", pnlLotes);
+				tbsProdutos.setEnabledAt(ABA_LOTES, false);
+				
+			}
 			
 			adicionarComponentesCentro(pnlCampos);
 			
+			this.setVisible(true);
+			
+		}
+		
+		
+		public void carregarGridFornecedor(List<FornecedorVO> listaFornecedores) {
+					
+			modeloTabForn.setNumRows(0);
+						
+			if (listaFornecedores != null) {
+				
+				String[] registro = new String[4];
+				
+				for (FornecedorVO fornecedor : listaFornecedores) {
+					
+					registro[0] = fornecedor.getCodFornecedor();
+					registro[1] = fornecedor.getNome();
+					registro[2] = fornecedor.getContato();
+					
+					modeloTabForn.addRow(registro);
+					
+				}
+	
+			}
+	
+		}
+
+		@Override
+		public boolean incluir() {
+			JOptionPane.showMessageDialog(null, "Produto Incluído");
+			return false;
+		}
+
+		@Override
+		public boolean alterar() {
+			JOptionPane.showMessageDialog(null, "Produto Alterado");	
+			return true;
+		}
+
+		@Override
+		protected boolean habilitarCampos() {
+
+			return false;
+		
+		}
+
+		protected void desabilitarCampos(){
+			
+			
+		}
+		
+		@Override
+		protected void limparCampos() {
+			
+		}
+
+		@Override
+		public String[] carregarGridTelaBusca(GenericVO item) {
+
+			String[] registro = null;
+			
+			switch (acaoPesquisar) {
+			
+				case PESQ_MAT_PRIMA:
+					
+					MateriaPrimaVO materiaPriam = (MateriaPrimaVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = materiaPriam.getCodProduto();
+					registro[1] = materiaPriam.getDescricao();
+					registro[2] = materiaPriam.getUnidade().getAbreviatura();
+										
+				return registro;
+					
+				case PESQ_FORNECEDOR:
+					
+					FornecedorVO fornecedor = (FornecedorVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = fornecedor.getCodFornecedor();
+					registro[1] = fornecedor.getNome();
+					registro[2] = fornecedor.getContato();
+					
+					
+				return registro;
+
+			}
+			
+			return registro;
 		}
 		
 		private boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
 			
 			String qtdeTxt = txtQtdeMatPrima.getText();
 			
-			if(qtdeTxt.trim().equals("")){
+			if(UtilFuncoes.isCampoVazio(qtdeTxt)){
 				
 				JOptionPane.showMessageDialog(null, "Favor informar uma quantidade", "Campo Vazio", JOptionPane.YES_OPTION);
 				
@@ -695,38 +950,17 @@ import enumeradores.TipoSolicitacao;
 		private boolean adicionarFornecedor(FornecedorVO fornecedor) {
 	
 			int qtdeFornecedores = listaFornecedores.size();
-			boolean fornVinculado = false;
-			int i = 0;
-			
-			if(qtdeFornecedores == 0){
-				listaFornecedores.add(fornecedor);
-			}
-			else{
+				
+			for(int i = 0; i < qtdeFornecedores; i++){
+				if (fornecedor.getCodFornecedor() == listaFornecedores.get(i).getCodFornecedor()) {
 					
-				do {
-					
-					if (fornecedor.getCodFornecedor() == listaFornecedores.get(i).getCodFornecedor()) {
+					JOptionPane.showMessageDialog(null, "Fornecedor já vinculado", "Fornecedor Inválido", JOptionPane.YES_OPTION);
+					return true;
 						
-						fornVinculado = true;
-						break;
-						
-					}
-					
-					if(++i < qtdeFornecedores ){
-						break;
-					}
-					
-				} while (!fornVinculado);
-	
-		
-				if (fornVinculado) {
-					return false;
 				}
-				else{
-					listaFornecedores.add(fornecedor);
-				}
-		
 			}
+
+			listaFornecedores.add(fornecedor);
 		
 			carregarGridFornecedor(listaFornecedores);
 	
@@ -756,85 +990,7 @@ import enumeradores.TipoSolicitacao;
 	
 			}
 	
-		}
-		
-		
-		public void carregarGridFornecedor(List<FornecedorVO> listaFornecedores) {
-					
-			modeloTabForn.setNumRows(0);
-						
-			if (listaFornecedores != null) {
-				
-				String[] registro = new String[4];
-				
-				for (FornecedorVO fornecedor : listaFornecedores) {
-					
-					registro[0] = fornecedor.getCodFornecedor();
-					registro[1] = fornecedor.getNome();
-					registro[2] = fornecedor.getContato();
-					
-					modeloTabForn.addRow(registro);
-					
-				}
-	
-			}
-	
-		}
-		
-		
-		
-		
-		
-		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
-			super(solicitacao, tituloCabecalho);
-		}
-		
-		public ManterProdutoView(TipoSolicitacao solicitacao, String tituloCabecalho, List<ProdutoVO> produtos) {
-			super(solicitacao, tituloCabecalho);
-		}
-		
-		@Override
-		public void abrirJanela() {
-			
-			this.setVisible(true);
-			
-		}
-
-		@Override
-		public void abrirJanela(ProdutoVO produto) {
-			
-			this.setVisible(true);
-			
-		}
-
-		@Override
-		public boolean incluir() {
-			JOptionPane.showMessageDialog(null, "Produto Incluído");
-			return false;
-		}
-
-		@Override
-		public boolean alterar() {
-			JOptionPane.showMessageDialog(null, "Produto Alterado");	
-			return true;
-		}
-
-		@Override
-		protected boolean habilitarCampos() {
-
-			return false;
-		
-		}
-
-		protected void desabilitarCampos(){
-			
-			
-		}
-		
-		@Override
-		protected void limparCampos() {
-			
-		}
+		}		
 		
 		
 		// Métodos ITelaBuscar
@@ -889,42 +1045,4 @@ import enumeradores.TipoSolicitacao;
 			}
 			
 		}
-
-		@Override
-		public String[] carregarGridTelaBusca(GenericVO item) {
-
-			String[] registro = null;
-			
-			switch (acaoPesquisar) {
-			
-				case PESQ_MAT_PRIMA:
-					
-					MateriaPrimaVO materiaPriam = (MateriaPrimaVO) item; 
-					
-					registro = new String[3];
-
-					registro[0] = materiaPriam.getCodProduto();
-					registro[1] = materiaPriam.getDescricao();
-					registro[2] = materiaPriam.getUnidade().getAbreviatura();
-										
-				return registro;
-					
-				case PESQ_FORNECEDOR:
-					
-					FornecedorVO fornecedor = (FornecedorVO) item; 
-					
-					registro = new String[3];
-
-					registro[0] = fornecedor.getCodFornecedor();
-					registro[1] = fornecedor.getNome();
-					registro[2] = fornecedor.getContato();
-					
-					
-				return registro;
-
-			}
-			
-			return registro;
-		}
-		
 	}

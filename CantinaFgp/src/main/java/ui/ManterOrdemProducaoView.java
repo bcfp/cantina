@@ -24,7 +24,6 @@ import javax.swing.table.DefaultTableModel;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
-import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;

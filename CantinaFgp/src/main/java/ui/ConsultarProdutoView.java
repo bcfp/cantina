@@ -1,9 +1,10 @@
 ﻿package ui;
 
-import java.util.List;
-
 import interfaces.ITelaManter;
 
+import java.util.List;
+
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import ui.templates.ConsultarPanelView;
@@ -13,11 +14,20 @@ import enumeradores.TipoSolicitacao;
 
 public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 
+	// Atributos Tela
+	
+	private JLabel lblCodProduto;
+	
+	
+	// Construtores
+	
 	public ConsultarProdutoView() {
 		
 		super("Produto", new String[] {"Código", "Descricao"});
 	
 	}
+	
+	// Métodos ConsultarPanelView
 
 	@Override
 	protected String[] definirGridItens(ProdutoVO produto) {
@@ -39,6 +49,8 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> {
 	protected ITelaManter<ProdutoVO> getTelaAlterar() {
 		return new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto");
 	}
+	
+	// Métodos ITelaConsultar
 
 	@Override
 	public void deletar(ProdutoVO produto) {

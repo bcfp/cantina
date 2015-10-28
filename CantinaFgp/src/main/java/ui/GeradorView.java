@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +29,6 @@ import vo.CompraVO;
 import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
-import adaptadores.MouseListenerAdapter;
 import enumeradores.TipoSolicitacao;
 
 public class GeradorView extends JDialog {
@@ -186,7 +186,7 @@ public class GeradorView extends JDialog {
 			
 		});
 
-		ccxListarTodos.addMouseListener(new MouseListenerAdapter() {
+		ccxListarTodos.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {

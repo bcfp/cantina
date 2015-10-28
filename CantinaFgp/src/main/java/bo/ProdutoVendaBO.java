@@ -17,7 +17,7 @@ public class ProdutoVendaBO {
 	
 	public Boolean verificaDescricaoVazio(String descricao){
 		
-		return UtilFuncoes.isVazio(descricao);
+		return UtilFuncoes.isCampoVazio(descricao);
 		
 	}
 	
