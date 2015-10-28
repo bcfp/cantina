@@ -56,4 +56,17 @@ public class UtilFuncoes {
 		return campoFormatado;
 	}
 	
+	public static boolean isCampoNumerico(String campo){
+		String campos = "1234567890";
+		
+		if(campo.trim().contains(campos)){
+			
+			return true;
+		}
+			return false;
+			
+			//TODO continuar daqui
+	
+	}
+	
 }

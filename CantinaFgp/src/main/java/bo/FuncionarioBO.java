@@ -2,7 +2,7 @@ package bo;
 
 import java.util.List;
 
-import vo.FuncionarioVO;
+import vo.FuncionarioCantinaVO;
 import daoimpl.FuncionarioDAO;
 
 public class FuncionarioBO {
@@ -14,7 +14,7 @@ public class FuncionarioBO {
 		funcionarioDao = new FuncionarioDAO();
 	}
 	
-	public List<FuncionarioVO> filtarFuncionariosPorNomeECodigo(String codigo, String nome){
+	public List<FuncionarioCantinaVO> filtarFuncionariosPorNomeECodigo(String codigo, String nome){
 		
 		return funcionarioDao.filtarFuncionariosPorNomeECodigo(codigo, nome);
 	}

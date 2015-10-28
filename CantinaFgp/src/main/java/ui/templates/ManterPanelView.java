@@ -75,7 +75,7 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					if(ManterPanelView.this.alterar()){
+					if(alterar()){
 						btnAlterar.setEnabled(true);
 						btnLimpar.setEnabled(false);
 						btnGravar.setEnabled(false);

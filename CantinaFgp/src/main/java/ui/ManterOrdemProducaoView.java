@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
-import vo.FuncionarioVO;
+import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
@@ -32,6 +33,7 @@ import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import bo.FuncionarioBO;
+import bo.OrdemProducaoBO;
 import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import bo.StatusBO;
@@ -74,10 +76,18 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private ProdutoMateriaPrimaBO receitaBO;
 	private StatusBO statusBO;
 	private FuncionarioBO funcionarioBO;
+	private OrdemProducaoBO ordemProducaoBO;
 	
 	private List<ProdutoMateriaPrimaVO> listaProdutosMatPrima;
  	private OrdemProducaoVO ordemProducao;
 	private List<ItemCompraVO> listaItensCompra;
+	
+	private List<FuncionarioCantinaVO> listaFuncionarios;
+	private List<ProdutoVendaVO> listaProdutos;
+	private List<StatusVO> listaStatus;
+	
+	private ProdutoVendaVO produtoVenda;
+	private FuncionarioCantinaVO funcionarioCantina;
 	
 	private String acaoPesquisar;
 	private static final String PESQ_FUNC = "funcionario";
@@ -135,10 +145,17 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		receitaBO = new ProdutoMateriaPrimaBO();
 		statusBO = new StatusBO();
 		funcionarioBO = new FuncionarioBO();
+		ordemProducaoBO = new OrdemProducaoBO();
 		
 		pnlMenuLateral = new JPanel();
 		
 		listaItensCompra = new ArrayList<>();
+		listaProdutos = new ArrayList<ProdutoVendaVO>();
+		listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
+		listaStatus = new ArrayList<StatusVO>();
+		
+		produtoVenda = new ProdutoVendaVO();
+		funcionarioCantina = new FuncionarioCantinaVO();
 		
 	}
 	
@@ -214,7 +231,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			}
 		});
 		
-		List<StatusVO> listaStatus = statusBO.consultarTodosStatus();
+		listaStatus = statusBO.consultarTodosStatus();
 		
 		for (StatusVO statusVO : listaStatus) {
 			
@@ -222,6 +239,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		}
 		cbxStatus.setSelectedIndex(4);
 		cbxStatus.setEnabled(false);
+		
+		
 		
 		definicoesPagina();
 		
@@ -254,12 +273,12 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 		}
 		else{
-			if(item instanceof FuncionarioVO){
+			if(item instanceof FuncionarioCantinaVO){
 				
-				FuncionarioVO funcionario = (FuncionarioVO) item;
+				FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) item;
 				
-				txtCodFunc.setText(funcionario.getCodPessoa());
-				txtNomeFunc.setText(funcionario.getNome());
+				txtCodFunc.setText(funcionarioCantina.getFuncionario().getCodPessoa());
+				txtNomeFunc.setText(funcionarioCantina.getFuncionario().getNome());
 				
 			}
 		}
@@ -275,7 +294,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		switch (acaoPesquisar) {
 		
 			case PESQ_PRODUTO:
-				List<ProdutoVendaVO> listaProdutos	= produtoVendaBO.filtarProdutoVendaPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));	
+				listaProdutos = produtoVendaBO.filtarProdutoVendaPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));	
 				
 				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
 					
@@ -286,8 +305,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 			case PESQ_FUNC:
 				
-				List<FuncionarioVO> listaFuncionarios = funcionarioBO.filtarFuncionariosPorNomeECodigo(parametros.get("Código"), parametros.get("Nome"));
-				for (FuncionarioVO funcionarioVO : listaFuncionarios) {
+				listaFuncionarios = funcionarioBO.filtarFuncionariosPorNomeECodigo(parametros.get("Código"), parametros.get("Nome"));
+				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {
 					
 					listaGenericos.add(funcionarioVO);
 				}
@@ -308,7 +327,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 		if(item instanceof ProdutoVendaVO){
 			
-			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			produtoVenda = (ProdutoVendaVO) item; 
 			
 			String[] registro = new String[3];
 
@@ -319,14 +338,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			return registro;
 			
 		}
-		else if(item instanceof FuncionarioVO){
+		else if(item instanceof FuncionarioCantinaVO){
 				
-			FuncionarioVO funcionarioCantina = (FuncionarioVO) item;
+			funcionarioCantina = (FuncionarioCantinaVO) item;
 
 			String[] registro = new String[2];
 
-			registro[0] = funcionarioCantina.getCodPessoa();
-			registro[1] = funcionarioCantina.getNome();
+			registro[0] = funcionarioCantina.getFuncionario().getCodPessoa();
+			registro[1] = funcionarioCantina.getFuncionario().getNome();
 
 			return registro;
 			
@@ -383,8 +402,74 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	public boolean incluir() {
 		
-		JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
-		return false;
+		StringBuilder msgErro = new StringBuilder();
+		boolean flagErro = false;
+		
+		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
+			
+			msgErro.append("Favor preencher o campo nome do funcionário\n");
+			flagErro = true;
+			
+		}
+		
+		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
+			
+			msgErro.append("Favor preencher o campo código do funcionário\n");
+			flagErro = true;
+		}
+		
+		if(ordemProducaoBO.isCampoProdutoVazio(txtDescProd.getText())){
+			msgErro.append("Favor preencher o campo nome do produto\n");
+			flagErro = true;
+		}
+		
+		if(ordemProducaoBO.isCampoCodigoProdutoVazio(txtCodProd.getText())){
+			msgErro.append("Favor preencher o campo código do produto\n");
+			flagErro = true;
+		}
+		
+		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher o campo quantidade do produto\n");
+			flagErro = true;
+		}
+		else if(!ordemProducaoBO.isCampoQuantidadeNumerico(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher apenas numeros no campo quantidade do produto\n");
+			flagErro = true;
+		}
+		else if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
+			flagErro = true;
+		}
+		
+			
+		if(!flagErro){
+			
+			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+			ordemProducao.setData(new Date());
+			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+			ordemProducao.setFuncionarioCantina(funcionarioCantina);
+			ordemProducao.setProdutoVenda(produtoVenda);
+			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+			
+			if(ordemProducaoBO.inserirOrdemProducao(ordemProducao)){
+				JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			return true;
+			
+		}
+		else{
+			
+			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
 	}
 
 	@Override
@@ -498,7 +583,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		this.setVisible(true);
 		
 	}
-	
 
 
 	public OrdemProducaoVO getOrdemProducao() {
@@ -531,7 +615,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		this.listaItensCompra = listaItensCompra;
 	}
 
-
+	
 
 
 
