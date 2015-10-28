@@ -271,7 +271,8 @@ public class LoginView extends JFrame {//JFrame é uma classe para janela
 				JOptionPane.YES_OPTION, JOptionPane.NO_OPTION, null, null, null);
 		
 		if(opcao == JOptionPane.YES_OPTION){
-			
+
+			LoginView.this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			dispose();
 			
 		}

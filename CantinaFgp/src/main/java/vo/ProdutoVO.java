@@ -13,7 +13,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private UnidadeProdutoVO unidade;
 	private Boolean ativo;
 	private Boolean lote;
-	private ProdutoCantinaVO estoques;
+	private ProdutoCantinaVO produtoCantina;
 	private List<ItemCompraVO> itemCompras;
 	private List<FornecedorProdutoVO> fornecedores;
 	private TipoProduto tipo;
@@ -70,8 +70,6 @@ public abstract class ProdutoVO extends GenericVO {
 		this.lote = lote;
 	}
 
-	
-
 	public UnidadeProdutoVO getUnidade() {
 		return unidade;
 	}
@@ -104,12 +102,12 @@ public abstract class ProdutoVO extends GenericVO {
 		this.tipo = tipo;
 	}
 
-	public ProdutoCantinaVO getEstoques() {
-		return estoques;
+	public ProdutoCantinaVO getEstoque() {
+		return produtoCantina;
 	}
 
-	public void setEstoques(ProdutoCantinaVO estoques) {
-		this.estoques = estoques;
+	public void setEstoque(ProdutoCantinaVO produtoCantina) {
+		this.produtoCantina = produtoCantina;
 	}
 	
 }

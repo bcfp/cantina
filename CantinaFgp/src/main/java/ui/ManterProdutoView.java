@@ -55,14 +55,15 @@ import enumeradores.TipoSolicitacao;
 		private JRadioButton rdoMatPrima;
 		private JRadioButton rdoProdProduzido;
 		private JRadioButton rdoProdRevenda;
+		
+		private ButtonGroup btgTipoProdutoGroup;
 
 		private static final Integer ABA_DADOS = 0;
 		private static final Integer ABA_FORNECEDORES = 1;
 		private static final Integer ABA_RECEITA = 2;
 		private static final Integer ABA_LOTES = 3;
+		private static final Integer ABA_MP_PROD = 4;
 		
-		private ButtonGroup btgTipoProdutoGroup;
-	
 	
 		// Atributos da Tabs
 		
@@ -124,7 +125,7 @@ import enumeradores.TipoSolicitacao;
 		private JTextField txtFornecedor;
 		private JTextField txtContatoForn;
 				
-		private JButton btnBuscarFornecedor;
+		private JButton btnBuscarForn;
 		private JButton btnAdicionarForn;
 
 		private JTable tabForn;
@@ -159,6 +160,9 @@ import enumeradores.TipoSolicitacao;
 		private DefaultTableModel modeloTabLotes;
 		private JScrollPane barraTabLotes;
 
+		// MATERIA PRIMA PRODUTOS
+		
+		private JPanel pnlProdMatPrima;
 		
 		// ITelaBusca
 		
@@ -240,7 +244,7 @@ import enumeradores.TipoSolicitacao;
 			txtFornecedor = new JTextField();
 			txtContatoForn = new JTextField();
 						
-			btnBuscarFornecedor = new JButton("Buscar");
+			btnBuscarForn = new JButton("Buscar");
 			btnAdicionarForn = new JButton(" + ");
 			
 			tabForn = new JTable();
@@ -494,12 +498,12 @@ import enumeradores.TipoSolicitacao;
 			lblContatoForn.setBounds(espXLblForn, espY + espEntre * 2, 80, altura);
 
 			txtCodFornecedor.setBounds(espXTxtForn, espY, 50, altura);
-			btnBuscarFornecedor.setBounds(espXTxtForn + 60, espY, 80, altura);
+			btnBuscarForn.setBounds(espXTxtForn + 60, espY, 80, altura);
 			txtFornecedor.setBounds(espXTxtForn, espY + espEntre, 210, altura);
 			txtContatoForn.setBounds(espXTxtForn, espY + espEntre * 2, 150, altura);
 			btnAdicionarForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
 			
-			btnBuscarFornecedor.addActionListener(new ActionListener() {
+			btnBuscarForn.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -578,7 +582,7 @@ import enumeradores.TipoSolicitacao;
 			pnlFornecedores.add(txtCodFornecedor);
 			pnlFornecedores.add(txtFornecedor);
 			pnlFornecedores.add(txtContatoForn);
-			pnlFornecedores.add(btnBuscarFornecedor);
+			pnlFornecedores.add(btnBuscarForn);
 			pnlFornecedores.add(btnAdicionarForn);
 
 			tbsProdutos.addTab("Fornecedores", pnlFornecedores);
@@ -850,43 +854,6 @@ import enumeradores.TipoSolicitacao;
 		protected void limparCampos() {
 			
 		}
-
-		@Override
-		public String[] carregarGridTelaBusca(GenericVO item) {
-
-			String[] registro = null;
-			
-			switch (acaoPesquisar) {
-			
-				case PESQ_MAT_PRIMA:
-					
-					MateriaPrimaVO materiaPriam = (MateriaPrimaVO) item; 
-					
-					registro = new String[3];
-
-					registro[0] = materiaPriam.getCodProduto();
-					registro[1] = materiaPriam.getDescricao();
-					registro[2] = materiaPriam.getUnidade().getAbreviatura();
-										
-				return registro;
-					
-				case PESQ_FORNECEDOR:
-					
-					FornecedorVO fornecedor = (FornecedorVO) item; 
-					
-					registro = new String[3];
-
-					registro[0] = fornecedor.getCodFornecedor();
-					registro[1] = fornecedor.getNome();
-					registro[2] = fornecedor.getContato();
-					
-					
-				return registro;
-
-			}
-			
-			return registro;
-		}
 		
 		private boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
 			
@@ -1000,15 +967,15 @@ import enumeradores.TipoSolicitacao;
 			
 			switch (acaoPesquisar) {
 			
-			case PESQ_MAT_PRIMA:
+				case PESQ_MAT_PRIMA:
+					
+					return BancoFake.listaMatPrimaGeneric;
+					
+				case PESQ_FORNECEDOR:
 				
-				return BancoFake.listaMatPrimaGeneric;
-				
-			case PESQ_FORNECEDOR:
-			
-				return BancoFake.listaFornecedorGeneric;
+					return BancoFake.listaFornecedorGeneric;
 
-		}
+			}
 		
 			return null;
 			
@@ -1044,5 +1011,42 @@ import enumeradores.TipoSolicitacao;
 	
 			}
 			
+		}
+
+		@Override
+		public String[] carregarGridTelaBusca(GenericVO item) {
+
+			String[] registro = null;
+			
+			switch (acaoPesquisar) {
+			
+				case PESQ_MAT_PRIMA:
+					
+					MateriaPrimaVO materiaPriam = (MateriaPrimaVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = materiaPriam.getCodProduto();
+					registro[1] = materiaPriam.getDescricao();
+					registro[2] = materiaPriam.getUnidade().getAbreviatura();
+										
+				return registro;
+					
+				case PESQ_FORNECEDOR:
+					
+					FornecedorVO fornecedor = (FornecedorVO) item; 
+					
+					registro = new String[3];
+
+					registro[0] = fornecedor.getCodFornecedor();
+					registro[1] = fornecedor.getNome();
+					registro[2] = fornecedor.getContato();
+					
+					
+				return registro;
+
+			}
+			
+			return registro;
 		}
 	}

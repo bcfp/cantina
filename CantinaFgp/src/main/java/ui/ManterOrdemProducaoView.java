@@ -167,10 +167,10 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				for (ProdutoMateriaPrimaVO produtoMateriaPrima : getListaProdutosMateriaPrima()) {
 					
-					if (produtoMateriaPrima.getQtde() > produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual()) {
+					if (produtoMateriaPrima.getQtde() > produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual()) {
 						itemCompra = new ItemCompraVO();
 						itemCompra.setProduto(produtoMateriaPrima.getMateriaPrima());
-						itemCompra.setQtde(produtoMateriaPrima.getQtde() - produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual() );
+						itemCompra.setQtde(produtoMateriaPrima.getQtde() - produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual() );
 						itemCompra.setValor(produtoMateriaPrima.getMateriaPrima().getPrecoCusto());
 						getListaItensCompra().add(itemCompra);
 					}
@@ -371,7 +371,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				registro[0] = produtoMateriaPrima.getMateriaPrima().getCodProduto();
 				registro[1] = produtoMateriaPrima.getMateriaPrima().getDescricao();
 				registro[2] = produtoMateriaPrima.getQtde().toString();
-				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoques().getQtdeAtual().toString();
+				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual().toString();
 				
 				modeloTabMatPrimas.addRow(registro);	
 				

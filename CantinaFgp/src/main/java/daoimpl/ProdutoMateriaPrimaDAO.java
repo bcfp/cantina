@@ -97,11 +97,11 @@ public class ProdutoMateriaPrimaDAO implements IDAO<ProdutoMateriaPrimaVO> {
 				produtoMateriaPrima.getMateriaPrima().getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoMateriaPrima.getMateriaPrima().getUnidade().setDescricao(rs.getString("descricao_unidade"));
 				produtoMateriaPrima.getMateriaPrima().getUnidade().setAbreviatura(rs.getString("abreviatura"));
-				produtoMateriaPrima.getMateriaPrima().setEstoques(new ProdutoCantinaVO());
-				produtoMateriaPrima.getMateriaPrima().getEstoques().setIdEstoque(rs.getLong("id_estoque_mat_prima"));
-				produtoMateriaPrima.getMateriaPrima().getEstoques().setQtdeAtual(rs.getDouble("estoque"));
-				produtoMateriaPrima.getMateriaPrima().getEstoques().setQtdeMaxima(rs.getDouble("qtde_maxima"));
-				produtoMateriaPrima.getMateriaPrima().getEstoques().setQtdeMinima(rs.getDouble("qtde_minima"));
+				produtoMateriaPrima.getMateriaPrima().setEstoque(new ProdutoCantinaVO());
+				produtoMateriaPrima.getMateriaPrima().getEstoque().setIdEstoque(rs.getLong("id_estoque_mat_prima"));
+				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeAtual(rs.getDouble("estoque"));
+				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
+				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
 				
 				listaMateriasPrimaProduto.add(produtoMateriaPrima);
 				

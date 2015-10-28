@@ -32,23 +32,22 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 
 	
 	// Atributos da Janela
-	
+
+	private JPanel pnlCabecalho;
+	private JPanel pnlCentro;
+	private JPanel pnlRodape;
 	private JButton btnGravar;
 	private JButton btnAlterar;
 	private JButton btnLimpar;
 	private JButton btnCancelar;
-	private JPanel pnlCentro;
-	private JPanel pnlCabecalho;
-	private JPanel pnlRodape;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
-	
 	
 	// Construtores
 	
 	protected ManterPanelView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
-		criarPaneis(tituloCabecalho);
+		definicoesPagina(tituloCabecalho);
 		
 		if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
 			
@@ -104,7 +103,7 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 	
 	// Métodos concretos
 	
-	private void criarPaneis(String tituloCabecalho){
+	private void definicoesPagina(String tituloCabecalho){
 		
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);

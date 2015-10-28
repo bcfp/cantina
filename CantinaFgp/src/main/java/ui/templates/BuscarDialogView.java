@@ -4,15 +4,16 @@ import interfaces.ITelaBuscar;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -26,8 +27,15 @@ import vo.GenericVO;
 
 public class BuscarDialogView extends JDialog{
 	
+	// Atributos da Janela
+
+	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
-	private JPanel pnlPesquisa;
+	private JPanel pnlRodape;
+	
+	private JLabel lblTituloCabecalho;
+	private Font fonteCabecalho;
+	
 	private JTable tabItens;
 	private DefaultTableModel modeloTabItens;
 	private JScrollPane barraTabItens;
@@ -46,23 +54,40 @@ public class BuscarDialogView extends JDialog{
 	private ITelaBuscar telaBuscar;
 	
 	
+	// Bloco de Inicialização
+	
 	{
 		pnlCentro = new JPanel();
-		pnlPesquisa = new JPanel();
+		pnlCabecalho = new JPanel();
+		pnlRodape = new JPanel();
+		
 		tabItens = new JTable();
 		lblNomeItem = new JLabel();
 		lblCodItem = new JLabel();
 		txtNomeItem = new JTextField();
 		txtCodItem = new JTextField();
 		btnPesquisar = new JButton();
-
+		
+		lblTituloCabecalho = new JLabel();
+		
+		modeloTabItens = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {return false;}
+		};
+		barraTabItens = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	}
+	
+	
+	// Construtores
 	
 	public BuscarDialogView(ITelaBuscar telaBuscar, String[] titulosTab) {
 		this.telaBuscar = telaBuscar;
 		this.titulosTab = titulosTab;
 	}
 		
+	
+	// Métodos
+	
 	public void abrirJanela(){
 				
 		definicoesPagina();
@@ -119,59 +144,67 @@ public class BuscarDialogView extends JDialog{
 	
 	
 	public void definicoesPagina(){
+
+		// Cabeçalho
 		
+		pnlCabecalho.add(lblTituloCabecalho);
+		pnlCabecalho.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		pnlCabecalho.setBackground(Color.BLACK);
+		
+		lblTituloCabecalho.setText("Buscar");
+		lblTituloCabecalho.setForeground(Color.WHITE);	
+		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
+		lblTituloCabecalho.setFont(fonteCabecalho);
+		
+		// Centro
+		
+		pnlCentro.setBackground(Color.GRAY);
 		pnlCentro.setLayout(null);
 		
-		pnlPesquisa.setLayout(null);
-		pnlPesquisa.setBounds(0,0,700,200);
+		lblNomeItem.setText("Nome");
+		lblCodItem.setText("Código");
 		
-		modeloTabItens = new DefaultTableModel() {
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-
-		};
+		int espXLbl = 20;
+		int espXTxt = espXLbl + 90;
+		int espY = 20;
+		int espEntre = 35;	
+		int altura = 30;
+		
+		lblCodItem.setBounds(espXLbl, espY, 50, altura);
+		lblNomeItem.setBounds(espXLbl, espY + espEntre, 50, altura);
+		
+		txtCodItem.setBounds(espXTxt, espY, 50, altura);
+		txtNomeItem.setBounds(espXTxt, espY + espEntre, 150, altura);
+		
+		barraTabItens.setBounds(10, 100, 370, 185);
+		
+		// TABELA
+		
 
 		modeloTabItens.setColumnIdentifiers(titulosTab);
-		
 		tabItens.setModel(modeloTabItens);
-
-		barraTabItens = new JScrollPane(
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 		barraTabItens.setViewportView(tabItens);
 
-		barraTabItens.setBounds(10, 220, pnlPesquisa.getWidth() - 20, 300);
-		
-		lblNomeItem.setText("Nome");
-		lblNomeItem.setBounds(50, 100, 100,30);
-		
-		txtNomeItem.setBounds(100,100, 150, 30);
-		
-		lblCodItem.setText("Código");
-		lblCodItem.setBounds(260,100, 100, 30);
-		
-		txtCodItem.setBounds(330,100, 100, 30);
-		
-		btnPesquisar.setText("Pesquisar");
-		btnPesquisar.setBounds(440, 100, 100, 30);
-				
+		pnlCentro.setBackground(Color.LIGHT_GRAY);
+		pnlCentro.add(barraTabItens);
 		pnlCentro.add(lblNomeItem);
 		pnlCentro.add(txtNomeItem);
 		pnlCentro.add(lblCodItem);
 		pnlCentro.add(txtCodItem);
-		pnlCentro.add(btnPesquisar);
-		pnlCentro.add(pnlPesquisa);
-		pnlCentro.add(barraTabItens);
+		
+		// Rodapé
+		
+		btnPesquisar.setText("Pesquisar");
+		
+		pnlRodape.setBackground(Color.WHITE);
+		pnlRodape.add(btnPesquisar);
 		
 		this.setLayout(new BorderLayout());		
+		this.add(pnlCabecalho, BorderLayout.NORTH);
+		this.add(pnlRodape, BorderLayout.SOUTH);		
 		this.add(pnlCentro, BorderLayout.CENTER);
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		this.setResizable(false);
-		this.setSize(700, 600);
+		this.setSize(400, 400);
 		this.setModal(true);
 		this.setLocationRelativeTo(null);
 		
