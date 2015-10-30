@@ -164,7 +164,13 @@ import enumeradores.TipoSolicitacao;
 		
 		private JPanel pnlProdMatPrima;
 		
-		// ITelaBusca
+		private JTable tabProdMatPrima;
+		private DefaultTableModel modeloTabProdMatPrima;
+		private JScrollPane barraTabProdMatPrima;
+		
+		// ---
+		
+		// Atributos ITelaBusca
 		
 		private String acaoPesquisar;
 		private static final String PESQ_MAT_PRIMA = "materiaPrima";
@@ -176,6 +182,7 @@ import enumeradores.TipoSolicitacao;
 		private MateriaPrimaVO materiaPrima;
 		private ProdutoMateriaPrimaVO prodMatPrima;
 		private List<ProdutoMateriaPrimaVO> receita;
+		private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
 		
 		private FornecedorVO fornecedor;
 		private List<FornecedorVO> listaFornecedores;
@@ -248,6 +255,11 @@ import enumeradores.TipoSolicitacao;
 			btnAdicionarForn = new JButton(" + ");
 			
 			tabForn = new JTable();
+			modeloTabForn = new DefaultTableModel() {
+				@Override public boolean isCellEditable(int row, int column) { return false; }
+			};
+			barraTabForn = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			
 			
 			
 			// RECEITA
@@ -269,6 +281,23 @@ import enumeradores.TipoSolicitacao;
 			btnAdicionarMatPrima = new JButton(" + ");
 			
 			tabMatPrimas = new JTable();
+			modeloTabMatPrimas = new DefaultTableModel() {
+				@Override public boolean isCellEditable(int row, int column) { return false; }
+			};
+			barraTabMatPrimas = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			
+			
+			// MATERIA PRIMA PRODUTOS
+			
+			pnlProdMatPrima = new JPanel();
+			pnlProdMatPrima.setLayout(null);
+			
+			tabProdMatPrima = new JTable();
+			modeloTabProdMatPrima = new DefaultTableModel() {
+				@Override public boolean isCellEditable(int row, int column) { return false; }
+			};
+			barraTabProdMatPrima = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			
 			
 		}
 		
@@ -308,7 +337,7 @@ import enumeradores.TipoSolicitacao;
 			int widthCampos = this.getWidth() - 25;
 			int heightCampos = this.getHeight() - 122;
 			
-			pnlCampos.setBackground(Color.WHITE);
+			pnlCampos.setBackground(Color.LIGHT_GRAY);
 			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
 			pnlCampos.setLayout(null);
 			
@@ -330,11 +359,11 @@ import enumeradores.TipoSolicitacao;
 			txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
 			rdoLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
 			
-			lblTipoProduto.setBounds(espXLbl2 - 20, espY, 200, altura);
+			lblTipoProduto.setBounds(espXLbl2, espY, 200, altura);
 						
-			rdoProdRevenda.setBounds(espXLbl2 - 20, espY + espEntre, 125, altura);
-			rdoProdProduzido.setBounds(espXLbl2 - 20, espY + espEntre * 2, 130, altura);
-			rdoMatPrima.setBounds(espXLbl2 - 20, espY + espEntre * 3, 105, altura);
+			rdoProdRevenda.setBounds(espXLbl2, espY + espEntre, 125, altura);
+			rdoProdProduzido.setBounds(espXLbl2, espY + espEntre * 2, 130, altura);
+			rdoMatPrima.setBounds(espXLbl2, espY + espEntre * 3, 105, altura);
 			
 			rdoLote.setBackground(pnlCampos.getBackground());
 			
@@ -352,6 +381,7 @@ import enumeradores.TipoSolicitacao;
 							tbsProdutos.setEnabledAt(ABA_LOTES, false);
 							tbsProdutos.setSelectedIndex(ABA_DADOS);
 						}
+						
 					}
 					
 				});
@@ -368,6 +398,7 @@ import enumeradores.TipoSolicitacao;
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+						tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
 						
 						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
 							tbsProdutos.setSelectedComponent(pnlDados);
@@ -388,8 +419,9 @@ import enumeradores.TipoSolicitacao;
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, true);
+						tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
 						
-						if(tbsProdutos.getSelectedComponent().equals(pnlFornecedores)){
+						if(tbsProdutos.getSelectedComponent().equals(pnlFornecedores) || tbsProdutos.getSelectedComponent().equals(pnlProdMatPrima)){
 							tbsProdutos.setSelectedComponent(pnlDados);
 						}
 						
@@ -408,8 +440,9 @@ import enumeradores.TipoSolicitacao;
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+						tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
 						
-						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
+						if(tbsProdutos.getSelectedComponent().equals(pnlReceita) || tbsProdutos.getSelectedComponent().equals(pnlProdMatPrima)){
 							tbsProdutos.setSelectedComponent(pnlDados);
 						}
 						
@@ -538,15 +571,9 @@ import enumeradores.TipoSolicitacao;
 				}
 				
 			});
-			
-			// Tabela forn
-			
-			modeloTabForn = new DefaultTableModel() {
-				@Override public boolean isCellEditable(int row, int column) { return false; }
-			};
-			modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
+						
 			tabForn.setModel(modeloTabForn);
-			barraTabForn = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
 			barraTabForn.setViewportView(tabForn);
 			int yTabForn = 130;
 			barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
@@ -653,12 +680,8 @@ import enumeradores.TipoSolicitacao;
 			
 			// Tabela
 			
-			modeloTabMatPrimas = new DefaultTableModel() {
-				@Override public boolean isCellEditable(int row, int column) { return false; }
-			};
 			modeloTabMatPrimas.setColumnIdentifiers(new String[] {"Código", "Matéria-Prima", "Quantidade", "Unidade"});
 			tabMatPrimas.setModel(modeloTabMatPrimas);
-			barraTabMatPrimas = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			barraTabMatPrimas.setViewportView(tabMatPrimas);
 			int yTabMatPrima = 130;
 			barraTabMatPrimas.setBounds(0, yTabMatPrima, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabMatPrima);
@@ -769,9 +792,10 @@ import enumeradores.TipoSolicitacao;
 				modeloTabLotes = new DefaultTableModel() {
 					@Override public boolean isCellEditable(int row, int column) { return false; }
 				};
+				barraTabLotes = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				
 				modeloTabLotes.setColumnIdentifiers(new String[] {"Lote", "Qtde", "Vencimento", "Origem", "Número"});
 				tabLotes.setModel(modeloTabLotes);
-				barraTabLotes = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 				barraTabLotes.setViewportView(tabLotes);
 				int yTabLotes = 130;
 				barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabLotes);
@@ -796,6 +820,34 @@ import enumeradores.TipoSolicitacao;
 				tbsProdutos.setEnabledAt(ABA_LOTES, false);
 				
 			}
+						
+			// PRODUTO MATÉRIA PRIMA
+			
+			// Tabela
+			
+			modeloTabProdMatPrima.setColumnIdentifiers(new String[] {"Código", "Produto", "Quantidade", "Unidade"});
+			tabProdMatPrima.setModel(modeloTabProdMatPrima);
+			barraTabProdMatPrima.setViewportView(tabProdMatPrima);
+			barraTabProdMatPrima.setBounds(0, 0, tbsProdutos.getWidth(), tbsProdutos.getHeight());
+			
+			pnlProdMatPrima.add(barraTabProdMatPrima);
+			
+			tbsProdutos.addTab("Produtos Fabricados", pnlProdMatPrima);
+			tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
+			
+			tabProdMatPrima.addMouseListener(new MouseAdapter() {
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					
+					if(tabProdMatPrima.getSelectedRow() != -1 && e.getClickCount() == 2){
+						
+						new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela();
+						
+					}
+					
+				}
+			});
 			
 			adicionarComponentesCentro(pnlCampos);
 			
