@@ -25,32 +25,27 @@ public class FuncionarioDAO implements IDAO<FuncionarioVO>{
 	}
 	
 	@Override
-	public boolean inserir(FuncionarioVO objeto) {
-		// TODO Auto-generated method stub
+	public boolean inserir(FuncionarioVO funcionario) {
 		return false;
 	}
 
 	@Override
-	public boolean alterar(FuncionarioVO objeto) {
-		// TODO Auto-generated method stub
+	public boolean alterar(FuncionarioVO funcionario) {
 		return false;
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public List<FuncionarioVO> consultarTodos() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public FuncionarioVO consultarPorId(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

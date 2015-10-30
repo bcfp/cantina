@@ -10,10 +10,11 @@ import java.util.List;
 import vo.ProdutoCantinaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
+import daoservice.IBuscarDAO;
 import daoservice.IProdutoDAO;
 import enumeradores.TipoProduto;
 
-public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
+public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>, IBuscarDAO<ProdutoVendaVO>{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;
@@ -152,19 +153,19 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 
 	@Override
 	public boolean inserir(ProdutoVendaVO produtoVenda) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean alterar(ProdutoVendaVO produtoVenda) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean excluir(Long id) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
  
@@ -283,7 +284,6 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
 				produtoVenda.getUnidade().setStatus(rs.getBoolean("ativo"));
-				
 				
 			}
 			
