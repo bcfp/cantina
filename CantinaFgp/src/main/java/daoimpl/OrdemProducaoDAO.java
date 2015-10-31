@@ -1,15 +1,12 @@
 package daoimpl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import bo.OrdemProducaoBO;
 import vo.OrdemProducaoVO;
-import vo.ProdutoVendaVO;
 import daoservice.IOrdemProducaoDAO;
 
 public class OrdemProducaoDAO implements IOrdemProducaoDAO{

@@ -3,7 +3,6 @@ package daoimpl;
 import java.util.List;
 
 import vo.MateriaPrimaVO;
-import vo.ProdutoVendaVO;
 import daoservice.IProdutoDAO;
 
 public class MateriaPrimaDAO implements IProdutoDAO<MateriaPrimaVO> {
@@ -35,6 +34,11 @@ public class MateriaPrimaDAO implements IProdutoDAO<MateriaPrimaVO> {
 	@Override
 	public MateriaPrimaVO consultarPorId(Long id) {
 		
+		return null;
+	}
+
+	@Override
+	public List<MateriaPrimaVO> consultarPorNomeECodigo(String nome, String cod) {
 		return null;
 	}
 

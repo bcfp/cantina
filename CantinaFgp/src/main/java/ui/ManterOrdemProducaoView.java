@@ -231,6 +231,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			}
 		});
 		
+		/*
+		
 		listaStatus = statusBO.consultarTodosStatus();
 		
 		for (StatusVO statusVO : listaStatus) {
@@ -239,7 +241,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		}
 		cbxStatus.setSelectedIndex(4);
 		cbxStatus.setEnabled(false);
-		
+		*/
 		
 		
 		definicoesPagina();
@@ -294,6 +296,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		switch (acaoPesquisar) {
 		
 			case PESQ_PRODUTO:
+				
 				listaProdutos = produtoVendaBO.filtarProdutoVendaPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));	
 				
 				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
@@ -306,6 +309,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			case PESQ_FUNC:
 				
 				listaFuncionarios = funcionarioBO.filtarFuncionariosPorNomeECodigo(parametros.get("Código"), parametros.get("Nome"));
+				
 				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {
 					
 					listaGenericos.add(funcionarioVO);

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import daoservice.IDAO;
+import daoservice.IProdutoMateriaPrimaDAO;
 import enumeradores.TipoProduto;
 import vo.EstoqueMateriaPrimaVO;
 import vo.MateriaPrimaVO;
@@ -16,8 +17,7 @@ import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 
-public class ProdutoMateriaPrimaDAO implements IDAO<ProdutoMateriaPrimaVO> {
-	
+public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;

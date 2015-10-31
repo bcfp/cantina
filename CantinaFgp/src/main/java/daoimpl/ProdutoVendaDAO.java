@@ -7,14 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import vo.ProdutoCantinaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
-import daoservice.IBuscarDAO;
 import daoservice.IProdutoDAO;
 import enumeradores.TipoProduto;
 
-public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>, IBuscarDAO<ProdutoVendaVO>{
+public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;

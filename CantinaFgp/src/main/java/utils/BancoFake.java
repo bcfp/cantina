@@ -239,23 +239,29 @@ public class BancoFake {
 		estMatPrima.setQtdeMinima(5D);
 		estMatPrima.setQtdeMaxima(15D);
 		
+		matPrima.setEstoque(estMatPrima);
+		
 		listaEstoqueProduto.add(estMatPrima);
 		
 		estMatPrima = new EstoqueMateriaPrimaVO();
 		estMatPrima.setCantina(cantina);
 		estMatPrima.setProduto(matPrima2);
-		estMatPrima.setQtdeAtual(100D);
-		estMatPrima.setQtdeMinima(1000D);
-		estMatPrima.setQtdeMaxima(3000D);
+		estMatPrima.setQtdeAtual(60D);
+		estMatPrima.setQtdeMinima(100D);
+		estMatPrima.setQtdeMaxima(300D);
+		
+		matPrima2.setEstoque(estMatPrima);
 		
 		listaEstoqueProduto.add(estMatPrima);
 		
 		estProdVenda = new EstoqueProdutoVendaVO();
 		estProdVenda.setCantina(cantina);
 		estProdVenda.setProduto(prodVenda);
-		estProdVenda.setQtdeAtual(9D);
-		estProdVenda.setQtdeMinima(10D);
-		estProdVenda.setQtdeMaxima(20D);
+		estProdVenda.setQtdeAtual(6D);
+		estProdVenda.setQtdeMinima(12D);
+		estProdVenda.setQtdeMaxima(30D);
+
+		prodVenda.setEstoque(estProdVenda);
 		
 		listaEstoqueProduto.add(estProdVenda);
 		
@@ -266,6 +272,8 @@ public class BancoFake {
 		estProdVenda.setQtdeMinima(10D);
 		estProdVenda.setQtdeMaxima(20D);
 
+		prodVenda2.setEstoque(estProdVenda);
+		
 		listaEstoqueProduto.add(estProdVenda);
 		
 		estProdVenda = new EstoqueProdutoVendaVO();
@@ -274,6 +282,8 @@ public class BancoFake {
 		estProdVenda.setQtdeAtual(5D);
 		estProdVenda.setQtdeMinima(6D);
 		estProdVenda.setQtdeMaxima(10D);
+		
+		prodVenda3.setEstoque(estProdVenda);
 
 		listaEstoqueProduto.add(estProdVenda);
 		
@@ -302,7 +312,7 @@ public class BancoFake {
 		
 		ordemProd.setCodOrdemProducao("002");
 		ordemProd.setData(new Date());
-		ordemProd.setProdutoVenda(prodVenda);
+		ordemProd.setProdutoVenda(prodVenda2);
 		ordemProd.setQtde(10);
 		s = new StatusVO();
 		s.setDescricao("Em produção");

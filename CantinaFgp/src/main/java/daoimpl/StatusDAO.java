@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vo.StatusVO;
-import daoservice.IDAO;
+import daoservice.IStatusDAO;
 import enumeradores.TipoStatus;
 
-public class StatusDAO implements IDAO<StatusVO>{
+public class StatusDAO implements IStatusDAO{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;

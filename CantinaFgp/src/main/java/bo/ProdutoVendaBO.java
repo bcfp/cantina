@@ -5,13 +5,13 @@ import java.util.List;
 import utils.UtilFuncoes;
 import vo.ProdutoVendaVO;
 import daoimpl.ProdutoVendaDAO;
+import daoservice.IProdutoDAO;
 
 public class ProdutoVendaBO {
 	
-	public ProdutoVendaDAO produtoDao;
+	public IProdutoDAO<ProdutoVendaVO> produtoDao;
 	
 	{
-		
 		produtoDao = new ProdutoVendaDAO();
 	}
 	

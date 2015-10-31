@@ -3,20 +3,23 @@ package bo;
 import java.util.List;
 
 import vo.FuncionarioCantinaVO;
-import daoimpl.FuncionarioDAO;
+import daoimpl.FuncionarioCantinaDAO;
+import daoservice.IFuncionarioCantinaDAO;
 
 public class FuncionarioBO {
 
-	private FuncionarioDAO funcionarioDao;
+	private IFuncionarioCantinaDAO funcionarioCantinaDao;
 	
 	{
 		
-		funcionarioDao = new FuncionarioDAO();
+		funcionarioCantinaDao = new FuncionarioCantinaDAO();
+		
 	}
 	
 	public List<FuncionarioCantinaVO> filtarFuncionariosPorNomeECodigo(String codigo, String nome){
 		
-		return funcionarioDao.filtarFuncionariosPorNomeECodigo(codigo, nome);
+		return funcionarioCantinaDao.consultarPorNomeECodigo(codigo, nome);
+		
 	}
 	
 }
