@@ -29,7 +29,8 @@ import vo.UnidadeProdutoVO;
 import vo.VendaVO;
 
 public class BancoFake {
-
+	
+	public static List<StatusVO> listaStatusOP;
 	public static List<CompraVO> listaCompras;
 	public static List<GenericVO> listaFornecedorGeneric;
 	public static List<GenericVO> listaProdutosGeneric; 
@@ -69,6 +70,26 @@ public class BancoFake {
 	// BLOCO DE INICIALIZAÇÃO
 
 	static {
+		
+		// status op
+		
+		listaStatusOP = new ArrayList<StatusVO>();
+		
+		StatusVO status = new StatusVO();
+		status.setDescricao("Em Produção");
+		listaStatusOP.add(status);
+		
+		status = new StatusVO();
+		status.setDescricao("Aguardando Compra");
+		listaStatusOP.add(status);
+		
+		status = new StatusVO();
+		status.setDescricao("Em Aberto");
+		listaStatusOP.add(status);
+		
+		status = new StatusVO();
+		status.setDescricao("Concluído");
+		listaStatusOP.add(status);
 		
 		// fornecedor
 

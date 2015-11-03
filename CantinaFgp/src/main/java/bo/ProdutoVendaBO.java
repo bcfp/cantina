@@ -5,14 +5,14 @@ import java.util.List;
 import utils.UtilFuncoes;
 import vo.ProdutoVendaVO;
 import daoimpl.ProdutoVendaDAO;
-import daoservice.IProdutoDAO;
+import daoservice.IProdutoVendaDAO;
 
 public class ProdutoVendaBO {
 	
-	public IProdutoDAO<ProdutoVendaVO> produtoDao;
+	public IProdutoVendaDAO produtoVendaDao;
 	
 	{
-		produtoDao = new ProdutoVendaDAO();
+		produtoVendaDao = new ProdutoVendaDAO();
 	}
 	
 	public Boolean verificaDescricaoVazio(String descricao){
@@ -23,19 +23,24 @@ public class ProdutoVendaBO {
 	
 	public List<ProdutoVendaVO> filtarProdutoVendaPorNomeECodigo(String nome, String cod){
 		
-		return produtoDao.consultarPorNomeECodigo(nome, cod);
+		return produtoVendaDao.consultarPorNomeECodigo(nome, cod);
 		
 	}
 	
 	public List<ProdutoVendaVO> consultarTodosProdutos(){
 		
-		return produtoDao.consultarTodos();
+		return produtoVendaDao.consultarTodos();
 	}
 	
 	public ProdutoVendaVO consultarProdutoPorId(Long id){
 		
-		return produtoDao.consultarPorId(id);
+		return produtoVendaDao.consultarPorId(id);
 	}
 	
-
+	public boolean isQtdeMateriaPrima(ProdutoVendaVO produto){
+		
+		return produtoVendaDao.isQtdeMateriaPrima(produto);
+		
+	}
+	
 }

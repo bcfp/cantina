@@ -1,6 +1,5 @@
 package ui;
 
-import interfaces.IGeradorCompra;
 import interfaces.ITelaBuscar;
 
 import java.awt.BorderLayout;
@@ -87,7 +86,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private List<ProdutoVendaVO> listaProdutos;
 	private List<StatusVO> listaStatus;
 	
-	private StringBuilder msgErro;
+	private StringBuilder msgErroCampos;
 	
 	private ProdutoVendaVO produtoVenda;
 	private FuncionarioCantinaVO funcionarioCantina;
@@ -96,12 +95,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private static final String PESQ_FUNC = "funcionario";
 	private static final String PESQ_PRODUTO = "produto";
 	
+	
 	// Bloco de Inicialização
 
 	{
 		
 		pnlCampos = new JPanel();
 		cbxStatus = new JComboBox<String>();
+		cbxStatus.setEnabled(false);
 		lblStatus = new JLabel("Status");
 		lblCodOp = new JLabel("Número");
 		lblCodProdVenda = new JLabel("Código");
@@ -114,7 +115,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		lblNomeFunc = new JLabel("Nome");
 
 		txtCodOp = new JTextField();
-		txtCodOp.setEnabled(false);
+		txtCodOp.setEditable(false);
 		txtCodProd = new JTextField();
 		txtDescProd = new JTextField();
 		txtQtdeProd = new JTextField();
@@ -159,7 +160,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
-		
+				
 	}
 	
 	// Construtores
@@ -173,8 +174,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	
 	@Override
 	public void abrirJanela() {
-		
-		
 		
 		btnGerarOC.addActionListener(new ActionListener() {
 
@@ -234,23 +233,34 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			}
 		});
 		
-		/*
-		
 		listaStatus = statusBO.consultarTodosStatus();
 		
 		for (StatusVO statusVO : listaStatus) {
 			
 			cbxStatus.addItem(statusVO.getDescricao());
+			
 		}
-		cbxStatus.setSelectedIndex(4);
-		cbxStatus.setEnabled(false);
-		*/
-		
+		cbxStatus.setSelectedItem("Em Aberto");		
 		
 		definicoesPagina();
 		
 	}
-	
+		
+	@Override
+	public void abrirJanela(OrdemProducaoVO ordemProducao) {
+		
+		setOrdemProducao(ordemProducao);
+						
+		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
+		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
+		txtQtdeProd.setText(ordemProducao.getQtde().toString());
+		
+		setListaProdutosMateriaPrima(getOrdemProducao().getProdutoVenda().getReceita());
+		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
+		
+		abrirJanela();
+		
+	}
 	
 	// Métodos Tela Busca
 	
@@ -364,22 +374,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 	// Fim Métodos Tela Busca
 	
-	@Override
-	public void abrirJanela(OrdemProducaoVO ordemProducao) {
-		
-		setOrdemProducao(ordemProducao);
-						
-		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
-		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
-		txtQtdeProd.setText(ordemProducao.getQtde().toString());
-		
-		setListaProdutosMateriaPrima(getOrdemProducao().getProdutoVenda().getReceita());
-		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
-		
-		abrirJanela();
-		
-	}
-	
 	private void carregarGridReceita(List<ProdutoMateriaPrimaVO> receita) {
 
 		modeloTabMatPrimas.setNumRows(0);
@@ -418,11 +412,20 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 			
-			if(ordemProducaoBO.inserirOrdemProducao(ordemProducao)){
-				JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+			if(produtoVendaBO.isQtdeMateriaPrima(produtoVenda)){
+			
+				if(ordemProducaoBO.inserirOrdemProducao(ordemProducao)){
+					JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			
 			}
 			else{
-				JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Quantidade de Matéria Prima insuficiente", "Erro", JOptionPane.ERROR_MESSAGE);
+				return false;
 			}
 			
 			return true;
@@ -430,7 +433,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		}
 		else{
 			
-			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		
@@ -443,72 +446,80 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
 			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+			ordemProducao.setData(getOrdemProducao().getData());
 			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 			ordemProducao.setFuncionarioCantina(funcionarioCantina);
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 			
-			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
-				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+			if(produtoVendaBO.isQtdeMateriaPrima(produtoVenda)){
+			
+				if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+					JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			
 			}
 			else{
-				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Quantidade de Matéria Prima insuficiente", "Erro", JOptionPane.ERROR_MESSAGE);
+				return false;
 			}
 			
-			return true;
+				cbxStatus.setEnabled(true);
+				return true;
 			
 		}
 		else{
-			
-			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		
 	}
-
-
 	
 	private boolean isCamposValidos(){
 
-		msgErro = new StringBuilder();
+		msgErroCampos = new StringBuilder();
 		boolean isCamposValidos = false;
 		
 		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
 			
-			msgErro.append("Favor preencher o campo nome do funcionário\n");
+			msgErroCampos.append("Favor preencher o campo nome do funcionário\n");
 			isCamposValidos = false;
 			
 		}
 		
 		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
 			
-			msgErro.append("Favor preencher o campo código do funcionário\n");
+			msgErroCampos.append("Favor preencher o campo código do funcionário\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoProdutoVazio(txtDescProd.getText())){
-			msgErro.append("Favor preencher o campo nome do produto\n");
+			msgErroCampos.append("Favor preencher o campo nome do produto\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoCodigoProdutoVazio(txtCodProd.getText())){
-			msgErro.append("Favor preencher o campo código do produto\n");
+			msgErroCampos.append("Favor preencher o campo código do produto\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
 			
-			msgErro.append("Favor preencher o campo quantidade do produto\n");
+			msgErroCampos.append("Favor preencher o campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
 		else if(!ordemProducaoBO.isCampoQuantidadeNumerico(txtQtdeProd.getText())){
 			
-			msgErro.append("Favor preencher apenas numeros no campo quantidade do produto\n");
+			msgErroCampos.append("Favor preencher apenas numeros no campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
 		else if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
 			
-			msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
+			msgErroCampos.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
 			isCamposValidos = false;
 		}
 		

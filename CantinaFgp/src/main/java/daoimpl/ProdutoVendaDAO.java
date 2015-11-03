@@ -9,10 +9,10 @@ import java.util.List;
 
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
-import daoservice.IProdutoDAO;
+import daoservice.IProdutoVendaDAO;
 import enumeradores.TipoProduto;
 
-public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
+public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;
@@ -307,6 +307,13 @@ public class ProdutoVendaDAO implements IProdutoDAO<ProdutoVendaVO>{
 		}
 		
 		return produtoVenda;
+	}
+
+	@Override
+	public boolean isQtdeMateriaPrima(ProdutoVendaVO produto) {
+		
+		return false;
+		
 	}
 
 }

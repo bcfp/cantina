@@ -3,9 +3,9 @@ package daoimpl;
 import java.util.List;
 
 import vo.MateriaPrimaVO;
-import daoservice.IProdutoDAO;
+import daoservice.IMateriaPrimaDAO;
 
-public class MateriaPrimaDAO implements IProdutoDAO<MateriaPrimaVO> {
+public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 
 	@Override
 	public boolean inserir(MateriaPrimaVO objeto) {

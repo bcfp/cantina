@@ -4,10 +4,11 @@ import java.util.List;
 
 import vo.StatusVO;
 import daoimpl.StatusDAO;
+import daoservice.IStatusDAO;
 
 public class StatusBO {
 	
-	private StatusDAO statusDao;
+	private IStatusDAO statusDao;
 	
 	{
 		

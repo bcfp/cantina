@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.BancoFake;
 import vo.StatusVO;
 import daoservice.IStatusDAO;
 import enumeradores.TipoStatus;
@@ -43,6 +44,8 @@ public class StatusDAO implements IStatusDAO{
 	@Override
 	public List<StatusVO> consultarTodos() {
 		
+		List<StatusVO> listaStatus = BancoFake.listaStatusOP;
+		/*
 		List<StatusVO> listaStatus = new ArrayList<StatusVO>();
 		
 		try {
@@ -93,7 +96,7 @@ public class StatusDAO implements IStatusDAO{
 			}
 			
 		}
-		
+		*/
 		return listaStatus;
 	}
 

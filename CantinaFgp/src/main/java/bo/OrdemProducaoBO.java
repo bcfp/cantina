@@ -6,16 +6,14 @@ import utils.UtilFuncoes;
 import vo.OrdemProducaoVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
-import daoservice.IProdutoDAO;
 
 public class OrdemProducaoBO {
 	
-	private IOrdemProducaoDAO ordemProd;
-	private IProdutoDAO prodVenda;
+	private IOrdemProducaoDAO ordemProdDao;
 	
 	{
 		
-		ordemProd = new OrdemProducaoDAO();
+		ordemProdDao = new OrdemProducaoDAO();
 		
 	}
 	
@@ -55,13 +53,13 @@ public class OrdemProducaoBO {
 
 	public boolean inserirOrdemProducao(OrdemProducaoVO ordemProducao){
 		
-		return ordemProd.inserir(ordemProducao);
+		return ordemProdDao.inserir(ordemProducao);
 		
 	}
-	
+		
 	public boolean alterarOrdemProducao(OrdemProducaoVO ordemProducao){
 		
-		return ordemProd.alterar(ordemProducao);
+		return ordemProdDao.alterar(ordemProducao);
 		
 	}
 	
