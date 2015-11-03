@@ -1,5 +1,6 @@
 package ui;
 
+import interfaces.IGeradorCompra;
 import interfaces.ITelaBuscar;
 
 import java.awt.BorderLayout;
@@ -333,11 +334,11 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 		if(item instanceof ProdutoVendaVO){
 			
-			produtoVenda = (ProdutoVendaVO) item; 
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
 			
 			String[] registro = new String[3];
 
-			registro[0] = produtoVenda.getCodProduto().toString();
+			registro[0] = produtoVenda.getCodProduto();
 			registro[1] = produtoVenda.getDescricao();
 			registro[2] = produtoVenda.getPrecoVenda().toString();
 			
@@ -346,7 +347,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		}
 		else if(item instanceof FuncionarioCantinaVO){
 				
-			funcionarioCantina = (FuncionarioCantinaVO) item;
+			FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) item;
 
 			String[] registro = new String[2];
 
@@ -435,6 +436,38 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 	}
 	
+	@Override
+	public boolean alterar() {
+			
+		if(isCamposValidos()){
+			
+			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+			ordemProducao.setFuncionarioCantina(funcionarioCantina);
+			ordemProducao.setProdutoVenda(produtoVenda);
+			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+			
+			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			return true;
+			
+		}
+		else{
+			
+			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+	}
+
+
+	
 	private boolean isCamposValidos(){
 
 		msgErro = new StringBuilder();
@@ -482,37 +515,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		return isCamposValidos;
 		
 	}
-
-	@Override
-	public boolean alterar() {
-			
-		if(isCamposValidos()){
-			
-			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-			ordemProducao.setFuncionarioCantina(funcionarioCantina);
-			ordemProducao.setProdutoVenda(produtoVenda);
-			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-			
-			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
-				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
-			}
-			
-			return true;
-			
-		}
-		else{
-			
-			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		
-	}
-
 
 	@Override
 	protected boolean habilitarCampos() {
