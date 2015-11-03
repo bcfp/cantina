@@ -57,16 +57,20 @@ public class UtilFuncoes {
 	}
 	
 	public static boolean isCampoNumerico(String campo){
-		String campos = "1234567890";
 		
-		if(campo.trim().contains(campos)){
+		try{
 			
-			return true;
+			Double.parseDouble(campo);
+						
 		}
+		catch(NumberFormatException e){
+			
 			return false;
 			
-			//TODO continuar daqui
-	
+		}
+		
+		return true;
+				
 	}
 	
 }

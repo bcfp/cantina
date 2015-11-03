@@ -338,7 +338,6 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	protected abstract ITelaManter<T> getTelaAlterar();
 	
 	
-	
 	// getters and setters
 		
 	protected JTable getTabGeneric() {

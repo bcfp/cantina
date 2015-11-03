@@ -144,7 +144,7 @@ public class BancoFake {
 		// ordens producao
 		
 		listaOrdensProducao = new ArrayList<OrdemProducaoVO>();
-
+		
 		unidade = new UnidadeProdutoVO();
 		unidade.setAbreviatura("UNID");
 		unidade.setDescricao("unidade");
@@ -326,6 +326,7 @@ public class BancoFake {
 		StatusVO s = new StatusVO();
 		s.setDescricao("Finalizado");
 		ordemProd.setStatus(s);
+		ordemProd.setFuncionarioCantina(funcCantina);
 		
 		listaOrdensProducao.add(ordemProd);
 		
@@ -338,6 +339,7 @@ public class BancoFake {
 		s = new StatusVO();
 		s.setDescricao("Em produção");
 		ordemProd.setStatus(s);
+		ordemProd.setFuncionarioCantina(funcCantina);
 		
 		listaOrdensProducao.add(ordemProd);
 		

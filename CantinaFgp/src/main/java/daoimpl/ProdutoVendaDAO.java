@@ -312,7 +312,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	@Override
 	public boolean isQtdeMateriaPrima(ProdutoVendaVO produto) {
 		
-		return false;
+		return true;
 		
 	}
 

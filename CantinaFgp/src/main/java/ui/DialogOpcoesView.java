@@ -28,8 +28,8 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 	{
 
 		panel = new JPanel();
-		btnDetalhar = new JButton();
-		btnExcluir = new JButton();
+		btnDetalhar = new JButton("Detalhar");
+		btnExcluir = new JButton("Excluir");
 
 	}
 
@@ -39,11 +39,6 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 		this.objeto = objeto;
 		this.telaConsultar = telaConsultar;
 		this.telaManter = telaManter;
-
-		// botões
-
-		btnDetalhar.setText("Detalhar");
-		btnExcluir.setText("Excluir");
 
 		// ***** EVENTOS
 

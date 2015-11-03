@@ -161,6 +161,15 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
 				
+		listaStatus = statusBO.consultarTodosStatus();
+		
+		for (StatusVO statusVO : listaStatus) {
+			
+			cbxStatus.addItem(statusVO.getDescricao());
+			
+		}
+		cbxStatus.setSelectedItem("Em Aberto");	
+				
 	}
 	
 	// Construtores
@@ -231,16 +240,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome"}).abrirJanela();
 												
 			}
-		});
-		
-		listaStatus = statusBO.consultarTodosStatus();
-		
-		for (StatusVO statusVO : listaStatus) {
-			
-			cbxStatus.addItem(statusVO.getDescricao());
-			
-		}
-		cbxStatus.setSelectedItem("Em Aberto");		
+		});	
 		
 		definicoesPagina();
 		
@@ -250,13 +250,22 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
 		setOrdemProducao(ordemProducao);
-						
+		
+		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
+		cbxStatus.setSelectedItem(ordemProducao.getStatus().getDescricao());
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProd.setText(ordemProducao.getQtde().toString());
+		txtCodFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getCodPessoa());
+		txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome());
 		
-		setListaProdutosMateriaPrima(getOrdemProducao().getProdutoVenda().getReceita());
-		carregarGridReceita(getOrdemProducao().getProdutoVenda().getReceita());
+		setListaProdutosMateriaPrima(ordemProducao.getProdutoVenda().getReceita());
+		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
+
+		txtCodProd.setEditable(false);
+		txtCodFunc.setEditable(false);
+		txtQtdeProd.setEditable(false);
+		btnConsultarFunc.setEnabled(false);
 		
 		abrirJanela();
 		
@@ -482,7 +491,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private boolean isCamposValidos(){
 
 		msgErroCampos = new StringBuilder();
-		boolean isCamposValidos = false;
+		boolean isCamposValidos = true;
 		
 		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
 			
@@ -517,10 +526,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			msgErroCampos.append("Favor preencher apenas numeros no campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
-		else if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
+		else{
+			if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
+					
+				msgErroCampos.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
+				isCamposValidos = false;
 			
-			msgErroCampos.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
-			isCamposValidos = false;
+			}
 		}
 		
 		return isCamposValidos;
@@ -530,7 +542,12 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	protected boolean habilitarCampos() {
 
-		return false;
+		txtCodProd.setEditable(true);
+		txtCodFunc.setEditable(true);
+		txtQtdeProd.setEditable(true);
+		btnConsultarFunc.setEnabled(true);
+		
+		return true;
 	
 	}
 
