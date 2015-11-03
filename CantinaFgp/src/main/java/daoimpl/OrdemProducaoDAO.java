@@ -30,8 +30,6 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		try {
 			conexao = fabrica.getConexao();
 			
-			
-			
 			pstm = conexao.prepareStatement("insert into ordem_producao(qtde, data_ordem_producao, id_produto, id_funcionario_cantina, id_status) "
 					+ "values (?,?,?,?,?)");
 			

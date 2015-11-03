@@ -5,16 +5,18 @@ import java.util.List;
 import utils.UtilFuncoes;
 import vo.OrdemProducaoVO;
 import daoimpl.OrdemProducaoDAO;
-import daoimpl.ProdutoVendaDAO;
+import daoservice.IOrdemProducaoDAO;
+import daoservice.IProdutoDAO;
 
 public class OrdemProducaoBO {
 	
-	private OrdemProducaoDAO ordemProd;
-	private ProdutoVendaDAO prodVenda;
+	private IOrdemProducaoDAO ordemProd;
+	private IProdutoDAO prodVenda;
 	
 	{
 		
 		ordemProd = new OrdemProducaoDAO();
+		
 	}
 	
 	public List<OrdemProducaoVO> consultarListaEstatica(){
@@ -48,12 +50,19 @@ public class OrdemProducaoBO {
 	
 	public boolean isCampoQtdNegativo(String campo){
 		
-		return Integer.parseInt(campo) < 0;
+		return Integer.parseInt(campo) <= 0;
 	}
-	
+
 	public boolean inserirOrdemProducao(OrdemProducaoVO ordemProducao){
 		
 		return ordemProd.inserir(ordemProducao);
+		
+	}
+	
+	public boolean alterarOrdemProducao(OrdemProducaoVO ordemProducao){
+		
+		return ordemProd.alterar(ordemProducao);
+		
 	}
 	
 	public boolean isCampoQuantidadeNumerico(String campo){

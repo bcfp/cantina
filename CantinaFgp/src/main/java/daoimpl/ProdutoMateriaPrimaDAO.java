@@ -60,7 +60,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 		return null;
 	}
 	
-	public List<ProdutoMateriaPrimaVO> consultarPorIdProduto(Long id) {
+	public List<ProdutoMateriaPrimaVO> consultarReceitaPorIdProduto(Long id) {
 		
 		List<ProdutoMateriaPrimaVO> listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 		

@@ -86,6 +86,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private List<ProdutoVendaVO> listaProdutos;
 	private List<StatusVO> listaStatus;
 	
+	private StringBuilder msgErro;
+	
 	private ProdutoVendaVO produtoVenda;
 	private FuncionarioCantinaVO funcionarioCantina;
 	
@@ -261,7 +263,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			modeloTabMatPrimas.setNumRows(0);
 			
-			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			produtoVenda = (ProdutoVendaVO) item; 
 			
 			txtCodProd.setText(produtoVenda.getCodProduto());
 			txtDescProd.setText(produtoVenda.getDescricao());
@@ -277,7 +279,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		else{
 			if(item instanceof FuncionarioCantinaVO){
 				
-				FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) item;
+				funcionarioCantina = (FuncionarioCantinaVO) item;
 				
 				txtCodFunc.setText(funcionarioCantina.getFuncionario().getCodPessoa());
 				txtNomeFunc.setText(funcionarioCantina.getFuncionario().getNome());
@@ -405,51 +407,8 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 	@Override
 	public boolean incluir() {
-		
-		StringBuilder msgErro = new StringBuilder();
-		boolean flagErro = false;
-		
-		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
 			
-			msgErro.append("Favor preencher o campo nome do funcionário\n");
-			flagErro = true;
-			
-		}
-		
-		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
-			
-			msgErro.append("Favor preencher o campo código do funcionário\n");
-			flagErro = true;
-		}
-		
-		if(ordemProducaoBO.isCampoProdutoVazio(txtDescProd.getText())){
-			msgErro.append("Favor preencher o campo nome do produto\n");
-			flagErro = true;
-		}
-		
-		if(ordemProducaoBO.isCampoCodigoProdutoVazio(txtCodProd.getText())){
-			msgErro.append("Favor preencher o campo código do produto\n");
-			flagErro = true;
-		}
-		
-		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
-			
-			msgErro.append("Favor preencher o campo quantidade do produto\n");
-			flagErro = true;
-		}
-		else if(!ordemProducaoBO.isCampoQuantidadeNumerico(txtQtdeProd.getText())){
-			
-			msgErro.append("Favor preencher apenas numeros no campo quantidade do produto\n");
-			flagErro = true;
-		}
-		else if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
-			
-			msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
-			flagErro = true;
-		}
-		
-			
-		if(!flagErro){
+		if(isCamposValidos()){
 			
 			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
 			ordemProducao.setData(new Date());
@@ -475,11 +434,83 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		}
 		
 	}
+	
+	private boolean isCamposValidos(){
+
+		msgErro = new StringBuilder();
+		boolean isCamposValidos = false;
+		
+		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
+			
+			msgErro.append("Favor preencher o campo nome do funcionário\n");
+			isCamposValidos = false;
+			
+		}
+		
+		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
+			
+			msgErro.append("Favor preencher o campo código do funcionário\n");
+			isCamposValidos = false;
+		}
+		
+		if(ordemProducaoBO.isCampoProdutoVazio(txtDescProd.getText())){
+			msgErro.append("Favor preencher o campo nome do produto\n");
+			isCamposValidos = false;
+		}
+		
+		if(ordemProducaoBO.isCampoCodigoProdutoVazio(txtCodProd.getText())){
+			msgErro.append("Favor preencher o campo código do produto\n");
+			isCamposValidos = false;
+		}
+		
+		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher o campo quantidade do produto\n");
+			isCamposValidos = false;
+		}
+		else if(!ordemProducaoBO.isCampoQuantidadeNumerico(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher apenas numeros no campo quantidade do produto\n");
+			isCamposValidos = false;
+		}
+		else if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
+			
+			msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
+			isCamposValidos = false;
+		}
+		
+		return isCamposValidos;
+		
+	}
 
 	@Override
 	public boolean alterar() {
-		JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");	
-		return true;
+			
+		if(isCamposValidos()){
+			
+			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+			ordemProducao.setFuncionarioCantina(funcionarioCantina);
+			ordemProducao.setProdutoVenda(produtoVenda);
+			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+			
+			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			return true;
+			
+		}
+		else{
+			
+			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
 	}
 
 
