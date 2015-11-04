@@ -24,7 +24,7 @@ public class StatusDAO implements IStatusDAO{
 	}
 
 	@Override
-	public boolean inserir(StatusVO objeto) {
+	public boolean incluir(StatusVO objeto) {
 		// TODO Auto-generated method stub
 		return false;
 	}

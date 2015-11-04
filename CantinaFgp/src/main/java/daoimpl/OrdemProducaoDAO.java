@@ -23,8 +23,8 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	}
 
 	@Override
-	public boolean inserir(OrdemProducaoVO ordemProd) {
-		
+	public boolean incluir(OrdemProducaoVO ordemProd) {
+		/*
 		java.sql.Date dataSql = new java.sql.Date(ordemProd.getData().getTime());
 		
 		try {
@@ -49,14 +49,14 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			e.printStackTrace();
 			return false;
 		}
-		
+		*/
 		return true;
 	}
 
 	@Override
-	public boolean alterar(OrdemProducaoVO objeto) {
+	public boolean alterar(OrdemProducaoVO ordemProducao) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

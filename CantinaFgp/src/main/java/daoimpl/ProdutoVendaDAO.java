@@ -150,7 +150,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	}
 
 	@Override
-	public boolean inserir(ProdutoVendaVO produtoVenda) {
+	public boolean incluir(ProdutoVendaVO produtoVenda) {
 		
 		return false;
 	}

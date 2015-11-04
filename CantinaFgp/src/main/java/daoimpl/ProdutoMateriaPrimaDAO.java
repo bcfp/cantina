@@ -31,7 +31,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	}
 	
 	@Override
-	public boolean inserir(ProdutoMateriaPrimaVO objeto) {
+	public boolean incluir(ProdutoMateriaPrimaVO objeto) {
 		// TODO Auto-generated method stub
 		return false;
 	}

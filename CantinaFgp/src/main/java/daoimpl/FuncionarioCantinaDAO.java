@@ -103,7 +103,7 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 	}
 
 	@Override
-	public boolean inserir(FuncionarioCantinaVO objeto) {
+	public boolean incluir(FuncionarioCantinaVO objeto) {
 		
 		return false;
 	}

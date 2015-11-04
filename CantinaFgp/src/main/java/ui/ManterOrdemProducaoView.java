@@ -241,7 +241,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 												
 			}
 		});	
-		
+				
 		definicoesPagina();
 		
 	}
@@ -287,7 +287,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			txtCodProd.setText(produtoVenda.getCodProduto());
 			txtDescProd.setText(produtoVenda.getDescricao());
-			
+						
 			List<ProdutoMateriaPrimaVO> receita = receitaBO.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
 			
 			setListaProdutosMateriaPrima(receita);
@@ -423,7 +423,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			if(produtoVendaBO.isQtdeMateriaPrima(produtoVenda)){
 			
-				if(ordemProducaoBO.inserirOrdemProducao(ordemProducao)){
+				if(ordemProducaoBO.incluirOrdemProducao(ordemProducao)){
 					JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 				}
 				else{
@@ -476,8 +476,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				JOptionPane.showMessageDialog(null, "Quantidade de Matéria Prima insuficiente", "Erro", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-			
-				cbxStatus.setEnabled(true);
+						
+				btnConsultarFunc.setEnabled(false);
+				cbxStatus.setEnabled(false);
+				txtCodProd.setEnabled(false);
+				txtCodFunc.setEnabled(false);
+				txtQtdeProd.setEnabled(false);
+				
 				return true;
 			
 		}
@@ -542,6 +547,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	protected boolean habilitarCampos() {
 
+		cbxStatus.setEnabled(true);
 		txtCodProd.setEditable(true);
 		txtCodFunc.setEditable(true);
 		txtQtdeProd.setEditable(true);

@@ -51,9 +51,9 @@ public class OrdemProducaoBO {
 		return Integer.parseInt(campo) <= 0;
 	}
 
-	public boolean inserirOrdemProducao(OrdemProducaoVO ordemProducao){
+	public boolean incluirOrdemProducao(OrdemProducaoVO ordemProducao){
 		
-		return ordemProdDao.inserir(ordemProducao);
+		return ordemProdDao.incluir(ordemProducao);
 		
 	}
 		
