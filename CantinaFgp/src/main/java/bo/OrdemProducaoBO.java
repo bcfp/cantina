@@ -68,5 +68,9 @@ public class OrdemProducaoBO {
 		return UtilFuncoes.isCampoNumerico(campo);
 	}
 	
+	public Integer converterStringParaInt(String campo){
+		Integer numerico = Integer.parseInt(campo);
+		return numerico;
+	}
 
 }

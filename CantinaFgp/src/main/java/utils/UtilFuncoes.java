@@ -65,7 +65,8 @@ public class UtilFuncoes {
 		}
 		catch(NumberFormatException e){
 			
-			return false;
+		
+		return false;
 			
 		}
 		
