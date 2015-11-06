@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
-import utils.UtilFuncoes;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
@@ -42,7 +41,7 @@ import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
+public class ManterOrdemProducaoViewCopy extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
 
 	private JComboBox<String> cbxStatus;
 	
@@ -81,7 +80,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private FuncionarioBO funcionarioBO;
 	private OrdemProducaoBO ordemProducaoBO;
 	
-	private List<ProdutoMateriaPrimaVO> receita;
+	private List<ProdutoMateriaPrimaVO> listaProdutosMatPrima;
  	private OrdemProducaoVO ordemProducao;
 	private List<ItemCompraVO> listaItensCompra;
 	
@@ -89,19 +88,20 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private List<ProdutoVendaVO> listaProdutos;
 	private List<StatusVO> listaStatus;
 	
-	private StringBuilder msgErroCampos;
-	
 	private ProdutoVendaVO produtoVenda;
 	private FuncionarioCantinaVO funcionarioCantina;
+	private List<ProdutoMateriaPrimaVO> receita;
 	
 	private String acaoPesquisar;
+
+	private StringBuilder msgErroCampos;
 	private static final String PESQ_FUNC = "funcionario";
 	private static final String PESQ_PRODUTO = "produto";
-	
 	
 	// Bloco de Inicialização
 
 	{
+		
 		
 		pnlCampos = new JPanel();
 		cbxStatus = new JComboBox<String>();
@@ -163,12 +163,21 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
+		receita = new ArrayList<>();
+		listaStatus = statusBO.consultarTodosStatus();
+		
+		for (StatusVO statusVO : listaStatus) {
+			
+			cbxStatus.addItem(statusVO.getDescricao());
+			
+		}
+		cbxStatus.setSelectedItem("Em Aberto");	
 				
 	}
 	
 	// Construtores
 	
-	public ManterOrdemProducaoView(TipoSolicitacao solicitacao, String tituloCabecalho) {
+	public ManterOrdemProducaoViewCopy(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	
@@ -178,46 +187,39 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela() {
 		
-		listaStatus = statusBO.consultarTodosStatus();
-		
-		for (StatusVO statusVO : listaStatus) {
+		txtQtdeProd.addKeyListener(new KeyAdapter() {
 			
-			cbxStatus.addItem(statusVO.getDescricao());
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				if(receita.size() >= 0){
+					carregarGridReceita(receita);
+				}
+			}
 			
-		}
-		
-		cbxStatus.setSelectedItem("Em Aberto");
-		cbxStatus.setEnabled(false);
+		});
 		
 		btnGerarOC.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				listaItensCompra.clear();
+				getListaItensCompra().clear();
 								
 				ItemCompraVO itemCompra;
-				
-				Double qtdeTotal = 0d;
-				Double qtdeAtual = 0d;
-				
-				for (ProdutoMateriaPrimaVO produtoMateriaPrima : receita) {
+								
+				for (ProdutoMateriaPrimaVO produtoMateriaPrima : getListaProdutosMateriaPrima()) {
 					
-					qtdeAtual = produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual();
-					qtdeTotal = calcularQtdeTotal(produtoMateriaPrima.getQtde());
-					
-					if (qtdeTotal > qtdeAtual) {
+					if (produtoMateriaPrima.getQtde() > produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual()) {
 						itemCompra = new ItemCompraVO();
 						itemCompra.setProduto(produtoMateriaPrima.getMateriaPrima());
-						itemCompra.setQtde(qtdeTotal - qtdeAtual);
+						itemCompra.setQtde(produtoMateriaPrima.getQtde() - produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual() );
 						itemCompra.setValor(produtoMateriaPrima.getMateriaPrima().getPrecoCusto());
-						listaItensCompra.add(itemCompra);
+						getListaItensCompra().add(itemCompra);
 					}
 					
 				}
-				
-				if(listaItensCompra.size() > 0){
-					new GeradorView(null, listaItensCompra).abrirTela();
+				if(getListaItensCompra().size() > 0){
+					new GeradorView(null, getListaItensCompra()).abrirTela();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
@@ -235,12 +237,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 								
 				acaoPesquisar = PESQ_PRODUTO;
 				
-				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
+				new BuscarDialogView(ManterOrdemProducaoViewCopy.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
 												
 			}
 			
 		});
-				
+		
+		
 		btnConsultarFunc.addActionListener(new ActionListener() {
 			
 			@Override
@@ -248,31 +251,11 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				acaoPesquisar = PESQ_FUNC;
 				
-				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome"}).abrirJanela();
+				new BuscarDialogView(ManterOrdemProducaoViewCopy.this, new String[] {"Código", "Nome"}).abrirJanela();
 												
 			}
-		});	
-		
-		txtQtdeProd.addKeyListener(new KeyAdapter() { 
-			
-			@Override
-			public void keyTyped(KeyEvent evento) {
-								
-				if(!UtilFuncoes.isCampoNumerico(String.valueOf(evento.getKeyChar()))){
-					evento.consume();
-				}
-				
-			}
-					
-			@Override
-			public void keyReleased(KeyEvent evento) {
-				if(receita.size() >= 0){
-					carregarGridReceita(receita);
-				}
-			}
-			
 		});
-				
+		
 		definicoesPagina();
 		
 	}
@@ -280,7 +263,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
-		this.ordemProducao = ordemProducao;
+		for (StatusVO statusVO : listaStatus) {
+			
+			cbxStatus.addItem(statusVO.getDescricao());
+		}
+		cbxStatus.setSelectedIndex(3);
+		cbxStatus.setEnabled(false);
+		setOrdemProducao(ordemProducao);
 		
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
 		cbxStatus.setSelectedItem(ordemProducao.getStatus().getDescricao());
@@ -290,7 +279,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		txtCodFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getCodPessoa());
 		txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome());
 		
-		receita = ordemProducao.getProdutoVenda().getReceita();
+		setListaProdutosMateriaPrima(ordemProducao.getProdutoVenda().getReceita());
 		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
 
 		txtCodProd.setEditable(false);
@@ -321,6 +310,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 						
 			receita = receitaBO.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
 			
+			setListaProdutosMateriaPrima(receita);
 			carregarGridReceita(receita);
 			
 			btnGerarOC.setEnabled(true);
@@ -387,7 +377,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			String[] registro = new String[3];
 
-			registro[0] = produtoVenda.getCodProduto();
+			registro[0] = produtoVenda.getCodProduto().toString();
 			registro[1] = produtoVenda.getDescricao();
 			registro[2] = produtoVenda.getPrecoVenda().toString();
 			
@@ -413,20 +403,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 	// Fim Métodos Tela Busca
 	
-	private Double calcularQtdeTotal(Double qtdeMp){
-		
-		Double qtdeProd = 0d;
-		
-		String qtdeTxt = txtQtdeProd.getText();
-		
-		if(!UtilFuncoes.isCampoVazio(qtdeTxt)){
-			qtdeProd = Double.parseDouble(qtdeTxt);
-		}
-		
-		return qtdeProd * qtdeMp;
-		
-	}
-	
 	private void carregarGridReceita(List<ProdutoMateriaPrimaVO> receita) {
 
 		modeloTabMatPrimas.setNumRows(0);
@@ -443,7 +419,15 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 
 				registro[0] = produtoMateriaPrima.getMateriaPrima().getCodProduto();
 				registro[1] = produtoMateriaPrima.getMateriaPrima().getDescricao();
-				registro[2] = calcularQtdeTotal(produtoMateriaPrima.getQtde()).toString();
+				
+				if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
+					registro[2] = produtoMateriaPrima.getQtde().toString();
+				}
+				else{
+					double qtd = ordemProducaoBO.converterStringParaInt(txtQtdeProd.getText());
+					qtd = (double)qtd * produtoMateriaPrima.getQtde();
+					registro[2] = String.valueOf(qtd);
+				}
 				registro[3] = produtoMateriaPrima.getMateriaPrima().getEstoque().getQtdeAtual().toString();
 				
 				modeloTabMatPrimas.addRow(registro);	
@@ -464,7 +448,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setFuncionarioCantina(funcionarioCantina);
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-						
+			
 			if(ordemProducaoBO.incluirOrdemProducao(ordemProducao)){
 				JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 			}
@@ -472,53 +456,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-			
-			return true;
-			
-		}
-		else{
-			
-			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		
-	}
-	
-	@Override
-	public boolean alterar() {
-			
-		if(isCamposValidos()){
-			
-			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-			ordemProducao.setData(this.ordemProducao.getData());
-			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-			ordemProducao.setFuncionarioCantina(funcionarioCantina);
-			ordemProducao.setProdutoVenda(produtoVenda);
-			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-						
-			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
-				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-									
-			btnConsultarFunc.setEnabled(false);
-			cbxStatus.setEnabled(false);
-			txtCodProd.setEnabled(false);
-			txtCodFunc.setEnabled(false);
-			txtQtdeProd.setEnabled(false);
 				
-			return true;
+			if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
 			
+				return true;
+			
+			}
 		}
-		else{
-			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		
+		return false;
 	}
 	
 	private boolean isCamposValidos(){
@@ -571,13 +516,12 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				int qtdProdutos = ordemProducaoBO.converterStringParaInt(txtQtdeProd.getText());
 				
-				for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : receita) {
+				for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : listaProdutosMatPrima) {
 					
 					if(produtoMateriaPrimaVO.getQtde() * qtdProdutos > produtoMateriaPrimaVO.getMateriaPrima().getEstoque().getQtdeAtual()){
 						
-						msgErroCampos.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
+						msgErroCampos.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque");
 						isCamposValidos = false;
-						
 					}
 					
 				}
@@ -612,7 +556,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		txtDescProd.setEditable(false);
 		txtNomeFunc.setEditable(false);
 		
-		if(ordemProducao!=null){
+		if(getOrdemProducao()!=null){
 			btnConsultarProd.setVisible(false);
 			txtCodProd.setEditable(false);
 		}
@@ -699,6 +643,80 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		this.setVisible(true);
 		
 	}
+
+
+	public OrdemProducaoVO getOrdemProducao() {
+		return ordemProducao;
+	}
+
+
+	public void setOrdemProducao(OrdemProducaoVO ordemProducao) {
+		this.ordemProducao = ordemProducao;
+	}
+
+
+	public List<ProdutoMateriaPrimaVO> getListaProdutosMateriaPrima() {
+		return listaProdutosMatPrima;
+	}
+
+
+	public void setListaProdutosMateriaPrima(
+			List<ProdutoMateriaPrimaVO> listaProdutosMateriaPrima) {
+		this.listaProdutosMatPrima = listaProdutosMateriaPrima;
+	}
+
+
+	public List<ItemCompraVO> getListaItensCompra() {
+		return listaItensCompra;
+	}
+
+
+	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
+		this.listaItensCompra = listaItensCompra;
+	}
+
+
+	@Override
+	public boolean alterar() {
+
+		if(isCamposValidos()){
+			
+			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+			ordemProducao.setData(getOrdemProducao().getData());
+			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+			ordemProducao.setFuncionarioCantina(funcionarioCantina);
+			ordemProducao.setProdutoVenda(produtoVenda);
+			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+			
+			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+									
+				btnConsultarFunc.setEnabled(false);
+				cbxStatus.setEnabled(false);
+				txtCodProd.setEnabled(false);
+				txtCodFunc.setEnabled(false);
+				txtQtdeProd.setEnabled(false);
+				
+				return true;
+			
+		}
+		else{
+			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+	
+	}
+
+	
+
+
+
 
 
 }

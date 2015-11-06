@@ -37,10 +37,4 @@ public class ProdutoVendaBO {
 		return produtoVendaDao.consultarPorId(id);
 	}
 	
-	public boolean isQtdeMateriaPrima(ProdutoVendaVO produto){
-		
-		return produtoVendaDao.isQtdeMateriaPrima(produto);
-		
-	}
-	
 }
