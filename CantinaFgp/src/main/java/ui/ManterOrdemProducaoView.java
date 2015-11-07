@@ -289,12 +289,28 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 		String status = ordemProducao.getStatus().getDescricao();
 		
-		System.out.println(status);
-		
 		if(status.equals("Concluído")){
 			btnAlterar.setEnabled(false);
 		}
-		
+		else{
+			if(status.equals("Em Produção")){
+				
+				cbxStatus.removeAllItems();
+				
+				for (StatusVO st : listaStatus) {
+					
+					if(st.getDescricao().equals("Em Produção") || st.getDescricao().equals("Concluído")){
+						
+						cbxStatus.addItem(st.getDescricao());
+						
+					}
+					
+				}
+				
+				
+			}
+		}
+				
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
 		cbxStatus.setSelectedItem(status);
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
@@ -506,13 +522,6 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	
 	@Override
 	public boolean alterar() {
-		
-		/*
-		 * TODO - Uma OP 'em produção' não pode ser alterada para 'aguardando compra' ou para 'em aberto'
-		 * 
-		 * 
-		 * 
-		 */
 			
 		if(isCamposValidos()){
 						
