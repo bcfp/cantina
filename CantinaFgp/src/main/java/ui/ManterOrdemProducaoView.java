@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
 import utils.UtilFuncoes;
+import vo.EstoqueMateriaPrimaVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
@@ -92,6 +93,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	private StringBuilder msgErroCampos;
 	
 	private ProdutoVendaVO produtoVenda;
+	private EstoqueMateriaPrimaVO estoqueMatPrima;
 	private FuncionarioCantinaVO funcionarioCantina;
 	
 	private String acaoPesquisar;
@@ -186,9 +188,12 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 		}
 		
-		cbxStatus.setSelectedItem("Em Aberto");
-		cbxStatus.setEnabled(false);
+		if(ordemProducao == null){
+			cbxStatus.setSelectedItem("Em Aberto");			
+		}
 		
+		cbxStatus.setEnabled(false);
+	
 		btnGerarOC.addActionListener(new ActionListener() {
 
 			@Override
@@ -282,8 +287,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		
 		this.ordemProducao = ordemProducao;
 		
+		String status = ordemProducao.getStatus().getDescricao();
+		
+		if(status.equals("Concluído")){
+			btnAlterar.setEnabled(true);
+		}
+		
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
-		cbxStatus.setSelectedItem(ordemProducao.getStatus().getDescricao());
+		cbxStatus.setSelectedItem(status);
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProd.setText(ordemProducao.getQtde().toString());
@@ -466,7 +477,14 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 						
 			if(ordemProducaoBO.incluirOrdemProducao(ordemProducao)){
+								
+				/*
+				 * TODO - Na inclusão deve ser verificado se o status é diferente de 'em aberto',
+				 * se for a qtde de cada matéria-prima deve ser retirada do estoque.
+				 */
+				
 				JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+				
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -486,9 +504,16 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	
 	@Override
 	public boolean alterar() {
+		
+		/*
+		 * TODO - Uma OP 'em produção' não pode ser alterada para 'aguardando compra' ou para 'em aberto'
+		 * 
+		 * 
+		 * 
+		 */
 			
 		if(isCamposValidos()){
-			
+						
 			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
 			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
 			ordemProducao.setData(this.ordemProducao.getData());
@@ -498,13 +523,22 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 						
 			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+				
+				/*
+				 *  TODO - Na alteração deve ser verificado se o status é concluído, 
+				 *  se for o produto deve ser incluído no estoque de produto venda
+				 *  a inclusão deve ser feita junto da alteração
+				 */
+				
 				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+				
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-									
+						
+			
 			btnConsultarFunc.setEnabled(false);
 			cbxStatus.setEnabled(false);
 			txtCodProd.setEnabled(false);
@@ -522,7 +556,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	}
 	
 	private boolean isCamposValidos(){
-
+	
 		msgErroCampos = new StringBuilder();
 		boolean isCamposValidos = true;
 		
@@ -569,19 +603,22 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			
 			if(isCamposValidos){
 				
-				int qtdProdutos = ordemProducaoBO.converterStringParaInt(txtQtdeProd.getText());
-				
-				for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : receita) {
+				if(!cbxStatus.getSelectedItem().equals("Concluído")){
 					
-					if(produtoMateriaPrimaVO.getQtde() * qtdProdutos > produtoMateriaPrimaVO.getMateriaPrima().getEstoque().getQtdeAtual()){
+					int qtdProdutos = ordemProducaoBO.converterStringParaInt(txtQtdeProd.getText());
+					
+					for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : receita) {
 						
-						msgErroCampos.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
-						isCamposValidos = false;
+						if(produtoMateriaPrimaVO.getQtde() * qtdProdutos > produtoMateriaPrimaVO.getMateriaPrima().getEstoque().getQtdeAtual()){
+							
+							msgErroCampos.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
+							isCamposValidos = false;
+							
+						}
 						
 					}
 					
 				}
-				
 			}
 		}
 		
@@ -592,10 +629,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 	@Override
 	protected boolean habilitarCampos() {
 
+		if(ordemProducao.getStatus().getDescricao().equals("Em Aberto")){
+			txtCodProd.setEditable(true);
+			txtQtdeProd.setEditable(true);
+		}
+		
 		cbxStatus.setEnabled(true);
-		txtCodProd.setEditable(true);
 		txtCodFunc.setEditable(true);
-		txtQtdeProd.setEditable(true);
 		btnConsultarFunc.setEnabled(true);
 		
 		return true;
