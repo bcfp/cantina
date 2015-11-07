@@ -36,10 +36,10 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 	private JPanel pnlCabecalho;
 	private JPanel pnlCentro;
 	private JPanel pnlRodape;
-	private JButton btnGravar;
-	private JButton btnAlterar;
-	private JButton btnLimpar;
-	private JButton btnCancelar;
+	protected JButton btnGravar;
+	protected JButton btnAlterar;
+	protected JButton btnLimpar;
+	protected JButton btnCancelar;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
 	
