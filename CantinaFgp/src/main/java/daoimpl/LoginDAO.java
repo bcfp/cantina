@@ -6,8 +6,13 @@ import daoservice.ILoginDAO;
 public class LoginDAO implements ILoginDAO {
 
 	@Override
-	public boolean logarUsuario(UsuarioVO usuario) {
-		return true;
+	public UsuarioVO logarUsuario(UsuarioVO usuario) {
+		
+		UsuarioVO usuarioLogado = null;
+		
+		// TODO - Fazer conexão com o banco
+		
+		return usuarioLogado;
 	}
 
 	

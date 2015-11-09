@@ -179,7 +179,11 @@ public class LoginView extends JFrame {//JFrame é uma classe para janela
 					usuario.setLogin(tfUsuario.getText());
 					usuario.setSenha(new String(psfCampoSenha.getPassword()));
 					
-					if(loginBo.isUsuarioLogado(usuario)){
+					UsuarioVO usuarioLogado = loginBo.logarUsuario(usuario);
+					
+					if(usuarioLogado != null){
+						
+						UtilFuncoes.usuarioLogado = usuarioLogado;
 						
 						PrincipalView home = new PrincipalView();
 						home.abrirJanela();

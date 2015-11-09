@@ -4,7 +4,7 @@ import vo.UsuarioVO;
 
 public interface ILoginDAO {
 
-	boolean logarUsuario(UsuarioVO usuario);
+	UsuarioVO logarUsuario(UsuarioVO usuario);
 	
 }
 

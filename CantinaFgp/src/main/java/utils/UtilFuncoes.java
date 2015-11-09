@@ -4,8 +4,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import vo.UsuarioVO;
+
 
 public class UtilFuncoes {
+	
+	public static UsuarioVO usuarioLogado;
 
 	public static boolean isCampoVazio(String campo) {
 	

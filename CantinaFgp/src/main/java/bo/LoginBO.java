@@ -12,7 +12,7 @@ public class LoginBO {
 		loginDao = new LoginDAO();
 	}
 
-	public boolean isUsuarioLogado(UsuarioVO usuario) {
+	public UsuarioVO logarUsuario(UsuarioVO usuario) {
 		return loginDao.logarUsuario(usuario);
 	}
 
