@@ -42,6 +42,7 @@ import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
+import enumeradores.TipoStatus;
 
 public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
 
@@ -128,6 +129,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		txtNomeFunc = new JTextField();
 		
 		btnGerarOC = new JButton("Gerar OC");
+		btnGerarOC.setEnabled(false);
 		
 		btnConsultarProd = new JButton("Consultar");
 		btnConsultarFunc = new JButton("Consultar");
@@ -166,7 +168,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
 		
-		listaStatus = statusBO.consultarTodosStatus();
+		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
 		
 		for (StatusVO statusVO : listaStatus) {
 			
@@ -307,7 +309,13 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 					
 				}
 				
-				
+			}
+			else{
+				if(status.equals("Em Aberto")){
+					
+					btnGerarOC.setEnabled(true);
+					
+				}
 			}
 		}
 				
@@ -494,7 +502,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 						
-			if(ordemProducaoBO.incluirOrdemProducao(ordemProducao)){
+			if(ordemProducaoBO.incluir(ordemProducao)){
 								
 				/*
 				 * TODO - Na inclusão deve ser verificado se o status é diferente de 'em aberto',
@@ -533,7 +541,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 						
-			if(ordemProducaoBO.alterarOrdemProducao(ordemProducao)){
+			if(ordemProducaoBO.alterar(ordemProducao)){
 				
 				/*
 				 *  TODO - Na alteração deve ser verificado se o status é concluído, 
@@ -616,7 +624,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 				
 				if(!cbxStatus.getSelectedItem().equals("Concluído")){
 					
-					int qtdProdutos = ordemProducaoBO.converterStringParaInt(txtQtdeProd.getText());
+					int qtdProdutos = ordemProducaoBO.stringToInteger(txtQtdeProd.getText());
 					
 					for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : receita) {
 						

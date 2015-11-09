@@ -1,12 +1,12 @@
 ﻿package ui;
 
+import interfaces.ITelaBuscar;
+import interfaces.ITelaManter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-
-import interfaces.ITelaBuscar;
-import interfaces.ITelaManter;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,9 +18,9 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.CompraVO;
 import vo.GenericVO;
+import bo.CompraBO;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements ITelaBuscar{
@@ -62,6 +62,8 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	private static final String PESQ_PRODUTO = "produto";
 	private static final String PESQ_FUNCIONARIO = "funcionario";
+	
+	private CompraBO compraBo;
 	
 	// Bloco de inicialização
 	
@@ -207,20 +209,29 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 		adicionarComponenteCentro(btnBuscarFunc);
 		adicionarComponenteCentro(btnBuscarProd);
 		
+		compraBo = new CompraBO();
+		
 	}
+	
 
+	// Construtores
+	
 	public ConsultarCompraView() {
-		super("Compra", new String[]{ "Código", "Data"}, 10, 275, 665, 190);
+		super("Compra", new String[]{ "Código", "Fornecedor", "Data"}, 10, 275, 665, 190);
 		this.setSize(750, 535);
-	}		
+	}	
+	
+	
+	// Métodos
 
 	@Override
 	protected String[] definirGridItens(CompraVO compra) {
 		
-		String[] registro = new String[2];
+		String[] registro = new String[3];
 
 		registro[0] = compra.getCodCompra();
-		registro[1] = compra.getData().toString();
+		registro[1] = compra.getFornecedor().getNome();
+		registro[2] = compra.getData().toString();
 		
 		return registro;
 		
@@ -239,13 +250,18 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	@Override
 	public void deletar(CompraVO compra) {
 
-		JOptionPane.showMessageDialog(null, "Deletar Compra");
+		CompraVO c = compra;
+		
+		if(compraBo.deletar(compra)){
+			JOptionPane.showMessageDialog(null, "Compra excluída");
+			consultar();
+		}
 		
 	}
 
 	@Override
 	public List<CompraVO> consultar() {
-		return BancoFake.listaCompras;
+		return compraBo.consultar();
 	}
 	
 	// Métodos ITelaBuscar

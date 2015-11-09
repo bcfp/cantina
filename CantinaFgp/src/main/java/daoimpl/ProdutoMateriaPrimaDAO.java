@@ -10,6 +10,7 @@ import java.util.List;
 import daoservice.IDAO;
 import daoservice.IProdutoMateriaPrimaDAO;
 import enumeradores.TipoProduto;
+import utils.BancoFake;
 import vo.EstoqueMateriaPrimaVO;
 import vo.MateriaPrimaVO;
 import vo.ProdutoCantinaVO;
@@ -32,36 +33,36 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	
 	@Override
 	public boolean incluir(ProdutoMateriaPrimaVO objeto) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public boolean alterar(ProdutoMateriaPrimaVO objeto) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
-	public boolean excluir(Long id) {
-		// TODO Auto-generated method stub
+	public boolean deletar(Long id) {
+		
 		return false;
 	}
 
 	@Override
-	public List<ProdutoMateriaPrimaVO> consultarTodos() {
-		// TODO Auto-generated method stub
+	public List<ProdutoMateriaPrimaVO> consultar() {
+		
 		return null;
 	}
 
 	@Override
 	public ProdutoMateriaPrimaVO consultarPorId(Long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
 	public List<ProdutoMateriaPrimaVO> consultarReceitaPorIdProduto(Long id) {
-		
+		/*
 		List<ProdutoMateriaPrimaVO> listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 		
 		try {
@@ -126,7 +127,10 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 			}
 		}
 		
-		return listaMateriasPrimaProduto;
+
+		return listaMateriasPrimaProduto;*/
+		
+		return BancoFake.receita;
 	}
 
 }

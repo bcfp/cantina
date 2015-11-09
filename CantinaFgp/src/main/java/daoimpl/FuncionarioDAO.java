@@ -30,12 +30,12 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	}
 
 	@Override
-	public boolean excluir(Long id) {
+	public boolean deletar(Long id) {
 		return false;
 	}
 
 	@Override
-	public List<FuncionarioVO> consultarTodos() {
+	public List<FuncionarioVO> consultar() {
 		return null;
 	}
 

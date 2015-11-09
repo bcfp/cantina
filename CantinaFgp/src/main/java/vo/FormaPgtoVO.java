@@ -2,7 +2,7 @@ package vo;
 
 import java.util.List;
 
-public class FormaPgtoVO {
+public class FormaPgtoVO extends GenericVO {
 	
 	private Long idFormaPgtoVenda;
 	private String descricao;

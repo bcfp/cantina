@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.BancoFake;
 import vo.CantinaVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
@@ -25,7 +26,7 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 	}
 	
 	public List<FuncionarioCantinaVO> consultarPorNomeECodigo(String cod, String nome){
-		
+		/*
 		List<FuncionarioCantinaVO> listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
 		
 		try {
@@ -100,6 +101,8 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 		}
 		
 		return listaFuncionarios;
+		*/
+		return BancoFake.listaFuncCantina;
 	}
 
 	@Override
@@ -115,13 +118,13 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 	}
 
 	@Override
-	public boolean excluir(Long id) {
+	public boolean deletar(Long id) {
 		
 		return false;
 	}
 
 	@Override
-	public List<FuncionarioCantinaVO> consultarTodos() {
+	public List<FuncionarioCantinaVO> consultar() {
 		
 		return null;
 	}

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.BancoFake;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IProdutoVendaDAO;
@@ -27,7 +28,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	
 	@Override
 	public List<ProdutoVendaVO> consultarPorNomeECodigo(String nome, String cod){
-		
+		/*
 		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
 		
 		try {
@@ -92,6 +93,10 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		}
 		
 		return listaProdutosVenda;
+		*/
+		
+		return BancoFake.listaProdutoVenda;
+		
 		/*boolean flagSucesso = false;
 		
 		try {
@@ -162,13 +167,13 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	}
 
 	@Override
-	public boolean excluir(Long id) {
+	public boolean deletar(Long id) {
 		
 		return false;
 	}
  
 	@Override
-	public List<ProdutoVendaVO> consultarTodos() {
+	public List<ProdutoVendaVO> consultar() {
 		
 		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
 		

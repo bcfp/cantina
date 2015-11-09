@@ -17,11 +17,6 @@ public class OrdemProducaoBO {
 		
 	}
 	
-	public List<OrdemProducaoVO> consultarListaEstatica(){
-		
-		return null;
-	}
-	
 	public boolean isCampoFuncionarioVazio(String campo){
 		
 		return UtilFuncoes.isCampoVazio(campo);
@@ -48,19 +43,7 @@ public class OrdemProducaoBO {
 	
 	public boolean isCampoQtdNegativo(String campo){
 		
-		return Integer.parseInt(campo) <= 0;
-	}
-
-	public boolean incluirOrdemProducao(OrdemProducaoVO ordemProducao){
-		
-		return ordemProdDao.incluir(ordemProducao);
-		
-	}
-		
-	public boolean alterarOrdemProducao(OrdemProducaoVO ordemProducao){
-		
-		return ordemProdDao.alterar(ordemProducao);
-		
+		return UtilFuncoes.stringToInteger(campo) <= 0;
 	}
 	
 	public boolean isCampoQuantidadeNumerico(String campo){
@@ -68,9 +51,36 @@ public class OrdemProducaoBO {
 		return UtilFuncoes.isCampoNumerico(campo);
 	}
 	
-	public Integer converterStringParaInt(String campo){
-		Integer numerico = Integer.parseInt(campo);
-		return numerico;
+	public Integer stringToInteger(String campo){
+		return UtilFuncoes.stringToInteger(campo);
+	}
+
+	// CRUD
+	
+	public boolean incluir(OrdemProducaoVO ordemProducao){
+		
+		return ordemProdDao.incluir(ordemProducao);
+		
+	}
+	
+	public List<OrdemProducaoVO> consultar(){
+		
+		return ordemProdDao.consultar();
+		
+	}
+		
+	public boolean alterar(OrdemProducaoVO ordemProducao){
+		
+		return ordemProdDao.alterar(ordemProducao);
+		
+	}
+	
+	public boolean deletar(OrdemProducaoVO ordemProducao){
+		
+		OrdemProducaoVO op = ordemProducao;
+		
+		return ordemProdDao.deletar(op.getIdOrdemProducao());
+		
 	}
 
 }

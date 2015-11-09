@@ -29,7 +29,7 @@ public class ProdutoVendaBO {
 	
 	public List<ProdutoVendaVO> consultarTodosProdutos(){
 		
-		return produtoVendaDao.consultarTodos();
+		return produtoVendaDao.consultar();
 	}
 	
 	public ProdutoVendaVO consultarProdutoPorId(Long id){

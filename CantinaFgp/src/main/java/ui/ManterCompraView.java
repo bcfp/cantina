@@ -3,10 +3,10 @@ package ui;
 import interfaces.ITelaBuscar;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +27,17 @@ import ui.templates.BuscarDialogView;
 import ui.templates.ManterPanelView;
 import utils.BancoFake;
 import vo.CompraVO;
-import vo.FornecedorProdutoVO;
+import vo.FormaPgtoVO;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
-import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
 import vo.StatusVO;
+import bo.FormaPgtoBO;
+import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
+import enumeradores.TipoStatus;
 
 public class ManterCompraView extends ManterPanelView<CompraVO> implements ITelaBuscar {
 	
@@ -82,7 +84,14 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	private String acaoPesquisar;
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	private static final String PESQ_PRODUTO = "produto";
+
+	private StatusBO statusBo;
+	private FormaPgtoBO formaPgtoBo;
 	
+	private ProdutoVO produto;
+	
+	private List<StatusVO> listaStatus;
+	private List<FormaPgtoVO> listaFormasPgto;
 	private List<ItemCompraVO> listaItensCompra;
 
 	
@@ -265,7 +274,59 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 		
 		adicionarComponentesCentro(pnlCampos);
+		
+		statusBo = new StatusBO();
+		
+		listaStatus = new ArrayList<StatusVO>();
+		
+		listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		
+		for (StatusVO statusVo : listaStatus) {
+			
+			cbxStatusCompra.addItem(statusVo.getDescricao());
+			
+		}
+		
+		formaPgtoBo = new FormaPgtoBO();
+		
+		listaFormasPgto = formaPgtoBo.consultarTodasFormaPgto();
+		
+		for (FormaPgtoVO formaPgto : listaFormasPgto) {
+			
+			cbxFormaPgto.addItem(formaPgto.getDescricao());
+			
+		}
+				
+		btnAddProd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(produto!=null){
+					if(adicionarProdutoVenda(produto)){
+						// Limpar campos produtoVenda
+					}
+				}
+				
+			}
+			
+		});
 
+	}
+	
+	// TODO - Bruno - Continuar aqui
+	private Boolean adicionarProdutoVenda(ProdutoVO produto){
+		
+		ItemCompraVO itemCompra = new ItemCompraVO();
+		
+		itemCompra.setProduto(produto);
+		
+		listaItensCompra.add(itemCompra);
+		
+		carregarGridItens(listaItensCompra);
+		
+		return true;
+		
 	}
 	
 	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho) {
@@ -282,6 +343,14 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 
 	@Override
 	public void abrirJanela(CompraVO compra) {
+				
+		txtCodOc.setText(compra.getCodCompra());
+		dtpDataCompra.setDate(compra.getData());
+		cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());
+		txtCodFornCompra.setText(compra.getFornecedor().getCodFornecedor());
+		txtFornCompra.setText(compra.getFornecedor().getNome());
+		cbxFormaPgto.setSelectedItem(compra.getFormaPgto().getDescricao());
+		
 		carregarGridItens(compra.getItensCompra());
 		this.setVisible(true);
 	}
@@ -358,12 +427,12 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	public void carregarItemSelecionado(GenericVO item) {
 		
 		
-		if(item instanceof ProdutoVendaVO){
+		if(item instanceof ProdutoVO){
 						
-			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			ProdutoVO produto = (ProdutoVO) item; 
 			
-			txtCodProdCompra.setText(produtoVenda.getCodProduto());
-			txtProdCompra.setText(produtoVenda.getDescricao());
+			txtCodProdCompra.setText(produto.getCodProduto());
+			txtProdCompra.setText(produto.getDescricao());
 			
 		}
 		else{
@@ -384,15 +453,15 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	@Override
 	public String[] carregarGridTelaBusca(GenericVO item) {
 				
-		if(item instanceof ProdutoVendaVO){
+		if(item instanceof ProdutoVO){
 			
-			ProdutoVendaVO produtoVenda = (ProdutoVendaVO) item; 
+			ProdutoVO produto = (ProdutoVO) item; 
 			
 			String[] registro = new String[3];
 
-			registro[0] = produtoVenda.getCodProduto();
-			registro[1] = produtoVenda.getDescricao();
-			registro[2] = produtoVenda.getPrecoVenda().toString();
+			registro[0] = produto.getCodProduto();
+			registro[1] = produto.getDescricao();
+			registro[2] = produto.getPrecoCusto().toString();
 			
 			return registro;
 			

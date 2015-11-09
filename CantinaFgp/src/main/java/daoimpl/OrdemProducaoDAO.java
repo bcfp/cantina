@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import utils.BancoFake;
 import vo.OrdemProducaoVO;
 import daoservice.IOrdemProducaoDAO;
 
@@ -55,25 +56,32 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 
 	@Override
 	public boolean alterar(OrdemProducaoVO ordemProducao) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean excluir(Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<OrdemProducaoVO> consultarTodos() {
 		
-		return null;
+		// TODO - Fazer conexão com o banco
+		
+		return true;
+		
+	}
+
+	@Override
+	public boolean deletar(Long id) {
+		
+		return true;
+		
+	}
+
+	@Override
+	public List<OrdemProducaoVO> consultar() {
+		
+		// TODO - Fazer conexão com o banco
+		
+		return BancoFake.listaOrdensProducao;
+		
 	}
 
 	@Override
 	public OrdemProducaoVO consultarPorId(Long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

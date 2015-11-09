@@ -15,6 +15,7 @@ public class CompraVO extends GenericVO {
 	private FormaPgtoVO formaPgto;
 	private List<ItemCompraVO> itensCompra;
 	private UnidadeProdutoVO unidade;
+	private StatusVO status;
 	
 	public CompraVO() {
 		
@@ -87,6 +88,14 @@ public class CompraVO extends GenericVO {
 
 	public void setGeradorCompra(IGeradorCompra geradorCompra) {
 		this.geradorCompra = geradorCompra;
+	}
+
+	public StatusVO getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusVO status) {
+		this.status = status;
 	}
 	
 }

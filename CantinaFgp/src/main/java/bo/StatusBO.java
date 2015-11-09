@@ -5,6 +5,7 @@ import java.util.List;
 import vo.StatusVO;
 import daoimpl.StatusDAO;
 import daoservice.IStatusDAO;
+import enumeradores.TipoStatus;
 
 public class StatusBO {
 	
@@ -16,9 +17,9 @@ public class StatusBO {
 	
 	}
 	
-	public List<StatusVO> consultarTodosStatus(){
+	public List<StatusVO> consultarTodosStatus(TipoStatus tipo){
 		
-		return statusDao.consultarTodos();
+		return statusDao.consultar(tipo);
 		
 	}
 

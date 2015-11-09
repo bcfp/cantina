@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import bo.OrdemProducaoBO;
 import ui.templates.ConsultarPanelView;
 import utils.BancoFake;
 import vo.OrdemProducaoVO;
@@ -37,6 +38,8 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 
 	private JXDatePicker dtpDataInicial;
 	private JXDatePicker dtpDataFinal;
+	
+	private OrdemProducaoBO ordemProdBo;
 	
 	// Bloco de inicialização
 	
@@ -100,7 +103,10 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 		adicionarComponenteCentro(dtpDataInicial);
 		adicionarComponenteCentro(dtpDataFinal);
 		
+		ordemProdBo = new OrdemProducaoBO();
+		
 	}
+	
 	
 	// Construtores
 	
@@ -136,15 +142,18 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	}
 
 	@Override
-	public void deletar(OrdemProducaoVO objeto) {
+	public void deletar(OrdemProducaoVO ordemProducao) {
 
-		JOptionPane.showMessageDialog(null, "Deletar OP");
+		if(ordemProdBo.deletar(ordemProducao)){
+			JOptionPane.showMessageDialog(null, "Ordem de Produção excluída");
+			consultar();
+		}
 		
 	}
 
 	@Override
 	public List<OrdemProducaoVO> consultar() {
-		return BancoFake.listaOrdensProducao;
+		return ordemProdBo.consultar();
 	}
 	
 }

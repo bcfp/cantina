@@ -106,7 +106,7 @@ import enumeradores.TipoSolicitacao;
 		private JComboBox<String> cbxUnidMatPrima;
 		
 		private JButton btnBuscarMatPrima;
-		private JButton btnAdicionarMatPrima;
+		private JButton btnAddMatPrima;
 		
 		private JTable tabMatPrimas;
 		private DefaultTableModel modeloTabMatPrimas;
@@ -126,7 +126,7 @@ import enumeradores.TipoSolicitacao;
 		private JTextField txtContatoForn;
 				
 		private JButton btnBuscarForn;
-		private JButton btnAdicionarForn;
+		private JButton btnAddForn;
 
 		private JTable tabForn;
 		private DefaultTableModel modeloTabForn;
@@ -252,7 +252,7 @@ import enumeradores.TipoSolicitacao;
 			txtContatoForn = new JTextField();
 						
 			btnBuscarForn = new JButton("Buscar");
-			btnAdicionarForn = new JButton(" + ");
+			btnAddForn = new JButton(" + ");
 			
 			tabForn = new JTable();
 			modeloTabForn = new DefaultTableModel() {
@@ -278,7 +278,7 @@ import enumeradores.TipoSolicitacao;
 			cbxUnidMatPrima = new JComboBox<String>();
 			
 			btnBuscarMatPrima = new JButton("Buscar");
-			btnAdicionarMatPrima = new JButton(" + ");
+			btnAddMatPrima = new JButton(" + ");
 			
 			tabMatPrimas = new JTable();
 			modeloTabMatPrimas = new DefaultTableModel() {
@@ -521,7 +521,7 @@ import enumeradores.TipoSolicitacao;
 			
 			// FORNECEDORES
 			
-			btnAdicionarForn.setEnabled(false);
+			btnAddForn.setEnabled(false);
 						
 			int espXLblForn = 20;
 			int espXTxtForn = 120;
@@ -534,7 +534,7 @@ import enumeradores.TipoSolicitacao;
 			btnBuscarForn.setBounds(espXTxtForn + 60, espY, 80, altura);
 			txtFornecedor.setBounds(espXTxtForn, espY + espEntre, 210, altura);
 			txtContatoForn.setBounds(espXTxtForn, espY + espEntre * 2, 150, altura);
-			btnAdicionarForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
+			btnAddForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
 			
 			btnBuscarForn.addActionListener(new ActionListener() {
 				
@@ -549,7 +549,7 @@ import enumeradores.TipoSolicitacao;
 				
 			});
 			
-			btnAdicionarForn.addActionListener(new ActionListener() {
+			btnAddForn.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -562,7 +562,7 @@ import enumeradores.TipoSolicitacao;
 							txtFornecedor.setText("");
 							txtContatoForn.setText("");
 							
-							btnAdicionarForn.setEnabled(false);
+							btnAddForn.setEnabled(false);
 						
 						}
 						
@@ -610,7 +610,7 @@ import enumeradores.TipoSolicitacao;
 			pnlFornecedores.add(txtFornecedor);
 			pnlFornecedores.add(txtContatoForn);
 			pnlFornecedores.add(btnBuscarForn);
-			pnlFornecedores.add(btnAdicionarForn);
+			pnlFornecedores.add(btnAddForn);
 
 			tbsProdutos.addTab("Fornecedores", pnlFornecedores);
 			tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
@@ -620,7 +620,7 @@ import enumeradores.TipoSolicitacao;
 
 			pnlReceita.setLayout(null);
 			
-			btnAdicionarMatPrima.setEnabled(false);
+			btnAddMatPrima.setEnabled(false);
 						
 			int espXLblRec = 20;
 			int espXTxtRec = 120;
@@ -633,7 +633,7 @@ import enumeradores.TipoSolicitacao;
 			btnBuscarMatPrima.setBounds(espXTxtRec + 60, espY, 80, altura);
 			txtMatPrimaRec.setBounds(espXTxtRec, espY + espEntre, 170, altura);
 			txtQtdeMatPrima.setBounds(espXTxtRec, espY + espEntre * 2, 50, altura);
-			btnAdicionarMatPrima.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
+			btnAddMatPrima.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
 			
 			int espXLblRec2 = 350;
 			int espXTxtRec2 = 420;
@@ -655,7 +655,7 @@ import enumeradores.TipoSolicitacao;
 				
 			});
 			
-			btnAdicionarMatPrima.addActionListener(new ActionListener() {
+			btnAddMatPrima.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -669,7 +669,7 @@ import enumeradores.TipoSolicitacao;
 							txtQtdeMatPrima.setText("");
 							//cbxUnidMatPrima.setSelectedIndex(0);
 							
-							btnAdicionarMatPrima.setEnabled(false);
+							btnAddMatPrima.setEnabled(false);
 						
 						}
 					}
@@ -720,106 +720,111 @@ import enumeradores.TipoSolicitacao;
 			pnlReceita.add(txtQtdeMatPrima);
 			pnlReceita.add(cbxUnidMatPrima);
 			pnlReceita.add(btnBuscarMatPrima);
-			pnlReceita.add(btnAdicionarMatPrima);
-			
+			pnlReceita.add(btnAddMatPrima);
+	
 			tbsProdutos.addTab("Receita", pnlReceita);
 			tbsProdutos.setEnabledAt(ABA_RECEITA, false);
-			
-			
+	
 			// LOTES
-			
-			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
-				
-				pnlLotes = new JPanel();
-				pnlLotes.setLayout(null);
-				
-				lblFiltrarLotes = new JLabel("FILTRAR");
-				lblCodLote = new JLabel("Lote");
-				lblOrigemLote = new JLabel("Origem");
-				lblCodOrigem = new JLabel("Número");
-				lblDatasLote = new JLabel("Vencimentos");
-				lblDataVctoMin = new JLabel("Inicial");
-				lblDataVctoMax = new JLabel("Final");
-				
-				txtCodLote = new JTextField();
-				txtCodOrigem = new JTextField();
-				
-				rdoEstoqueLote = new JRadioButton("Com estoque");
-				rdoEstoqueLote.setSelected(true);
-				
-				cbxOrigemLote = new JComboBox<String>();
 	
-				dtpDataVctoMin = new JXDatePicker();
-				dtpDataVctoMax = new JXDatePicker();
-				
-				btnFiltrarLotes = new JButton("Filtrar");
-				
-				int espYLot = 10;
-				int espXLblLot = 20;
-				int espXTxtLot = 80;
-				
-				lblFiltrarLotes.setBounds(espXLblLot, espYLot, 50, altura);
-				lblCodLote.setBounds(espXLblLot, espYLot + espEntre, 50, altura);
-				lblOrigemLote.setBounds(espXLblLot, espYLot + espEntre * 2, 50, altura);
-				
-				txtCodLote.setBounds(espXTxtLot, espYLot + espEntre, 50, altura);
-				cbxOrigemLote.setBounds(espXTxtLot, espYLot + espEntre * 2, 120, altura);
-				
-				int espXLblLot2 = 210;
-				int espXTxtLot2 = 260;
-				
-				lblCodOrigem.setBounds(espXLblLot2, espYLot + espEntre * 2, 50, altura);
-				txtCodOrigem.setBounds(espXTxtLot2, espYLot + espEntre * 2, 50, altura);
-				
-				int espXLblLot3 = 340;
-				int espXTxtLot3 = 380;
+			pnlLotes = new JPanel();
+			pnlLotes.setLayout(null);
 	
-				lblDatasLote.setBounds(espXLblLot3, espYLot, 80, altura);
-				lblDataVctoMin.setBounds(espXLblLot3, espYLot + espEntre, 80, altura);
-				lblDataVctoMax.setBounds(espXLblLot3, espYLot + espEntre * 2, 80, altura);
-				
-				dtpDataVctoMin.setBounds(espXTxtLot3, espYLot + espEntre, 130, altura);
-				dtpDataVctoMax.setBounds(espXTxtLot3, espYLot + espEntre * 2, 130, altura);
-				
-				int espXTxtLot4 = 530;
+			lblFiltrarLotes = new JLabel("FILTRAR");
+			lblCodLote = new JLabel("Lote");
+			lblOrigemLote = new JLabel("Origem");
+			lblCodOrigem = new JLabel("Número");
+			lblDatasLote = new JLabel("Vencimentos");
+			lblDataVctoMin = new JLabel("Inicial");
+			lblDataVctoMax = new JLabel("Final");
 	
-				rdoEstoqueLote.setBounds(espXTxtLot4, espYLot + espEntre, 100, altura);
-				btnFiltrarLotes.setBounds(espXTxtLot4, espYLot + espEntre * 2, 80, altura);
-				
-				
-				// Tabela lote
-				tabLotes = new JTable();
-				modeloTabLotes = new DefaultTableModel() {
-					@Override public boolean isCellEditable(int row, int column) { return false; }
-				};
-				barraTabLotes = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				
-				modeloTabLotes.setColumnIdentifiers(new String[] {"Lote", "Qtde", "Vencimento", "Origem", "Número"});
-				tabLotes.setModel(modeloTabLotes);
-				barraTabLotes.setViewportView(tabLotes);
-				int yTabLotes = 130;
-				barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabLotes);
-				
-				pnlLotes.add(barraTabLotes);
-				pnlLotes.add(lblFiltrarLotes);
-				pnlLotes.add(lblCodLote);
-				pnlLotes.add(rdoEstoqueLote);
-				pnlLotes.add(lblOrigemLote);
-				pnlLotes.add(lblCodOrigem);
-				pnlLotes.add(lblDatasLote);
-				pnlLotes.add(lblDataVctoMin);
-				pnlLotes.add(lblDataVctoMax);
-				pnlLotes.add(txtCodLote);
-				pnlLotes.add(txtCodOrigem);
-				pnlLotes.add(cbxOrigemLote);
-				pnlLotes.add(dtpDataVctoMin);
-				pnlLotes.add(dtpDataVctoMax);
-				pnlLotes.add(btnFiltrarLotes);
-				
-				tbsProdutos.addTab("Lotes", pnlLotes);
-				tbsProdutos.setEnabledAt(ABA_LOTES, false);
-				
-			}
+			txtCodLote = new JTextField();
+			txtCodOrigem = new JTextField();
+	
+			rdoEstoqueLote = new JRadioButton("Com estoque");
+			rdoEstoqueLote.setSelected(true);
+	
+			cbxOrigemLote = new JComboBox<String>();
+	
+			dtpDataVctoMin = new JXDatePicker();
+			dtpDataVctoMax = new JXDatePicker();
+	
+			btnFiltrarLotes = new JButton("Filtrar");
+	
+			int espYLot = 10;
+			int espXLblLot = 20;
+			int espXTxtLot = 80;
+	
+			lblFiltrarLotes.setBounds(espXLblLot, espYLot, 50, altura);
+			lblCodLote.setBounds(espXLblLot, espYLot + espEntre, 50, altura);
+			lblOrigemLote.setBounds(espXLblLot, espYLot + espEntre * 2, 50, altura);
+	
+			txtCodLote.setBounds(espXTxtLot, espYLot + espEntre, 50, altura);
+			cbxOrigemLote
+					.setBounds(espXTxtLot, espYLot + espEntre * 2, 120, altura);
+	
+			int espXLblLot2 = 210;
+			int espXTxtLot2 = 260;
+	
+			lblCodOrigem.setBounds(espXLblLot2, espYLot + espEntre * 2, 50, altura);
+			txtCodOrigem.setBounds(espXTxtLot2, espYLot + espEntre * 2, 50, altura);
+	
+			int espXLblLot3 = 340;
+			int espXTxtLot3 = 380;
+	
+			lblDatasLote.setBounds(espXLblLot3, espYLot, 80, altura);
+			lblDataVctoMin.setBounds(espXLblLot3, espYLot + espEntre, 80, altura);
+			lblDataVctoMax.setBounds(espXLblLot3, espYLot + espEntre * 2, 80,
+					altura);
+	
+			dtpDataVctoMin.setBounds(espXTxtLot3, espYLot + espEntre, 130, altura);
+			dtpDataVctoMax.setBounds(espXTxtLot3, espYLot + espEntre * 2, 130,
+					altura);
+	
+			int espXTxtLot4 = 530;
+	
+			rdoEstoqueLote.setBounds(espXTxtLot4, espYLot + espEntre, 100, altura);
+			btnFiltrarLotes.setBounds(espXTxtLot4, espYLot + espEntre * 2, 80,
+					altura);
+	
+			// Tabela lote
+			tabLotes = new JTable();
+			modeloTabLotes = new DefaultTableModel() {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			barraTabLotes = new JScrollPane(
+					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+					JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	
+			modeloTabLotes.setColumnIdentifiers(new String[] { "Lote", "Qtde",
+					"Vencimento", "Origem", "Número" });
+			tabLotes.setModel(modeloTabLotes);
+			barraTabLotes.setViewportView(tabLotes);
+			int yTabLotes = 130;
+			barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(),
+					tbsProdutos.getHeight() - yTabLotes);
+	
+			pnlLotes.add(barraTabLotes);
+			pnlLotes.add(lblFiltrarLotes);
+			pnlLotes.add(lblCodLote);
+			pnlLotes.add(rdoEstoqueLote);
+			pnlLotes.add(lblOrigemLote);
+			pnlLotes.add(lblCodOrigem);
+			pnlLotes.add(lblDatasLote);
+			pnlLotes.add(lblDataVctoMin);
+			pnlLotes.add(lblDataVctoMax);
+			pnlLotes.add(txtCodLote);
+			pnlLotes.add(txtCodOrigem);
+			pnlLotes.add(cbxOrigemLote);
+			pnlLotes.add(dtpDataVctoMin);
+			pnlLotes.add(dtpDataVctoMax);
+			pnlLotes.add(btnFiltrarLotes);
+	
+			tbsProdutos.addTab("Lotes", pnlLotes);
+			tbsProdutos.setEnabledAt(ABA_LOTES, false);
 						
 			// PRODUTO MATÉRIA PRIMA
 			
@@ -907,7 +912,7 @@ import enumeradores.TipoSolicitacao;
 			
 		}
 		
-		private boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
+		private Boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
 			
 			String qtdeTxt = txtQtdeMatPrima.getText();
 			
@@ -1040,7 +1045,7 @@ import enumeradores.TipoSolicitacao;
 			
 				case PESQ_MAT_PRIMA:
 					
-					btnAdicionarMatPrima.setEnabled(true);
+					btnAddMatPrima.setEnabled(true);
 					
 					materiaPrima = (MateriaPrimaVO) item;
 
@@ -1051,7 +1056,7 @@ import enumeradores.TipoSolicitacao;
 					
 				case PESQ_FORNECEDOR:
 				
-					btnAdicionarForn.setEnabled(true);
+					btnAddForn.setEnabled(true);
 					
 					fornecedor = (FornecedorVO) item;
 					

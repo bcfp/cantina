@@ -20,13 +20,13 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 	}
 
 	@Override
-	public boolean excluir(Long id) {
+	public boolean deletar(Long id) {
 		
 		return false;
 	}
 
 	@Override
-	public List<MateriaPrimaVO> consultarTodos() {
+	public List<MateriaPrimaVO> consultar() {
 		
 		return null;
 	}

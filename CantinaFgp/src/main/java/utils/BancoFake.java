@@ -29,8 +29,10 @@ import vo.UnidadeProdutoVO;
 import vo.VendaVO;
 
 public class BancoFake {
-	
+
+	public static List<FormaPgtoVO> listaFormasPgto;
 	public static List<StatusVO> listaStatusOP;
+	public static List<StatusVO> listaStatusOC;
 	public static List<CompraVO> listaCompras;
 	public static List<GenericVO> listaFornecedorGeneric;
 	public static List<GenericVO> listaProdutosGeneric; 
@@ -46,6 +48,8 @@ public class BancoFake {
 	public static List<ItemCompraVO> listaItensCompra;
 	public static List<ProdutoMateriaPrimaVO> receita;
 	public static List<GenericVO> listaFuncCantinaGeneric;
+	public static List<FuncionarioCantinaVO> listaFuncCantina;
+	public static List<ProdutoVendaVO> listaProdutoVenda;
 	public static OrdemProducaoVO ordemProd;
 	public static MateriaPrimaVO matPrima;
 	public static MateriaPrimaVO matPrima2;
@@ -71,8 +75,22 @@ public class BancoFake {
 
 	static {
 		
-		// status op
+		// lista forma pgto
 		
+		listaFormasPgto = new ArrayList<>();
+		
+		FormaPgtoVO fp = new FormaPgtoVO();
+		fp.setDescricao("À Vista");
+		
+		listaFormasPgto.add(fp);
+		
+		fp = new FormaPgtoVO();
+		fp.setDescricao("Parcelado");		
+
+		listaFormasPgto.add(fp);		
+		
+		// status op
+
 		listaStatusOP = new ArrayList<StatusVO>();
 		
 		StatusVO status = new StatusVO();
@@ -90,6 +108,20 @@ public class BancoFake {
 		status = new StatusVO();
 		status.setDescricao("Concluído");
 		listaStatusOP.add(status);
+		
+		listaStatusOC = new ArrayList<StatusVO>();
+		
+		status = new StatusVO();
+		status.setDescricao("Aguardando Entrega");
+		listaStatusOC.add(status);
+		
+		status = new StatusVO();
+		status.setDescricao("Concluído");
+		listaStatusOC.add(status);
+		
+		status = new StatusVO();
+		status.setDescricao("Em Aberto");
+		listaStatusOC.add(status);
 		
 		// fornecedor
 
@@ -135,10 +167,12 @@ public class BancoFake {
 		funcCantina = new FuncionarioCantinaVO();
 		funcCantina.setFuncionario(func);
 		funcCantina.setCantina(cantina);
-		
+
 		listaFuncCantinaGeneric = new ArrayList<GenericVO>();
-		
+		listaFuncCantina = new ArrayList<>();
+
 		listaFuncCantinaGeneric.add(funcCantina);
+		listaFuncCantina.add(funcCantina);
 		
 		
 		// ordens producao
@@ -160,6 +194,10 @@ public class BancoFake {
 		prodVenda.setLote(true);
 		prodVenda.setTipo(TipoProduto.PRODUCAO);
 		
+		listaProdutoVenda = new ArrayList<>();
+
+		listaProdutoVenda.add(prodVenda);
+		
 		prodVenda2 = new ProdutoVendaVO();
 		prodVenda2.setDescricao("Esfiha Arabe");
 		prodVenda2.setCodProduto("02");
@@ -170,6 +208,8 @@ public class BancoFake {
 		prodVenda2.setUnidade(unidade);
 		prodVenda2.setLote(true);
 		prodVenda2.setTipo(TipoProduto.PRODUCAO);
+
+		listaProdutoVenda.add(prodVenda2);
 		
 		prodVenda3 = new ProdutoVendaVO();
 		prodVenda3.setDescricao("Halls Cereja");
@@ -181,6 +221,7 @@ public class BancoFake {
 		prodVenda3.setLote(true);
 		prodVenda3.setTipo(TipoProduto.REVENDA);
 		
+		listaProdutoVenda.add(prodVenda3);
 		
 		matPrima = new MateriaPrimaVO();
 		matPrima.setDescricao("Frango");
@@ -200,7 +241,7 @@ public class BancoFake {
 		matPrima2.setUnidade(unidade);
 		matPrima2.setTipo(TipoProduto.MATERIA_PRIMA);
 		
-		listaMatPrimaGeneric = new ArrayList<GenericVO>();
+		listaMatPrimaGeneric = new ArrayList<>();
 
 		listaMatPrimaGeneric.add(matPrima);
 		listaMatPrimaGeneric.add(matPrima2);
@@ -219,7 +260,7 @@ public class BancoFake {
 		produtoMateriaPrima = new ProdutoMateriaPrimaVO();
 		produtoMateriaPrima.setCodReceita("02");
 		produtoMateriaPrima.setMateriaPrima(matPrima2);
-		produtoMateriaPrima.setQtde(300D);
+		produtoMateriaPrima.setQtde(3D);
 		produtoMateriaPrima.setUnidade(unidade);
 		
 		receita.add(produtoMateriaPrima);
@@ -248,7 +289,6 @@ public class BancoFake {
 		ic.setQtde(2d);
 		ic.setValor(5d);
 		
-		listaItensCompra.add(ic);
 		listaItensCompra.add(ic);
 		
 		listaEstoqueProduto = new ArrayList<ProdutoCantinaVO>();
@@ -324,7 +364,7 @@ public class BancoFake {
 		ordemProd.setProdutoVenda(prodVenda);
 		ordemProd.setQtde(20);
 		StatusVO s = new StatusVO();
-		s.setDescricao("Finalizado");
+		s.setDescricao("Concluído");
 		ordemProd.setStatus(s);
 		ordemProd.setFuncionarioCantina(funcCantina);
 		
@@ -337,7 +377,20 @@ public class BancoFake {
 		ordemProd.setProdutoVenda(prodVenda2);
 		ordemProd.setQtde(10);
 		s = new StatusVO();
-		s.setDescricao("Em produção");
+		s.setDescricao("Em Produção");
+		ordemProd.setStatus(s);
+		ordemProd.setFuncionarioCantina(funcCantina);
+		
+		listaOrdensProducao.add(ordemProd);
+		
+		ordemProd = new OrdemProducaoVO();
+		
+		ordemProd.setCodOrdemProducao("003");
+		ordemProd.setData(new Date());
+		ordemProd.setProdutoVenda(prodVenda2);
+		ordemProd.setQtde(20);
+		s = new StatusVO();
+		s.setDescricao("Em Aberto");
 		ordemProd.setStatus(s);
 		ordemProd.setFuncionarioCantina(funcCantina);
 		
@@ -365,14 +418,29 @@ public class BancoFake {
 		compra = new CompraVO();
 		
 		compra.setCodCompra("01");
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+		compra.setStatus(status);
 		compra.setData(new Date());
+		formaPgto = new FormaPgtoVO();
+		formaPgto.setDescricao("Parcelado");
+		compra.setFormaPgto(formaPgto);
 		
 		listaCompras.add(compra);
 		
 		compra = new CompraVO();
 		
+		status = new StatusVO();
+		status.setDescricao("Concluído");
+		
 		compra.setCodCompra("02");
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+		compra.setStatus(status);
 		compra.setData(new Date());
+		formaPgto = new FormaPgtoVO();
+		formaPgto.setDescricao("À Vista");
+		compra.setFormaPgto(formaPgto);
 		
 		listaCompras.add(compra);
 		

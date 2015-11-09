@@ -24,6 +24,11 @@ public class UtilFuncoes {
 		return valor.intValue();
 	}
 	
+	public static Integer stringToInteger(String campo){
+		Integer numerico = Integer.parseInt(campo);
+		return numerico;
+	}
+	
 	public static String criptografarMd5(String campo){
 		
 		String campoFormatado = null;
@@ -65,8 +70,7 @@ public class UtilFuncoes {
 		}
 		catch(NumberFormatException e){
 			
-		
-		return false;
+			return false;
 			
 		}
 		
