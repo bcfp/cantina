@@ -180,7 +180,6 @@ import enumeradores.TipoSolicitacao;
 		// Atributos 
 		
 		private MateriaPrimaVO materiaPrima;
-		private ProdutoMateriaPrimaVO prodMatPrima;
 		private List<ProdutoMateriaPrimaVO> receita;
 		private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
 		
@@ -937,10 +936,6 @@ import enumeradores.TipoSolicitacao;
 					Double qtdeReceita = 0d;
 					int sizeReceita = receita.size();
 					boolean itemNaReceita = false;
-								
-					prodMatPrima = new ProdutoMateriaPrimaVO();
-					prodMatPrima.setMateriaPrima(materiaPrima);
-					prodMatPrima.setQtde(qtdeInserida);
 					
 					for (int l = 0; l < sizeReceita; l++) {
 			
@@ -957,7 +952,13 @@ import enumeradores.TipoSolicitacao;
 					}
 					
 					if(!itemNaReceita){
+						
+						ProdutoMateriaPrimaVO prodMatPrima = new ProdutoMateriaPrimaVO();
+						prodMatPrima.setMateriaPrima(materiaPrima);
+						prodMatPrima.setQtde(qtde);
+						
 						receita.add(prodMatPrima);
+						
 					}
 					
 					carregarGridMatPrima(receita);

@@ -32,8 +32,8 @@ import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.ProdutoVO;
-import vo.ProdutoVendaVO;
 import vo.StatusVO;
+import bo.CompraBO;
 import bo.FormaPgtoBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
@@ -85,6 +85,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	private static final String PESQ_PRODUTO = "produto";
 
+	private CompraBO compraBo;
 	private StatusBO statusBo;
 	private FormaPgtoBO formaPgtoBo;
 
@@ -277,6 +278,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		adicionarComponentesCentro(pnlCampos);
 		
 		statusBo = new StatusBO();
+		compraBo = new CompraBO();
 		
 		listaStatus = new ArrayList<StatusVO>();
 		
@@ -321,15 +323,73 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	// TODO - Bruno - Continuar aqui
 	private Boolean adicionarProduto(ProdutoVO produto){
 		
-		ItemCompraVO itemCompra = new ItemCompraVO();
+		String qtdeTxt = txtQtdeProdCompra.getText();
+		String valorTxt = txtValorProdCompra.getText();
+		String prod = txtProdCompra.getText();
 		
-		itemCompra.setProduto(produto);
+		if(compraBo.isCampoVazio(prod)){
+			JOptionPane.showMessageDialog(null, "Favor informar um produto", "Campo Vazio", JOptionPane.YES_OPTION);
+		}
+		else{
+			if(compraBo.isCampoVazio(qtdeTxt)){
+				JOptionPane.showMessageDialog(null, "Favor informar uma quantidade", "Campo Vazio", JOptionPane.YES_OPTION);
+			}
+			else{
+				if(compraBo.isCampoVazio(valorTxt)){
+					JOptionPane.showMessageDialog(null, "Favor informar um valor", "Campo Vazio", JOptionPane.YES_OPTION);
+				}
+				else{
+					
+					Double qtde = Double.parseDouble(qtdeTxt);
+					Double valor = Double.parseDouble(valorTxt);
+					
+					if(qtde <= 0){
+						
+						JOptionPane.showMessageDialog(null, "Favor informar uma quantidade maior que zero", "Quantidade Inválida", JOptionPane.YES_OPTION);
+						
+					}
+					else{
+						
+						Double qtdeInserida = qtde;
+						Double qtdeLista = 0d;						
+						int sizeLista = listaItensCompra.size();
+						boolean produtoNaLista = false;
+						
+						for (int l = 0; l < sizeLista; l++) {
+				
+							if (produto.getCodProduto() == listaItensCompra.get(l).getProduto().getCodProduto()) {
+				
+								produtoNaLista = true;
+								
+								qtdeLista = listaItensCompra.get(l).getQtde();
+				
+								listaItensCompra.get(l).setQtde(qtdeLista + qtdeInserida);
+				
+							}
+				
+						}
+						
+						if(!produtoNaLista){
+							ItemCompraVO itemCompra = new ItemCompraVO();
+							
+							itemCompra.setProduto(produto);
+							itemCompra.setQtde(qtde);
+							itemCompra.setValor(valor);
+							
+							listaItensCompra.add(itemCompra);
+						}
+						
+						carregarGridItens(listaItensCompra);
+						
+						return true;
+						
+					}
+					
+				}
+			}
+		}
 		
-		listaItensCompra.add(itemCompra);
-		
-		carregarGridItens(listaItensCompra);
-		
-		return true;
+		return false;
 		
 	}
 	
@@ -429,8 +489,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 
 	@Override
 	public void carregarItemSelecionado(GenericVO item) {
-		
-		
+				
 		if(item instanceof ProdutoVO){
 						
 			produto = (ProdutoVO) item; 

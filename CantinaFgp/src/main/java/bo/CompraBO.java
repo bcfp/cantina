@@ -2,6 +2,7 @@ package bo;
 
 import java.util.List;
 
+import utils.UtilFuncoes;
 import vo.CompraVO;
 import daoimpl.CompraDAO;
 import daoservice.ICompraDAO;
@@ -12,6 +13,12 @@ public class CompraBO {
 
 	{
 		compraDao = new CompraDAO();
+	}
+	
+	public boolean isCampoVazio(String campo){
+		
+		return UtilFuncoes.isCampoVazio(campo);
+		
 	}
 
 	// CRUD
