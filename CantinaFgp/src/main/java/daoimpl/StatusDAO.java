@@ -24,9 +24,9 @@ public class StatusDAO implements IStatusDAO{
 	}
 
 	@Override
-	public boolean incluir(StatusVO objeto) {
+	public StatusVO incluir(StatusVO objeto) {
 		
-		return false;
+		return null;
 	}
 
 	@Override

@@ -20,8 +20,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	}
 	
 	@Override
-	public boolean incluir(FuncionarioVO funcionario) {
-		return false;
+	public FuncionarioVO incluir(FuncionarioVO funcionario) {
+		return null;
 	}
 
 	@Override

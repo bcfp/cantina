@@ -2,12 +2,12 @@ package ui;
 
 import javax.swing.JOptionPane;
 
-import ui.templates.ManterPanelView;
+import ui.templates.ManterFrameView;
 import vo.FuncionarioVO;
 import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterFuncionarioView extends ManterPanelView<FuncionarioVO> {
+public class ManterFuncionarioView extends ManterFrameView<FuncionarioVO> {
 
 	protected ManterFuncionarioView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);

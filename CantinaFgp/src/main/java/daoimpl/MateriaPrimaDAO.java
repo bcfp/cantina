@@ -8,9 +8,9 @@ import daoservice.IMateriaPrimaDAO;
 public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 
 	@Override
-	public boolean incluir(MateriaPrimaVO objeto) {
+	public MateriaPrimaVO incluir(MateriaPrimaVO objeto) {
 		
-		return false;
+		return null;
 	}
 
 	@Override

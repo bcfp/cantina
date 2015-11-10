@@ -32,9 +32,9 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	}
 	
 	@Override
-	public boolean incluir(ProdutoMateriaPrimaVO objeto) {
+	public ProdutoMateriaPrimaVO incluir(ProdutoMateriaPrimaVO objeto) {
 		
-		return false;
+		return null;
 	}
 
 	@Override

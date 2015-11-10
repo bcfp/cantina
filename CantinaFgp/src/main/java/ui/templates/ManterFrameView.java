@@ -28,7 +28,7 @@ import enumeradores.TipoSolicitacao;
  * definir o tipo dos parâmetros dos métodos da tela de manter.
  * 
  */
-public abstract class ManterPanelView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
+public abstract class ManterFrameView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
 
 	
 	// Atributos da Janela
@@ -45,29 +45,12 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 	
 	// Construtores
 	
-	protected ManterPanelView(TipoSolicitacao solicitacao, String tituloCabecalho) {
+	protected ManterFrameView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
 		definicoesPagina(tituloCabecalho);
 		
 		if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
 			
-			btnAlterar = new JButton("Alterar");
-			
-			btnAlterar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-
-					btnAlterar.setEnabled(false);
-					btnLimpar.setEnabled(true);
-					btnGravar.setEnabled(true);
-					habilitarCampos();
-					
-				}
-			});
-			
-			pnlRodape.add(btnAlterar);
-
 			btnLimpar.setEnabled(false);
 			btnGravar.setEnabled(false);
 			btnGravar.addActionListener(new ActionListener() {
@@ -86,12 +69,16 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 		}
 		else{
 			if(solicitacao.equals(TipoSolicitacao.INCLUIR)){
+				
+				btnAlterar.setVisible(false);
 				btnGravar.addActionListener(new ActionListener() {
 					
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						
-						incluir();
+						if(incluir()){
+							btnAlterar.setVisible(true);
+						}
 						
 					}
 					
@@ -133,7 +120,7 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				ManterPanelView.this.limparCampos();
+				ManterFrameView.this.limparCampos();
 				
 			}
 			
@@ -145,7 +132,7 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				ManterPanelView.this.dispose();
+				ManterFrameView.this.dispose();
 				
 			}
 		});
@@ -153,6 +140,23 @@ public abstract class ManterPanelView<T extends GenericVO> extends JFrame implem
 		pnlRodape.add(btnGravar);
 		pnlRodape.add(btnLimpar);
 		pnlRodape.add(btnCancelar);
+		
+		btnAlterar = new JButton("Alterar");
+		
+		btnAlterar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				btnAlterar.setEnabled(false);
+				btnLimpar.setEnabled(true);
+				btnGravar.setEnabled(true);
+				habilitarCampos();
+				
+			}
+		});
+		
+		pnlRodape.add(btnAlterar);
 			
 		// Definições página
 		

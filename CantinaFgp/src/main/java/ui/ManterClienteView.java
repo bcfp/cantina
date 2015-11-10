@@ -2,11 +2,11 @@
 
 import javax.swing.JOptionPane;
 
-import ui.templates.ManterPanelView;
+import ui.templates.ManterFrameView;
 import vo.ClienteVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterClienteView extends ManterPanelView<ClienteVO> {
+public class ManterClienteView extends ManterFrameView<ClienteVO> {
 
 
 	protected ManterClienteView(TipoSolicitacao solicitacao, String tituloCabecalho) {

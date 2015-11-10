@@ -9,9 +9,9 @@ import daoservice.IFormaPgtoDAO;
 public class FormaPgtoDAO implements IFormaPgtoDAO {
 
 	@Override
-	public boolean incluir(FormaPgtoVO formaPgto) {
+	public FormaPgtoVO incluir(FormaPgtoVO formaPgto) {
 		
-		return true;
+		return null;
 	}
 
 	@Override

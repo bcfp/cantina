@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
-import ui.templates.ManterPanelView;
+import ui.templates.ManterFrameView;
 import utils.BancoFake;
 import vo.CompraVO;
 import vo.FormaPgtoVO;
@@ -39,7 +40,7 @@ import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 import enumeradores.TipoStatus;
 
-public class ManterCompraView extends ManterPanelView<CompraVO> implements ITelaBuscar {
+public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
 	// Atributos Tela
 	
@@ -89,12 +90,15 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	private StatusBO statusBo;
 	private FormaPgtoBO formaPgtoBo;
 
+	private CompraVO compra;
 	private ProdutoVO produto;
 	private FornecedorVO fornecedor;
 	
 	private List<StatusVO> listaStatus;
 	private List<FormaPgtoVO> listaFormasPgto;
 	private List<ItemCompraVO> listaItensCompra;
+	
+	private Double totalCompra;
 
 	
 	// Bloco de inicialização
@@ -108,7 +112,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		pnlCampos.setLayout(null);
 		pnlCampos.setBackground(Color.LIGHT_GRAY);
 
-		dtpDataCompra = new JXDatePicker();
+		dtpDataCompra = new JXDatePicker(new Date());
 		
 		cbxStatusCompra = new JComboBox<String>();
 		cbxFormaPgto = new JComboBox<String>();
@@ -142,7 +146,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		txtCodOc.setEditable(false);
 		txtProdCompra.setEditable(false);
 		txtFornCompra.setEditable(false);
-
+		
 		btnBuscarForn = new JButton("Consultar");
 		btnBuscarForn.addActionListener(new ActionListener() {
 			
@@ -277,8 +281,16 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		
 		adicionarComponentesCentro(pnlCampos);
 		
+		//
+		
+		btnAddProd.setEnabled(false);
+		
+		totalCompra = 0d;
+				
 		statusBo = new StatusBO();
 		compraBo = new CompraBO();
+		
+		compra = new CompraVO();
 		
 		listaStatus = new ArrayList<StatusVO>();
 		
@@ -289,6 +301,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 			cbxStatusCompra.addItem(statusVo.getDescricao());
 			
 		}
+		cbxStatusCompra.setSelectedItem("Em Aberto");
 		
 		formaPgtoBo = new FormaPgtoBO();
 		
@@ -306,21 +319,24 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				System.out.println(produto);
+
 				if(produto!=null){
 					if(adicionarProduto(produto)){
-						// Limpar campos produtoVenda
+						btnAddProd.setEnabled(false);
+						txtCodProdCompra.setText("");
+						txtProdCompra.setText("");
+						txtQtdeProdCompra.setText("");
+						txtValorProdCompra.setText("");
+						
 					}
 				}
 				
 			}
 			
 		});
-
+		
 	}
 	
-	// TODO - Bruno - Continuar aqui
 	private Boolean adicionarProduto(ProdutoVO produto){
 		
 		String qtdeTxt = txtQtdeProdCompra.getText();
@@ -356,8 +372,9 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 						boolean produtoNaLista = false;
 						
 						for (int l = 0; l < sizeLista; l++) {
-				
-							if (produto.getCodProduto() == listaItensCompra.get(l).getProduto().getCodProduto()) {
+							
+							if (produto.getCodProduto() == listaItensCompra.get(l).getProduto().getCodProduto()
+									&& valor.toString().equals(listaItensCompra.get(l).getValor().toString())) {
 				
 								produtoNaLista = true;
 								
@@ -419,10 +436,77 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		this.setVisible(true);
 	}
 
+	
+	
 	@Override
 	public boolean incluir() {
-		JOptionPane.showMessageDialog(null, "Compra incluída");
+		
+		// TODO - Bruno - Parei aqui, fazer alteração da compra
+				
+		if(isCamposValidos()){
+			
+			compra.setData(dtpDataCompra.getDate());		
+			compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
+			compra.setFornecedor(fornecedor);
+			compra.setItensCompra(listaItensCompra);
+					
+			CompraVO compraIncluida = compraBo.incluir(compra);
+			
+			if(compraIncluida != null){
+				
+				txtCodOc.setText(compraIncluida.getCodCompra());		
+				
+				dtpDataCompra.setEditable(false);
+				cbxStatusCompra.setEnabled(false);
+				btnBuscarProd.setEnabled(false);
+				txtCodOc.setEditable(false);
+				txtCodProdCompra.setEditable(false);
+				txtQtdeProdCompra.setEditable(false);
+				txtValorProdCompra.setEditable(false);
+				btnAddProd.setEnabled(false);
+				btnBuscarForn.setEnabled(false);
+				txtCodFornCompra.setEditable(false);
+				cbxFormaPgto.setEnabled(false);
+				
+				JOptionPane.showMessageDialog(null, "Compra incluída");
+				
+				return true;
+				
+			}
+			
+		}
+		
 		return false;
+		
+	}
+	
+	private boolean isCamposValidos(){
+		
+		StringBuilder msgErro = new StringBuilder();
+		boolean isCamposValidos = true;
+				
+		if(!compraBo.isDataValida(dtpDataCompra.getDate())){
+			msgErro.append("A data deve ser menor ou igual à data de hoje\n");
+			isCamposValidos = false;
+		}
+		
+		if(listaItensCompra == null || listaItensCompra.size() == 0){
+			msgErro.append("Favor incluir ao menos um produto na compra\n");
+			isCamposValidos = false;
+		}
+		
+		if(fornecedor == null || fornecedor.getCodFornecedor() == null || fornecedor.getCodFornecedor().equals("")){
+			msgErro.append("Favor informar o fornecedor\n");
+			isCamposValidos = false;			
+		}
+		
+		if(!isCamposValidos){
+			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		
+		return true;
+		
 	}
 
 	@Override
@@ -430,17 +514,14 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		JOptionPane.showMessageDialog(null, "Compra alterada");		
 		return true;
 	}
-
-	@Override
-	protected void limparCampos() {
-		
-	}
 	
 	private void carregarGridItens(List<ItemCompraVO> itensCompra) {
 		
 		modeloTabItemCompra.setNumRows(0);
 		
 		Iterator<ItemCompraVO> iIc = itensCompra.iterator();
+		
+		Double total = 0d;
 		
 		while(iIc.hasNext()){
 			
@@ -452,13 +533,24 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 			registro[1] = ic.getProduto().getDescricao();
 			registro[2] = ic.getQtde().toString();
 			registro[3] = ic.getValor().toString();
-			Double total = ic.getQtde() * ic.getValor();
+			total = ic.getQtde() * ic.getValor();
 			registro[4] = total.toString();
 			
 			modeloTabItemCompra.addRow(registro);	
 			
 		}
 				
+		totalCompra += total;
+		
+		String rsTotal = "R$ " + totalCompra.toString();
+		
+		lblValorTotal.setText(rsTotal);
+				
+	}
+
+	@Override
+	protected void limparCampos() {
+		
 	}
 
 	@Override
@@ -496,6 +588,8 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 			
 			txtCodProdCompra.setText(produto.getCodProduto());
 			txtProdCompra.setText(produto.getDescricao());
+			
+			btnAddProd.setEnabled(true);
 			
 		}
 		else{

@@ -2,12 +2,12 @@
 
 import javax.swing.JOptionPane;
 
-import ui.templates.ManterPanelView;
+import ui.templates.ManterFrameView;
 import vo.CantinaVO;
 import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
-public class ManterCantinaView extends ManterPanelView<CantinaVO> {
+public class ManterCantinaView extends ManterFrameView<CantinaVO> {
 	
 	protected ManterCantinaView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);

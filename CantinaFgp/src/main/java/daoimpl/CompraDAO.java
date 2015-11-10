@@ -9,9 +9,15 @@ import daoservice.ICompraDAO;
 public class CompraDAO implements ICompraDAO {
 
 	@Override
-	public boolean incluir(CompraVO compra) {
+	public CompraVO incluir(CompraVO compra) {
 		
-		return true;
+		// TODO - Fazer conexão com o banco
+		
+		CompraVO compraIncluida = new CompraVO();
+		
+		compraIncluida.setCodCompra("00001");
+		
+		return compraIncluida;
 	}
 
 	@Override

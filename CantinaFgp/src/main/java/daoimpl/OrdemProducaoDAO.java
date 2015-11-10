@@ -24,7 +24,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	}
 
 	@Override
-	public boolean incluir(OrdemProducaoVO ordemProd) {
+	public OrdemProducaoVO incluir(OrdemProducaoVO ordemProd) {
 		/*
 		java.sql.Date dataSql = new java.sql.Date(ordemProd.getData().getTime());
 		
@@ -51,7 +51,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			return false;
 		}
 		*/
-		return true;
+		return null;
 	}
 
 	@Override

@@ -57,7 +57,7 @@ public class OrdemProducaoBO {
 
 	// CRUD
 	
-	public boolean incluir(OrdemProducaoVO ordemProducao){
+	public OrdemProducaoVO incluir(OrdemProducaoVO ordemProducao){
 		
 		return ordemProdDao.incluir(ordemProducao);
 		

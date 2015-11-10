@@ -1,5 +1,6 @@
 package bo;
 
+import java.util.Date;
 import java.util.List;
 
 import utils.UtilFuncoes;
@@ -15,6 +16,18 @@ public class CompraBO {
 		compraDao = new CompraDAO();
 	}
 	
+	// Métodos
+	
+	public boolean isDataValida(Date data){
+		
+		if(new Date().before(data)){
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
 	public boolean isCampoVazio(String campo){
 		
 		return UtilFuncoes.isCampoVazio(campo);
@@ -23,7 +36,7 @@ public class CompraBO {
 
 	// CRUD
 
-	public boolean incluir(CompraVO compra) {
+	public CompraVO incluir(CompraVO compra) {
 
 		return compraDao.incluir(compra);
 

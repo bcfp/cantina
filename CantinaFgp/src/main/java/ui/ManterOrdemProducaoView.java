@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import ui.templates.BuscarDialogView;
-import ui.templates.ManterPanelView;
+import ui.templates.ManterFrameView;
 import utils.UtilFuncoes;
 import vo.EstoqueMateriaPrimaVO;
 import vo.FuncionarioCantinaVO;
@@ -44,7 +44,7 @@ import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 import enumeradores.TipoStatus;
 
-public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> implements ITelaBuscar {
+public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> implements ITelaBuscar {
 
 	private JComboBox<String> cbxStatus;
 	
@@ -502,7 +502,7 @@ public class ManterOrdemProducaoView extends ManterPanelView<OrdemProducaoVO> im
 			ordemProducao.setProdutoVenda(produtoVenda);
 			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
 						
-			if(ordemProducaoBO.incluir(ordemProducao)){
+			if(ordemProducaoBO.incluir(ordemProducao) != null){
 								
 				/*
 				 * TODO - Na inclusão deve ser verificado se o status é diferente de 'em aberto',
