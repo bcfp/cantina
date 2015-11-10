@@ -171,7 +171,7 @@ public class LoginView extends JFrame {//JFrame é uma classe para janela
 			btnEntrar.setFont(fonteCentro);
 			
 			btnEntrar.addActionListener(new ActionListener() {		
-				
+					
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					

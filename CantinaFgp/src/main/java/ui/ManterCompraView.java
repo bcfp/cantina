@@ -87,8 +87,9 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 
 	private StatusBO statusBo;
 	private FormaPgtoBO formaPgtoBo;
-	
+
 	private ProdutoVO produto;
+	private FornecedorVO fornecedor;
 	
 	private List<StatusVO> listaStatus;
 	private List<FormaPgtoVO> listaFormasPgto;
@@ -296,14 +297,17 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 			cbxFormaPgto.addItem(formaPgto.getDescricao());
 			
 		}
+		
+		listaItensCompra = new ArrayList<ItemCompraVO>();
 				
 		btnAddProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
+				System.out.println(produto);
 				if(produto!=null){
-					if(adicionarProdutoVenda(produto)){
+					if(adicionarProduto(produto)){
 						// Limpar campos produtoVenda
 					}
 				}
@@ -315,7 +319,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 	}
 	
 	// TODO - Bruno - Continuar aqui
-	private Boolean adicionarProdutoVenda(ProdutoVO produto){
+	private Boolean adicionarProduto(ProdutoVO produto){
 		
 		ItemCompraVO itemCompra = new ItemCompraVO();
 		
@@ -429,7 +433,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		
 		if(item instanceof ProdutoVO){
 						
-			ProdutoVO produto = (ProdutoVO) item; 
+			produto = (ProdutoVO) item; 
 			
 			txtCodProdCompra.setText(produto.getCodProduto());
 			txtProdCompra.setText(produto.getDescricao());
@@ -438,7 +442,7 @@ public class ManterCompraView extends ManterPanelView<CompraVO> implements ITela
 		else{
 			if(item instanceof FornecedorVO){
 			
-				FornecedorVO fornecedor = (FornecedorVO) item;
+				fornecedor = (FornecedorVO) item;
 				
 				txtCodFornCompra.setText(fornecedor.getCodFornecedor());
 				txtFornCompra.setText(fornecedor.getNome());

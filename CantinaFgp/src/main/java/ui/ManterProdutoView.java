@@ -885,6 +885,7 @@ import enumeradores.TipoSolicitacao;
 
 		@Override
 		public boolean incluir() {
+			
 			JOptionPane.showMessageDialog(null, "Produto Incluído");
 			return false;
 		}
@@ -893,7 +894,7 @@ import enumeradores.TipoSolicitacao;
 		public boolean alterar() {
 			JOptionPane.showMessageDialog(null, "Produto Alterado");	
 			return true;
-		}
+		}	
 
 		@Override
 		protected boolean habilitarCampos() {
@@ -1025,6 +1026,8 @@ import enumeradores.TipoSolicitacao;
 			switch (acaoPesquisar) {
 			
 				case PESQ_MAT_PRIMA:
+					
+					// buscarMateriaPrima
 					
 					return BancoFake.listaMatPrimaGeneric;
 					
