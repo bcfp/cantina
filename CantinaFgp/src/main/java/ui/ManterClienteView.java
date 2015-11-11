@@ -38,6 +38,11 @@ public class ManterClienteView extends ManterFrameView<ClienteVO> {
 		JOptionPane.showMessageDialog(null, "Cliente alterado");		
 		return true;
 	}
+	
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro) {
+		return false;
+	}
 
 	@Override
 	protected void limparCampos() {
@@ -47,6 +52,11 @@ public class ManterClienteView extends ManterFrameView<ClienteVO> {
 
 	@Override
 	protected boolean habilitarCampos() {
+		return false;
+	}
+
+	@Override
+	protected boolean desabilitarCampos() {
 		return false;
 	}
 	

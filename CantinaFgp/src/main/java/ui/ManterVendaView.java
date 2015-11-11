@@ -312,17 +312,28 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 	@Override
 	public boolean incluir() {
 		JOptionPane.showMessageDialog(null, "Venda Incluída");
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Venda Alterada");	
 		return true;
+	}	
+
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro) {
+		return true;
 	}
 
 	@Override
 	protected boolean habilitarCampos() {
+		return false;
+	}
+
+
+	@Override
+	protected boolean desabilitarCampos() {
 		return false;
 	}
 

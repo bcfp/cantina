@@ -4,7 +4,6 @@ import javax.swing.JOptionPane;
 
 import ui.templates.ManterFrameView;
 import vo.CantinaVO;
-import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterCantinaView extends ManterFrameView<CantinaVO> {
@@ -38,6 +37,11 @@ public class ManterCantinaView extends ManterFrameView<CantinaVO> {
 		JOptionPane.showMessageDialog(null, "Cantina alterada");		
 		return true;
 	}
+	
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro) {
+		return false;
+	}
 
 	@Override
 	protected void limparCampos() {
@@ -47,6 +51,11 @@ public class ManterCantinaView extends ManterFrameView<CantinaVO> {
 
 	@Override
 	protected boolean habilitarCampos() {
+		return false;
+	}
+
+	@Override
+	protected boolean desabilitarCampos() {
 		return false;
 	}
 

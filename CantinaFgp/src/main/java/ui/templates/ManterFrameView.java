@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import vo.GenericVO;
@@ -31,8 +32,7 @@ import enumeradores.TipoSolicitacao;
  *            métodos da tela de manter.
  * 
  */
-public abstract class ManterFrameView<T extends GenericVO> extends JFrame
-		implements ITelaManter<T> {
+public abstract class ManterFrameView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
 
 	// Atributos da Janela
 
@@ -45,14 +45,16 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame
 	protected JButton btnCancelar;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
+	private StringBuilder msgErro;
 
 	private ActionListener acaoBtnGravar;
 
 	// Construtores
 
-	protected ManterFrameView(TipoSolicitacao solicitacao,
-			String tituloCabecalho) {
+	protected ManterFrameView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 
+		msgErro = new StringBuilder();
+		
 		definicoesPagina(tituloCabecalho);
 		
 		definirAcaoGravar(solicitacao);
@@ -72,8 +74,6 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame
 			acaoGravarAlteraracao();
 			btnGravar.addActionListener(acaoBtnGravar);
 			
-			
-
 		} else {
 			if (solicitacao.equals(TipoSolicitacao.INCLUIR)) {
 
@@ -93,12 +93,22 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				if (alterar()) {
-					btnAlterar.setEnabled(true);
-					btnLimpar.setEnabled(false);
-					btnGravar.setEnabled(false);
+				
+				if(isCamposValidos(msgErro)){
+					
+					if (alterar()) {
+						desabilitarCampos();
+						btnAlterar.setEnabled(true);
+						btnLimpar.setEnabled(false);
+						btnGravar.setEnabled(false);
+					}
+					
 				}
+				else{
+					JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+				
 
 			}
 		};		
@@ -116,11 +126,19 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (incluir()) {
-
-					acaoGravarAlteraracao();
-					btnAlterar.setVisible(true);
-					
+				if(isCamposValidos(msgErro)){
+				
+					if (incluir()) {
+	
+						acaoGravarAlteraracao();
+						desabilitarCampos();
+						btnAlterar.setVisible(true);
+						
+					}
+				
+				}
+				else{
+					JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -220,6 +238,7 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame
 	// métodos abstratos
 
 	protected abstract boolean habilitarCampos();
+	protected abstract boolean desabilitarCampos();
 
 	protected abstract void limparCampos();
 

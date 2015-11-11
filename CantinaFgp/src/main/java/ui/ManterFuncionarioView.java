@@ -4,7 +4,6 @@ import javax.swing.JOptionPane;
 
 import ui.templates.ManterFrameView;
 import vo.FuncionarioVO;
-import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 public class ManterFuncionarioView extends ManterFrameView<FuncionarioVO> {
@@ -30,13 +29,23 @@ public class ManterFuncionarioView extends ManterFrameView<FuncionarioVO> {
 	@Override
 	public boolean incluir() {
 		JOptionPane.showMessageDialog(null, "Funcionario Incluído");
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean alterar() {
 		JOptionPane.showMessageDialog(null, "Funcionario Alterado");	
 		return true;
+	}
+	
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro) {
+		return true;
+	}
+
+	@Override
+	protected void limparCampos() {
+		
 	}
 
 	@Override
@@ -47,9 +56,8 @@ public class ManterFuncionarioView extends ManterFrameView<FuncionarioVO> {
 	}
 
 	@Override
-	protected void limparCampos() {
-		
-		
+	protected boolean desabilitarCampos() {
+		return false;
 	}
 
 }

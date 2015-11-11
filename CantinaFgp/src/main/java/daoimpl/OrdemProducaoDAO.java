@@ -51,7 +51,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			return false;
 		}
 		*/
-		return null;
+		return BancoFake.ordemProd;
 	}
 
 	@Override

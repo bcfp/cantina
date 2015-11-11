@@ -337,6 +337,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 	}
 	
+	
 	private Boolean adicionarProduto(ProdutoVO produto){
 		
 		String qtdeTxt = txtQtdeProdCompra.getText();
@@ -414,7 +415,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		super(solicitacao, tituloCabecalho);
 	}
 	
-	
 	@Override
 	public void abrirJanela() {
 		
@@ -436,41 +436,33 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		this.setVisible(true);
 	}
 
-	
-	
 	@Override
 	public boolean incluir() {
-				
-		if(isCamposValidos()){
-			
-			compra.setData(dtpDataCompra.getDate());		
-			compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
-			compra.setFornecedor(fornecedor);
-			compra.setItensCompra(listaItensCompra);
-					
-			CompraVO compraIncluida = compraBo.incluir(compra);
-			
-			if(compraIncluida != null){ 
-				
-				txtCodOc.setText(compraIncluida.getCodCompra());		
-				
-				desabilitarCampos();
-				
-				JOptionPane.showMessageDialog(null, "Compra incluída");
-				
-				return true;
-				
-			}
-			
+
+		compra.setData(dtpDataCompra.getDate());
+		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+
+		CompraVO compraIncluida = compraBo.incluir(compra);
+
+		if (compraIncluida != null) {
+
+			txtCodOc.setText(compraIncluida.getCodCompra());
+
+			JOptionPane.showMessageDialog(null, "Compra incluída");
+
+			return true;
+
 		}
 		
 		return false;
 		
 	}
 	
-	private boolean isCamposValidos(){
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro){
 		
-		StringBuilder msgErro = new StringBuilder();
 		boolean isCamposValidos = true;
 				
 		if(!compraBo.isDataValida(dtpDataCompra.getDate())){
@@ -488,12 +480,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			isCamposValidos = false;			
 		}
 		
-		if(!isCamposValidos){
-			JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		
-		return true;
+		return isCamposValidos;
 		
 	}
 
@@ -502,9 +489,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		// TODO - Bruno - continuar aqui, fazer alteração
 		
-		desabilitarCampos();
 		JOptionPane.showMessageDialog(null, "Compra alterada");		
+		
 		return true;
+		
 	}
 	
 	private void carregarGridItens(List<ItemCompraVO> itensCompra) {
@@ -562,7 +550,9 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		return true;
 	}
 	
-	private void desabilitarCampos(){
+	@Override
+	protected boolean desabilitarCampos(){
+		
 		dtpDataCompra.setEditable(false);
 		cbxStatusCompra.setEnabled(false);
 		btnBuscarProd.setEnabled(false);
@@ -574,6 +564,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		btnBuscarForn.setEnabled(false);
 		txtCodFornCompra.setEditable(false);
 		cbxFormaPgto.setEnabled(false);
+		
+		return true;
 	}
 
 	// Métodos ITelaBuscar

@@ -8,5 +8,6 @@ public interface ITelaManter<T extends GenericVO> {
 	void abrirJanela(T objeto);
 	boolean incluir();
 	boolean alterar();
+	boolean isCamposValidos(StringBuilder msgErro);
 	
 }

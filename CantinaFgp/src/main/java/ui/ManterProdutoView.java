@@ -896,15 +896,21 @@ import enumeradores.TipoSolicitacao;
 		}	
 
 		@Override
+		public boolean isCamposValidos(StringBuilder msgErro) {
+			return false;
+		}
+
+		@Override
 		protected boolean habilitarCampos() {
 
 			return false;
 		
 		}
 
-		protected void desabilitarCampos(){
+		@Override
+		protected boolean desabilitarCampos(){
 			
-			
+			return false;
 		}
 		
 		@Override
@@ -1110,4 +1116,5 @@ import enumeradores.TipoSolicitacao;
 			
 			return registro;
 		}
+		
 	}

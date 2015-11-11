@@ -492,89 +492,72 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	public boolean incluir() {
-			
-		if(isCamposValidos()){
-			
-			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-			ordemProducao.setData(new Date());
-			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-			ordemProducao.setFuncionarioCantina(funcionarioCantina);
-			ordemProducao.setProdutoVenda(produtoVenda);
-			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-						
-			if(ordemProducaoBO.incluir(ordemProducao) != null){
-								
-				/*
-				 * TODO - Na inclusão deve ser verificado se o status é diferente de 'em aberto',
-				 * se for a qtde de cada matéria-prima deve ser retirada do estoque.
-				 */
-				
-				JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
-				
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-			
-			return true;
-			
-		}
-		else{
-			
-			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
+
+		OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+		ordemProducao.setData(new Date());
+		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+		ordemProducao.setFuncionarioCantina(funcionarioCantina);
+		ordemProducao.setProdutoVenda(produtoVenda);
+		ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+
+		if (ordemProducaoBO.incluir(ordemProducao) != null) {
+
+			/*
+			 * TODO - Na inclusão deve ser verificado se o status é diferente de
+			 * 'em aberto', se for a qtde de cada matéria-prima deve ser
+			 * retirada do estoque.
+			 */
+
+			JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
+
+		return true;
+
 	}
-	
+
 	@Override
 	public boolean alterar() {
-			
-		if(isCamposValidos()){
-						
-			OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-			ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-			ordemProducao.setData(this.ordemProducao.getData());
-			ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-			ordemProducao.setFuncionarioCantina(funcionarioCantina);
-			ordemProducao.setProdutoVenda(produtoVenda);
-			ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-						
-			if(ordemProducaoBO.alterar(ordemProducao)){
-				
-				/*
-				 *  TODO - Na alteração deve ser verificado se o status é concluído, 
-				 *  se for o produto deve ser incluído no estoque de produto venda
-				 *  a inclusão deve ser feita junto da alteração
-				 */
-				
-				JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
-				
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-						
-			
-			btnConsultarFunc.setEnabled(false);
-			cbxStatus.setEnabled(false);
-			txtCodProd.setEnabled(false);
-			txtCodFunc.setEnabled(false);
-			txtQtdeProd.setEnabled(false);
-				
-			return true;
-			
-		}
-		else{
-			JOptionPane.showMessageDialog(null, msgErroCampos, "Erro", JOptionPane.ERROR_MESSAGE);
+
+		OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
+		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+		ordemProducao.setData(this.ordemProducao.getData());
+		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+		ordemProducao.setFuncionarioCantina(funcionarioCantina);
+		ordemProducao.setProdutoVenda(produtoVenda);
+		ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+
+		if (ordemProducaoBO.alterar(ordemProducao)) {
+
+			/*
+			 * TODO - Na alteração deve ser verificado se o status é concluído,
+			 * se for o produto deve ser incluído no estoque de produto venda a
+			 * inclusão deve ser feita junto da alteração
+			 */
+
+			JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
+
+		btnConsultarFunc.setEnabled(false);
+		cbxStatus.setEnabled(false);
+		txtCodProd.setEnabled(false);
+		txtCodFunc.setEnabled(false);
+		txtQtdeProd.setEnabled(false);
+
+		return true;
+
 	}
-	
-	private boolean isCamposValidos(){
+
+	@Override
+	public boolean isCamposValidos(StringBuilder msgErro) {
 	
 		msgErroCampos = new StringBuilder();
 		boolean isCamposValidos = true;
@@ -659,6 +642,11 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 		return true;
 	
+	}
+
+	@Override
+	protected boolean desabilitarCampos() {
+		return false;
 	}
 
 	@Override
