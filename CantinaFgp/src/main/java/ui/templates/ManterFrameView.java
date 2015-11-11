@@ -19,18 +19,21 @@ import vo.GenericVO;
 import enumeradores.TipoSolicitacao;
 
 /**
- * Tela de manter padrão. As demais telas de manter devem herdar esta classe.
- * As telas de manter são utilizadas para detalhar e alterar um item do tipo passado por Generic Type.
+ * Tela de manter padrão. As demais telas de manter devem herdar esta classe. As
+ * telas de manter são utilizadas para detalhar e alterar um item do tipo
+ * passado por Generic Type.
  * 
  * @author bruno.silva
- *
- * @param <T> - Deve ser passado como generic type um objeto do tipo GenericVO. Este objeto será utilizado para 
- * definir o tipo dos parâmetros dos métodos da tela de manter.
+ * 
+ * @param <T>
+ *            - Deve ser passado como generic type um objeto do tipo GenericVO.
+ *            Este objeto será utilizado para definir o tipo dos parâmetros dos
+ *            métodos da tela de manter.
  * 
  */
-public abstract class ManterFrameView<T extends GenericVO> extends JFrame implements ITelaManter<T> {
+public abstract class ManterFrameView<T extends GenericVO> extends JFrame
+		implements ITelaManter<T> {
 
-	
 	// Atributos da Janela
 
 	private JPanel pnlCabecalho;
@@ -42,109 +45,147 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 	protected JButton btnCancelar;
 	private JLabel lblTituloCabecalho;
 	private Font fonteCabecalho;
-	
+
+	private ActionListener acaoBtnGravar;
+
 	// Construtores
-	
-	protected ManterFrameView(TipoSolicitacao solicitacao, String tituloCabecalho) {
-		
+
+	protected ManterFrameView(TipoSolicitacao solicitacao,
+			String tituloCabecalho) {
+
 		definicoesPagina(tituloCabecalho);
 		
-		if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
-			
+		definirAcaoGravar(solicitacao);
+		
+	}
+
+	// Métodos concretos
+
+	private void definirAcaoGravar(TipoSolicitacao solicitacao) {
+		
+		btnGravar.removeActionListener(acaoBtnGravar);
+		
+		if (solicitacao.equals(TipoSolicitacao.DETALHAR)) {
+
 			btnLimpar.setEnabled(false);
 			btnGravar.setEnabled(false);
-			btnGravar.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					if(alterar()){
-						btnAlterar.setEnabled(true);
-						btnLimpar.setEnabled(false);
-						btnGravar.setEnabled(false);
-					}
-					
-				}
-			});
-		}
-		else{
-			if(solicitacao.equals(TipoSolicitacao.INCLUIR)){
-				
+			acaoGravarAlteraracao();
+			btnGravar.addActionListener(acaoBtnGravar);
+			
+			
+
+		} else {
+			if (solicitacao.equals(TipoSolicitacao.INCLUIR)) {
+
 				btnAlterar.setVisible(false);
-				btnGravar.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						if(incluir()){
-							btnAlterar.setVisible(true);
-						}
-						
-					}
-					
-				});
+				acaoGravarInclusao();
+				
 			}
 		}
+
 	}
-	
-	
-	// Métodos concretos
-	
-	private void definicoesPagina(String tituloCabecalho){
+
+	private void acaoGravarAlteraracao() {
 		
+		btnGravar.removeActionListener(acaoBtnGravar);
+
+		acaoBtnGravar = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (alterar()) {
+					btnAlterar.setEnabled(true);
+					btnLimpar.setEnabled(false);
+					btnGravar.setEnabled(false);
+				}
+
+			}
+		};		
+
+		btnGravar.addActionListener(acaoBtnGravar);
+
+	}
+
+	private void acaoGravarInclusao() {
+		
+		btnGravar.removeActionListener(acaoBtnGravar);
+
+		acaoBtnGravar = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (incluir()) {
+
+					acaoGravarAlteraracao();
+					btnAlterar.setVisible(true);
+					
+				}
+
+			}
+
+		};
+		
+		btnGravar.addActionListener(acaoBtnGravar);
+
+	}
+
+	private void definicoesPagina(String tituloCabecalho) {
+
 		lblTituloCabecalho = new JLabel();
 		lblTituloCabecalho.setText(tituloCabecalho);
-		lblTituloCabecalho.setForeground(Color.WHITE);	
+		lblTituloCabecalho.setForeground(Color.WHITE);
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
 		lblTituloCabecalho.setFont(fonteCabecalho);
-		
+
 		pnlCabecalho = new JPanel();
 		pnlCabecalho.add(lblTituloCabecalho);
 		pnlCabecalho.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		pnlCabecalho.setBackground(Color.BLACK);
-		
+
 		pnlCentro = new JPanel();
 		pnlCentro.setBackground(Color.GRAY);
 		pnlCentro.setLayout(null);
-		
+
 		pnlRodape = new JPanel();
 		pnlRodape.setBackground(Color.WHITE);
-		
+
 		// BOTÕES
-		
+
 		btnGravar = new JButton("Gravar");
 
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				ManterFrameView.this.limparCampos();
-				
+
 			}
-			
+
 		});
-		
+
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
 				ManterFrameView.this.dispose();
-				
+
 			}
 		});
 
 		pnlRodape.add(btnGravar);
 		pnlRodape.add(btnLimpar);
 		pnlRodape.add(btnCancelar);
-		
+
 		btnAlterar = new JButton("Alterar");
-		
+
 		btnAlterar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -152,34 +193,34 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 				btnLimpar.setEnabled(true);
 				btnGravar.setEnabled(true);
 				habilitarCampos();
-				
+
 			}
 		});
-		
+
 		pnlRodape.add(btnAlterar);
-			
+
 		// Definições página
-		
+
 		this.setLayout(new BorderLayout());
 		this.add(pnlCabecalho, BorderLayout.NORTH);
-		this.add(pnlRodape, BorderLayout.SOUTH);		
+		this.add(pnlRodape, BorderLayout.SOUTH);
 		this.add(pnlCentro, BorderLayout.CENTER);
 		this.setResizable(false);
 		this.setSize(700, 600);
 		this.setLocationRelativeTo(null);
-		
+
 	}
 
-	
-	protected void adicionarComponentesCentro(JComponent comp){
-		
+	protected void adicionarComponentesCentro(JComponent comp) {
+
 		pnlCentro.add(comp);
-		
+
 	}
-	
+
 	// métodos abstratos
-	
+
 	protected abstract boolean habilitarCampos();
+
 	protected abstract void limparCampos();
-	
+
 }

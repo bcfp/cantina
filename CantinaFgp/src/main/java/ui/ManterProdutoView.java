@@ -886,7 +886,7 @@ import enumeradores.TipoSolicitacao;
 		public boolean incluir() {
 			
 			JOptionPane.showMessageDialog(null, "Produto Incluído");
-			return false;
+			return true;
 		}
 
 		@Override

@@ -440,8 +440,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	@Override
 	public boolean incluir() {
-		
-		// TODO - Bruno - Parei aqui, fazer alteração da compra
 				
 		if(isCamposValidos()){
 			
@@ -452,21 +450,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 					
 			CompraVO compraIncluida = compraBo.incluir(compra);
 			
-			if(compraIncluida != null){
+			if(compraIncluida != null){ 
 				
 				txtCodOc.setText(compraIncluida.getCodCompra());		
 				
-				dtpDataCompra.setEditable(false);
-				cbxStatusCompra.setEnabled(false);
-				btnBuscarProd.setEnabled(false);
-				txtCodOc.setEditable(false);
-				txtCodProdCompra.setEditable(false);
-				txtQtdeProdCompra.setEditable(false);
-				txtValorProdCompra.setEditable(false);
-				btnAddProd.setEnabled(false);
-				btnBuscarForn.setEnabled(false);
-				txtCodFornCompra.setEditable(false);
-				cbxFormaPgto.setEnabled(false);
+				desabilitarCampos();
 				
 				JOptionPane.showMessageDialog(null, "Compra incluída");
 				
@@ -511,6 +499,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 	@Override
 	public boolean alterar() {
+		
+		// TODO - Bruno - continuar aqui, fazer alteração
+		
+		desabilitarCampos();
 		JOptionPane.showMessageDialog(null, "Compra alterada");		
 		return true;
 	}
@@ -555,7 +547,33 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 	@Override
 	protected boolean habilitarCampos() {
-		return false;
+		
+		dtpDataCompra.setEditable(true);
+		cbxStatusCompra.setEnabled(true);
+		btnBuscarProd.setEnabled(true);
+		txtCodOc.setEditable(true);	
+		txtCodProdCompra.setEditable(true);
+		txtQtdeProdCompra.setEditable(true);
+		txtValorProdCompra.setEditable(true);
+		btnBuscarForn.setEnabled(true);
+		txtCodFornCompra.setEditable(true);
+		cbxFormaPgto.setEnabled(true);
+		
+		return true;
+	}
+	
+	private void desabilitarCampos(){
+		dtpDataCompra.setEditable(false);
+		cbxStatusCompra.setEnabled(false);
+		btnBuscarProd.setEnabled(false);
+		txtCodOc.setEditable(false);
+		txtCodProdCompra.setEditable(false);
+		txtQtdeProdCompra.setEditable(false);
+		txtValorProdCompra.setEditable(false);
+		btnAddProd.setEnabled(false);
+		btnBuscarForn.setEnabled(false);
+		txtCodFornCompra.setEditable(false);
+		cbxFormaPgto.setEnabled(false);
 	}
 
 	// Métodos ITelaBuscar
