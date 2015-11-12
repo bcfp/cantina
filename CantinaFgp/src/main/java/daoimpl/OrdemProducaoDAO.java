@@ -98,7 +98,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			conexao = fabrica.getConexao();
 			
 			String sql = "select op.qtde, op.data_ordem_producao, op.id_ordem_producao, p.id_produto_venda, p.cod_produto, p.descricao, p.preco_venda, "
-					+ "p.dias_vencimento, u.id_unidade,  u.descricao, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
+					+ "u.id_unidade,  u.descricao, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
 					+ "pe.nome, s.id_status, s.descricao, s.tipo "
 					+ "from ordem_producao op "
 					+ "inner join produto_venda p on op.id_produto = p.id_produto_venda "
@@ -117,7 +117,6 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 			if(rs.next()){
 				
-				
 				ordemProducao = new OrdemProducaoVO();
 				ordemProducao.setCodOrdemProducao(rs.getString("id_ordem_producao"));
 				ordemProducao.setData(rs.getDate("data_ordem_producao"));
@@ -133,7 +132,6 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				ordemProducao.getProdutoVenda().setCodProduto(rs.getString("cod_produto"));
 				ordemProducao.getProdutoVenda().setDescricao(rs.getString("descricao"));
 				ordemProducao.getProdutoVenda().setPrecoVenda(rs.getDouble("preco_venda"));
-				ordemProducao.getProdutoVenda().setDiasVencimento(rs.getInt("dias_vencimento"));
 				ordemProducao.getProdutoVenda().setUnidade(new UnidadeProdutoVO());
 				ordemProducao.getProdutoVenda().getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				ordemProducao.getProdutoVenda().getUnidade().setAbreviatura(rs.getString("abreviatura"));
