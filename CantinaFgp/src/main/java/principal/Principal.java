@@ -1,9 +1,12 @@
 ﻿package principal;
 
-import java.text.ParseException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import ui.LoginView;
 import ui.PrincipalView;
+import daoimpl.ConnectionFactory;
 
 public class Principal {
 

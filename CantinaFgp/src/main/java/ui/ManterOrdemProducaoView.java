@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import utils.UtilFuncoes;
+import vo.CompraVO;
 import vo.EstoqueMateriaPrimaVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
@@ -90,11 +91,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private List<FuncionarioCantinaVO> listaFuncionarios;
 	private List<ProdutoVendaVO> listaProdutos;
 	private List<StatusVO> listaStatus;
-	
-	private StringBuilder msgErroCampos;
-	
+		
 	private ProdutoVendaVO produtoVenda;
-	private EstoqueMateriaPrimaVO estoqueMatPrima;
 	private FuncionarioCantinaVO funcionarioCantina;
 	
 	private String acaoPesquisar;
@@ -164,6 +162,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		listaProdutos = new ArrayList<ProdutoVendaVO>();
 		listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
 		listaStatus = new ArrayList<StatusVO>();
+		
+		ordemProducao = new OrdemProducaoVO();
 		
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
@@ -291,7 +291,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 		String status = ordemProducao.getStatus().getDescricao();
 		
-		if(status.equals("Concluído")){
+		if(status.equals("Concluída")){
 			btnAlterar.setEnabled(false);
 		}
 		else{
@@ -301,7 +301,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 				for (StatusVO st : listaStatus) {
 					
-					if(st.getDescricao().equals("Em Produção") || st.getDescricao().equals("Concluído")){
+					if(st.getDescricao().equals("Em Produção") || st.getDescricao().equals("Concluída")){
 						
 						cbxStatus.addItem(st.getDescricao());
 						
@@ -386,7 +386,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 			case PESQ_PRODUTO:
 				
-				listaProdutos = produtoVendaBO.filtarProdutoVendaPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));	
+				listaProdutos = produtoVendaBO.filtarProdutoVendaPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));	
 				
 				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
 					
@@ -397,7 +397,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 			case PESQ_FUNC:
 				
-				listaFuncionarios = funcionarioBO.filtarFuncionariosPorNomeECodigo(parametros.get("Nome"), parametros.get("Código"));
+				listaFuncionarios = funcionarioBO.filtarFuncionariosPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
 				
 				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {
 					
@@ -492,15 +492,10 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	public boolean incluir() {
+		
+		OrdemProducaoVO ordemProdIncluida = ordemProducaoBO.incluir(carregarOrdemProducao());
 
-		OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-		ordemProducao.setData(new Date());
-		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-		ordemProducao.setFuncionarioCantina(funcionarioCantina);
-		ordemProducao.setProdutoVenda(produtoVenda);
-		ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-
-		if (ordemProducaoBO.incluir(ordemProducao) != null) {
+		if (ordemProdIncluida != null) {
 
 			/*
 			 * TODO - Na inclusão deve ser verificado se o status é diferente de
@@ -511,8 +506,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 
 		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 
@@ -523,15 +517,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	public boolean alterar() {
 
-		OrdemProducaoVO ordemProducao = new OrdemProducaoVO();
-		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-		ordemProducao.setData(this.ordemProducao.getData());
-		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
-		ordemProducao.setFuncionarioCantina(funcionarioCantina);
-		ordemProducao.setProdutoVenda(produtoVenda);
-		ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
-
-		if (ordemProducaoBO.alterar(ordemProducao)) {
+		if (ordemProducaoBO.alterar(carregarOrdemProducao())) {
 
 			/*
 			 * TODO - Na alteração deve ser verificado se o status é concluído,
@@ -555,57 +541,71 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		return true;
 
 	}
+	
+	private OrdemProducaoVO carregarOrdemProducao(){
+		
+		// TODO - Bruno, continuar aqui
+		
+		//ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+		ordemProducao.setData(new Date());
+		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
+		ordemProducao.setFuncionarioCantina(funcionarioCantina);
+		ordemProducao.setProdutoVenda(produtoVenda);
+		ordemProducao.setStatus(listaStatus.get(cbxStatus.getSelectedIndex()));
+		
+		return ordemProducao;
+		
+	}
 
 	@Override
 	public boolean isCamposValidos(StringBuilder msgErro) {
-	
-		msgErroCampos = new StringBuilder();
+
 		boolean isCamposValidos = true;
 		
 		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
 			
-			msgErroCampos.append("Favor preencher o campo nome do funcionário\n");
+			msgErro.append("Favor preencher o campo nome do funcionário\n");
 			isCamposValidos = false;
 			
 		}
 		
 		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
 			
-			msgErroCampos.append("Favor preencher o campo código do funcionário\n");
+			msgErro.append("Favor preencher o campo código do funcionário\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoProdutoVazio(txtDescProd.getText())){
-			msgErroCampos.append("Favor preencher o campo nome do produto\n");
+			msgErro.append("Favor preencher o campo nome do produto\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoCodigoProdutoVazio(txtCodProd.getText())){
-			msgErroCampos.append("Favor preencher o campo código do produto\n");
+			msgErro.append("Favor preencher o campo código do produto\n");
 			isCamposValidos = false;
 		}
 		
 		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
 			
-			msgErroCampos.append("Favor preencher o campo quantidade do produto\n");
+			msgErro.append("Favor preencher o campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
 		else if(!ordemProducaoBO.isCampoQuantidadeNumerico(txtQtdeProd.getText())){
 			
-			msgErroCampos.append("Favor preencher apenas numeros no campo quantidade do produto\n");
+			msgErro.append("Favor preencher apenas numeros no campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
 		else{
 			if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
 					
-				msgErroCampos.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
+				msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
 				isCamposValidos = false;
 			
 			}
 			
 			if(isCamposValidos){
 				
-				if(!cbxStatus.getSelectedItem().equals("Concluído")){
+				if(!cbxStatus.getSelectedItem().equals("Concluída")){
 					
 					int qtdProdutos = ordemProducaoBO.stringToInteger(txtQtdeProd.getText());
 					
@@ -613,7 +613,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 						
 						if(produtoMateriaPrimaVO.getQtde() * qtdProdutos > produtoMateriaPrimaVO.getMateriaPrima().getEstoque().getQtdeAtual()){
 							
-							msgErroCampos.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
+							msgErro.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
 							isCamposValidos = false;
 							
 						}
@@ -631,7 +631,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	protected boolean habilitarCampos() {
 
-		if(ordemProducao.getStatus().getDescricao().equals("Em Aberto")){
+		if(ordemProducaoBO.isAlteracaoPermitida(ordemProducao)){
 			txtCodProd.setEditable(true);
 			txtQtdeProd.setEditable(true);
 		}
@@ -660,7 +660,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		txtNomeFunc.setEditable(false);
 		
 		if(ordemProducao!=null){
-			btnConsultarProd.setVisible(false);
+			//btnConsultarProd.setVisible(false); TODO - Bruno Verificar o pq
 			txtCodProd.setEditable(false);
 		}
 		else{

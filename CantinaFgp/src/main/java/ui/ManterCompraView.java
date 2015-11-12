@@ -4,7 +4,6 @@ import interfaces.ITelaBuscar;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,8 +38,6 @@ import bo.CompraBO;
 import bo.FormaPgtoBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
-import enumeradores.TipoStatus;
-import exceptions.AlteracaoCompraException;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
@@ -296,15 +293,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		listaStatus = new ArrayList<StatusVO>();
 		
-		listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
-		
-		for (StatusVO statusVo : listaStatus) {
-			
-			cbxStatusCompra.addItem(statusVo.getDescricao());
-			
-		}
-		cbxStatusCompra.setSelectedItem("Em Aberto");
-		
 		formaPgtoBo = new FormaPgtoBO();
 		
 		listaFormasPgto = formaPgtoBo.consultarTodasFormaPgto();
@@ -350,6 +338,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public void abrirJanela() {
 		
+		carregarStatusCompra();
 		this.setVisible(true);
 		
 	}
@@ -358,21 +347,39 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	public void abrirJanela(CompraVO compra) {
 		
 		desabilitarCampos();
-				
+
+		fornecedor = compra.getFornecedor();
+		listaItensCompra = compra.getItensCompra();
+		carregarGridItens(listaItensCompra);
+		this.compra.setStatus(compra.getStatus());
+		carregarStatusCompra();
+		
 		txtCodOc.setText(compra.getCodCompra());
 		dtpDataCompra.setDate(compra.getData());
-		cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());
 		txtCodFornCompra.setText(compra.getFornecedor().getCodFornecedor());
 		txtFornCompra.setText(compra.getFornecedor().getNome());
 		cbxFormaPgto.setSelectedItem(compra.getFormaPgto().getDescricao());
-		
-		listaItensCompra = compra.getItensCompra();
-		fornecedor = compra.getFornecedor();
-		carregarCompra();
-				
-		carregarGridItens(listaItensCompra);
-		
+			
 		this.setVisible(true);
+		
+	}
+	
+	private void carregarStatusCompra(){
+		
+		listaStatus = compraBo.carregarStatusCompra(compra);
+		
+		for (StatusVO statusVo : listaStatus) {
+			
+			cbxStatusCompra.addItem(statusVo.getDescricao());
+			
+		}
+		
+		if(compra!=null && compra.getStatus() != null){
+			cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());			
+		}
+		else{
+			cbxStatusCompra.setSelectedItem("Em Aberto");
+		}
 		
 	}
 	

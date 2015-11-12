@@ -3,6 +3,7 @@ package bo;
 import java.util.List;
 
 import utils.UtilFuncoes;
+import vo.CompraVO;
 import vo.OrdemProducaoVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
@@ -14,6 +15,16 @@ public class OrdemProducaoBO {
 	{
 		
 		ordemProdDao = new OrdemProducaoDAO();
+		
+	}
+	
+	public boolean isAlteracaoPermitida(OrdemProducaoVO ordemProducao){
+		
+		if(ordemProducao.getStatus().getDescricao().equals("Em Aberto")){
+			return true;
+		}
+		
+		return false;
 		
 	}
 	

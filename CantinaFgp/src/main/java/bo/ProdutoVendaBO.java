@@ -21,9 +21,9 @@ public class ProdutoVendaBO {
 		
 	}
 	
-	public List<ProdutoVendaVO> filtarProdutoVendaPorNomeECodigo(String nome, String cod){
+	public List<ProdutoVendaVO> filtarProdutoVendaPorCodigoENome(String nome, String cod){
 		
-		return produtoVendaDao.consultarPorNomeECodigo(nome, cod);
+		return produtoVendaDao.consultarPorCodigoENome(nome, cod);
 		
 	}
 	

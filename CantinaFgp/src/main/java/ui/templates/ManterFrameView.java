@@ -54,8 +54,6 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 	protected ManterFrameView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		
-		msgErro = new StringBuilder();
-		
 		definicoesPagina(tituloCabecalho);
 		
 		definirAcaoGravar(solicitacao);
@@ -94,6 +92,8 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				msgErro = new StringBuilder();
+				
 				if(isCamposValidos(msgErro)){
 					
 					if (alterar()) {
@@ -125,6 +125,8 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				msgErro = new StringBuilder();
 
 				if(isCamposValidos(msgErro)){
 				

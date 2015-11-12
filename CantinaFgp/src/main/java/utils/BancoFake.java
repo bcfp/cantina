@@ -32,7 +32,7 @@ public class BancoFake {
 
 	public static List<FormaPgtoVO> listaFormasPgto;
 	public static List<StatusVO> listaStatusOP;
-	public static List<StatusVO> listaStatusOC;
+	public List<StatusVO> listaStatusOC;
 	public static List<CompraVO> listaCompras;
 	public static List<GenericVO> listaFornecedorGeneric;
 	public static List<GenericVO> listaProdutosGeneric; 
@@ -70,8 +70,28 @@ public class BancoFake {
 	public static UnidadeProdutoVO unidade;
 	public static FormaPgtoVO formaPgto;
 	public static FornecedorVO fornecedor;
+	public StatusVO statuss;
+	
 
 	// BLOCO DE INICIALIZAÇÃO
+	
+	{
+		
+		listaStatusOC = new ArrayList<StatusVO>();
+		
+		statuss = new StatusVO();
+		statuss.setDescricao("Aguardando Entrega");
+		listaStatusOC.add(statuss);
+		
+		statuss = new StatusVO();
+		statuss.setDescricao("Concluída");
+		listaStatusOC.add(statuss);
+		
+		statuss = new StatusVO();
+		statuss.setDescricao("Em Aberto");
+		listaStatusOC.add(statuss);
+		
+	}
 
 	static {
 		
@@ -106,22 +126,8 @@ public class BancoFake {
 		listaStatusOP.add(status);
 		
 		status = new StatusVO();
-		status.setDescricao("Concluído");
+		status.setDescricao("Concluída");
 		listaStatusOP.add(status);
-		
-		listaStatusOC = new ArrayList<StatusVO>();
-		
-		status = new StatusVO();
-		status.setDescricao("Aguardando Entrega");
-		listaStatusOC.add(status);
-		
-		status = new StatusVO();
-		status.setDescricao("Concluído");
-		listaStatusOC.add(status);
-		
-		status = new StatusVO();
-		status.setDescricao("Em Aberto");
-		listaStatusOC.add(status);
 		
 		// fornecedor
 
@@ -364,7 +370,7 @@ public class BancoFake {
 		ordemProd.setProdutoVenda(prodVenda);
 		ordemProd.setQtde(20);
 		StatusVO s = new StatusVO();
-		s.setDescricao("Concluído");
+		s.setDescricao("Concluída");
 		ordemProd.setStatus(s);
 		ordemProd.setFuncionarioCantina(funcCantina);
 		
@@ -420,7 +426,9 @@ public class BancoFake {
 		compra.setCodCompra("01");
 		compra.setFornecedor(fornecedor);
 		compra.setItensCompra(listaItensCompra);
-		compra.setStatus(status);
+		StatusVO st = new StatusVO();
+		st.setDescricao("Em Aberto");
+		compra.setStatus(st);
 		compra.setData(new Date());
 		formaPgto = new FormaPgtoVO();
 		formaPgto.setDescricao("Parcelado");
@@ -431,7 +439,7 @@ public class BancoFake {
 		compra = new CompraVO();
 		
 		status = new StatusVO();
-		status.setDescricao("Concluído");
+		status.setDescricao("Concluída");
 		
 		compra.setCodCompra("02");
 		compra.setFornecedor(fornecedor);

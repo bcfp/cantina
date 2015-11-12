@@ -11,11 +11,10 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import bo.OrdemProducaoBO;
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.OrdemProducaoVO;
 import vo.StatusVO;
+import bo.OrdemProducaoBO;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducaoVO> {

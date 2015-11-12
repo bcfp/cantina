@@ -37,7 +37,7 @@ public class CompraBO {
 	
 	public boolean isAlteracaoPermitida(CompraVO compra){
 		
-		if(compra.getStatus().getDescricao().equals("Concluído")){
+		if(compra.getStatus().getDescricao().equals("Concluída")){
 			return false;
 		}
 		
@@ -73,21 +73,22 @@ public class CompraBO {
 		
 		List<StatusVO> listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
 		
+		/*
 		if(compra != null && compra.getStatus() != null){
 			
 			StatusVO statusCompra = compra.getStatus();
 			
 			if(statusCompra.getDescricao().equals("Aguardando Entrega")){
 				
-				listaStatus.remove("Em Aberto");
-				
-				for (StatusVO s : listaStatus) {
-					System.out.println(s.getDescricao());
+				for (int i = 0; i < listaStatus.size(); i++) {
+					if(listaStatus.get(i).getDescricao().equals("Em Aberto")){
+						listaStatus.remove(i);
+					}
 				}
-				
+					
 			}
 		}
-		
+		*/
 		
 		return listaStatus;
 		
@@ -110,6 +111,9 @@ public class CompraBO {
 	}
 
 	public boolean alterar(CompraVO compra) {
+		
+		StatusVO status = compra.getStatus();
+		
 		
 		return compraDao.alterar(compra);
 		
