@@ -2,6 +2,7 @@ package vo;
 
 public class FornecedorVO extends GenericVO {
 
+	private Long idFornecedor;
 	private String codFornecedor;
 	private String nome;
 	private String contato;
@@ -42,5 +43,14 @@ public class FornecedorVO extends GenericVO {
 	public void setCodFornecedor(String codFornecedor) {
 		this.codFornecedor = codFornecedor;
 	}
+	
+	public Long getIdFornecedor() {
+		return idFornecedor;
+	}
+
+	public void setIdFornecedor(Long idFornecedor) {
+		this.idFornecedor = idFornecedor;
+	}
+
 	
 }
