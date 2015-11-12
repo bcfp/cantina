@@ -5,8 +5,10 @@ import java.util.List;
 
 import utils.UtilFuncoes;
 import vo.CompraVO;
+import vo.StatusVO;
 import daoimpl.CompraDAO;
 import daoservice.ICompraDAO;
+import exceptions.AlteracaoCompraException;
 
 public class CompraBO {
 
@@ -60,9 +62,16 @@ public class CompraBO {
 
 	}
 
-	public boolean alterar(CompraVO compra) {
-
-		return compraDao.alterar(compra);
+	public boolean alterar(CompraVO compra) throws AlteracaoCompraException {
+		
+		if(!compra.getStatus().getDescricao().equals("Em Aberto")){
+			
+			throw new AlteracaoCompraException();
+			
+		}
+		else{
+			return compraDao.alterar(compra);
+		}
 
 	}
 

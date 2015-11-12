@@ -4,6 +4,7 @@ import interfaces.ITelaBuscar;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import bo.FormaPgtoBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 import enumeradores.TipoStatus;
+import exceptions.AlteracaoCompraException;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
@@ -478,11 +480,25 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public boolean alterar() {
 		
-		if(compraBo.alterar(compra)){
+		try {
 			
-			JOptionPane.showMessageDialog(null, "Compra alterada");		
+			StatusVO s = new StatusVO();
+			s.setDescricao("Concluído");
+			compra.setStatus(s);
 			
-			return true;
+			if(compraBo.alterar(compra)){
+
+				JOptionPane.showMessageDialog(null, "Compra alterada", "Sucesso", JOptionPane.YES_OPTION);
+				
+				return true;
+				
+			}
+			
+		} catch (AlteracaoCompraException e) {
+			
+			// TODO - Bruno continuar aqui
+			
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.YES_OPTION);
 			
 		}
 		
