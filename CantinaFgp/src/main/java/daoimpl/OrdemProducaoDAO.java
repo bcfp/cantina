@@ -76,7 +76,6 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	@Override
 	public boolean alterar(OrdemProducaoVO ordemProducao) {
 		
-		// TODO - Fazer conexão com o banco
 		
 		return true;
 		
@@ -98,8 +97,8 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			conexao = fabrica.getConexao();
 			
 			String sql = "select op.qtde, op.data_ordem_producao, op.id_ordem_producao, p.id_produto_venda, p.cod_produto, p.descricao, p.preco_venda, "
-					+ "u.id_unidade,  u.descricao, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
-					+ "pe.nome, s.id_status, s.descricao, s.tipo "
+					+ "u.id_unidade,  u.descricao as descricao_unidade, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
+					+ "pe.nome, s.id_status, s.descricao as descricao_status, s.tipo "
 					+ "from ordem_producao op "
 					+ "inner join produto_venda p on op.id_produto = p.id_produto_venda "
 					+ "inner join funcionario_cantina f on op.id_funcionario_cantina = f.id_funcionario_cantina "
@@ -135,7 +134,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				ordemProducao.getProdutoVenda().setUnidade(new UnidadeProdutoVO());
 				ordemProducao.getProdutoVenda().getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				ordemProducao.getProdutoVenda().getUnidade().setAbreviatura(rs.getString("abreviatura"));
-				ordemProducao.getProdutoVenda().getUnidade().setDescricao(rs.getString("descricao"));
+				ordemProducao.getProdutoVenda().getUnidade().setDescricao(rs.getString("descricao_unidade"));
 				ordemProducao.setStatus(new StatusVO());
 				ordemProducao.getStatus().setIdStatus(rs.getLong("id_status"));
 				String  tipoStatus = rs.getString("tipo");
@@ -151,7 +150,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 					ordemProducao.getStatus().setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
 				}
 				
-				ordemProducao.getStatus().setDescricao(rs.getString("descricao"));
+				ordemProducao.getStatus().setDescricao(rs.getString("descricao_status"));
 				
 				listaOrdensProducao.add(ordemProducao);
 				
