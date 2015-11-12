@@ -265,7 +265,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			@Override
 			public void keyTyped(KeyEvent evento) {
 								
-				if(!UtilFuncoes.isCampoNumerico(String.valueOf(evento.getKeyChar()))){
+				if(!UtilFuncoes.isValorNumerico(String.valueOf(evento.getKeyChar()))){
 					evento.consume();
 				}
 				
@@ -379,7 +379,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 
 	@Override
-	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItem(Map<String, String> parametros) {
 		
 		List<GenericVO> listaGenericos = new ArrayList<GenericVO>();
 		switch (acaoPesquisar) {

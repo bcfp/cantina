@@ -182,7 +182,6 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		mouseClickedTab();
 		
 		
-		
 		// BOTÕES
 		
 		btnFechar = new JButton("X");
@@ -265,7 +264,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 */
 	protected void mouseClickedTab() {
 		
-		getTabGeneric().addMouseListener(new MouseAdapter() {
+		tabGeneric.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -348,11 +347,11 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 		return modeloTabGeneric;
 	}
 
-	public List<T> getListaGenericos() {
+	protected List<T> getListaGenericos() {
 		return listaGenericos;
 	}
 
-	public void setListaGenericos(List<T> listaGenericos) {
+	protected void setListaGenericos(List<T> listaGenericos) {
 		this.listaGenericos = listaGenericos;
 	}
 	

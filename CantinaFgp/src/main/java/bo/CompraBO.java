@@ -33,6 +33,18 @@ public class CompraBO {
 		return UtilFuncoes.isCampoVazio(campo);
 		
 	}
+	
+	public boolean isValorValido(String campo){
+		
+		return UtilFuncoes.isValorNumerico(campo) && Double.parseDouble(campo) >= 0;
+		
+	}
+	
+	public boolean isQtdeValida(String campo){
+		
+		return UtilFuncoes.isValorNumerico(campo) && Double.parseDouble(campo) > 0;
+		
+	}
 
 	// CRUD
 

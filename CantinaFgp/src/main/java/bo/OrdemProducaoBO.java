@@ -48,7 +48,7 @@ public class OrdemProducaoBO {
 	
 	public boolean isCampoQuantidadeNumerico(String campo){
 		
-		return UtilFuncoes.isCampoNumerico(campo);
+		return UtilFuncoes.isValorNumerico(campo);
 	}
 	
 	public Integer stringToInteger(String campo){

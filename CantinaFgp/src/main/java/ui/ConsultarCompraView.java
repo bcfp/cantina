@@ -101,46 +101,8 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 		txtFornecedor.setEditable(false);
 		
 		btnBuscarForn = new JButton("Consultar");
-		btnBuscarForn.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				acaoPesquisar = PESQ_FORNECEDOR;
-				
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Fornecedor"}).abrirJanela();
-				
-			}
-			
-		});
-		
 		btnBuscarProd = new JButton("Consultar");
-		btnBuscarProd.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				acaoPesquisar = PESQ_PRODUTO;
-				
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Produto"}).abrirJanela();
-				
-			}
-			
-		});
-		
 		btnBuscarFunc = new JButton("Consultar");
-		btnBuscarFunc.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				acaoPesquisar = PESQ_FUNCIONARIO;
-				
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Funcionário"}).abrirJanela();
-				
-			}
-			
-		});
 		
 		int espXLbl = 20;
 		int espXTxt = 100;
@@ -217,12 +179,58 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	// Construtores
 	
 	public ConsultarCompraView() {
+		
 		super("Compra", new String[]{ "Código", "Fornecedor", "Data"}, 10, 275, 665, 190);
+		
+		acoesBotoes();
+		
 		this.setSize(750, 535);
-	}	
-	
-	
+	}
+
 	// Métodos
+	
+	private void acoesBotoes(){
+
+		btnBuscarFunc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				acaoPesquisar = PESQ_FUNCIONARIO;
+				
+				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Funcionário"}).abrirJanela();
+				
+			}
+			
+		});
+		
+		btnBuscarProd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				acaoPesquisar = PESQ_PRODUTO;
+				
+				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Produto"}).abrirJanela();
+				
+			}
+			
+		});
+		
+		btnBuscarForn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				acaoPesquisar = PESQ_FORNECEDOR;
+				
+				new BuscarDialogView(ConsultarCompraView.this, new String[] {"Código","Fornecedor"}).abrirJanela();
+				
+			}
+			
+		});
+		
+	}
 
 	@Override
 	protected String[] definirGridItens(CompraVO compra) {
@@ -250,11 +258,8 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	@Override
 	public void deletar(CompraVO compra) {
 
-		CompraVO c = compra;
-		
 		if(compraBo.deletar(compra)){
 			JOptionPane.showMessageDialog(null, "Compra excluída");
-			consultar();
 		}
 		
 	}
@@ -267,7 +272,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	// Métodos ITelaBuscar
 
 	@Override
-	public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItem(Map<String, String> parametrosBusca) {
 		return null;
 	}
 

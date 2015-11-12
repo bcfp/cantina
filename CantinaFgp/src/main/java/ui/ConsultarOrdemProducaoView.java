@@ -146,7 +146,6 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 
 		if(ordemProdBo.deletar(ordemProducao)){
 			JOptionPane.showMessageDialog(null, "Ordem de Produção excluída");
-			consultar();
 		}
 		
 	}

@@ -74,6 +74,7 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 					DialogOpcoesView.this.dispose();
 
 					DialogOpcoesView.this.telaConsultar.deletar(DialogOpcoesView.this.objeto);
+					DialogOpcoesView.this.telaConsultar.consultar();
 
 				}
 

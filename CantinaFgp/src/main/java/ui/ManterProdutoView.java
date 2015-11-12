@@ -1028,7 +1028,7 @@ import enumeradores.TipoSolicitacao;
 		// Métodos ITelaBuscar
 
 		@Override
-		public List<GenericVO> pesquisarItem(Map<String, String> parametros) {
+		public List<GenericVO> buscarItem(Map<String, String> parametros) {
 			
 			switch (acaoPesquisar) {
 			

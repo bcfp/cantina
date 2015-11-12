@@ -48,11 +48,12 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 	private StringBuilder msgErro;
 
 	private ActionListener acaoBtnGravar;
-
+	
+	
 	// Construtores
 
 	protected ManterFrameView(TipoSolicitacao solicitacao, String tituloCabecalho) {
-
+		
 		msgErro = new StringBuilder();
 		
 		definicoesPagina(tituloCabecalho);
@@ -72,7 +73,6 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 			btnLimpar.setEnabled(false);
 			btnGravar.setEnabled(false);
 			acaoGravarAlteraracao();
-			btnGravar.addActionListener(acaoBtnGravar);
 			
 		} else {
 			if (solicitacao.equals(TipoSolicitacao.INCLUIR)) {
@@ -106,9 +106,8 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 				}
 				else{
 					JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+					msgErro = new StringBuilder();
 				}
-
-				
 
 			}
 		};		

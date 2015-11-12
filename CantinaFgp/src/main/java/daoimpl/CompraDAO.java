@@ -23,11 +23,15 @@ public class CompraDAO implements ICompraDAO {
 	@Override
 	public boolean alterar(CompraVO compra) {
 		
+		// TODO - Fazer conexão com o banco
+		
 		return true;
 	}
 
 	@Override
 	public boolean deletar(Long id) {
+		
+		// TODO - Fazer conexão com o banco
 		
 		return true;
 	}

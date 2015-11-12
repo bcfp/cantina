@@ -65,7 +65,7 @@ public class UtilFuncoes {
 		return campoFormatado;
 	}
 	
-	public static boolean isCampoNumerico(String campo){
+	public static boolean isValorNumerico(String campo){
 		
 		try{
 			
