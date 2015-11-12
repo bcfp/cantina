@@ -1,21 +1,26 @@
 package bo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import utils.UtilFuncoes;
 import vo.CompraVO;
+import vo.FornecedorVO;
+import vo.ItemCompraVO;
 import vo.StatusVO;
 import daoimpl.CompraDAO;
 import daoservice.ICompraDAO;
-import exceptions.AlteracaoCompraException;
+import enumeradores.TipoStatus;
 
 public class CompraBO {
 
 	private ICompraDAO compraDao;
+	private StatusBO statusBo;
 
 	{
 		compraDao = new CompraDAO();
+		statusBo = new StatusBO();
 	}
 	
 	// Métodos
@@ -23,6 +28,16 @@ public class CompraBO {
 	public boolean isDataValida(Date data){
 		
 		if(new Date().before(data)){
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	public boolean isAlteracaoPermitida(CompraVO compra){
+		
+		if(compra.getStatus().getDescricao().equals("Concluído")){
 			return false;
 		}
 		
@@ -47,6 +62,44 @@ public class CompraBO {
 		return UtilFuncoes.isValorNumerico(campo) && Double.parseDouble(campo) > 0;
 		
 	}
+	
+	public boolean isFornecedorValido(FornecedorVO fornecedor){
+		
+		return !(fornecedor == null || fornecedor.getCodFornecedor() == null || fornecedor.getCodFornecedor().equals(""));
+		
+	}
+	
+	public List<StatusVO> carregarStatusCompra(CompraVO compra){
+		
+		List<StatusVO> listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		
+		if(compra != null && compra.getStatus() != null){
+			
+			StatusVO statusCompra = compra.getStatus();
+			
+			if(statusCompra.getDescricao().equals("Aguardando Entrega")){
+				
+				listaStatus.remove("Em Aberto");
+				
+				for (StatusVO s : listaStatus) {
+					System.out.println(s.getDescricao());
+				}
+				
+			}
+		}
+		
+		
+		return listaStatus;
+		
+	}
+	
+	public boolean isListaItensCompraValida(List<ItemCompraVO> listaItensCompra){
+		
+		return !(listaItensCompra == null || listaItensCompra.size() == 0);
+		
+	}
+	
+	
 
 	// CRUD
 
@@ -56,23 +109,10 @@ public class CompraBO {
 
 	}
 
-	public List<CompraVO> consultar() {
-
-		return compraDao.consultar();
-
-	}
-
-	public boolean alterar(CompraVO compra) throws AlteracaoCompraException {
+	public boolean alterar(CompraVO compra) {
 		
-		if(!compra.getStatus().getDescricao().equals("Em Aberto")){
-			
-			throw new AlteracaoCompraException();
-			
-		}
-		else{
-			return compraDao.alterar(compra);
-		}
-
+		return compraDao.alterar(compra);
+		
 	}
 
 	public boolean deletar(CompraVO compra) {
@@ -80,6 +120,12 @@ public class CompraBO {
 		CompraVO c = compra;
 
 		return compraDao.deletar(c.getIdCompra());
+
+	}
+
+	public List<CompraVO> consultar() {
+
+		return compraDao.consultar();
 
 	}
 

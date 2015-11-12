@@ -368,6 +368,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		listaItensCompra = compra.getItensCompra();
 		fornecedor = compra.getFornecedor();
+		carregarCompra();
 				
 		carregarGridItens(listaItensCompra);
 		
@@ -453,12 +454,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public boolean incluir() {
 
-		compra.setData(dtpDataCompra.getDate());
-		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
-		compra.setFornecedor(fornecedor);
-		compra.setItensCompra(listaItensCompra);
-
-		CompraVO compraIncluida = compraBo.incluir(compra);
+		CompraVO compraIncluida = compraBo.incluir(carregarCompra());
 
 		if (compraIncluida != null) {
 
@@ -479,30 +475,27 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	@Override
 	public boolean alterar() {
-		
-		try {
-			
-			StatusVO s = new StatusVO();
-			s.setDescricao("Concluído");
-			compra.setStatus(s);
-			
-			if(compraBo.alterar(compra)){
 
-				JOptionPane.showMessageDialog(null, "Compra alterada", "Sucesso", JOptionPane.YES_OPTION);
-				
-				return true;
-				
-			}
-			
-		} catch (AlteracaoCompraException e) {
-			
-			// TODO - Bruno continuar aqui
-			
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.YES_OPTION);
-			
+		if (compraBo.alterar(carregarCompra())) {
+
+			JOptionPane.showMessageDialog(null, "Compra alterada", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+			return true;
+
 		}
-		
+
 		return false;
+
+	}
+	
+	private CompraVO carregarCompra(){
+		
+		compra.setData(dtpDataCompra.getDate());
+		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+		
+		return compra;
 		
 	}
 	
@@ -516,12 +509,12 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			isCamposValidos = false;
 		}
 		
-		if(listaItensCompra == null || listaItensCompra.size() == 0){
+		if(!compraBo.isListaItensCompraValida(listaItensCompra)){
 			msgErro.append("Favor incluir ao menos um produto na compra\n");
 			isCamposValidos = false;
 		}
 		
-		if(fornecedor == null || fornecedor.getCodFornecedor() == null || fornecedor.getCodFornecedor().equals("")){
+		if(!compraBo.isFornecedorValido(fornecedor)){
 			msgErro.append("Favor informar o fornecedor\n");
 			isCamposValidos = false;			
 		}
@@ -572,6 +565,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	protected boolean habilitarCampos() {
 		
+		if(!compraBo.isAlteracaoPermitida(compra)){
+			JOptionPane.showMessageDialog(null, "Esta compra não pode ser alterada", "Solicitação Negada", JOptionPane.INFORMATION_MESSAGE);
+			return false;
+		}
+		
 		dtpDataCompra.setEditable(true);
 		cbxStatusCompra.setEnabled(true);
 		btnBuscarProd.setEnabled(true);
@@ -584,6 +582,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		cbxFormaPgto.setEnabled(true);
 		
 		return true;
+		
 	}
 	
 	@Override

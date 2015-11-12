@@ -97,10 +97,11 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 				if(isCamposValidos(msgErro)){
 					
 					if (alterar()) {
-						desabilitarCampos();
-						btnAlterar.setEnabled(true);
-						btnLimpar.setEnabled(false);
-						btnGravar.setEnabled(false);
+						if(desabilitarCampos()){
+							btnAlterar.setEnabled(true);
+							btnLimpar.setEnabled(false);
+							btnGravar.setEnabled(false);
+						}
 					}
 					
 				}
@@ -205,11 +206,15 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				btnAlterar.setEnabled(false);
-				btnLimpar.setEnabled(true);
-				btnGravar.setEnabled(true);
-				habilitarCampos();
+				
+				if(habilitarCampos()){
+					
+					btnAlterar.setEnabled(false);
+					btnLimpar.setEnabled(true);
+					btnGravar.setEnabled(true);
+					
+				}
+				
 
 			}
 		});

@@ -444,6 +444,22 @@ public class BancoFake {
 		
 		listaCompras.add(compra);
 		
+		compra = new CompraVO();
+		
+		status = new StatusVO();
+		status.setDescricao("Aguardando Entrega");
+		
+		compra.setCodCompra("03");
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+		compra.setStatus(status);
+		compra.setData(new Date());
+		formaPgto = new FormaPgtoVO();
+		formaPgto.setDescricao("Parcelado");
+		compra.setFormaPgto(formaPgto);
+		
+		listaCompras.add(compra);
+		
 		listaCantinas = new ArrayList<CantinaVO>();
 		
 		listaCantinas.add(cantina);
