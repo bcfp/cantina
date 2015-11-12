@@ -29,8 +29,9 @@ public class ConnectionFactory {
 		
 		Class.forName("net.sourceforge.jtds.jdbc.Driver");
 		//CONEXAO CAINÃ NOTE
-		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "cantina", "123");
-		//CONEXAO CAINÃ FABRICA conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "caina123");
+		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "cantina", "123");
+		//CONEXAO CAINÃ FABRICA 
+		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "caina123");
 		return conexao;
 		
 	}
