@@ -62,7 +62,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	}
 	
 	public List<ProdutoMateriaPrimaVO> consultarReceitaPorIdProduto(Long id) {
-		/*
+		
 		List<ProdutoMateriaPrimaVO> listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 		
 		try {
@@ -128,9 +128,8 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 		}
 		
 
-		return listaMateriasPrimaProduto;*/
+		return listaMateriasPrimaProduto;
 		
-		return BancoFake.receita;
 	}
 
 }

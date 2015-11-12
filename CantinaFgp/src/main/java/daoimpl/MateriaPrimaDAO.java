@@ -38,7 +38,7 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 	}
 
 	@Override
-	public List<MateriaPrimaVO> consultarPorNomeECodigo(String nome, String cod) {
+	public List<MateriaPrimaVO> consultarPorCodigoENome(String nome, String cod) {
 		return null;
 	}
 

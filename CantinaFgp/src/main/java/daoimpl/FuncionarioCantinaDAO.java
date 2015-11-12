@@ -25,8 +25,8 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 		fabrica = ConnectionFactory.getInstance();
 	}
 	
-	public List<FuncionarioCantinaVO> consultarPorNomeECodigo(String cod, String nome){
-		/*
+	public List<FuncionarioCantinaVO> consultarPorCodigoENome(String cod, String nome){
+		
 		List<FuncionarioCantinaVO> listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
 		
 		try {
@@ -101,8 +101,7 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 		}
 		
 		return listaFuncionarios;
-		*/
-		return BancoFake.listaFuncCantina;
+		
 	}
 
 	@Override

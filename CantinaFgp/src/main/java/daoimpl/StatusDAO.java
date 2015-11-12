@@ -56,71 +56,60 @@ public class StatusDAO implements IStatusDAO{
 	@Override
 	public List<StatusVO> consultar(TipoStatus tipo) {
 		
-		List<StatusVO> listaStatus = null;
-		
-		if(tipo.equals(TipoStatus.ORDEM_PRODUCAO)){
+			List<StatusVO> listaStatus = null;
+			String ts = "";
 			
-			listaStatus = BancoFake.listaStatusOP;
-			/*
-			List<StatusVO> listaStatus = new ArrayList<StatusVO>();
-			
+			if(tipo.equals(TipoStatus.ORDEM_PRODUCAO)){
+				ts = "op";
+			}
+			else if(tipo.equals(TipoStatus.ORDEM_COMPRA)){
+				ts = "oc";
+			}
+			else if(tipo.equals(TipoStatus.VENDA)){
+				ts = "ov";
+			}
+
+		try {
+
+			listaStatus = new ArrayList<StatusVO>();
+
+			conexao = fabrica.getConexao();
+
+			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = '"+ts+"'");
+
+			rs = pstm.executeQuery();
+
+			StatusVO status = null;
+
+			while (rs.next()) {
+
+				status = new StatusVO();
+				status.setIdStatus(rs.getLong("id_status"));
+				status.setDescricao(rs.getString("descricao"));
+				status.setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
+
+				listaStatus.add(status);
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
 			try {
-				conexao = fabrica.getConexao();
-				
-				pstm = conexao.prepareStatement("select id_status, descricao, tipo from status");
-				
-				rs = pstm.executeQuery();
-				
-				StatusVO status = null;
-				
-				while(rs.next()){
-					
-					status = new StatusVO();
-					status.setIdStatus(rs.getLong("id_status"));
-					status.setDescricao(rs.getString("descricao"));
-					if(rs.getString("tipo") == "OP"){
-						status.setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
-					}
-					else if(rs.getString("tipo") == "OC"){
-						status.setTipoStatus(TipoStatus.ORDEM_COMPRA);
-					}
-					else if(rs.getString("tipo") == "VD"){
-						status.setTipoStatus(TipoStatus.VENDA);
-					}
-					else{
-						status.setTipoStatus(TipoStatus.GENERICO);
-					}
-					
-					listaStatus.add(status);
+				conexao.close();
+				pstm.close();
+				if (rs != null) {
+					rs.close();
 				}
-				
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			finally{
-				try {
-					conexao.close();
-					pstm.close();
-					if(rs != null){
-						
-						rs.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				
-			}
-			*/
+
 		}
-		else{
-			if(tipo.equals(TipoStatus.ORDEM_COMPRA)){
-				listaStatus = BancoFake.listaStatusOC;
-			}
-		}
-		return listaStatus;		
-		
+
+		return listaStatus;
+
 	}
 	
 	

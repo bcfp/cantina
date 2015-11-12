@@ -27,8 +27,8 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	}
 	
 	@Override
-	public List<ProdutoVendaVO> consultarPorNomeECodigo(String nome, String cod){
-		/*
+	public List<ProdutoVendaVO> consultarPorCodigoENome(String cod, String nome){
+		
 		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
 		
 		try {
@@ -36,7 +36,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv left join unidade u on u.id_unidade = pv.id_unidade where pv.cod_produto like ?  and pv.descricao like ?");
+					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv left join unidade u on u.id_unidade = pv.id_unidade where pv.cod_produto like ?  and pv.descricao like ?");
 			
 			pstm.setString(1, "%" + cod + "%");
 			pstm.setString(2, "%" + nome + "%");
@@ -50,7 +50,6 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
-				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
 				if(rs.getBoolean("fabricado")){
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
@@ -93,9 +92,6 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		}
 		
 		return listaProdutosVenda;
-		*/
-		
-		return BancoFake.listaProdutoVenda;
 		
 		/*boolean flagSucesso = false;
 		
@@ -182,7 +178,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
+					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
 			
 			rs = pstm.executeQuery();
 			
@@ -193,7 +189,6 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
-				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
 				if(rs.getBoolean("fabricado")){
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
@@ -253,7 +248,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.dias_vencimento, pv.id_unidade, u.descricao, u.ativo from produto_venda pv where id_produto_venda = ? inner join unidade u on u.id_unidade = pv.id_unidade");
+					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv where id_produto_venda = ? inner join unidade u on u.id_unidade = pv.id_unidade");
 			
 			
 			pstm.setLong(1, id);
@@ -266,7 +261,6 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
-				produtoVenda.setDiasVencimento(rs.getInt("dias_vencimento"));
 				if(rs.getBoolean("fabricado")){
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
