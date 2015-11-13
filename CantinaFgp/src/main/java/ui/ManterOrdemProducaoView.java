@@ -396,8 +396,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 				listaFuncionarios = funcionarioBO.filtrarFuncionariosPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
 				
-				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {
-					
+				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {					
 					listaGenericos.add(funcionarioVO);
 				}
 				
