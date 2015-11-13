@@ -35,8 +35,12 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			
 			conexao = fabrica.getConexao();
 			
-			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv left join unidade u on u.id_unidade = pv.id_unidade where pv.cod_produto like ?  and pv.descricao like ?");
+			pstm = conexao.prepareStatement(
+					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, "
+					+ "pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
+					+ "u.descricao, u.ativo "
+					+ "from produto_venda pv left "
+					+ "join unidade u on u.id_unidade = pv.id_unidade where pv.cod_produto like ?  and pv.descricao like ?");
 			
 			pstm.setString(1, "%" + cod + "%");
 			pstm.setString(2, "%" + nome + "%");
@@ -178,14 +182,17 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			
 			conexao = fabrica.getConexao();
 			
-			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
+			pstm = conexao.prepareStatement(
+					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, "
+					+ "pv.preco_venda, pv.fabricado, pv.lote, "
+					+ "pv.id_unidade, u.descricao, u.ativo "
+					+ "from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
 			
 			rs = pstm.executeQuery();
 			
 			ProdutoVendaVO produtoVenda = null;
 			
-			if(rs.next()){
+			while(rs.next()){
 				
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
@@ -194,12 +201,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
 				else{
-					if(rs.getBoolean("revenda")){
-						produtoVenda.setTipo(TipoProduto.REVENDA);
-					}
-					else{
-						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
-					}
+					produtoVenda.setTipo(TipoProduto.REVENDA);
 				}
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));

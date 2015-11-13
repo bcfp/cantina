@@ -5,7 +5,6 @@ import java.util.List;
 public class ProdutoVendaVO extends ProdutoVO{
 
 	private Double precoVenda;
-	private Integer diasVencimento;
  	private List<OrdemProducaoVO> ordensProducao;
  	private List<ProdutoMateriaPrimaVO> receita;
 	
@@ -28,15 +27,6 @@ public class ProdutoVendaVO extends ProdutoVO{
 	public void setOrdensProducao(List<OrdemProducaoVO> ordensProducao) {
 		this.ordensProducao = ordensProducao;
 	}
-
-	public Integer getDiasVencimento() {
-		return diasVencimento;
-	}
-
-	public void setDiasVencimento(Integer diasVencimento) {
-		this.diasVencimento = diasVencimento;
-	}
-
 	public List<ProdutoMateriaPrimaVO> getReceita() {
 		return receita;
 	}

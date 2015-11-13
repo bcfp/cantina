@@ -894,17 +894,22 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean incluir() {
 			
+			boolean incluido = false;
+			
 			if(rdoMatPrima.isSelected()){
 				
-				matPrimaBo.incluir(materiaPrima);
+				MateriaPrimaVO materiaPrimaIncluida = matPrimaBo.incluir(materiaPrima);
 				
 			}
 			else{
-				prodVendaBo.incluir(produto);
+				
+				ProdutoVendaVO produtoVenda = prodVendaBo.incluir(produto);
+				
 			}
 			
 			JOptionPane.showMessageDialog(null, "Produto Incluído");
-			return true;
+			
+			return incluido;
 			
 		}
 

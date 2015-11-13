@@ -6,6 +6,7 @@ import interfaces.ITelaManter;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,13 @@ import ui.templates.ConsultarPanelView;
 import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
+import vo.MateriaPrimaVO;
 import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
+import bo.MateriaPrimaBO;
+import bo.ProdutoBO;
+import bo.ProdutoVendaBO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 
 public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implements ITelaBuscar {
@@ -52,6 +59,9 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	
 	private FornecedorVO fornecedor;
+	private ProdutoVendaBO prodVendaBo;
+	private MateriaPrimaBO matPrimaBo;
+	private List<TipoProduto> tiposProduto;
 
 	// Bloco de Inicialização
 	
@@ -70,11 +80,23 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 		txtCodFornecedor = new JTextField();
 		txtFornecedor = new JTextField();
 
+		prodVendaBo = new ProdutoVendaBO();
+		matPrimaBo = new MateriaPrimaBO();
+		
+		
 		rdoLote = new JRadioButton("Lote");
+		btnBuscarForn = new JButton("Consultar");
 		
 		cbxTipoProduto = new JComboBox<String>();
 		
-		btnBuscarForn = new JButton("Consultar");
+		tiposProduto = prodVendaBo.consultarTiposProduto();
+
+		for (TipoProduto tipoProduto : tiposProduto) {
+			
+			cbxTipoProduto.addItem(tipoProduto.getTipoProduto());
+			
+		}
+		
 				
 	}
 	
@@ -151,6 +173,10 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 		adicionarComponenteCentro(rdoLote);
 		adicionarComponenteCentro(cbxTipoProduto);
 		
+		//------
+		
+		
+		
 	}
 	
 	// Métodos ConsultarPanelView
@@ -187,7 +213,56 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 
 	@Override
 	public List<ProdutoVO> consultar() {
-		return BancoFake.listaProdutos;
+		
+		List<ProdutoVO> produtos = null;
+		
+		// Retornando matérias primas
+		
+		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getTipoProduto())){
+
+			produtos = new ArrayList<ProdutoVO>();			
+			List<MateriaPrimaVO> materiasPrimas = matPrimaBo.consultarTodosProdutos();
+			
+			for (MateriaPrimaVO materiaPrima : materiasPrimas) {
+				produtos.add(materiaPrima);
+			}
+			
+		}
+		else{
+
+			produtos = new ArrayList<ProdutoVO>();
+			List<ProdutoVendaVO> produtosVenda = prodVendaBo.consultarTodosProdutos();
+			
+			for (ProdutoVendaVO produtoVenda : produtosVenda) {
+				
+				// retornando produtos produzidos
+				
+				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getTipoProduto())){
+					
+					if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
+						produtos.add(produtoVenda);
+					}
+					
+				}
+				else{
+					
+					// retornando produtos de revenda
+					
+					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getTipoProduto())){
+						
+						if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
+							produtos.add(produtoVenda);
+						}
+						
+					}
+				}
+							
+			}			
+			
+		}
+		
+		return produtos;
+		
 	}
 
 	// Métodos ITelaBuscar

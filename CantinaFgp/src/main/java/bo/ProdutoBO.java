@@ -1,12 +1,14 @@
 package bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import utils.UtilFuncoes;
 import vo.ProdutoVO;
 import daoservice.IProdutoDAO;
+import enumeradores.TipoProduto;
 
-public abstract class ProdutoBO<T extends ProdutoVO, D extends IProdutoDAO<T>> {
+public abstract class ProdutoBO<P extends ProdutoVO, D extends IProdutoDAO<P>> {
 	
 	private D produtoDao;
 	
@@ -14,7 +16,7 @@ public abstract class ProdutoBO<T extends ProdutoVO, D extends IProdutoDAO<T>> {
 		this.produtoDao = produtoDao;
 	}
 	
-	public T incluir(T produto){
+	public P incluir(P produto){
 		
 		return produtoDao.incluir(produto);
 		
@@ -26,20 +28,33 @@ public abstract class ProdutoBO<T extends ProdutoVO, D extends IProdutoDAO<T>> {
 		
 	}
 	
-	public List<T> filtrarProdutoVendaPorCodigoENome(String nome, String cod){
+	public List<P> filtrarProdutoVendaPorCodigoENome(String nome, String cod){
 		
 		return produtoDao.consultarPorCodigoENome(nome, cod);
 		
 	}
 	
-	public List<T> consultarTodosProdutos(){
+	public List<P> consultarTodosProdutos(){
 		
 		return produtoDao.consultar();
 	}
 	
-	public T consultarProdutoPorId(Long id){
+	public P consultarProdutoPorId(Long id){
 		
-		return (T) produtoDao.consultarPorId(id);
+		return (P) produtoDao.consultarPorId(id);
 	}
 	
+	public List<TipoProduto> consultarTiposProduto(){
+		
+		List<TipoProduto> tiposProduto = new ArrayList<TipoProduto>();
+		TipoProduto[] tp = TipoProduto.values();
+		
+		for (TipoProduto tipoProduto : tp) {
+			tiposProduto.add(tipoProduto);
+		}
+		
+		return tiposProduto;
+		
+	}
+		
 }

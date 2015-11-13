@@ -192,7 +192,6 @@ public class BancoFake {
 		prodVenda = new ProdutoVendaVO();
 		prodVenda.setDescricao("Coxinha");
 		prodVenda.setCodProduto("01");
-		prodVenda.setDiasVencimento(3);
 		prodVenda.setPrecoCusto(1D);
 		prodVenda.setPrecoVenda(3D);
 		prodVenda.setAtivo(true);
@@ -207,7 +206,6 @@ public class BancoFake {
 		prodVenda2 = new ProdutoVendaVO();
 		prodVenda2.setDescricao("Esfiha Arabe");
 		prodVenda2.setCodProduto("02");
-		prodVenda2.setDiasVencimento(3);
 		prodVenda2.setPrecoCusto(1.5D);
 		prodVenda2.setPrecoVenda(3D);
 		prodVenda2.setAtivo(true);
