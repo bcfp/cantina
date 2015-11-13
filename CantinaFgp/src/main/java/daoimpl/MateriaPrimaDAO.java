@@ -8,13 +8,13 @@ import daoservice.IMateriaPrimaDAO;
 public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 
 	@Override
-	public MateriaPrimaVO incluir(MateriaPrimaVO objeto) {
-		
+	public MateriaPrimaVO incluir(MateriaPrimaVO materiaPrima) {
+		System.out.println("incluiu matéria prima");
 		return null;
 	}
 
 	@Override
-	public boolean alterar(MateriaPrimaVO objeto) {
+	public boolean alterar(MateriaPrimaVO materiaPrima) {
 		
 		return false;
 	}
@@ -41,7 +41,5 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 	public List<MateriaPrimaVO> consultarPorCodigoENome(String nome, String cod) {
 		return null;
 	}
-
-	
 
 }
