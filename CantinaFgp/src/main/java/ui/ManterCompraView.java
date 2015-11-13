@@ -55,7 +55,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private JTextField txtValorProdCompra;
 	private JTextField txtCodFornCompra;
 	private JTextField txtFornCompra;
-	
+	private JTextField txtCodFuncionario;
+	private JTextField txtFuncionario;
+
+	private JLabel lblFuncionario;
 	private JLabel lblFormaPgto;
 	private JLabel lblStatusCompra;
 	private JLabel lblDataCompra;
@@ -74,6 +77,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	private JButton btnBuscarProd;
 	private JButton btnBuscarForn;
+	private JButton btnBuscarFunc;
 	private JButton btnAddProd;
 	
 	private JPanel pnlCampos;
@@ -82,6 +86,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private JScrollPane barraTabItemCompra;
 	
 	private String acaoPesquisar;
+	private static final String PESQ_FUNCIONARIO = "funcionario";
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	private static final String PESQ_PRODUTO = "produto";
 
@@ -116,6 +121,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		cbxStatusCompra = new JComboBox<String>();
 		cbxFormaPgto = new JComboBox<String>();
 
+		lblFuncionario = new JLabel("Funcionário");
 		lblFormaPgto = new JLabel("Pagamento");
 		lblStatusCompra = new JLabel("Status");
 		lblDataCompra = new JLabel("Data");
@@ -141,10 +147,26 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		txtValorProdCompra = new JTextField();
 		txtCodFornCompra = new JTextField();
 		txtFornCompra = new JTextField();
+		txtCodFuncionario = new JTextField();
+		txtFuncionario = new JTextField();
 		
 		txtCodOc.setEditable(false);
 		txtProdCompra.setEditable(false);
 		txtFornCompra.setEditable(false);
+		
+		btnBuscarFunc = new JButton("Consultar");
+		btnBuscarFunc.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				acaoPesquisar = PESQ_FUNCIONARIO;
+				
+				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome"}).abrirJanela();
+				
+				
+			}
+		});
 		
 		btnBuscarForn = new JButton("Consultar");
 		btnBuscarForn.addActionListener(new ActionListener() {
@@ -182,19 +204,23 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		int altura = 30;
 		
 		lblCodOc.setBounds(espXLbl, espY, 50, altura);
-		lblTitProduto.setBounds(espXLbl, espY + espEntre, 80, altura);
-		lblCodProdCompra.setBounds(espXLbl, espY + espEntre * 2, 50, altura);
-		lblProdCompra.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
-		lblQtdeProdCompra.setBounds(espXLbl, espY + espEntre * 4, 80, altura);
-		lblValorProdCompra.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+		lblFuncionario.setBounds(espXLbl, espY + espEntre, 80, altura);
+		lblTitProduto.setBounds(espXLbl, espY + espEntre* 2, 80, altura);
+		lblCodProdCompra.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
+		lblProdCompra.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
+		lblQtdeProdCompra.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
+		lblValorProdCompra.setBounds(espXLbl, espY + espEntre * 6, 80, altura);
 
 		txtCodOc.setBounds(espXTxt, espY, 70, altura);
-		txtCodProdCompra.setBounds(espXTxt, espY + espEntre * 2, 70, altura);
-		txtProdCompra.setBounds(espXTxt, espY + espEntre * 3, 220, altura);
-		txtQtdeProdCompra.setBounds(espXTxt, espY + espEntre * 4, 70, altura);
-		txtValorProdCompra.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		txtCodFuncionario.setBounds(espXTxt, espY + espEntre, 70, altura);
+		txtFuncionario.setBounds(espXTxt + 75, espY + espEntre, 180, altura);
+		btnBuscarFunc.setBounds(espXTxt + 265, espY + espEntre, 100, altura);
+		txtCodProdCompra.setBounds(espXTxt, espY + espEntre * 3, 70, altura);
+		txtProdCompra.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
+		txtQtdeProdCompra.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
+		txtValorProdCompra.setBounds(espXTxt, espY + espEntre * 6, 70, altura);
 		
-		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 3, 100, altura);
 		
 		lblStatusCompra.setBounds(480, espY, 80, altura);
 		cbxStatusCompra.setBounds(530, espY, 130, altura);
@@ -202,23 +228,23 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		lblDataCompra.setBounds(250, espY, 80, altura);
 		dtpDataCompra.setBounds(290, espY, 140, altura);
 		
-		lblTitFornecedor.setBounds(espXLbl + espXForn, espY + espEntre, 80, altura);
-		lblCodFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
-		lblFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 3, 80, altura);
+		lblTitFornecedor.setBounds(espXLbl + espXForn, espY + espEntre * 2, 80, altura);
+		lblCodFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 3, 80, altura);
+		lblFornCompra.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
 		
-		txtCodFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 2, 70, altura);
-		txtFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 3, 200, altura);
+		txtCodFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 3, 70, altura);
+		txtFornCompra.setBounds(espXTxt + espXForn, espY + espEntre * 4, 200, altura);
 
-		btnBuscarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 2, 100, altura);
+		btnBuscarForn.setBounds(espXTxt + espXForn + 80, espY + espEntre * 3, 100, altura);
 		
-		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 4, 80, altura);
-		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 4, 120, altura);
+		lblFormaPgto.setBounds(espXLbl + espXForn, espY + espEntre * 5, 80, altura);
+		cbxFormaPgto.setBounds(espXTxt + espXForn, espY + espEntre * 5, 120, altura);
 
-		lblTotal.setBounds(espXLbl + espXForn, espY + espEntre * 5 + 5, 80, altura);
-		lblValorTotal.setBounds(espXTxt + espXForn, espY + espEntre * 5 + 5, 120, altura);
+		lblTotal.setBounds(espXLbl + espXForn, espY + espEntre * 6 + 5, 80, altura);
+		lblValorTotal.setBounds(espXTxt + espXForn, espY + espEntre * 6 + 5, 120, altura);
 		
 		btnAddProd = new JButton("+");
-		btnAddProd.setBounds(190, espY + espEntre * 5, 50, altura);
+		btnAddProd.setBounds(190, espY + espEntre * 6, 50, altura);
 
 		tabItemCompra = new JTable();
 		modeloTabItemCompra = new DefaultTableModel() {
@@ -244,12 +270,15 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		barraTabItemCompra.setViewportView(tabItemCompra);
 
-		barraTabItemCompra.setBounds(10, 240, pnlCampos.getWidth() - 20, 230);
+		barraTabItemCompra.setBounds(10, 275, pnlCampos.getWidth() - 20, 195);
 
 		pnlCampos.add(barraTabItemCompra);
-		pnlCampos.add(cbxStatusCompra);
+		pnlCampos.add(barraTabItemCompra);
+		pnlCampos.add(barraTabItemCompra);
 		pnlCampos.add(dtpDataCompra);
 		pnlCampos.add(cbxFormaPgto);
+		pnlCampos.add(cbxStatusCompra);
+		pnlCampos.add(lblFuncionario);
 		pnlCampos.add(lblValorTotal);
 		pnlCampos.add(lblTotal);
 		pnlCampos.add(lblFormaPgto);
@@ -260,17 +289,20 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		pnlCampos.add(lblTitFornecedor);
 		pnlCampos.add(lblCodFornCompra);
 		pnlCampos.add(lblFornCompra);
-		pnlCampos.add(txtFornCompra);
 		pnlCampos.add(lblCodProdCompra);
 		pnlCampos.add(lblProdCompra);
 		pnlCampos.add(lblQtdeProdCompra);
 		pnlCampos.add(lblValorProdCompra);
+		pnlCampos.add(txtFornCompra);
+		pnlCampos.add(txtCodFuncionario);
+		pnlCampos.add(txtFuncionario);
 		pnlCampos.add(txtCodFornCompra);
 		pnlCampos.add(txtCodOc);
 		pnlCampos.add(txtCodProdCompra);
 		pnlCampos.add(txtProdCompra);
 		pnlCampos.add(txtQtdeProdCompra);
 		pnlCampos.add(txtValorProdCompra);
+		pnlCampos.add(btnBuscarFunc);
 		pnlCampos.add(btnBuscarProd);
 		pnlCampos.add(btnBuscarForn);
 		pnlCampos.add(btnAddProd);
