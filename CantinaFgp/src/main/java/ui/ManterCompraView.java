@@ -43,6 +43,7 @@ import bo.FuncionarioBO;
 import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
+import enumeradores.TipoStatus;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
@@ -425,7 +426,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());			
 		}
 		else{
-			cbxStatusCompra.setSelectedItem("Em Aberto");
+			
+			cbxStatusCompra.setSelectedIndex(3);
 		}
 		
 	}

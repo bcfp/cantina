@@ -97,7 +97,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			conexao = fabrica.getConexao();
 			
 			String sql = "select op.qtde, op.data_ordem_producao, op.id_ordem_producao, p.id_produto_venda, p.cod_produto, p.descricao, p.preco_venda, "
-					+ "u.id_unidade,  u.descricao as descricao_unidade, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
+					+ "u.id_unidade,  u.descricao as descricao_unidade, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario "
 					+ "pe.nome, s.id_status, s.descricao as descricao_status, s.tipo "
 					+ "from ordem_producao op "
 					+ "inner join produto_venda p on op.id_produto = p.id_produto_venda "
