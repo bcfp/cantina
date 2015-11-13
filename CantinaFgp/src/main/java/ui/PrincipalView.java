@@ -14,8 +14,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import vo.FuncionarioCantinaVO;
-import vo.FuncionarioVO;
 import enumeradores.TipoSolicitacao;
 
 public class PrincipalView extends TelaView implements ComponentListener{
@@ -68,7 +66,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		
 		subConsultaProdutos = new JMenuItem();
 		subConsultaProdutos.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
-		
+				
 		subConsultaClientes = new JMenuItem();
 		subConsultaClientes.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.ALT_MASK));
 		
@@ -88,7 +86,7 @@ public class PrincipalView extends TelaView implements ComponentListener{
 		
 		subCadastrarProduto = new JMenuItem();
 		subCadastrarProduto.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
-		
+				
 		subCadastrarCliente = new JMenuItem();
 		subCadastrarCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
 		
