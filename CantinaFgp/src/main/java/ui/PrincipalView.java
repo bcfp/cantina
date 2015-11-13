@@ -14,6 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import vo.FuncionarioCantinaVO;
+import vo.FuncionarioVO;
 import enumeradores.TipoSolicitacao;
 
 public class PrincipalView extends TelaView implements ComponentListener{

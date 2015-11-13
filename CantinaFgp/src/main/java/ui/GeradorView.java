@@ -179,7 +179,7 @@ public class GeradorView extends JDialog {
 				else{
 					GeradorView.this.dispose();
 					new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(
-							new CompraVO(GeradorView.this.geradorCompra, listaItensCompraSelecionados));
+							new CompraVO(geradorCompra, listaItensCompraSelecionados));
 				}
 				
 			}

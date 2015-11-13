@@ -1,5 +1,6 @@
 package ui;
 
+import interfaces.IGeradorCompra;
 import interfaces.ITelaBuscar;
 
 import java.awt.Color;
@@ -26,16 +27,20 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
-import utils.BancoFake;
 import vo.CompraVO;
 import vo.FormaPgtoVO;
 import vo.FornecedorVO;
+import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
 import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import bo.CompraBO;
 import bo.FormaPgtoBO;
+import bo.FornecedorBO;
+import bo.FuncionarioBO;
+import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 
@@ -93,11 +98,16 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private CompraBO compraBo;
 	private StatusBO statusBo;
 	private FormaPgtoBO formaPgtoBo;
+	private FornecedorBO fornecedorBo;
+	private FuncionarioBO funcionarioBo;
+	private ProdutoVendaBO produtoVendaBo;
 
 	private CompraVO compra;
 	private List<ItemCompraVO> listaItensCompra;
 	private ProdutoVO produto;
 	private FornecedorVO fornecedor;
+	private FuncionarioCantinaVO funcionario;
+	private IGeradorCompra geradorCompra;
 	
 	private List<StatusVO> listaStatus;
 	private List<FormaPgtoVO> listaFormasPgto;
@@ -153,6 +163,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		txtCodOc.setEditable(false);
 		txtProdCompra.setEditable(false);
 		txtFornCompra.setEditable(false);
+		
+		fornecedorBo = new FornecedorBO();
+		funcionarioBo = new FuncionarioBO();
+		produtoVendaBo = new ProdutoVendaBO();
 		
 		btnBuscarFunc = new JButton("Consultar");
 		btnBuscarFunc.addActionListener(new ActionListener() {
@@ -361,7 +375,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	// Construtor
 
-	protected ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho) {
+	public ManterCompraView(TipoSolicitacao solicitacao, String tituloCabecalho) {
 		super(solicitacao, tituloCabecalho);
 	}
 	
@@ -381,6 +395,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		desabilitarCampos();
 
 		fornecedor = compra.getFornecedor();
+		geradorCompra = compra.getGeradorCompra();
 		listaItensCompra = compra.getItensCompra();
 		carregarGridItens(listaItensCompra);
 		this.compra.setStatus(compra.getStatus());
@@ -531,8 +546,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		compra.setData(dtpDataCompra.getDate());
 		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
+		compra.setFormaPgto(listaFormasPgto.get(cbxStatusCompra.getSelectedIndex()));
 		compra.setFornecedor(fornecedor);
 		compra.setItensCompra(listaItensCompra);
+		compra.setGeradorCompra(geradorCompra);
 		
 		return compra;
 		
@@ -647,15 +664,44 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public List<GenericVO> buscarItem(Map<String, String> parametros) {
 				
+		List<GenericVO> listaGenerica = new ArrayList<GenericVO>();
+		
 		switch (acaoPesquisar) {
 			
 			case PESQ_PRODUTO:
 				
-				return BancoFake.listaProdutosGeneric;
+				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.filtrarProdutoVendaPorCodigoENome(txtCodProdCompra.getText(), txtProdCompra.getText());
+		
+				for (ProdutoVendaVO produtoVenda : listaProdutos) {
+					
+					listaGenerica.add(produtoVenda);
+					
+				}
+				
+				return listaGenerica;
 				
 			case PESQ_FORNECEDOR:
 				
-				return BancoFake.listaFornecedorGeneric;
+				List<FornecedorVO> listaFornecedores = fornecedorBo.consultar();
+				
+				for (FornecedorVO fornecedor : listaFornecedores) {
+					
+					listaGenerica.add(fornecedor);
+				}
+				
+				return listaGenerica;
+				
+			case PESQ_FUNCIONARIO:
+				
+				List<FuncionarioCantinaVO> listaFuncionarios = funcionarioBo.filtrarFuncionariosPorCodigoENome(txtCodFuncionario.getText(), txtFuncionario.getText());
+				
+				for (FuncionarioCantinaVO funcionarioCantina : listaFuncionarios) {
+					
+					listaGenerica.add(funcionarioCantina);
+					
+				}
+				
+				return listaGenerica;
 
 		}
 		
@@ -675,13 +721,23 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			btnAddProd.setEnabled(true);
 			
 		}
-		else{
-			if(item instanceof FornecedorVO){
+		else if(item instanceof FornecedorVO){
 			
-				fornecedor = (FornecedorVO) item;
+			fornecedor = (FornecedorVO) item;
+			
+			txtCodFornCompra.setText(fornecedor.getCodFornecedor());
+			txtFornCompra.setText(fornecedor.getNome());
 				
-				txtCodFornCompra.setText(fornecedor.getCodFornecedor());
-				txtFornCompra.setText(fornecedor.getNome());
+		}
+		
+		else{
+			if(item instanceof FuncionarioCantinaVO){
+				
+				funcionario = (FuncionarioCantinaVO) item;
+				geradorCompra = funcionario;
+				
+				txtCodFuncionario.setText(funcionario.getFuncionario().getCodPessoa());
+				txtFuncionario.setText(funcionario.getFuncionario().getNome());
 				
 			}
 			
@@ -705,8 +761,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			return registro;
 			
 		}
-		else{
-			if(item instanceof FornecedorVO){
+		else if(item instanceof FornecedorVO){
 							
 				FornecedorVO fornecedor = (FornecedorVO) item;
 				
@@ -717,10 +772,23 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 				registro[2] = fornecedor.getContato();
 				
 				return registro;
+		}
+		else{
+			if(item instanceof FuncionarioCantinaVO){
+				
+				FuncionarioCantinaVO funcionario = (FuncionarioCantinaVO) item;
+				
+				String[] registro = new String[2];
+				
+				registro[0] = funcionario.getFuncionario().getCodPessoa();
+				registro[1] = funcionario.getFuncionario().getNome();
+				
+				return registro;
 				
 			}
-			
 		}
+			
+
 		
 		return null;
 	}

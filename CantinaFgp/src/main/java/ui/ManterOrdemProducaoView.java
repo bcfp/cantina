@@ -222,7 +222,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				}
 				
 				if(listaItensCompra.size() > 0){
-					new GeradorView(null, listaItensCompra).abrirTela();
+					new GeradorView(ordemProducao, listaItensCompra).abrirTela();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");

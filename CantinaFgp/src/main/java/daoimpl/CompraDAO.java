@@ -35,8 +35,8 @@ public class CompraDAO implements ICompraDAO {
 		try {
 			conexao = fabrica.getConexao();
 			
-			String sql = "insert into(data_compra, tipo_origem, id_coringa_origem, id_forma_pgto, id_fornecedor, id_status_compra) "
-					+ "value (?,?,?,?,?,?)";
+			String sql = "insert into compra (data_compra, tipo_origem, id_coringa_origem, id_forma_pgto, id_fornecedor, id_status_compra) "
+					+ "values (?,?,?,?,?,?)";
 			
 			pstm = conexao.prepareStatement(sql);
 			pstm.setDate(1, dataSql);
