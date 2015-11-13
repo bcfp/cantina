@@ -58,6 +58,8 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	private String acaoPesquisar;
 	private static final String PESQ_FORNECEDOR = "fornecedor";
 	
+	// -----
+	
 	private FornecedorVO fornecedor;
 	private ProdutoVendaBO prodVendaBo;
 	private MateriaPrimaBO matPrimaBo;

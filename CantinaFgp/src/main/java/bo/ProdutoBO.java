@@ -56,5 +56,9 @@ public abstract class ProdutoBO<P extends ProdutoVO, D extends IProdutoDAO<P>> {
 		return tiposProduto;
 		
 	}
+	
+	public boolean isCampoVazio(String campo){
+		return UtilFuncoes.isCampoVazio(campo);
+	}
 		
 }

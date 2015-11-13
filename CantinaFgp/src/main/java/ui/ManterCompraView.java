@@ -426,7 +426,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());			
 		}
 		else{
-			
+			// TODO - status index alterar isso aqui
 			cbxStatusCompra.setSelectedIndex(3);
 		}
 		

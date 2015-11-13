@@ -29,7 +29,6 @@ import org.jdesktop.swingx.JXDatePicker;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import utils.BancoFake;
-import utils.UtilFuncoes;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
@@ -39,7 +38,8 @@ import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import bo.MateriaPrimaBO;
 import bo.ProdutoVendaBO;
-import enumeradores.TipoProduto;
+import daoimpl.UnidadeProdutoDAO;
+import daoservice.IUnidadeProdutoDAO;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterFrameView<ProdutoVO> implements ITelaBuscar{
@@ -198,6 +198,8 @@ import enumeradores.TipoSolicitacao;
 		
 		private TipoSolicitacao solicitacao;
 		
+		private IUnidadeProdutoDAO unidadeDao;
+		
 		// Bloco de Inicialização
 		
 		{
@@ -312,6 +314,16 @@ import enumeradores.TipoSolicitacao;
 			prodVendaBo = new ProdutoVendaBO();
 			matPrimaBo = new MateriaPrimaBO();
 			unidadesProduto = new ArrayList<UnidadeProdutoVO>();
+			unidadeDao = new UnidadeProdutoDAO();
+			
+			unidadesProduto = unidadeDao.consultar();
+			
+			for (UnidadeProdutoVO unidade : unidadesProduto) {
+				
+				cbxUnidMatPrima.addItem(unidade.getDescricao());
+				
+			}
+						
 			
 		}
 		
@@ -681,7 +693,7 @@ import enumeradores.TipoSolicitacao;
 							txtCodMatPrimaRec.setText("");
 							txtMatPrimaRec.setText("");
 							txtQtdeMatPrima.setText("");
-							//cbxUnidMatPrima.setSelectedIndex(0);
+							cbxUnidMatPrima.setSelectedIndex(0);
 							
 							btnAddMatPrima.setEnabled(false);
 						
@@ -956,36 +968,61 @@ import enumeradores.TipoSolicitacao;
 			
 			String qtdeTxt = txtQtdeMatPrima.getText();
 			
-			if(UtilFuncoes.isCampoVazio(qtdeTxt)){
+			if(prodVendaBo.isCampoVazio(qtdeTxt)){
 				
 				JOptionPane.showMessageDialog(null, "Favor informar uma quantidade", "Campo Vazio", JOptionPane.YES_OPTION);
 				
 			}
 			else{
 				
-				Double qtde = Double.parseDouble(qtdeTxt);
+				Double qtdeInserida = Double.parseDouble(qtdeTxt);
 				
-				if(qtde <= 0){
+				if(qtdeInserida <= 0){
 					
 					JOptionPane.showMessageDialog(null, "Favor informar uma quantidade maior que zero", "Quantidade Inválida", JOptionPane.YES_OPTION);
 					
 				}
 				else{
 					
-					Double qtdeInserida = qtde;
+					UnidadeProdutoVO unidadeSelecionada = unidadesProduto.get(cbxUnidMatPrima.getSelectedIndex());
 					Double qtdeReceita = 0d;
 					int sizeReceita = receita.size();
 					boolean itemNaReceita = false;
 					
 					for (int l = 0; l < sizeReceita; l++) {
+						
+						ProdutoMateriaPrimaVO prodMatPrima = receita.get(l);
 			
-						if (materiaPrima.getCodProduto() == receita.get(l).getMateriaPrima().getCodProduto()) {
-			
-							itemNaReceita = true;
+						if (materiaPrima.getCodProduto().equals(prodMatPrima.getMateriaPrima().getCodProduto())) {
+							
+							if(!prodMatPrima.getUnidade().getDescricao().equals(unidadeSelecionada.getDescricao())){
+								
+								int opc = JOptionPane.showConfirmDialog(null, "Deseja substituir a unidade da matéria-prima?");
+								
+								// TODO - BRUNO - CONTINUAR AQUI
+								
+								switch (opc) {
+								case JOptionPane.YES_OPTION:
+									
+									prodMatPrima.setUnidade(unidadeSelecionada);
+									
+									break;
+									
+								case JOptionPane.CANCEL_OPTION:
+																		
+									return false;
+
+								default:
+									break;
+								}
+								
+							}
 							
 							qtdeReceita = receita.get(l).getQtde();
 			
-							receita.get(l).setQtde(qtdeReceita + qtdeInserida);
+							prodMatPrima.setQtde(qtdeReceita + qtdeInserida);
+							
+							itemNaReceita = true;
 			
 						}
 			
@@ -995,7 +1032,8 @@ import enumeradores.TipoSolicitacao;
 						
 						ProdutoMateriaPrimaVO prodMatPrima = new ProdutoMateriaPrimaVO();
 						prodMatPrima.setMateriaPrima(materiaPrima);
-						prodMatPrima.setQtde(qtde);
+						prodMatPrima.setQtde(qtdeInserida);
+						prodMatPrima.setUnidade(unidadeSelecionada);
 						
 						receita.add(prodMatPrima);
 						
@@ -1048,7 +1086,7 @@ import enumeradores.TipoSolicitacao;
 					registro[0] = itemReceita.getMateriaPrima().getCodProduto();
 					registro[1] = itemReceita.getMateriaPrima().getDescricao();
 					registro[2] = itemReceita.getQtde().toString();
-					//registro[3] = cbxUnidMatPrima.getSelectedItem().toString();
+					registro[3] = itemReceita.getUnidade().getDescricao() ;
 					
 					modeloTabMatPrimas.addRow(registro);
 					
