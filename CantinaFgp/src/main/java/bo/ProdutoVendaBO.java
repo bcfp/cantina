@@ -1,40 +1,20 @@
 package bo;
 
-import java.util.List;
-
-import utils.UtilFuncoes;
 import vo.ProdutoVendaVO;
 import daoimpl.ProdutoVendaDAO;
 import daoservice.IProdutoVendaDAO;
 
-public class ProdutoVendaBO {
+public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> {
 	
-	public IProdutoVendaDAO produtoVendaDao;
+	public static IProdutoVendaDAO produtoVendaDao;
 	
-	{
+	static{
 		produtoVendaDao = new ProdutoVendaDAO();
 	}
-	
-	public Boolean verificaDescricaoVazio(String descricao){
-		
-		return UtilFuncoes.isCampoVazio(descricao);
-		
+
+	public ProdutoVendaBO() {
+		super(produtoVendaDao);
 	}
 	
-	public List<ProdutoVendaVO> filtarProdutoVendaPorCodigoENome(String nome, String cod){
-		
-		return produtoVendaDao.consultarPorCodigoENome(nome, cod);
-		
-	}
-	
-	public List<ProdutoVendaVO> consultarTodosProdutos(){
-		
-		return produtoVendaDao.consultar();
-	}
-	
-	public ProdutoVendaVO consultarProdutoPorId(Long id){
-		
-		return produtoVendaDao.consultarPorId(id);
-	}
-	
+
 }
