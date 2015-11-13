@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.BancoFake;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IProdutoVendaDAO;
@@ -39,8 +38,9 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, "
 					+ "pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
 					+ "u.descricao, u.ativo "
-					+ "from produto_venda pv left "
-					+ "join unidade u on u.id_unidade = pv.id_unidade where pv.cod_produto like ?  and pv.descricao like ?");
+					+ "from produto_venda pv "
+					+ "left join unidade u on u.id_unidade = pv.id_unidade "
+					+ "where pv.cod_produto like ?  and pv.descricao like ?");
 			
 			pstm.setString(1, "%" + cod + "%");
 			pstm.setString(2, "%" + nome + "%");

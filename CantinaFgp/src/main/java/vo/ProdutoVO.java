@@ -9,6 +9,7 @@ public abstract class ProdutoVO extends GenericVO {
 	private Long idProduto;
 	private String codProduto;
 	private String descricao;
+	private Double qtdeEstoque;
 	private Double precoCusto;
 	private UnidadeProdutoVO unidade;
 	private Boolean ativo;
@@ -108,6 +109,14 @@ public abstract class ProdutoVO extends GenericVO {
 
 	public void setEstoque(ProdutoCantinaVO produtoCantina) {
 		this.produtoCantina = produtoCantina;
+	}
+
+	public Double getQtdeEstoque() {
+		return qtdeEstoque;
+	}
+
+	public void setQtdeEstoque(Double qtdeEstoque) {
+		this.qtdeEstoque = qtdeEstoque;
 	}
 	
 }

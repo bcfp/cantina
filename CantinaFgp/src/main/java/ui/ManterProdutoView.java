@@ -36,8 +36,10 @@ import vo.MateriaPrimaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
+import vo.UnidadeProdutoVO;
 import bo.MateriaPrimaBO;
 import bo.ProdutoVendaBO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterFrameView<ProdutoVO> implements ITelaBuscar{
@@ -188,10 +190,11 @@ import enumeradores.TipoSolicitacao;
 		private MateriaPrimaVO materiaPrima;
 		private ProdutoVendaVO produto;
 		private List<ProdutoMateriaPrimaVO> receita;
-		private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
+		//private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
 		
 		private FornecedorVO fornecedor;
 		private List<FornecedorVO> listaFornecedores;
+		private List<UnidadeProdutoVO> unidadesProduto;
 		
 		private TipoSolicitacao solicitacao;
 		
@@ -304,8 +307,11 @@ import enumeradores.TipoSolicitacao;
 			};
 			barraTabProdMatPrima = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			
+			// ------------
+			
 			prodVendaBo = new ProdutoVendaBO();
 			matPrimaBo = new MateriaPrimaBO();
+			unidadesProduto = new ArrayList<UnidadeProdutoVO>();
 			
 		}
 		
@@ -898,16 +904,20 @@ import enumeradores.TipoSolicitacao;
 			
 			if(rdoMatPrima.isSelected()){
 				
-				MateriaPrimaVO materiaPrimaIncluida = matPrimaBo.incluir(materiaPrima);
+				if(matPrimaBo.incluir(materiaPrima) != null){
+					incluido = true;
+					JOptionPane.showMessageDialog(null, "Matéria Prima Incluída");
+				}
 				
 			}
 			else{
 				
-				ProdutoVendaVO produtoVenda = prodVendaBo.incluir(produto);
-				
+				if(prodVendaBo.incluir(produto) != null){
+					incluido = true;
+					JOptionPane.showMessageDialog(null, "Produto Incluído");
+				}
+								
 			}
-			
-			JOptionPane.showMessageDialog(null, "Produto Incluído");
 			
 			return incluido;
 			
@@ -1054,13 +1064,21 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public List<GenericVO> buscarItem(Map<String, String> parametros) {
 			
+			List<GenericVO> listaGenericos = null;
+			
 			switch (acaoPesquisar) {
 			
 				case PESQ_MAT_PRIMA:
 					
-					// buscarMateriaPrima
+					listaGenericos = new ArrayList<GenericVO>();
 					
-					return BancoFake.listaMatPrimaGeneric;
+					List<MateriaPrimaVO> materiasPrimas = matPrimaBo.filtrarProdutoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+					
+					for (MateriaPrimaVO materiaPrima : materiasPrimas) {
+						listaGenericos.add(materiaPrima);
+					}
+					
+					break;
 					
 				case PESQ_FORNECEDOR:
 				
@@ -1068,7 +1086,7 @@ import enumeradores.TipoSolicitacao;
 
 			}
 		
-			return null;
+			return listaGenericos;
 			
 		}
 

@@ -57,7 +57,6 @@ public class CompraDAO implements ICompraDAO {
 				
 			}
 			
-			//TODO ainda não deu certo mas foi comitado para alterações
 			pstm.setLong(4, compra.getFormaPgto().getIdFormaPgtoVenda());
 			pstm.setLong(5, compra.getFornecedor().getIdFornecedor());
 			pstm.setLong(6, compra.getStatus().getIdStatus());

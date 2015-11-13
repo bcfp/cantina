@@ -670,7 +670,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			
 			case PESQ_PRODUTO:
 				
-				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.filtrarProdutoVendaPorCodigoENome(txtCodProdCompra.getText(), txtProdCompra.getText());
+				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.filtrarProdutoPorCodigoENome(txtCodProdCompra.getText(), txtProdCompra.getText());
 		
 				for (ProdutoVendaVO produtoVenda : listaProdutos) {
 					

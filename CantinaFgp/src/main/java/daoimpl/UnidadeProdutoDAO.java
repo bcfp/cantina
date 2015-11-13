@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vo.FornecedorVO;
-import daoservice.IFornecedorDAO;
+import vo.UnidadeProdutoVO;
+import daoservice.IUnidadeProdutoDAO;
 
-public class FornecedorDAO implements IFornecedorDAO {
+public class UnidadeProdutoDAO implements IUnidadeProdutoDAO {
 
 	private Connection conexao;
 	private ConnectionFactory fabrica;
@@ -21,14 +22,15 @@ public class FornecedorDAO implements IFornecedorDAO {
 		fabrica = ConnectionFactory.getInstance();
 	}
 	
+
 	@Override
-	public FornecedorVO incluir(FornecedorVO objeto) {
+	public UnidadeProdutoVO incluir(UnidadeProdutoVO unidadeProduto) {
 		
 		return null;
 	}
 
 	@Override
-	public boolean alterar(FornecedorVO objeto) {
+	public boolean alterar(UnidadeProdutoVO unidadeProduto) {
 		
 		return false;
 	}
@@ -40,30 +42,29 @@ public class FornecedorDAO implements IFornecedorDAO {
 	}
 
 	@Override
-	public List<FornecedorVO> consultar() {
+	public List<UnidadeProdutoVO> consultar() {
 		
-		List<FornecedorVO> listaFornecedores = new ArrayList<FornecedorVO>();
+		List<UnidadeProdutoVO> unidadeProdutoVO = new ArrayList<UnidadeProdutoVO>();
 		
 		try {
 
 			conexao = fabrica.getConexao();
 
-			pstm = conexao.prepareStatement("select id_fornecedor, nome, contato from fornecedor where ativo = 1");
+			pstm = conexao.prepareStatement("select id_unidade, descricao, abreviatura from unidade where ativo = 1");
 			
 			rs = pstm.executeQuery();
 
-			FornecedorVO fornecedor = null;
+			UnidadeProdutoVO unidade = null;
 
 			while (rs.next()) {
 				
-				fornecedor = new FornecedorVO();
+				unidade = new UnidadeProdutoVO();
 				
-				fornecedor.setIdFornecedor(rs.getLong("id_fornecedor"));
-				fornecedor.setNome(rs.getString("nome"));
-				fornecedor.setContato(rs.getString("contato"));
-				fornecedor.setCodFornecedor(fornecedor.getIdFornecedor().toString());
+				unidade.setIdUnidadeProduto(rs.getLong("id_unidade"));
+				unidade.setDescricao(rs.getString("descricao"));
+				unidade.setAbreviatura(rs.getString("abreviatura"));
 
-				listaFornecedores.add(fornecedor);
+				unidadeProdutoVO.add(unidade);
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -88,11 +89,17 @@ public class FornecedorDAO implements IFornecedorDAO {
 
 		}
 		
-		return listaFornecedores;
+		return unidadeProdutoVO;
 	}
 
 	@Override
-	public FornecedorVO consultarPorId(Long id) {
+	public UnidadeProdutoVO consultarPorId(Long id) {
+		
+		return null;
+	}
+
+	@Override
+	public List<UnidadeProdutoVO> consultarPorCodigoENome(String cod, String nome) {
 		
 		return null;
 	}
