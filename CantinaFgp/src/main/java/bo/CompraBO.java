@@ -1,6 +1,5 @@
 package bo;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,17 +9,18 @@ import vo.FornecedorVO;
 import vo.ItemCompraVO;
 import vo.StatusVO;
 import daoimpl.CompraDAO;
+import daoimpl.StatusDAO;
 import daoservice.ICompraDAO;
 import enumeradores.TipoStatus;
 
 public class CompraBO {
 
 	private ICompraDAO compraDao;
-	private StatusBO statusBo;
+	private StatusDAO statusDao;
 
 	{
 		compraDao = new CompraDAO();
-		statusBo = new StatusBO();
+		statusDao = new StatusDAO();
 	}
 	
 	// Métodos
@@ -71,7 +71,7 @@ public class CompraBO {
 	
 	public List<StatusVO> carregarStatusCompra(CompraVO compra){
 		
-		List<StatusVO> listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		List<StatusVO> listaStatus = statusDao.consultar(TipoStatus.ORDEM_COMPRA);
 		
 		/*
 		if(compra != null && compra.getStatus() != null){

@@ -60,14 +60,15 @@ public class StatusDAO implements IStatusDAO{
 			String ts = "";
 			
 			if(tipo.equals(TipoStatus.ORDEM_PRODUCAO)){
-				ts = "op";
+				ts = TipoStatus.ORDEM_PRODUCAO.getTipo();
 			}
 			else if(tipo.equals(TipoStatus.ORDEM_COMPRA)){
-				ts = "oc";
+				ts = TipoStatus.ORDEM_COMPRA.getTipo();
 			}
 			else if(tipo.equals(TipoStatus.VENDA)){
-				ts = "ov";
+				ts = TipoStatus.VENDA.getTipo();
 			}
+	
 
 		try {
 
@@ -75,8 +76,11 @@ public class StatusDAO implements IStatusDAO{
 
 			conexao = fabrica.getConexao();
 
-			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = '"+ts+"'");
+			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = ? or tipo = ?");
 
+			pstm.setString(1, ts);
+			pstm.setString(2, TipoStatus.GENERICO.getTipo());
+			
 			rs = pstm.executeQuery();
 
 			StatusVO status = null;
@@ -86,7 +90,33 @@ public class StatusDAO implements IStatusDAO{
 				status = new StatusVO();
 				status.setIdStatus(rs.getLong("id_status"));
 				status.setDescricao(rs.getString("descricao"));
-				status.setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
+				
+				if(rs.getString("tipo").equals(TipoStatus.ORDEM_COMPRA.getTipo())){
+					
+					status.setTipoStatus(TipoStatus.ORDEM_COMPRA);
+					
+				}
+				
+				if(rs.getString("tipo").equals(TipoStatus.ORDEM_PRODUCAO.getTipo())){
+					
+					status.setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
+					
+				}
+				
+				if(rs.getString("tipo").equals(TipoStatus.GENERICO.getTipo())){
+					
+					status.setTipoStatus(TipoStatus.GENERICO);
+					
+				}
+				
+
+				if(rs.getString("tipo").equals(TipoStatus.VENDA.getTipo())){
+					
+					status.setTipoStatus(TipoStatus.VENDA);
+					
+				}
+				
+				
 
 				listaStatus.add(status);
 			}

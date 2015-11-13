@@ -16,7 +16,7 @@ public class FuncionarioBO {
 		
 	}
 	
-	public List<FuncionarioCantinaVO> filtarFuncionariosPorCodigoENome(String codigo, String nome){
+	public List<FuncionarioCantinaVO> filtrarFuncionariosPorCodigoENome(String codigo, String nome){
 		
 		return funcionarioCantinaDao.consultarPorCodigoENome(codigo, nome);
 		

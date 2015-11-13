@@ -53,7 +53,7 @@ public class CompraDAO implements ICompraDAO {
 				
 				FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) compra.getGeradorCompra();
 				pstm.setString(2, TipoGeradorCompra.FUNCIONARIO_CANTINA.getTipo());
-				pstm.setLong(3, 1l);
+				pstm.setLong(3, funcionarioCantina.getIdFuncionarioCantina());
 				
 			}
 			
