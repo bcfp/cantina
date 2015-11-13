@@ -28,8 +28,6 @@ import javax.swing.table.DefaultTableModel;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import utils.UtilFuncoes;
-import vo.CompraVO;
-import vo.EstoqueMateriaPrimaVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
@@ -386,10 +384,9 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 			case PESQ_PRODUTO:
 				
-				listaProdutos = produtoVendaBO.filtarProdutoVendaPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));	
+				listaProdutos = produtoVendaBO.filtrarProdutoFabricadoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));	
 				
 				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
-					
 					listaGenericos.add(produtoVendaVO);
 				}
 				
@@ -397,7 +394,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 			case PESQ_FUNC:
 				
-				listaFuncionarios = funcionarioBO.filtarFuncionariosPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+				listaFuncionarios = funcionarioBO.filtrarFuncionariosPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
 				
 				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {
 					
@@ -532,21 +529,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			return false;
 		}
 
-		btnConsultarFunc.setEnabled(false);
-		cbxStatus.setEnabled(false);
-		txtCodProd.setEnabled(false);
-		txtCodFunc.setEnabled(false);
-		txtQtdeProd.setEnabled(false);
-
 		return true;
 
 	}
 	
 	private OrdemProducaoVO carregarOrdemProducao(){
 		
-		// TODO - Bruno, continuar aqui
-		
-		//ordemProducao.setCodOrdemProducao(txtCodOp.getText());
+		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
 		ordemProducao.setData(new Date());
 		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 		ordemProducao.setFuncionarioCantina(funcionarioCantina);
@@ -631,14 +620,12 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	protected boolean habilitarCampos() {
 
-		if(ordemProducaoBO.isAlteracaoPermitida(ordemProducao)){
-			txtCodProd.setEditable(true);
-			txtQtdeProd.setEditable(true);
-		}
-		
-		cbxStatus.setEnabled(true);
-		txtCodFunc.setEditable(true);
+		btnConsultarProd.setEnabled(true);
 		btnConsultarFunc.setEnabled(true);
+		cbxStatus.setEnabled(true);
+		txtCodProd.setEnabled(true);
+		txtCodFunc.setEnabled(true);
+		txtQtdeProd.setEnabled(true);
 		
 		return true;
 	
@@ -646,7 +633,15 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	protected boolean desabilitarCampos() {
-		return false;
+		
+		btnConsultarProd.setEnabled(false);
+		btnConsultarFunc.setEnabled(false);
+		cbxStatus.setEnabled(false);
+		txtCodProd.setEnabled(false);
+		txtCodFunc.setEnabled(false);
+		txtQtdeProd.setEnabled(false);
+				
+		return true;
 	}
 
 	@Override
@@ -658,14 +653,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		txtDescProd.setEditable(false);
 		txtNomeFunc.setEditable(false);
-		
-		if(ordemProducao!=null){
-			//btnConsultarProd.setVisible(false); TODO - Bruno Verificar o pq
-			txtCodProd.setEditable(false);
-		}
-		else{
-			btnGerarOC.setEnabled(false);
-		}
 		
 		int widthCampos = this.getWidth() - 110;
 

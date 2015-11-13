@@ -61,7 +61,7 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 	private JLabel lblTitCliente;
 	private JLabel lblCodCliente;
 	private JLabel lblCliente;
-	private JLabel lblCodFuncionario;
+	private JLabel lblFuncionario;
 	private JLabel lblStatusVenda;
 	private JLabel lblDataVenda;
 	private JLabel lblFormaPgto;
@@ -118,7 +118,7 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 		lblValorTotal = new JLabel("R$ 0,00");
 		lblValorTotal.setFont(fonteTotal);
 		lblDescProdVenda = new JLabel("Desconto");
-		lblCodFuncionario = new JLabel("Funcionário");
+		lblFuncionario = new JLabel("Funcionário");
 		
 		txtCodVenda = new JTextField();
 		txtCodProdVenda = new JTextField();
@@ -176,7 +176,7 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 		dtpDataVenda.setBounds(460, espY, 130, altura);
 
 		lblCodVenda.setBounds(espXLbl, espY, 50, altura);
-		lblCodFuncionario.setBounds(espXLbl, espY + espEntre, 80, altura);
+		lblFuncionario.setBounds(espXLbl, espY + espEntre, 80, altura);
 		lblTitProduto.setBounds(espXLbl, espY + espEntre * 2, 80, altura);
 		lblCodProdVenda.setBounds(espXLbl, espY + espEntre * 3, 50, altura);
 		lblProdVenda.setBounds(espXLbl, espY + espEntre * 4, 50, altura);
@@ -271,7 +271,7 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 		pnlCampos.add(lblTitCliente);
 		pnlCampos.add(lblCodCliente);
 		pnlCampos.add(lblCliente);
-		pnlCampos.add(lblCodFuncionario);
+		pnlCampos.add(lblFuncionario);
 		pnlCampos.add(lblStatusVenda);
 		pnlCampos.add(lblDataVenda);
 		pnlCampos.add(lblFormaPgto);
