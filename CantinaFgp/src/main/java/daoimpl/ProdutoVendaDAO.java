@@ -152,7 +152,8 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 
 	@Override
 	public ProdutoVendaVO incluir(ProdutoVendaVO produtoVenda) {
-		
+
+		System.out.println("incluiu produto venda");
 		return null;
 	}
 
