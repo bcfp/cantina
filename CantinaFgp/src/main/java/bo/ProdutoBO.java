@@ -26,7 +26,7 @@ public abstract class ProdutoBO<T extends ProdutoVO, D extends IProdutoDAO<T>> {
 		
 	}
 	
-	public List<T> filtarProdutoVendaPorCodigoENome(String nome, String cod){
+	public List<T> filtrarProdutoVendaPorCodigoENome(String nome, String cod){
 		
 		return produtoDao.consultarPorCodigoENome(nome, cod);
 		
