@@ -35,6 +35,9 @@ import vo.GenericVO;
 import vo.MateriaPrimaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
+import bo.MateriaPrimaBO;
+import bo.ProdutoVendaBO;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterFrameView<ProdutoVO> implements ITelaBuscar{
@@ -179,7 +182,11 @@ import enumeradores.TipoSolicitacao;
 		
 		// Atributos 
 		
+		private ProdutoVendaBO prodVendaBo;
+		private MateriaPrimaBO matPrimaBo;
+
 		private MateriaPrimaVO materiaPrima;
+		private ProdutoVendaVO produto;
 		private List<ProdutoMateriaPrimaVO> receita;
 		private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
 		
@@ -297,6 +304,8 @@ import enumeradores.TipoSolicitacao;
 			};
 			barraTabProdMatPrima = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			
+			prodVendaBo = new ProdutoVendaBO();
+			matPrimaBo = new MateriaPrimaBO();
 			
 		}
 		
@@ -885,8 +894,18 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean incluir() {
 			
+			if(rdoMatPrima.isSelected()){
+				
+				matPrimaBo.incluir(materiaPrima);
+				
+			}
+			else{
+				prodVendaBo.incluir(produto);
+			}
+			
 			JOptionPane.showMessageDialog(null, "Produto Incluído");
 			return true;
+			
 		}
 
 		@Override
@@ -897,7 +916,7 @@ import enumeradores.TipoSolicitacao;
 
 		@Override
 		public boolean isCamposValidos(StringBuilder msgErro) {
-			return false;
+			return true;
 		}
 
 		@Override
