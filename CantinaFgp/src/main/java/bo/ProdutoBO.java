@@ -21,6 +21,18 @@ public abstract class ProdutoBO<P extends ProdutoVO, D extends IProdutoDAO<P>> {
 		return produtoDao.incluir(produto);
 		
 	}
+	
+	public boolean alterar(P produto){
+		
+		return produtoDao.alterar(produto);
+		
+	}
+	
+	public boolean deletar(P produto){
+		
+		return produtoDao.deletar(produto.getIdProduto());
+		
+	}
 
 	public Boolean verificaDescricaoVazio(String descricao){
 		

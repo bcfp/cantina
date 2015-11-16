@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.BancoFake;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
 import vo.OrdemProducaoVO;
@@ -29,28 +28,38 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		fabrica = ConnectionFactory.getInstance();
 		
 	}
+	
+	private Long getUltimoId(){
+	
+		
+		return null;
+		
+	}
 
 	@Override
 	public OrdemProducaoVO incluir(OrdemProducaoVO ordemProd) {
 		
-		java.sql.Date dataSql = new java.sql.Date(ordemProd.getData().getTime());
-		
+		OrdemProducaoVO ordemProdInserida = ordemProd;
+				
 		try {
+						
 			conexao = fabrica.getConexao();
 			
-			pstm = conexao.prepareStatement("insert into ordem_producao(qtde, data_ordem_producao, id_produto, id_funcionario_cantina, id_status) "
-					+ "values (?,?,?,?,?)");
+			pstm = conexao.prepareStatement(
+					"insert into ordem_producao(qtde, data_ordem_producao, id_produto, id_funcionario_cantina, id_status) "
+					+ "values (?,?,?,?,?);",PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			pstm.setInt(1, ordemProd.getQtde());
-			pstm.setDate(2, dataSql);
+			pstm.setDate(2, new java.sql.Date(ordemProd.getData().getTime()));
 			pstm.setLong(3, ordemProd.getProdutoVenda().getIdProduto());
 			pstm.setLong(4, ordemProd.getFuncionarioCantina().getIdFuncionarioCantina());
 			pstm.setLong(5, ordemProd.getStatus().getIdStatus());
 			
 			pstm.executeUpdate();
 			
-		} catch (ClassNotFoundException e) {
+			ordemProdInserida.setIdOrdemProducao(getUltimoId());
 			
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
 		} catch (SQLException e) {
@@ -70,7 +79,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 		}
 		
-		return ordemProd;
+		return ordemProdInserida;
 	}
 
 	@Override

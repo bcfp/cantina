@@ -32,8 +32,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	}
 	
 	@Override
-	public ProdutoMateriaPrimaVO incluir(ProdutoMateriaPrimaVO objeto) {
-		
+	public ProdutoMateriaPrimaVO incluir(ProdutoMateriaPrimaVO produtoMateriaPrima) {
 		return null;
 	}
 
@@ -63,15 +62,17 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	
 	public List<ProdutoMateriaPrimaVO> consultarReceitaPorIdProduto(Long id) {
 		
-		List<ProdutoMateriaPrimaVO> listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
+		List<ProdutoMateriaPrimaVO> listaMateriasPrimaProduto = null;
 		
 		try {
+			
 			conexao = fabrica.getConexao();
 			
-			pstm = conexao.prepareStatement("select mp.cod_materia_prima, mp.descricao, mp.id_materia_prima, mp.lote,"
-					+"mp.ativo, mp.preco_custo, u.id_unidade, u.abreviatura, u.descricao as descricao_unidade,"
+			pstm = conexao.prepareStatement("select pv.id_produto_venda, mp.cod_materia_prima, mp.descricao, mp.id_materia_prima, mp.lote, "
+					+"mp.ativo, mp.preco_custo, u.id_unidade, u.abreviatura, u.descricao as descricao_unidade, "
 					+"mpc.id_estoque_mat_prima, mpc.qtde_maxima, mpc.qtde_minima, mpc.estoque, r.qtde " 
-					+"from produto_venda pv inner join receita r on pv.id_produto_venda = r.id_produto "
+					+"from produto_venda pv "
+					+"inner join receita r on pv.id_produto_venda = r.id_produto "
 					+"inner join materia_prima mp on r.id_materia_prima = mp.id_materia_prima "
 					+"inner join materia_prima_cantina mpc on mpc.id_materia_prima = mp.id_materia_prima "
 					+"left join unidade u on u.id_unidade = mp.id_unidade "
@@ -103,17 +104,21 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeAtual(rs.getDouble("estoque"));
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
+				produtoMateriaPrima.setProdutoFabricado(new ProdutoVendaVO());
+				produtoMateriaPrima.getProdutoFabricado().setIdProduto(rs.getLong("id_produto_venda"));
 				
+				listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 				listaMateriasPrimaProduto.add(produtoMateriaPrima);
 				
 			}
 			
 		} catch (ClassNotFoundException e) {
-	
 			e.printStackTrace();
+			return null;
 		} catch (SQLException e) {
 	
 			e.printStackTrace();
+			return null;
 		}
 		finally{
 			try {
@@ -124,6 +129,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return null;
 			}
 		}
 		

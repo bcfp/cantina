@@ -132,9 +132,12 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 				
 					if (incluir()) {
 	
-						acaoGravarAlteraracao();
-						desabilitarCampos();
-						btnAlterar.setVisible(true);
+						if(desabilitarCampos()){
+							acaoGravarAlteraracao();
+							btnAlterar.setVisible(true);
+							btnLimpar.setEnabled(false);
+							btnGravar.setEnabled(false);							
+						}
 						
 					}
 				

@@ -32,6 +32,8 @@ import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
+import vo.OrdemProducaoVO;
+import vo.ProdutoCantinaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
@@ -40,6 +42,7 @@ import bo.MateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import daoimpl.UnidadeProdutoDAO;
 import daoservice.IUnidadeProdutoDAO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 	
 	public class ManterProdutoView extends ManterFrameView<ProdutoVO> implements ITelaBuscar{
@@ -190,7 +193,6 @@ import enumeradores.TipoSolicitacao;
 		private MateriaPrimaVO materiaPrima;
 		private ProdutoVendaVO produto;
 		private List<ProdutoMateriaPrimaVO> receita;
-		//private List<ProdutoMateriaPrimaVO> produtosMatPrima; // atributo para aba Produtos Fabricados
 		
 		private FornecedorVO fornecedor;
 		private List<FornecedorVO> listaFornecedores;
@@ -200,10 +202,12 @@ import enumeradores.TipoSolicitacao;
 		
 		private IUnidadeProdutoDAO unidadeDao;
 		
+		private Boolean editable;
+		
 		// Bloco de Inicialização
 		
 		{
-			
+					
 			// PRINCIPAL
 	
 			receita = new ArrayList<ProdutoMateriaPrimaVO>();
@@ -321,8 +325,10 @@ import enumeradores.TipoSolicitacao;
 			for (UnidadeProdutoVO unidade : unidadesProduto) {
 				
 				cbxUnidMatPrima.addItem(unidade.getDescricao());
-				
+				cbxUnidade.addItem(unidade.getDescricao());				
 			}
+			
+			produto = new ProdutoVendaVO();
 						
 			
 		}
@@ -341,7 +347,9 @@ import enumeradores.TipoSolicitacao;
 		
 		@Override
 		public void abrirJanela(){
-						
+					
+			editable = true;
+			
 			definicoesPagina();
 			
 		}
@@ -350,15 +358,37 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public void abrirJanela(ProdutoVO produto) {
 			
+
+			editable = false;
+			
 			definicoesPagina();
 			
+		}
+		
+		private ActionListener getAcaoRdoLote(){
+			return new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(rdoLote.isSelected()){
+						tbsProdutos.setEnabledAt(ABA_LOTES, true);
+						tbsProdutos.setSelectedIndex(ABA_LOTES);
+					}
+					else{
+						tbsProdutos.setEnabledAt(ABA_LOTES, false);
+						tbsProdutos.setSelectedIndex(ABA_DADOS);
+					}
+					
+				}
+				
+			};
 		}
 		
 		private void definicoesPagina(){
 			
 			// PRINCIPAL
 			
-			txtCod.setEnabled(false);
+			txtCod.setEditable(false);
 			
 			int widthCampos = this.getWidth() - 25;
 			int heightCampos = this.getHeight() - 122;
@@ -395,22 +425,7 @@ import enumeradores.TipoSolicitacao;
 			
 			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
 				
-				rdoLote.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if(rdoLote.isSelected()){
-							tbsProdutos.setEnabledAt(ABA_LOTES, true);
-							tbsProdutos.setSelectedIndex(ABA_LOTES);
-						}
-						else{
-							tbsProdutos.setEnabledAt(ABA_LOTES, false);
-							tbsProdutos.setSelectedIndex(ABA_DADOS);
-						}
-						
-					}
-					
-				});
+				rdoLote.addActionListener(getAcaoRdoLote());
 				
 			}
 						
@@ -717,20 +732,22 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					if(tabMatPrimas.getSelectedRow() != -1 && e.getClickCount() == 2){
-						
-						int x = JOptionPane.showConfirmDialog(null, 
-															"Deseja realmente excluir a matéria-prima?", 
-															"Confirmação", 
-															JOptionPane.YES_OPTION);
-						
-						if(x == JOptionPane.YES_NO_OPTION){
+					if(editable){
+						if(tabMatPrimas.getSelectedRow() != -1 && e.getClickCount() == 2){
 							
-							receita.remove(tabMatPrimas.getSelectedRow());
-							carregarGridMatPrima(receita);
+							int x = JOptionPane.showConfirmDialog(null, 
+																"Deseja realmente excluir a matéria-prima?", 
+																"Confirmação", 
+																JOptionPane.YES_OPTION);
+							
+							if(x == JOptionPane.YES_NO_OPTION){
+								
+								receita.remove(tabMatPrimas.getSelectedRow());
+								carregarGridMatPrima(receita);
+								
+							}
 							
 						}
-						
 					}
 					
 				}
@@ -912,33 +929,85 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean incluir() {
 			
-			boolean incluido = false;
+			ProdutoVendaVO prodIncluido = null;
 			
 			if(rdoMatPrima.isSelected()){
 				
 				if(matPrimaBo.incluir(materiaPrima) != null){
-					incluido = true;
 					JOptionPane.showMessageDialog(null, "Matéria Prima Incluída");
 				}
 				
 			}
 			else{
 				
-				if(prodVendaBo.incluir(produto) != null){
-					incluido = true;
+				prodIncluido = prodVendaBo.incluir(carregarProdutoVenda());
+				
+				if(prodIncluido != null){
+					produto.setIdProduto(prodIncluido.getIdProduto());
+					txtCod.setText(prodIncluido.getCodProduto());
+					rdoLote.addActionListener(getAcaoRdoLote());
 					JOptionPane.showMessageDialog(null, "Produto Incluído");
 				}
 								
 			}
+						
+			return prodIncluido != null;
 			
-			return incluido;
+		}
+		
+		private ProdutoVendaVO carregarProdutoVenda(){
+			
+			TipoProduto tipo;
+			Boolean lote = false;
+			
+			if(rdoLote.isSelected()){
+				lote = true;
+			}
+			
+			if(rdoProdProduzido.isSelected()){
+				tipo = TipoProduto.PRODUCAO;
+			}
+			else{
+				if(rdoMatPrima.isSelected()){
+					tipo = TipoProduto.MATERIA_PRIMA;
+				}
+				else{
+					tipo = TipoProduto.REVENDA;
+				}
+			}
+			
+			produto.setCodProduto(txtCod.getText());
+			produto.setDescricao(txtNome.getText());
+			produto.setTipo(tipo);
+			produto.setPrecoCusto(Double.parseDouble(txtPrecoCusto.getText()));
+			produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
+			UnidadeProdutoVO unidadeSelecionada = unidadesProduto.get(cbxUnidade.getSelectedIndex());
+			produto.setUnidade(unidadeSelecionada);
+			ProdutoCantinaVO prodCantina = new ProdutoCantinaVO();
+			prodCantina.setQtdeMinima(Double.parseDouble(txtQtdeMin.getText()));
+			prodCantina.setQtdeMaxima(Double.parseDouble(txtQtdeMax.getText()));
+			produto.setEstoque(prodCantina);
+			produto.setQtdeEstoque(0d);
+			produto.setLote(lote);
+			produto.setReceita(receita);
+			
+			return produto;
 			
 		}
 
 		@Override
 		public boolean alterar() {
-			JOptionPane.showMessageDialog(null, "Produto Alterado");	
-			return true;
+			
+			if(prodVendaBo.alterar(carregarProdutoVenda())){
+				
+				JOptionPane.showMessageDialog(null, "Produto Alterado");	
+				
+				return true;
+				
+			}
+			
+			
+			return false;
 		}	
 
 		@Override
@@ -948,15 +1017,66 @@ import enumeradores.TipoSolicitacao;
 
 		@Override
 		protected boolean habilitarCampos() {
+			
+			editable = true;
 
-			return false;
+			txtNome.setEditable(true);
+			rdoLote.setEnabled(true);
+			rdoMatPrima.setEnabled(true);
+			rdoProdProduzido.setEnabled(true);
+			rdoProdRevenda.setEnabled(true);
+			
+			txtPrecoCusto.setEditable(true);
+			txtPrecoVenda.setEditable(true);
+			txtQtdeMax.setEditable(true);
+			txtQtdeMin.setEditable(true);
+			cbxUnidade.setEditable(true);
+			
+			txtCodFornecedor.setEditable(true);
+			txtFornecedor.setEditable(true);
+			txtContatoForn.setEditable(true);
+			btnBuscarForn.setEnabled(true);
+			
+			txtCodMatPrimaRec.setEditable(true);
+			txtMatPrimaRec.setEditable(true);
+			txtQtdeMatPrima.setEditable(true);
+			cbxUnidMatPrima.setEditable(true);
+			btnBuscarMatPrima.setEnabled(true);	
+			
+			return true;
 		
 		}
 
 		@Override
 		protected boolean desabilitarCampos(){
 			
-			return false;
+			editable = false;
+			
+			txtNome.setEditable(false);
+			rdoLote.setEnabled(false);
+			rdoMatPrima.setEnabled(false);
+			rdoProdProduzido.setEnabled(false);
+			rdoProdRevenda.setEnabled(false);
+			
+			txtPrecoCusto.setEditable(false);
+			txtPrecoVenda.setEditable(false);
+			txtQtdeMax.setEditable(false);
+			txtQtdeMin.setEditable(false);
+			cbxUnidade.setEnabled(false);
+			
+			txtCodFornecedor.setEditable(false);
+			txtFornecedor.setEditable(false);
+			txtContatoForn.setEditable(false);
+			btnBuscarForn.setEnabled(false);
+			
+			txtCodMatPrimaRec.setEditable(false);
+			txtMatPrimaRec.setEditable(false);
+			txtQtdeMatPrima.setEditable(false);
+			cbxUnidMatPrima.setEnabled(false);
+			btnBuscarMatPrima.setEnabled(false);	
+			
+			return true;
+			
 		}
 		
 		@Override
@@ -999,8 +1119,6 @@ import enumeradores.TipoSolicitacao;
 								
 								int opc = JOptionPane.showConfirmDialog(null, "Deseja substituir a unidade da matéria-prima?");
 								
-								// TODO - BRUNO - CONTINUAR AQUI
-								
 								switch (opc) {
 								case JOptionPane.YES_OPTION:
 									
@@ -1031,6 +1149,7 @@ import enumeradores.TipoSolicitacao;
 					if(!itemNaReceita){
 						
 						ProdutoMateriaPrimaVO prodMatPrima = new ProdutoMateriaPrimaVO();
+						prodMatPrima.setProdutoFabricado(produto);
 						prodMatPrima.setMateriaPrima(materiaPrima);
 						prodMatPrima.setQtde(qtdeInserida);
 						prodMatPrima.setUnidade(unidadeSelecionada);

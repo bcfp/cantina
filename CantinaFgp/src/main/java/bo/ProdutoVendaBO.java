@@ -20,6 +20,21 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 		super(produtoVendaDao);
 	}
 	
+	@Override
+	public ProdutoVendaVO incluir(ProdutoVendaVO produto) {
+
+		Long id = produtoVendaDao.getUltimoIdGerado();
+		
+		Long proximoId = id+1;
+
+		produto.setCodProduto(proximoId.toString());
+		
+		return super.incluir(produto);
+		
+	}
+	
+	
+	
 	public List<ProdutoVendaVO> filtrarProdutoFabricadoPorCodigoENome(String nome, String cod){
 		
 		List<ProdutoVendaVO> produtosVenda = filtrarProdutoPorCodigoENome(nome, cod);
