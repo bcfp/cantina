@@ -164,11 +164,9 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			}
 			
 		} catch (ClassNotFoundException e) {
-			
 			e.printStackTrace();
 			return null;
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 			return null;
 		}finally{
@@ -176,10 +174,9 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			try {
 				
 				if(rs != null){
-					
 					rs.close();
 				}
-				 pstm.close();
+				pstm.close();
 				conexao.close();
 				
 			} catch (SQLException e) {
