@@ -11,15 +11,11 @@ public enum TipoProduto {
 	}
 
 	TipoProduto(String tipoProduto){
-		this.setTipoProduto(tipoProduto);
+		this.tipoProduto = tipoProduto;
 	}
 
 	public String getTipoProduto() {
 		return tipoProduto;
-	}
-
-	public void setTipoProduto(String tipoProduto) {
-		this.tipoProduto = tipoProduto;
 	}
 	
 }

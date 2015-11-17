@@ -33,8 +33,6 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 		
 	}
 	
-	
-	
 	public List<ProdutoVendaVO> filtrarProdutoFabricadoPorCodigoENome(String nome, String cod){
 		
 		List<ProdutoVendaVO> produtosVenda = filtrarProdutoPorCodigoENome(nome, cod);

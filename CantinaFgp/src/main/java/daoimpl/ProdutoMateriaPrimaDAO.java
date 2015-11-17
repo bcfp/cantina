@@ -75,7 +75,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 					+"inner join receita r on pv.id_produto_venda = r.id_produto "
 					+"inner join materia_prima mp on r.id_materia_prima = mp.id_materia_prima "
 					+"inner join materia_prima_cantina mpc on mpc.id_materia_prima = mp.id_materia_prima "
-					+"left join unidade u on u.id_unidade = mp.id_unidade "
+					+"left join unidade u on u.id_unidade = r.id_unidade "
 					+"where pv.id_produto_venda = ? and pv.ativo = 1 and mp.ativo = 1 and u.ativo = 1");
 			
 			pstm.setLong(1, id);
@@ -83,10 +83,14 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 			rs = pstm.executeQuery();
 			
 			ProdutoMateriaPrimaVO produtoMateriaPrima = null;
+			listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 			
 			while(rs.next()){
 				
 				produtoMateriaPrima = new ProdutoMateriaPrimaVO();
+				
+				produtoMateriaPrima.setQtde(rs.getDouble("qtde"));
+				
 				produtoMateriaPrima.setMateriaPrima(new MateriaPrimaVO());
 				produtoMateriaPrima.getMateriaPrima().setAtivo(rs.getBoolean("ativo"));
 				produtoMateriaPrima.getMateriaPrima().setCodProduto(rs.getString("cod_materia_prima"));
@@ -94,20 +98,21 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 				produtoMateriaPrima.getMateriaPrima().setIdProduto(rs.getLong("id_materia_prima"));
 				produtoMateriaPrima.getMateriaPrima().setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoMateriaPrima.getMateriaPrima().setLote(rs.getBoolean("lote"));
-				produtoMateriaPrima.setQtde(rs.getDouble("qtde"));
-				produtoMateriaPrima.getMateriaPrima().setUnidade(new UnidadeProdutoVO());
-				produtoMateriaPrima.getMateriaPrima().getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
-				produtoMateriaPrima.getMateriaPrima().getUnidade().setDescricao(rs.getString("descricao_unidade"));
-				produtoMateriaPrima.getMateriaPrima().getUnidade().setAbreviatura(rs.getString("abreviatura"));
+				
+				produtoMateriaPrima.setUnidade(new UnidadeProdutoVO());
+				produtoMateriaPrima.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
+				produtoMateriaPrima.getUnidade().setDescricao(rs.getString("descricao_unidade"));
+				produtoMateriaPrima.getUnidade().setAbreviatura(rs.getString("abreviatura"));
+				
 				produtoMateriaPrima.getMateriaPrima().setEstoque(new ProdutoCantinaVO());
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setIdEstoque(rs.getLong("id_estoque_mat_prima"));
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeAtual(rs.getDouble("estoque"));
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
 				produtoMateriaPrima.getMateriaPrima().getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
+				
 				produtoMateriaPrima.setProdutoFabricado(new ProdutoVendaVO());
 				produtoMateriaPrima.getProdutoFabricado().setIdProduto(rs.getLong("id_produto_venda"));
 				
-				listaMateriasPrimaProduto = new ArrayList<ProdutoMateriaPrimaVO>();
 				listaMateriasPrimaProduto.add(produtoMateriaPrima);
 				
 			}

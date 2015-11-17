@@ -26,7 +26,6 @@ import vo.MateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
 import bo.MateriaPrimaBO;
-import bo.ProdutoBO;
 import bo.ProdutoVendaBO;
 import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
@@ -233,6 +232,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 		else{
 
 			produtos = new ArrayList<ProdutoVO>();
+			
 			List<ProdutoVendaVO> produtosVenda = prodVendaBo.consultarTodosProdutos();
 			
 			for (ProdutoVendaVO produtoVenda : produtosVenda) {

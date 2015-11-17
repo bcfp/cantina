@@ -32,7 +32,6 @@ import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
-import vo.OrdemProducaoVO;
 import vo.ProdutoCantinaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVO;
@@ -191,7 +190,8 @@ import enumeradores.TipoSolicitacao;
 		private MateriaPrimaBO matPrimaBo;
 
 		private MateriaPrimaVO materiaPrima;
-		private ProdutoVendaVO produto;
+		private ProdutoVO produto;
+		private ProdutoVendaVO produtoVenda;
 		private List<ProdutoMateriaPrimaVO> receita;
 		
 		private FornecedorVO fornecedor;
@@ -202,7 +202,7 @@ import enumeradores.TipoSolicitacao;
 		
 		private IUnidadeProdutoDAO unidadeDao;
 		
-		private Boolean editable;
+		private Boolean editableTabMatPrima;
 		
 		// Bloco de Inicialização
 		
@@ -326,9 +326,322 @@ import enumeradores.TipoSolicitacao;
 				
 				cbxUnidMatPrima.addItem(unidade.getDescricao());
 				cbxUnidade.addItem(unidade.getDescricao());				
-			}
+			}			
 			
-			produto = new ProdutoVendaVO();
+			// ---------------
+			
+			// PRINCIPAL
+			
+						txtCod.setEditable(false);
+						
+						int widthCampos = this.getWidth() - 25;
+						int heightCampos = this.getHeight() - 122;
+						
+						pnlCampos.setBackground(Color.LIGHT_GRAY);
+						pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
+						pnlCampos.setLayout(null);
+						
+						int yTbsProd = 150;
+						tbsProdutos.setBounds(10, yTbsProd, widthCampos-20, heightCampos-yTbsProd-10);
+						
+						int espXLbl = 20;
+						int espXTxt = espXLbl + 70;
+						int espXLbl2 = 450;
+						int espY = 20;
+						int espEntre = 35;
+						int altura = 30;			
+
+						lblCod.setBounds(espXLbl, espY, 80, altura);
+						lblNome.setBounds(espXLbl, espY + espEntre, 100, altura);
+						lblLote.setBounds(espXLbl, espY + espEntre * 2, 100, altura);
+						
+						txtCod.setBounds(espXTxt, espY, 50, altura);
+						txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
+						rdoLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
+						
+						lblTipoProduto.setBounds(espXLbl2, espY, 200, altura);
+									
+						rdoProdRevenda.setBounds(espXLbl2, espY + espEntre, 125, altura);
+						rdoProdProduzido.setBounds(espXLbl2, espY + espEntre * 2, 130, altura);
+						rdoMatPrima.setBounds(espXLbl2, espY + espEntre * 3, 105, altura);
+						
+						rdoLote.setBackground(pnlCampos.getBackground());
+						
+						rdoMatPrima.setBackground(pnlCampos.getBackground());
+						
+						btgTipoProdutoGroup.add(rdoMatPrima);
+						btgTipoProdutoGroup.add(rdoProdProduzido);
+						btgTipoProdutoGroup.add(rdoProdRevenda);
+						
+						pnlCampos.add(lblCod);
+						pnlCampos.add(txtCod);
+						pnlCampos.add(lblNome);
+						pnlCampos.add(txtNome);
+						pnlCampos.add(lblLote);
+						pnlCampos.add(rdoLote);
+						pnlCampos.add(lblTipoProduto);
+						pnlCampos.add(rdoMatPrima);
+						pnlCampos.add(rdoProdProduzido);
+						pnlCampos.add(rdoProdRevenda);
+						pnlCampos.add(tbsProdutos);
+						
+						
+						// TABS
+						
+						// DADOS
+						
+						lblTitValores.setText("VALORES");
+						lblPrecoCusto.setText("Preço de custo");
+						lblPrecoVenda.setText("Preço de venda");
+						lblUnidade.setText("Unidade");
+						lblTitEstoque.setText("ESTOQUE");
+						lblQtdeMin.setText("Qtde Minima");
+						lblQtdeMax.setText("Qtde Maxima");
+						
+						int espXLblDad = 20;
+						int espXTxtDad = 120;
+
+						lblTitValores.setBounds(espXLblDad, espY, 100, altura);
+						lblPrecoCusto.setBounds(espXLblDad, espY + espEntre, 100, altura);
+						lblPrecoVenda.setBounds(espXLblDad, espY + espEntre * 2, 100, altura);
+
+						txtPrecoCusto.setBounds(espXTxtDad, espY + espEntre, 80, altura);
+						txtPrecoVenda.setBounds(espXTxtDad, espY + espEntre * 2, 80, altura);
+						
+						int espXLblDad2 = 350;
+						int espXTxtDad2 = 440;
+
+						lblTitEstoque.setBounds(espXLblDad2, espY, 80, altura);
+						lblQtdeMin.setBounds(espXLblDad2, espY + espEntre, 80, altura);
+						lblQtdeMax.setBounds(espXLblDad2, espY + espEntre * 2, 80, altura);
+						lblUnidade.setBounds(espXLblDad2,  espY + espEntre * 3, 80, altura);
+						
+						txtQtdeMin.setBounds(espXTxtDad2, espY + espEntre, 100, altura);
+						txtQtdeMax.setBounds(espXTxtDad2,  espY + espEntre * 2, 100, altura);
+						cbxUnidade.setBounds(espXTxtDad2, espY + espEntre * 3, 100, altura);
+									
+						pnlDados.add(lblTitValores);
+						pnlDados.add(lblPrecoCusto);
+						pnlDados.add(txtPrecoCusto);
+						pnlDados.add(lblPrecoVenda);
+						pnlDados.add(txtPrecoVenda);
+						pnlDados.add(lblUnidade);
+						pnlDados.add(cbxUnidade);
+						pnlDados.add(lblTitEstoque);
+						pnlDados.add(lblQtdeMin);
+						pnlDados.add(lblQtdeMax);
+						pnlDados.add(txtQtdeMin);
+						pnlDados.add(txtQtdeMax);
+
+						tbsProdutos.addTab("Dados", pnlDados);
+					
+						
+						// FORNECEDORES
+						
+						btnAddForn.setEnabled(false);
+									
+						int espXLblForn = 20;
+						int espXTxtForn = 120;
+
+						lblCodFornecedor.setBounds(espXLblForn, espY, 50, altura);
+						lblFornecedor.setBounds(espXLblForn, espY + espEntre, 80, altura);
+						lblContatoForn.setBounds(espXLblForn, espY + espEntre * 2, 80, altura);
+
+						txtCodFornecedor.setBounds(espXTxtForn, espY, 50, altura);
+						btnBuscarForn.setBounds(espXTxtForn + 60, espY, 80, altura);
+						txtFornecedor.setBounds(espXTxtForn, espY + espEntre, 210, altura);
+						txtContatoForn.setBounds(espXTxtForn, espY + espEntre * 2, 150, altura);
+						btnAddForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
+						
+						
+						tabForn.setModel(modeloTabForn);
+						modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
+						barraTabForn.setViewportView(tabForn);
+						int yTabForn = 130;
+						barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
+												
+						pnlFornecedores.add(barraTabForn);
+						pnlFornecedores.add(lblCodFornecedor);
+						pnlFornecedores.add(lblFornecedor);
+						pnlFornecedores.add(lblContatoForn);
+						pnlFornecedores.add(txtCodFornecedor);
+						pnlFornecedores.add(txtFornecedor);
+						pnlFornecedores.add(txtContatoForn);
+						pnlFornecedores.add(btnBuscarForn);
+						pnlFornecedores.add(btnAddForn);
+
+						tbsProdutos.addTab("Fornecedores", pnlFornecedores);
+						
+						
+						// RECEITA
+
+						pnlReceita.setLayout(null);
+						
+						btnAddMatPrima.setEnabled(false);
+									
+						int espXLblRec = 20;
+						int espXTxtRec = 120;
+
+						lblCodMatPrimaRec.setBounds(espXLblRec, espY, 50, altura);
+						lblMatPrimaRec.setBounds(espXLblRec, espY + espEntre, 80, altura);
+						lblQtdeMatPrima.setBounds(espXLblRec, espY + espEntre * 2, 80, altura);
+
+						txtCodMatPrimaRec.setBounds(espXTxtRec, espY, 50, altura);
+						btnBuscarMatPrima.setBounds(espXTxtRec + 60, espY, 80, altura);
+						txtMatPrimaRec.setBounds(espXTxtRec, espY + espEntre, 170, altura);
+						txtQtdeMatPrima.setBounds(espXTxtRec, espY + espEntre * 2, 50, altura);
+						btnAddMatPrima.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
+						
+						int espXLblRec2 = 350;
+						int espXTxtRec2 = 420;
+
+						lblUnidMatPrima.setBounds(espXLblRec2, espY, 50, altura);
+						
+						cbxUnidMatPrima.setBounds(espXTxtRec2, espY, 120, altura);
+						
+						
+						// Tabela
+						
+						modeloTabMatPrimas.setColumnIdentifiers(new String[] {"Código", "Matéria-Prima", "Quantidade", "Unidade"});
+						tabMatPrimas.setModel(modeloTabMatPrimas);
+						barraTabMatPrimas.setViewportView(tabMatPrimas);
+						int yTabMatPrima = 130;
+						barraTabMatPrimas.setBounds(0, yTabMatPrima, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabMatPrima);
+						
+						pnlReceita.add(barraTabMatPrimas);
+						pnlReceita.add(lblCodMatPrimaRec);
+						pnlReceita.add(lblMatPrimaRec);
+						pnlReceita.add(lblQtdeMatPrima);
+						pnlReceita.add(lblUnidMatPrima);
+						pnlReceita.add(txtCodMatPrimaRec);
+						pnlReceita.add(txtMatPrimaRec);
+						pnlReceita.add(txtQtdeMatPrima);
+						pnlReceita.add(cbxUnidMatPrima);
+						pnlReceita.add(btnBuscarMatPrima);
+						pnlReceita.add(btnAddMatPrima);
+				
+						tbsProdutos.addTab("Receita", pnlReceita);
+						
+				
+						// LOTES
+				
+						pnlLotes = new JPanel();
+						pnlLotes.setLayout(null);
+				
+						lblFiltrarLotes = new JLabel("FILTRAR");
+						lblCodLote = new JLabel("Lote");
+						lblOrigemLote = new JLabel("Origem");
+						lblCodOrigem = new JLabel("Número");
+						lblDatasLote = new JLabel("Vencimentos");
+						lblDataVctoMin = new JLabel("Inicial");
+						lblDataVctoMax = new JLabel("Final");
+				
+						txtCodLote = new JTextField();
+						txtCodOrigem = new JTextField();
+				
+						rdoEstoqueLote = new JRadioButton("Com estoque");
+						rdoEstoqueLote.setSelected(true);
+				
+						cbxOrigemLote = new JComboBox<String>();
+				
+						dtpDataVctoMin = new JXDatePicker();
+						dtpDataVctoMax = new JXDatePicker();
+				
+						btnFiltrarLotes = new JButton("Filtrar");
+				
+						int espYLot = 10;
+						int espXLblLot = 20;
+						int espXTxtLot = 80;
+				
+						lblFiltrarLotes.setBounds(espXLblLot, espYLot, 50, altura);
+						lblCodLote.setBounds(espXLblLot, espYLot + espEntre, 50, altura);
+						lblOrigemLote.setBounds(espXLblLot, espYLot + espEntre * 2, 50, altura);
+				
+						txtCodLote.setBounds(espXTxtLot, espYLot + espEntre, 50, altura);
+						cbxOrigemLote
+								.setBounds(espXTxtLot, espYLot + espEntre * 2, 120, altura);
+				
+						int espXLblLot2 = 210;
+						int espXTxtLot2 = 260;
+				
+						lblCodOrigem.setBounds(espXLblLot2, espYLot + espEntre * 2, 50, altura);
+						txtCodOrigem.setBounds(espXTxtLot2, espYLot + espEntre * 2, 50, altura);
+				
+						int espXLblLot3 = 340;
+						int espXTxtLot3 = 380;
+				
+						lblDatasLote.setBounds(espXLblLot3, espYLot, 80, altura);
+						lblDataVctoMin.setBounds(espXLblLot3, espYLot + espEntre, 80, altura);
+						lblDataVctoMax.setBounds(espXLblLot3, espYLot + espEntre * 2, 80,
+								altura);
+				
+						dtpDataVctoMin.setBounds(espXTxtLot3, espYLot + espEntre, 130, altura);
+						dtpDataVctoMax.setBounds(espXTxtLot3, espYLot + espEntre * 2, 130,
+								altura);
+				
+						int espXTxtLot4 = 530;
+				
+						rdoEstoqueLote.setBounds(espXTxtLot4, espYLot + espEntre, 100, altura);
+						btnFiltrarLotes.setBounds(espXTxtLot4, espYLot + espEntre * 2, 80,
+								altura);
+				
+						// Tabela lote
+						tabLotes = new JTable();
+						modeloTabLotes = new DefaultTableModel() {
+							@Override
+							public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};
+						barraTabLotes = new JScrollPane(
+								JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+								JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+				
+						modeloTabLotes.setColumnIdentifiers(new String[] { "Lote", "Qtde",
+								"Vencimento", "Origem", "Número" });
+						tabLotes.setModel(modeloTabLotes);
+						barraTabLotes.setViewportView(tabLotes);
+						int yTabLotes = 130;
+						barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(),
+								tbsProdutos.getHeight() - yTabLotes);
+				
+						pnlLotes.add(barraTabLotes);
+						pnlLotes.add(lblFiltrarLotes);
+						pnlLotes.add(lblCodLote);
+						pnlLotes.add(rdoEstoqueLote);
+						pnlLotes.add(lblOrigemLote);
+						pnlLotes.add(lblCodOrigem);
+						pnlLotes.add(lblDatasLote);
+						pnlLotes.add(lblDataVctoMin);
+						pnlLotes.add(lblDataVctoMax);
+						pnlLotes.add(txtCodLote);
+						pnlLotes.add(txtCodOrigem);
+						pnlLotes.add(cbxOrigemLote);
+						pnlLotes.add(dtpDataVctoMin);
+						pnlLotes.add(dtpDataVctoMax);
+						pnlLotes.add(btnFiltrarLotes);
+				
+						tbsProdutos.addTab("Lotes", pnlLotes);
+						
+									
+						// PRODUTO MATÉRIA PRIMA
+						
+						// Tabela
+						
+						modeloTabProdMatPrima.setColumnIdentifiers(new String[] {"Código", "Produto", "Quantidade", "Unidade"});
+						tabProdMatPrima.setModel(modeloTabProdMatPrima);
+						barraTabProdMatPrima.setViewportView(tabProdMatPrima);
+						barraTabProdMatPrima.setBounds(0, 0, tbsProdutos.getWidth(), tbsProdutos.getHeight());
+						
+						pnlProdMatPrima.add(barraTabProdMatPrima);
+						
+						tbsProdutos.addTab("Produtos Fabricados", pnlProdMatPrima);
+						
+						tbsProdutos.setEnabledAt(ABA_DADOS, true);
+						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+						tbsProdutos.setEnabledAt(ABA_LOTES, false);
+						tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
 						
 			
 		}
@@ -348,7 +661,7 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public void abrirJanela(){
 					
-			editable = true;
+			editableTabMatPrima = true;			
 			
 			definicoesPagina();
 			
@@ -358,9 +671,29 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public void abrirJanela(ProdutoVO produto) {
 			
-
-			editable = false;
+			this.produto = produto;
 			
+			txtCod.setText(produto.getCodProduto());
+			txtNome.setText(produto.getDescricao());
+			txtPrecoCusto.setText(produto.getPrecoCusto().toString());
+			
+			txtQtdeMax.setText(produto.getEstoque().getQtdeMaxima().toString());
+			txtQtdeMin.setText(produto.getEstoque().getQtdeMinima().toString());
+			cbxUnidMatPrima.setSelectedItem(produto.getUnidade().getDescricao());
+			
+			if(produto instanceof ProdutoVendaVO){
+				
+				produtoVenda = (ProdutoVendaVO) produto;
+				txtPrecoVenda.setText(produtoVenda.getPrecoVenda().toString());
+				receita = produtoVenda.getReceita();
+				carregarGridMatPrima(receita);
+				
+			}
+			
+			
+			
+			editableTabMatPrima = false;
+			desabilitarCampos();
 			definicoesPagina();
 			
 		}
@@ -386,50 +719,6 @@ import enumeradores.TipoSolicitacao;
 		
 		private void definicoesPagina(){
 			
-			// PRINCIPAL
-			
-			txtCod.setEditable(false);
-			
-			int widthCampos = this.getWidth() - 25;
-			int heightCampos = this.getHeight() - 122;
-			
-			pnlCampos.setBackground(Color.LIGHT_GRAY);
-			pnlCampos.setBounds(10, 10, widthCampos, heightCampos);
-			pnlCampos.setLayout(null);
-			
-			int yTbsProd = 150;
-			tbsProdutos.setBounds(10, yTbsProd, widthCampos-20, heightCampos-yTbsProd-10);
-			
-			int espXLbl = 20;
-			int espXTxt = espXLbl + 70;
-			int espXLbl2 = 450;
-			int espY = 20;
-			int espEntre = 35;
-			int altura = 30;			
-
-			lblCod.setBounds(espXLbl, espY, 80, altura);
-			lblNome.setBounds(espXLbl, espY + espEntre, 100, altura);
-			lblLote.setBounds(espXLbl, espY + espEntre * 2, 100, altura);
-			
-			txtCod.setBounds(espXTxt, espY, 50, altura);
-			txtNome.setBounds(espXTxt, espY + espEntre, 300, altura);
-			rdoLote.setBounds(espXTxt - 30, espY + espEntre * 2, 80, altura);
-			
-			lblTipoProduto.setBounds(espXLbl2, espY, 200, altura);
-						
-			rdoProdRevenda.setBounds(espXLbl2, espY + espEntre, 125, altura);
-			rdoProdProduzido.setBounds(espXLbl2, espY + espEntre * 2, 130, altura);
-			rdoMatPrima.setBounds(espXLbl2, espY + espEntre * 3, 105, altura);
-			
-			rdoLote.setBackground(pnlCampos.getBackground());
-			
-			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
-				
-				rdoLote.addActionListener(getAcaoRdoLote());
-				
-			}
-						
-			rdoMatPrima.setBackground(pnlCampos.getBackground());
 			rdoMatPrima.addActionListener(new ActionListener() {
 				
 				@Override
@@ -492,92 +781,7 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			btgTipoProdutoGroup.add(rdoMatPrima);
-			btgTipoProdutoGroup.add(rdoProdProduzido);
-			btgTipoProdutoGroup.add(rdoProdRevenda);
-			
-			pnlCampos.add(lblCod);
-			pnlCampos.add(txtCod);
-			pnlCampos.add(lblNome);
-			pnlCampos.add(txtNome);
-			pnlCampos.add(lblLote);
-			pnlCampos.add(rdoLote);
-			pnlCampos.add(lblTipoProduto);
-			pnlCampos.add(rdoMatPrima);
-			pnlCampos.add(rdoProdProduzido);
-			pnlCampos.add(rdoProdRevenda);
-			pnlCampos.add(tbsProdutos);
-			
-			
-			// TABS
-			
-			// DADOS
-			
-			lblTitValores.setText("VALORES");
-			lblPrecoCusto.setText("Preço de custo");
-			lblPrecoVenda.setText("Preço de venda");
-			lblUnidade.setText("Unidade");
-			lblTitEstoque.setText("ESTOQUE");
-			lblQtdeMin.setText("Qtde Minima");
-			lblQtdeMax.setText("Qtde Maxima");
-			
-			int espXLblDad = 20;
-			int espXTxtDad = 120;
-
-			lblTitValores.setBounds(espXLblDad, espY, 100, altura);
-			lblPrecoCusto.setBounds(espXLblDad, espY + espEntre, 100, altura);
-			lblPrecoVenda.setBounds(espXLblDad, espY + espEntre * 2, 100, altura);
-			
-			txtPrecoVenda.setBounds(espXTxtDad, espY + espEntre, 80, altura);
-			txtPrecoCusto.setBounds(espXTxtDad, espY + espEntre * 2, 80, altura);
-			
-			int espXLblDad2 = 350;
-			int espXTxtDad2 = 440;
-
-			lblTitEstoque.setBounds(espXLblDad2, espY, 80, altura);
-			lblQtdeMin.setBounds(espXLblDad2, espY + espEntre, 80, altura);
-			lblQtdeMax.setBounds(espXLblDad2, espY + espEntre * 2, 80, altura);
-			lblUnidade.setBounds(espXLblDad2,  espY + espEntre * 3, 80, altura);
-			
-			txtQtdeMin.setBounds(espXTxtDad2, espY + espEntre, 100, altura);
-			txtQtdeMax.setBounds(espXTxtDad2,  espY + espEntre * 2, 100, altura);
-			cbxUnidade.setBounds(espXTxtDad2, espY + espEntre * 3, 100, altura);
-						
-			pnlDados.add(lblTitValores);
-			pnlDados.add(lblPrecoCusto);
-			pnlDados.add(txtPrecoCusto);
-			pnlDados.add(lblPrecoVenda);
-			pnlDados.add(txtPrecoVenda);
-			pnlDados.add(lblUnidade);
-			pnlDados.add(cbxUnidade);
-			pnlDados.add(lblTitEstoque);
-			pnlDados.add(lblQtdeMin);
-			pnlDados.add(lblQtdeMax);
-			pnlDados.add(txtQtdeMin);
-			pnlDados.add(txtQtdeMax);
-
-			tbsProdutos.addTab("Dados", pnlDados);
-			tbsProdutos.setEnabledAt(ABA_DADOS, true);
-			
-			
-			// FORNECEDORES
-			
-			btnAddForn.setEnabled(false);
-						
-			int espXLblForn = 20;
-			int espXTxtForn = 120;
-
-			lblCodFornecedor.setBounds(espXLblForn, espY, 50, altura);
-			lblFornecedor.setBounds(espXLblForn, espY + espEntre, 80, altura);
-			lblContatoForn.setBounds(espXLblForn, espY + espEntre * 2, 80, altura);
-
-			txtCodFornecedor.setBounds(espXTxtForn, espY, 50, altura);
-			btnBuscarForn.setBounds(espXTxtForn + 60, espY, 80, altura);
-			txtFornecedor.setBounds(espXTxtForn, espY + espEntre, 210, altura);
-			txtContatoForn.setBounds(espXTxtForn, espY + espEntre * 2, 150, altura);
-			btnAddForn.setBounds(espXTxtForn + 160, espY + espEntre * 2, 50, altura);
-			
-			btnBuscarForn.addActionListener(new ActionListener() {
+				btnBuscarForn.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -612,15 +816,10 @@ import enumeradores.TipoSolicitacao;
 				}
 				
 			});
-						
-			tabForn.setModel(modeloTabForn);
-			modeloTabForn.setColumnIdentifiers(new String[] {"Código", "Fornecedor", "Contato"});
-			barraTabForn.setViewportView(tabForn);
-			int yTabForn = 130;
-			barraTabForn.setBounds(0, yTabForn, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabForn);
+					
 			
 			tabForn.addMouseListener(new MouseAdapter() {
-				
+			
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
@@ -643,46 +842,6 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 
-			pnlFornecedores.add(barraTabForn);
-			pnlFornecedores.add(lblCodFornecedor);
-			pnlFornecedores.add(lblFornecedor);
-			pnlFornecedores.add(lblContatoForn);
-			pnlFornecedores.add(txtCodFornecedor);
-			pnlFornecedores.add(txtFornecedor);
-			pnlFornecedores.add(txtContatoForn);
-			pnlFornecedores.add(btnBuscarForn);
-			pnlFornecedores.add(btnAddForn);
-
-			tbsProdutos.addTab("Fornecedores", pnlFornecedores);
-			tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
-			
-			
-			// RECEITA
-
-			pnlReceita.setLayout(null);
-			
-			btnAddMatPrima.setEnabled(false);
-						
-			int espXLblRec = 20;
-			int espXTxtRec = 120;
-
-			lblCodMatPrimaRec.setBounds(espXLblRec, espY, 50, altura);
-			lblMatPrimaRec.setBounds(espXLblRec, espY + espEntre, 80, altura);
-			lblQtdeMatPrima.setBounds(espXLblRec, espY + espEntre * 2, 80, altura);
-
-			txtCodMatPrimaRec.setBounds(espXTxtRec, espY, 50, altura);
-			btnBuscarMatPrima.setBounds(espXTxtRec + 60, espY, 80, altura);
-			txtMatPrimaRec.setBounds(espXTxtRec, espY + espEntre, 170, altura);
-			txtQtdeMatPrima.setBounds(espXTxtRec, espY + espEntre * 2, 50, altura);
-			btnAddMatPrima.setBounds(espXTxtRec + 60, espY + espEntre * 2, 50, altura);
-			
-			int espXLblRec2 = 350;
-			int espXTxtRec2 = 420;
-
-			lblUnidMatPrima.setBounds(espXLblRec2, espY, 50, altura);
-			
-			cbxUnidMatPrima.setBounds(espXTxtRec2, espY, 120, altura);
-			
 			btnBuscarMatPrima.addActionListener(new ActionListener() {
 				
 				@Override
@@ -719,20 +878,12 @@ import enumeradores.TipoSolicitacao;
 				
 			});
 			
-			// Tabela
-			
-			modeloTabMatPrimas.setColumnIdentifiers(new String[] {"Código", "Matéria-Prima", "Quantidade", "Unidade"});
-			tabMatPrimas.setModel(modeloTabMatPrimas);
-			barraTabMatPrimas.setViewportView(tabMatPrimas);
-			int yTabMatPrima = 130;
-			barraTabMatPrimas.setBounds(0, yTabMatPrima, tbsProdutos.getWidth(), tbsProdutos.getHeight() - yTabMatPrima);
-			
 			tabMatPrimas.addMouseListener(new MouseAdapter() {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					if(editable){
+					if(editableTabMatPrima){
 						if(tabMatPrimas.getSelectedRow() != -1 && e.getClickCount() == 2){
 							
 							int x = JOptionPane.showConfirmDialog(null, 
@@ -753,136 +904,6 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-			pnlReceita.add(barraTabMatPrimas);
-			pnlReceita.add(lblCodMatPrimaRec);
-			pnlReceita.add(lblMatPrimaRec);
-			pnlReceita.add(lblQtdeMatPrima);
-			pnlReceita.add(lblUnidMatPrima);
-			pnlReceita.add(txtCodMatPrimaRec);
-			pnlReceita.add(txtMatPrimaRec);
-			pnlReceita.add(txtQtdeMatPrima);
-			pnlReceita.add(cbxUnidMatPrima);
-			pnlReceita.add(btnBuscarMatPrima);
-			pnlReceita.add(btnAddMatPrima);
-	
-			tbsProdutos.addTab("Receita", pnlReceita);
-			tbsProdutos.setEnabledAt(ABA_RECEITA, false);
-	
-			// LOTES
-	
-			pnlLotes = new JPanel();
-			pnlLotes.setLayout(null);
-	
-			lblFiltrarLotes = new JLabel("FILTRAR");
-			lblCodLote = new JLabel("Lote");
-			lblOrigemLote = new JLabel("Origem");
-			lblCodOrigem = new JLabel("Número");
-			lblDatasLote = new JLabel("Vencimentos");
-			lblDataVctoMin = new JLabel("Inicial");
-			lblDataVctoMax = new JLabel("Final");
-	
-			txtCodLote = new JTextField();
-			txtCodOrigem = new JTextField();
-	
-			rdoEstoqueLote = new JRadioButton("Com estoque");
-			rdoEstoqueLote.setSelected(true);
-	
-			cbxOrigemLote = new JComboBox<String>();
-	
-			dtpDataVctoMin = new JXDatePicker();
-			dtpDataVctoMax = new JXDatePicker();
-	
-			btnFiltrarLotes = new JButton("Filtrar");
-	
-			int espYLot = 10;
-			int espXLblLot = 20;
-			int espXTxtLot = 80;
-	
-			lblFiltrarLotes.setBounds(espXLblLot, espYLot, 50, altura);
-			lblCodLote.setBounds(espXLblLot, espYLot + espEntre, 50, altura);
-			lblOrigemLote.setBounds(espXLblLot, espYLot + espEntre * 2, 50, altura);
-	
-			txtCodLote.setBounds(espXTxtLot, espYLot + espEntre, 50, altura);
-			cbxOrigemLote
-					.setBounds(espXTxtLot, espYLot + espEntre * 2, 120, altura);
-	
-			int espXLblLot2 = 210;
-			int espXTxtLot2 = 260;
-	
-			lblCodOrigem.setBounds(espXLblLot2, espYLot + espEntre * 2, 50, altura);
-			txtCodOrigem.setBounds(espXTxtLot2, espYLot + espEntre * 2, 50, altura);
-	
-			int espXLblLot3 = 340;
-			int espXTxtLot3 = 380;
-	
-			lblDatasLote.setBounds(espXLblLot3, espYLot, 80, altura);
-			lblDataVctoMin.setBounds(espXLblLot3, espYLot + espEntre, 80, altura);
-			lblDataVctoMax.setBounds(espXLblLot3, espYLot + espEntre * 2, 80,
-					altura);
-	
-			dtpDataVctoMin.setBounds(espXTxtLot3, espYLot + espEntre, 130, altura);
-			dtpDataVctoMax.setBounds(espXTxtLot3, espYLot + espEntre * 2, 130,
-					altura);
-	
-			int espXTxtLot4 = 530;
-	
-			rdoEstoqueLote.setBounds(espXTxtLot4, espYLot + espEntre, 100, altura);
-			btnFiltrarLotes.setBounds(espXTxtLot4, espYLot + espEntre * 2, 80,
-					altura);
-	
-			// Tabela lote
-			tabLotes = new JTable();
-			modeloTabLotes = new DefaultTableModel() {
-				@Override
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-			barraTabLotes = new JScrollPane(
-					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-					JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	
-			modeloTabLotes.setColumnIdentifiers(new String[] { "Lote", "Qtde",
-					"Vencimento", "Origem", "Número" });
-			tabLotes.setModel(modeloTabLotes);
-			barraTabLotes.setViewportView(tabLotes);
-			int yTabLotes = 130;
-			barraTabLotes.setBounds(0, yTabLotes, tbsProdutos.getWidth(),
-					tbsProdutos.getHeight() - yTabLotes);
-	
-			pnlLotes.add(barraTabLotes);
-			pnlLotes.add(lblFiltrarLotes);
-			pnlLotes.add(lblCodLote);
-			pnlLotes.add(rdoEstoqueLote);
-			pnlLotes.add(lblOrigemLote);
-			pnlLotes.add(lblCodOrigem);
-			pnlLotes.add(lblDatasLote);
-			pnlLotes.add(lblDataVctoMin);
-			pnlLotes.add(lblDataVctoMax);
-			pnlLotes.add(txtCodLote);
-			pnlLotes.add(txtCodOrigem);
-			pnlLotes.add(cbxOrigemLote);
-			pnlLotes.add(dtpDataVctoMin);
-			pnlLotes.add(dtpDataVctoMax);
-			pnlLotes.add(btnFiltrarLotes);
-	
-			tbsProdutos.addTab("Lotes", pnlLotes);
-			tbsProdutos.setEnabledAt(ABA_LOTES, false);
-						
-			// PRODUTO MATÉRIA PRIMA
-			
-			// Tabela
-			
-			modeloTabProdMatPrima.setColumnIdentifiers(new String[] {"Código", "Produto", "Quantidade", "Unidade"});
-			tabProdMatPrima.setModel(modeloTabProdMatPrima);
-			barraTabProdMatPrima.setViewportView(tabProdMatPrima);
-			barraTabProdMatPrima.setBounds(0, 0, tbsProdutos.getWidth(), tbsProdutos.getHeight());
-			
-			pnlProdMatPrima.add(barraTabProdMatPrima);
-			
-			tbsProdutos.addTab("Produtos Fabricados", pnlProdMatPrima);
-			tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
-			
 			tabProdMatPrima.addMouseListener(new MouseAdapter() {
 				
 				@Override
@@ -897,6 +918,38 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
+			if(solicitacao.equals(TipoSolicitacao.DETALHAR)){
+				
+				rdoLote.addActionListener(getAcaoRdoLote());
+				
+			}
+			
+			if(rdoLote.isSelected()){
+				tbsProdutos.setEnabledAt(ABA_LOTES, true);
+			}
+			
+			if(produto != null){
+				
+				if(produto.getTipo().equals(TipoProduto.PRODUCAO)){
+					tbsProdutos.setEnabledAt(ABA_RECEITA, true);
+					tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
+					rdoProdProduzido.setSelected(true);
+					rdoProdProduzido.setEnabled(true);
+				}
+				else if(produto.getTipo().equals(TipoProduto.MATERIA_PRIMA)){
+					tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
+					lblPrecoVenda.setVisible(false);
+					txtPrecoVenda.setVisible(false);
+					rdoMatPrima.setSelected(true);
+					rdoMatPrima.setEnabled(true);
+				}
+				else if(produto.getTipo().equals(TipoProduto.REVENDA)){
+					rdoProdRevenda.setSelected(true);
+					rdoProdRevenda.setEnabled(true);
+				}
+
+			}
+						
 			adicionarComponentesCentro(pnlCampos);
 			
 			this.setVisible(true);
@@ -929,7 +982,7 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean incluir() {
 			
-			ProdutoVendaVO prodIncluido = null;
+			ProdutoVO prodIncluido = null;
 			
 			if(rdoMatPrima.isSelected()){
 				
@@ -940,7 +993,7 @@ import enumeradores.TipoSolicitacao;
 			}
 			else{
 				
-				prodIncluido = prodVendaBo.incluir(carregarProdutoVenda());
+				prodIncluido = prodVendaBo.incluir((ProdutoVendaVO) carregarProduto());
 				
 				if(prodIncluido != null){
 					produto.setIdProduto(prodIncluido.getIdProduto());
@@ -955,8 +1008,8 @@ import enumeradores.TipoSolicitacao;
 			
 		}
 		
-		private ProdutoVendaVO carregarProdutoVenda(){
-			
+		private ProdutoVO carregarProduto(){
+									
 			TipoProduto tipo;
 			Boolean lote = false;
 			
@@ -965,13 +1018,23 @@ import enumeradores.TipoSolicitacao;
 			}
 			
 			if(rdoProdProduzido.isSelected()){
+				if(produto == null){
+					produto = new ProdutoVendaVO();
+				}
+				
 				tipo = TipoProduto.PRODUCAO;
 			}
 			else{
 				if(rdoMatPrima.isSelected()){
+					if(produto == null){
+						produto = new MateriaPrimaVO();
+					}
 					tipo = TipoProduto.MATERIA_PRIMA;
 				}
 				else{
+					if(produto == null){
+						produto = new ProdutoVendaVO();
+					}					
 					tipo = TipoProduto.REVENDA;
 				}
 			}
@@ -980,16 +1043,18 @@ import enumeradores.TipoSolicitacao;
 			produto.setDescricao(txtNome.getText());
 			produto.setTipo(tipo);
 			produto.setPrecoCusto(Double.parseDouble(txtPrecoCusto.getText()));
-			produto.setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
 			UnidadeProdutoVO unidadeSelecionada = unidadesProduto.get(cbxUnidade.getSelectedIndex());
 			produto.setUnidade(unidadeSelecionada);
 			ProdutoCantinaVO prodCantina = new ProdutoCantinaVO();
 			prodCantina.setQtdeMinima(Double.parseDouble(txtQtdeMin.getText()));
 			prodCantina.setQtdeMaxima(Double.parseDouble(txtQtdeMax.getText()));
 			produto.setEstoque(prodCantina);
-			produto.setQtdeEstoque(0d);
 			produto.setLote(lote);
-			produto.setReceita(receita);
+			
+			if(produto instanceof ProdutoVendaVO){
+				((ProdutoVendaVO) produto).setPrecoVenda(Double.parseDouble(txtPrecoVenda.getText()));
+				((ProdutoVendaVO) produto).setReceita(receita);
+			}
 			
 			return produto;
 			
@@ -998,14 +1063,24 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		public boolean alterar() {
 			
-			if(prodVendaBo.alterar(carregarProdutoVenda())){
-				
-				JOptionPane.showMessageDialog(null, "Produto Alterado");	
-				
-				return true;
-				
+			if(produto instanceof ProdutoVendaVO){
+				if(prodVendaBo.alterar((ProdutoVendaVO) carregarProduto())){
+					
+					JOptionPane.showMessageDialog(null, "Produto Alterado");	
+					
+					return true;
+					
+				}
+			} 
+			else if(produto instanceof MateriaPrimaVO){
+				if(matPrimaBo.alterar((MateriaPrimaVO) carregarProduto())){
+					
+					JOptionPane.showMessageDialog(null, "Matéria-prima Alterada");	
+					
+					return true;
+					
+				}
 			}
-			
 			
 			return false;
 		}	
@@ -1018,19 +1093,17 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		protected boolean habilitarCampos() {
 			
-			editable = true;
+			editableTabMatPrima = true;
 
 			txtNome.setEditable(true);
 			rdoLote.setEnabled(true);
-			rdoMatPrima.setEnabled(true);
-			rdoProdProduzido.setEnabled(true);
-			rdoProdRevenda.setEnabled(true);
+
 			
 			txtPrecoCusto.setEditable(true);
 			txtPrecoVenda.setEditable(true);
 			txtQtdeMax.setEditable(true);
 			txtQtdeMin.setEditable(true);
-			cbxUnidade.setEditable(true);
+			cbxUnidade.setEnabled(true);
 			
 			txtCodFornecedor.setEditable(true);
 			txtFornecedor.setEditable(true);
@@ -1040,8 +1113,8 @@ import enumeradores.TipoSolicitacao;
 			txtCodMatPrimaRec.setEditable(true);
 			txtMatPrimaRec.setEditable(true);
 			txtQtdeMatPrima.setEditable(true);
-			cbxUnidMatPrima.setEditable(true);
-			btnBuscarMatPrima.setEnabled(true);	
+			cbxUnidMatPrima.setEnabled(true);
+			btnBuscarMatPrima.setEnabled(true);
 			
 			return true;
 		
@@ -1050,7 +1123,7 @@ import enumeradores.TipoSolicitacao;
 		@Override
 		protected boolean desabilitarCampos(){
 			
-			editable = false;
+			editableTabMatPrima = false;
 			
 			txtNome.setEditable(false);
 			rdoLote.setEnabled(false);
@@ -1084,7 +1157,7 @@ import enumeradores.TipoSolicitacao;
 			
 		}
 		
-		private Boolean adicionarMatPrima(MateriaPrimaVO materiaPrima){
+		private Boolean adicionarMatPrima(MateriaPrimaVO materiaPrimaInserida){
 			
 			String qtdeTxt = txtQtdeMatPrima.getText();
 			
@@ -1111,18 +1184,18 @@ import enumeradores.TipoSolicitacao;
 					
 					for (int l = 0; l < sizeReceita; l++) {
 						
-						ProdutoMateriaPrimaVO prodMatPrima = receita.get(l);
+						ProdutoMateriaPrimaVO materiaPrimaReceita = receita.get(l);
 			
-						if (materiaPrima.getCodProduto().equals(prodMatPrima.getMateriaPrima().getCodProduto())) {
+						if (materiaPrimaInserida.getCodProduto().equals(materiaPrimaReceita.getMateriaPrima().getCodProduto())) {
 							
-							if(!prodMatPrima.getUnidade().getDescricao().equals(unidadeSelecionada.getDescricao())){
+							if(!materiaPrimaReceita.getUnidade().getDescricao().equals(unidadeSelecionada.getDescricao())){
 								
 								int opc = JOptionPane.showConfirmDialog(null, "Deseja substituir a unidade da matéria-prima?");
 								
 								switch (opc) {
 								case JOptionPane.YES_OPTION:
 									
-									prodMatPrima.setUnidade(unidadeSelecionada);
+									materiaPrimaReceita.setUnidade(unidadeSelecionada);
 									
 									break;
 									
@@ -1138,7 +1211,7 @@ import enumeradores.TipoSolicitacao;
 							
 							qtdeReceita = receita.get(l).getQtde();
 			
-							prodMatPrima.setQtde(qtdeReceita + qtdeInserida);
+							materiaPrimaReceita.setQtde(qtdeReceita + qtdeInserida);
 							
 							itemNaReceita = true;
 			
@@ -1149,8 +1222,9 @@ import enumeradores.TipoSolicitacao;
 					if(!itemNaReceita){
 						
 						ProdutoMateriaPrimaVO prodMatPrima = new ProdutoMateriaPrimaVO();
-						prodMatPrima.setProdutoFabricado(produto);
-						prodMatPrima.setMateriaPrima(materiaPrima);
+						produtoVenda = (ProdutoVendaVO) produto;
+						prodMatPrima.setProdutoFabricado(produtoVenda);
+						prodMatPrima.setMateriaPrima(materiaPrimaInserida);
 						prodMatPrima.setQtde(qtdeInserida);
 						prodMatPrima.setUnidade(unidadeSelecionada);
 						

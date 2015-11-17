@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vo.MateriaPrimaVO;
-import vo.ProdutoVendaVO;
+import vo.ProdutoCantinaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IMateriaPrimaDAO;
 import enumeradores.TipoProduto;
@@ -28,14 +28,19 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 
 	@Override
 	public MateriaPrimaVO incluir(MateriaPrimaVO materiaPrima) {
-		System.out.println("incluiu matéria prima");
+		
+		
+		
 		return null;
+		
 	}
 
 	@Override
 	public boolean alterar(MateriaPrimaVO materiaPrima) {
 		
-		return false;
+		
+		
+		return true;
 	}
 
 	@Override
@@ -55,8 +60,11 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 			
 			pstm = conexao.prepareStatement(
 					"select mp.id_materia_prima, mp.cod_materia_prima, mp.descricao, mp.qtd_estoque, mp.ativo, mp.preco_custo, mp.lote, mp.id_unidade, "
-					+ "u.descricao, u.ativo "
-					+ "from materia_prima mp inner join unidade u on u.id_unidade = mp.id_unidade");
+					+ "u.descricao, u.ativo, "
+					+ "mpc.estoque, mpc.qtde_maxima, mpc.qtde_minima "
+					+ "from materia_prima mp "
+					+ "inner join unidade u on u.id_unidade = mp.id_unidade "
+					+ "inner join materia_prima_cantina mpc on mpc.id_materia_prima = mp.id_materia_prima ");
 			
 			rs = pstm.executeQuery();
 			
@@ -65,17 +73,24 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 			while(rs.next()){
 				
 				materiaPrima = new MateriaPrimaVO();
+				materiaPrima.setTipo(TipoProduto.MATERIA_PRIMA);
 				materiaPrima.setIdProduto(rs.getLong("id_materia_prima"));
 				materiaPrima.setCodProduto(rs.getString("id_materia_prima"));
 				materiaPrima.setDescricao(rs.getString("descricao"));
 				materiaPrima.setLote(rs.getBoolean("lote"));
 				materiaPrima.setPrecoCusto(rs.getDouble("preco_custo"));
 				materiaPrima.setAtivo(rs.getBoolean("ativo"));
+				
 				materiaPrima.setUnidade(new UnidadeProdutoVO());
 				materiaPrima.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				materiaPrima.getUnidade().setDescricao(rs.getString("descricao"));
 				materiaPrima.getUnidade().setStatus(rs.getBoolean("ativo"));
 				
+				materiaPrima.setEstoque(new ProdutoCantinaVO());
+				materiaPrima.getEstoque().setQtdeAtual(rs.getDouble("estoque"));
+				materiaPrima.getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
+				materiaPrima.getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
+								
 				listaMateriasPrimas.add(materiaPrima);
 				
 			}

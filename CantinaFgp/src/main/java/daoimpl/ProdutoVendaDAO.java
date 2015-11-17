@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vo.MateriaPrimaVO;
+import vo.ProdutoCantinaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
@@ -40,11 +41,11 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement(
-					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, "
+					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.qtd_estoque, pv.ativo, pv.preco_custo, "
 					+ "pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
 					+ "u.descricao, u.ativo "
 					+ "from produto_venda pv "
-					+ "left join unidade u on u.id_unidade = pv.id_unidade "
+					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
 					+ "where pv.cod_produto like ?  and pv.descricao like ?");
 			
 			pstm.setString(1, "%" + cod + "%");
@@ -57,6 +58,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			while(rs.next()){
 				
 				produtoVenda = new ProdutoVendaVO();
+				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
 				if(rs.getBoolean("fabricado")){
@@ -65,7 +67,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				else{
 					produtoVenda.setTipo(TipoProduto.REVENDA);
 				}
-				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
+				produtoVenda.setQtdeEstoque(rs.getDouble("qtd_estoque"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
@@ -234,9 +236,28 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 						pstm.setLong(3, produtoMateriaPrima.getProdutoFabricado().getIdProduto());
 						pstm.setLong(4, produtoMateriaPrima.getUnidade().getIdUnidadeProduto());
 						
-						if(pstm.executeUpdate() == 0){
+						if(pstm.executeUpdate() > 0){
+							
+							ProdutoCantinaVO estoque = produtoVenda.getEstoque();
+							
+							pstm = conexao.prepareStatement("insert into produto_venda_cantina (qtde_maxima, qtde_minima, estoque, ativo, id_cantina, id_produto_venda) values (?,?,?,?,?,?)");
+
+							pstm.setDouble(1, estoque.getQtdeMaxima());
+							pstm.setDouble(2, estoque.getQtdeMinima());
+							pstm.setDouble(3, 0);
+							pstm.setInt(4, 1);
+							pstm.setLong(5, 1);
+							pstm.setLong(6, produtoVenda.getIdProduto());
+							
+							if(pstm.executeUpdate() == 0){
+								conexao.rollback();
+								return null;
+							}
+							
+						}
+						else{
 							conexao.rollback();
-							return null;
+							return null;							
 						}
 						
 					}
@@ -304,41 +325,40 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					
 					prodMatPrimaBo = new ProdutoMateriaPrimaBO();
 					
-					List<ProdutoMateriaPrimaVO> receitaProdBanco = prodMatPrimaBo.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
+					List<ProdutoMateriaPrimaVO> receitaBanco = prodMatPrimaBo.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
 					
-					if(receitaProdBanco == null){
+					if(receitaBanco == null){
 						conexao.rollback();
 						return false;
 					}
 					
-					List<ProdutoMateriaPrimaVO> receitaProd = produtoVenda.getReceita();
+					List<ProdutoMateriaPrimaVO> receitaAtual = produtoVenda.getReceita();
 
 					List<ProdutoMateriaPrimaVO> receitaProdIncluir = new ArrayList<ProdutoMateriaPrimaVO>();				
 					List<ProdutoMateriaPrimaVO> receitaProdAlterar = new ArrayList<ProdutoMateriaPrimaVO>();
 					List<ProdutoMateriaPrimaVO> receitaProdExcluir = new ArrayList<ProdutoMateriaPrimaVO>();
 										
-					for (ProdutoMateriaPrimaVO matPrimaProd : receitaProd) {
+					for (ProdutoMateriaPrimaVO matPrimaProd : receitaAtual) {
 						
 						Boolean prodNovo = true;
 						
-						MateriaPrimaVO mpProd = matPrimaProd.getMateriaPrima();
+						MateriaPrimaVO mpAtual = matPrimaProd.getMateriaPrima();
 						
-						for (ProdutoMateriaPrimaVO matPrimaBanco : receitaProdBanco) {
+						for (ProdutoMateriaPrimaVO matPrimaBanco : receitaBanco) {
 							
 							MateriaPrimaVO mpBanco = matPrimaBanco.getMateriaPrima();
 							
-							if(mpProd.getIdProduto() == mpBanco.getIdProduto()){
+							if(mpAtual.getIdProduto() == mpBanco.getIdProduto()){
 								
 								receitaProdAlterar.add(matPrimaProd);
 								prodNovo = false;
-								break;
-								
+																
 							}
 							
 						}
-						// Matéria Prima Nova
+						
 						if(prodNovo){
-							// TODO - Bruno, continuar aqui - verificar o pq cai como produto novo
+							
 							receitaProdIncluir.add(matPrimaProd);
 							
 						}
@@ -346,13 +366,13 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					}
 					
 					
-					for (ProdutoMateriaPrimaVO matPrimaBanco : receitaProdBanco) {
+					for (ProdutoMateriaPrimaVO matPrimaBanco : receitaBanco) {
 						
 						Boolean mpExcluir = true;
 						
 						MateriaPrimaVO mpBanco = matPrimaBanco.getMateriaPrima();
 						
-						for (ProdutoMateriaPrimaVO matPrimaProd : receitaProd) {
+						for (ProdutoMateriaPrimaVO matPrimaProd : receitaAtual) {
 							
 							MateriaPrimaVO mpProd = matPrimaProd.getMateriaPrima();
 							
@@ -375,12 +395,12 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 						
 						pstm = conexao.prepareStatement("insert into receita (qtde, id_materia_prima, id_produto, id_unidade) values (?,?,?,?)");
 						
-						for (ProdutoMateriaPrimaVO produtoMateriaPrima : receitaProdIncluir) {
+						for (ProdutoMateriaPrimaVO itemReceita : receitaProdIncluir) {
 							
-							pstm.setDouble(1, produtoMateriaPrima.getQtde());
-							pstm.setLong(2, produtoMateriaPrima.getMateriaPrima().getIdProduto());
-							pstm.setLong(3, produtoMateriaPrima.getProdutoFabricado().getIdProduto());
-							pstm.setLong(4, produtoMateriaPrima.getUnidade().getIdUnidadeProduto());
+							pstm.setDouble(1, itemReceita.getQtde());
+							pstm.setLong(2, itemReceita.getMateriaPrima().getIdProduto());
+							pstm.setLong(3, itemReceita.getProdutoFabricado().getIdProduto());
+							pstm.setLong(4, itemReceita.getUnidade().getIdUnidadeProduto());
 							
 							if(pstm.executeUpdate() == 0){
 								conexao.rollback();
@@ -395,16 +415,14 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 						
 						pstm = conexao.prepareStatement("update receita set qtde = ?, id_unidade = ? where id_materia_prima = ? and id_produto = ?");
 					
-						for (ProdutoMateriaPrimaVO produtoMateriaPrima : receitaProd) {
-							
-							pstm.setDouble(1, produtoMateriaPrima.getQtde());
-							pstm.setLong(2, produtoMateriaPrima.getUnidade().getIdUnidadeProduto());
-							pstm.setLong(3, produtoMateriaPrima.getMateriaPrima().getIdProduto());
-							pstm.setLong(4, produtoMateriaPrima.getProdutoFabricado().getIdProduto());
-							
-							int linhasAlteradas = pstm.executeUpdate();
-							
-							if(linhasAlteradas == 0){
+						for (ProdutoMateriaPrimaVO itemReceita : receitaAtual) {
+														
+							pstm.setDouble(1, itemReceita.getQtde());
+							pstm.setLong(2, itemReceita.getUnidade().getIdUnidadeProduto());
+							pstm.setLong(3, itemReceita.getMateriaPrima().getIdProduto());
+							pstm.setLong(4, itemReceita.getProdutoFabricado().getIdProduto());
+														
+							if(pstm.executeUpdate() == 0){
 								conexao.rollback();
 								return false;
 							}
@@ -429,8 +447,20 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 							
 						}
 						
-					}
+					}					
+					
+					ProdutoCantinaVO estoque = produtoVenda.getEstoque();
+					
+					pstm = conexao.prepareStatement("update produto_venda_cantina set qtde_maxima = ?, qtde_minima = ? where id_produto_venda = ?");
 
+					pstm.setDouble(1, estoque.getQtdeMaxima());
+					pstm.setDouble(2, estoque.getQtdeMinima());
+					pstm.setLong(3, produtoVenda.getIdProduto());
+													
+					if(pstm.executeUpdate() == 0){
+						conexao.rollback();
+						return false;
+					}
 					
 				}
 			}
@@ -483,10 +513,12 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement(
-					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, "
-					+ "pv.preco_venda, pv.fabricado, pv.lote, "
-					+ "pv.id_unidade, u.descricao, u.ativo "
-					+ "from produto_venda pv inner join unidade u on u.id_unidade = pv.id_unidade");
+					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.qtd_estoque, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
+					+ "u.descricao, u.ativo, "
+					+ "pc.estoque, pc.qtde_maxima, pc.qtde_minima "
+					+ "from produto_venda pv "
+					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
+					+ "inner join produto_venda_cantina pc on pc.id_produto_venda = pv.id_produto_venda ");
 			
 			rs = pstm.executeQuery();
 			
@@ -495,6 +527,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			while(rs.next()){
 				
 				produtoVenda = new ProdutoVendaVO();
+				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
 				produtoVenda.setDescricao(rs.getString("descricao"));
 				if(rs.getBoolean("fabricado")){
@@ -503,11 +536,19 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				else{
 					produtoVenda.setTipo(TipoProduto.REVENDA);
 				}
-				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
+				produtoVenda.setQtdeEstoque(rs.getDouble("qtd_estoque"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
 				produtoVenda.setAtivo(rs.getBoolean("ativo"));
+				
+				produtoVenda.setEstoque(new ProdutoCantinaVO());
+				produtoVenda.getEstoque().setQtdeAtual(rs.getDouble("estoque"));
+				produtoVenda.getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
+				produtoVenda.getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
+				
+				produtoVenda.setReceita(new ProdutoMateriaPrimaBO().buscaReceitaPorIdProduto(produtoVenda.getIdProduto()));
+			
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
