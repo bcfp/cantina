@@ -25,6 +25,10 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 
 		Long id = produtoVendaDao.getUltimoIdGerado();
 		
+		if(id == null){
+			id = 0l;
+		}
+		
 		Long proximoId = id+1;
 
 		produto.setCodProduto(proximoId.toString());
