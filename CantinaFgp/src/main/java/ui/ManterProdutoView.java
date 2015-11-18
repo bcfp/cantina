@@ -227,7 +227,6 @@ import enumeradores.TipoSolicitacao;
 			rdoProdRevenda = new JRadioButton("Produto Revenda");
 			rdoProdRevenda.setSelected(true);
 			
-			
 			// TABS
 			
 			// DADOS
@@ -642,6 +641,7 @@ import enumeradores.TipoSolicitacao;
 						tbsProdutos.setEnabledAt(ABA_LOTES, false);
 						tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
 						
+						produto = new ProdutoVendaVO();
 			
 		}
 		
@@ -739,6 +739,31 @@ import enumeradores.TipoSolicitacao;
 			};
 		}
 		
+		private boolean deselecionarRdoProdProduzido(){
+			
+			if(receita.size() > 0){
+				
+				int x = JOptionPane.showConfirmDialog(null, 
+						"Deseja realmente alterar o tipo? Se confirmar a alteração, as matérias-primas adicionadas serão perdidas",
+						"Confirmação",
+						JOptionPane.YES_OPTION);
+				
+				if(x == JOptionPane.NO_OPTION){
+					rdoProdProduzido.setSelected(true);
+					return false;
+				}
+
+				if(x == JOptionPane.YES_OPTION){
+					receita = null;
+					carregarGridMatPrima(receita);
+				}
+			
+			}
+			
+			return true;
+			
+		}
+		
 		private void definicoesPagina(){
 			
 			rdoMatPrima.addActionListener(new ActionListener() {
@@ -746,40 +771,22 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					if(receita.size() > 0){
-						
-						int x = JOptionPane.showConfirmDialog(null, 
-								"Deseja realmente alterar o tipo? Se confirmar a alteração, as matérias-primas adicionadas serão perdidas",
-								"Confirmação",
-								JOptionPane.YES_OPTION);
-						
-						if(x == JOptionPane.NO_OPTION){
-							rdoProdProduzido.setSelected(true);
-							return;
+					if(deselecionarRdoProdProduzido()){
+						if(rdoMatPrima.isSelected()){
+							
+							if(produto == null || !(produto instanceof MateriaPrimaVO)){
+								produto = new MateriaPrimaVO();
+							}
+							
+							tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+							tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+							tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
+							
+							if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
+								tbsProdutos.setSelectedComponent(pnlDados);
+							}
+														
 						}
-
-						if(x == JOptionPane.YES_OPTION){
-							receita = null;
-							carregarGridMatPrima(receita);
-						}
-					
-					}
-					
-					if(rdoMatPrima.isSelected()){
-						
-						
-						if(produto == null || !(produto instanceof MateriaPrimaVO)){
-							produto = new MateriaPrimaVO();
-						}
-						
-						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
-						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
-						tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
-						
-						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
-							tbsProdutos.setSelectedComponent(pnlDados);
-						}
-													
 					}
 					
 				}
@@ -818,41 +825,24 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					if(receita.size() > 0){
-						
-						int x = JOptionPane.showConfirmDialog(null, 
-								"Deseja realmente alterar o tipo? Se confirmar a alteração, as matérias-primas adicionadas serão perdidas",
-								"Confirmação",
-								JOptionPane.YES_OPTION);
-						
-						if(x == JOptionPane.NO_OPTION){
-							rdoProdProduzido.setSelected(true);
-							return;
+					if(deselecionarRdoProdProduzido()){
+						if(rdoProdRevenda.isSelected()){
+							
+							if(produto == null || !(produto instanceof ProdutoVendaVO)){
+								produto = new ProdutoVendaVO();
+							}
+							
+							tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
+							tbsProdutos.setEnabledAt(ABA_RECEITA, false);
+							tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
+							
+							if(tbsProdutos.getSelectedComponent().equals(pnlReceita) || tbsProdutos.getSelectedComponent().equals(pnlProdMatPrima)){
+								tbsProdutos.setSelectedComponent(pnlDados);
+							}
+							
 						}
-
-						if(x == JOptionPane.YES_OPTION){
-							receita = null;
-							carregarGridMatPrima(receita);
-						}
-					
 					}
-					
-					if(rdoProdRevenda.isSelected()){
-						
-						if(produto == null || !(produto instanceof ProdutoVendaVO)){
-							produto = new ProdutoVendaVO();
-						}
-						
-						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
-						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
-						tbsProdutos.setEnabledAt(ABA_MP_PROD, false);
-						
-						if(tbsProdutos.getSelectedComponent().equals(pnlReceita) || tbsProdutos.getSelectedComponent().equals(pnlProdMatPrima)){
-							tbsProdutos.setSelectedComponent(pnlDados);
-						}
-						
-					}
-					
+										
 				}
 			});
 			
@@ -1056,7 +1046,7 @@ import enumeradores.TipoSolicitacao;
 				}
 								
 			}
-						
+			
 			return prodIncluido != null;
 			
 		}
@@ -1111,8 +1101,7 @@ import enumeradores.TipoSolicitacao;
 					
 					JOptionPane.showMessageDialog(null, "Produto Alterado");	
 					
-					return true;
-					
+					return true;					
 				}
 			} 
 			else if(produto instanceof MateriaPrimaVO){
@@ -1120,8 +1109,7 @@ import enumeradores.TipoSolicitacao;
 					
 					JOptionPane.showMessageDialog(null, "Matéria-prima Alterada");	
 					
-					return true;
-					
+					return true;					
 				}
 			}
 			
