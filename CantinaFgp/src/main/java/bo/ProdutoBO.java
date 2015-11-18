@@ -18,6 +18,8 @@ public abstract class ProdutoBO<P extends ProdutoVO, D extends IProdutoDAO<P>> {
 	
 	public P incluir(P produto){
 		
+		produto.setQtdeEstoque(0d);
+		
 		return produtoDao.incluir(produto);
 		
 	}

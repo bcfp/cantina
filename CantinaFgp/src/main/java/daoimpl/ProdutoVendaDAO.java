@@ -229,12 +229,12 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 
 					List<ProdutoMateriaPrimaVO> receita = produtoVenda.getReceita();
 					
-					for (ProdutoMateriaPrimaVO produtoMateriaPrima : receita) {
+					for (ProdutoMateriaPrimaVO itemReceita : receita) {
 						
-						pstm.setDouble(1, produtoMateriaPrima.getQtde());
-						pstm.setLong(2, produtoMateriaPrima.getMateriaPrima().getIdProduto());
-						pstm.setLong(3, produtoMateriaPrima.getProdutoFabricado().getIdProduto());
-						pstm.setLong(4, produtoMateriaPrima.getUnidade().getIdUnidadeProduto());
+						pstm.setDouble(1, itemReceita.getQtde());
+						pstm.setLong(2, itemReceita.getMateriaPrima().getIdProduto());
+						pstm.setLong(3, itemReceita.getProdutoFabricado().getIdProduto());
+						pstm.setLong(4, itemReceita.getUnidade().getIdUnidadeProduto());
 						
 						if(pstm.executeUpdate() > 0){
 							

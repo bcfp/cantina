@@ -151,7 +151,9 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 
 	@Override
 	public List<OrdemProducaoVO> consultar() {
+		
 		return ordemProdBo.consultar();
+	
 	}
 	
 }

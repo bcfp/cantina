@@ -209,8 +209,7 @@ import enumeradores.TipoSolicitacao;
 		{
 					
 			// PRINCIPAL
-	
-			receita = new ArrayList<ProdutoMateriaPrimaVO>();
+			
 			listaFornecedores = new ArrayList<FornecedorVO>();
 	
 			tbsProdutos = new JTabbedPane();
@@ -673,6 +672,32 @@ import enumeradores.TipoSolicitacao;
 			
 			this.produto = produto;
 			
+			rdoProdProduzido.setEnabled(false);
+			rdoMatPrima.setEnabled(false);
+			rdoProdRevenda.setEnabled(false);
+			
+			if(produto.getTipo().equals(TipoProduto.PRODUCAO)){
+				tbsProdutos.setEnabledAt(ABA_RECEITA, true);
+				tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
+				rdoProdProduzido.setSelected(true);
+				rdoProdProduzido.setEnabled(true);
+			}
+			else if(produto.getTipo().equals(TipoProduto.MATERIA_PRIMA)){
+				tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
+				lblPrecoVenda.setVisible(false);
+				txtPrecoVenda.setVisible(false);
+				
+				rdoMatPrima.setSelected(true);
+				rdoMatPrima.setEnabled(true);
+				
+			}
+			else if(produto.getTipo().equals(TipoProduto.REVENDA)){
+				
+				rdoProdRevenda.setSelected(true);
+				rdoProdRevenda.setEnabled(true);
+				
+			}
+			
 			txtCod.setText(produto.getCodProduto());
 			txtNome.setText(produto.getDescricao());
 			txtPrecoCusto.setText(produto.getPrecoCusto().toString());
@@ -690,9 +715,6 @@ import enumeradores.TipoSolicitacao;
 				
 			}
 			
-			
-			
-			editableTabMatPrima = false;
 			desabilitarCampos();
 			definicoesPagina();
 			
@@ -724,7 +746,31 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
+					if(receita.size() > 0){
+						
+						int x = JOptionPane.showConfirmDialog(null, 
+								"Deseja realmente alterar o tipo? Se confirmar a alteração, as matérias-primas adicionadas serão perdidas",
+								"Confirmação",
+								JOptionPane.YES_OPTION);
+						
+						if(x == JOptionPane.NO_OPTION){
+							rdoProdProduzido.setSelected(true);
+							return;
+						}
+
+						if(x == JOptionPane.YES_OPTION){
+							receita = null;
+							carregarGridMatPrima(receita);
+						}
+					
+					}
+					
 					if(rdoMatPrima.isSelected()){
+						
+						
+						if(produto == null || !(produto instanceof MateriaPrimaVO)){
+							produto = new MateriaPrimaVO();
+						}
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
@@ -733,7 +779,7 @@ import enumeradores.TipoSolicitacao;
 						if(tbsProdutos.getSelectedComponent().equals(pnlReceita)){
 							tbsProdutos.setSelectedComponent(pnlDados);
 						}
-						
+													
 					}
 					
 				}
@@ -746,6 +792,12 @@ import enumeradores.TipoSolicitacao;
 				public void actionPerformed(ActionEvent e) {
 					
 					if(rdoProdProduzido.isSelected()){
+						
+						receita = new ArrayList<ProdutoMateriaPrimaVO>();
+						
+						if(produto == null || !(produto instanceof ProdutoVendaVO)){
+							produto = new ProdutoVendaVO();
+						}
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, true);
@@ -766,7 +818,30 @@ import enumeradores.TipoSolicitacao;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
+					if(receita.size() > 0){
+						
+						int x = JOptionPane.showConfirmDialog(null, 
+								"Deseja realmente alterar o tipo? Se confirmar a alteração, as matérias-primas adicionadas serão perdidas",
+								"Confirmação",
+								JOptionPane.YES_OPTION);
+						
+						if(x == JOptionPane.NO_OPTION){
+							rdoProdProduzido.setSelected(true);
+							return;
+						}
+
+						if(x == JOptionPane.YES_OPTION){
+							receita = null;
+							carregarGridMatPrima(receita);
+						}
+					
+					}
+					
 					if(rdoProdRevenda.isSelected()){
+						
+						if(produto == null || !(produto instanceof ProdutoVendaVO)){
+							produto = new ProdutoVendaVO();
+						}
 						
 						tbsProdutos.setEnabledAt(ABA_FORNECEDORES, true);
 						tbsProdutos.setEnabledAt(ABA_RECEITA, false);
@@ -927,28 +1002,6 @@ import enumeradores.TipoSolicitacao;
 			if(rdoLote.isSelected()){
 				tbsProdutos.setEnabledAt(ABA_LOTES, true);
 			}
-			
-			if(produto != null){
-				
-				if(produto.getTipo().equals(TipoProduto.PRODUCAO)){
-					tbsProdutos.setEnabledAt(ABA_RECEITA, true);
-					tbsProdutos.setEnabledAt(ABA_FORNECEDORES, false);
-					rdoProdProduzido.setSelected(true);
-					rdoProdProduzido.setEnabled(true);
-				}
-				else if(produto.getTipo().equals(TipoProduto.MATERIA_PRIMA)){
-					tbsProdutos.setEnabledAt(ABA_MP_PROD, true);
-					lblPrecoVenda.setVisible(false);
-					txtPrecoVenda.setVisible(false);
-					rdoMatPrima.setSelected(true);
-					rdoMatPrima.setEnabled(true);
-				}
-				else if(produto.getTipo().equals(TipoProduto.REVENDA)){
-					rdoProdRevenda.setSelected(true);
-					rdoProdRevenda.setEnabled(true);
-				}
-
-			}
 						
 			adicionarComponentesCentro(pnlCampos);
 			
@@ -1009,7 +1062,7 @@ import enumeradores.TipoSolicitacao;
 		}
 		
 		private ProdutoVO carregarProduto(){
-									
+
 			TipoProduto tipo;
 			Boolean lote = false;
 			
@@ -1017,24 +1070,14 @@ import enumeradores.TipoSolicitacao;
 				lote = true;
 			}
 			
-			if(rdoProdProduzido.isSelected()){
-				if(produto == null){
-					produto = new ProdutoVendaVO();
-				}
-				
+			if(rdoProdProduzido.isSelected()){				
 				tipo = TipoProduto.PRODUCAO;
 			}
 			else{
 				if(rdoMatPrima.isSelected()){
-					if(produto == null){
-						produto = new MateriaPrimaVO();
-					}
 					tipo = TipoProduto.MATERIA_PRIMA;
 				}
 				else{
-					if(produto == null){
-						produto = new ProdutoVendaVO();
-					}					
 					tipo = TipoProduto.REVENDA;
 				}
 			}
@@ -1127,9 +1170,21 @@ import enumeradores.TipoSolicitacao;
 			
 			txtNome.setEditable(false);
 			rdoLote.setEnabled(false);
-			rdoMatPrima.setEnabled(false);
-			rdoProdProduzido.setEnabled(false);
-			rdoProdRevenda.setEnabled(false);
+			
+			if(rdoMatPrima.isSelected()){
+				rdoProdProduzido.setEnabled(false);
+				rdoProdRevenda.setEnabled(false);
+			}
+			else{
+				if(rdoProdProduzido.isSelected()){
+					rdoMatPrima.setEnabled(false);
+					rdoProdRevenda.setEnabled(false);
+				}
+				else{
+					rdoMatPrima.setEnabled(false);
+					rdoProdProduzido.setEnabled(false);
+				}
+			}
 			
 			txtPrecoCusto.setEditable(false);
 			txtPrecoVenda.setEditable(false);
@@ -1222,8 +1277,7 @@ import enumeradores.TipoSolicitacao;
 					if(!itemNaReceita){
 						
 						ProdutoMateriaPrimaVO prodMatPrima = new ProdutoMateriaPrimaVO();
-						produtoVenda = (ProdutoVendaVO) produto;
-						prodMatPrima.setProdutoFabricado(produtoVenda);
+						prodMatPrima.setProdutoFabricado((ProdutoVendaVO) produto);
 						prodMatPrima.setMateriaPrima(materiaPrimaInserida);
 						prodMatPrima.setQtde(qtdeInserida);
 						prodMatPrima.setUnidade(unidadeSelecionada);
