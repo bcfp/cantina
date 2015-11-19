@@ -27,13 +27,13 @@ public class ManterCantinaView extends ManterFrameView<CantinaVO> {
 	}
 
 	@Override
-	public boolean incluir() {
+	public boolean incluir(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Cantina incluída");
 		return false;
 	}
 
 	@Override
-	public boolean alterar() {
+	public boolean alterar(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Cantina alterada");		
 		return true;
 	}

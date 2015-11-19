@@ -28,13 +28,13 @@ public class ManterClienteView extends ManterFrameView<ClienteVO> {
 	}
 
 	@Override
-	public boolean incluir() {
+	public boolean incluir(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Cliente incluído");
 		return false;
 	}
 
 	@Override
-	public boolean alterar() {
+	public boolean alterar(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Cliente alterado");		
 		return true;
 	}

@@ -27,13 +27,13 @@ public class ManterFuncionarioView extends ManterFrameView<FuncionarioVO> {
 	}
 
 	@Override
-	public boolean incluir() {
+	public boolean incluir(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Funcionario Incluído");
 		return true;
 	}
 
 	@Override
-	public boolean alterar() {
+	public boolean alterar(StringBuilder msgErro) {
 		JOptionPane.showMessageDialog(null, "Funcionario Alterado");	
 		return true;
 	}

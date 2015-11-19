@@ -427,7 +427,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		}
 		else{
 			// TODO - status index alterar isso aqui
-			cbxStatusCompra.setSelectedIndex(3);
+			//cbxStatusCompra.setSelectedIndex(3);
 		}
 		
 	}
@@ -508,7 +508,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	}
 		
 	@Override
-	public boolean incluir() {
+	public boolean incluir(StringBuilder msgErro) {
 
 		CompraVO compraIncluida = compraBo.incluir(carregarCompra());
 
@@ -530,7 +530,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	}
 	
 	@Override
-	public boolean alterar() {
+	public boolean alterar(StringBuilder msgErro) {
 
 		if (compraBo.alterar(carregarCompra())) {
 

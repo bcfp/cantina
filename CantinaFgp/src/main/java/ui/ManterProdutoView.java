@@ -1023,7 +1023,7 @@ import enumeradores.TipoSolicitacao;
 		}
 
 		@Override
-		public boolean incluir() {
+		public boolean incluir(StringBuilder msgErro) {
 			
 			ProdutoVO prodIncluido = null;
 			
@@ -1094,7 +1094,7 @@ import enumeradores.TipoSolicitacao;
 		}
 
 		@Override
-		public boolean alterar() {
+		public boolean alterar(StringBuilder msgErro) {
 			
 			if(produto instanceof ProdutoVendaVO){
 				if(prodVendaBo.alterar((ProdutoVendaVO) carregarProduto())){

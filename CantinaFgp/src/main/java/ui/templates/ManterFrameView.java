@@ -96,20 +96,21 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 				
 				if(isCamposValidos(msgErro)){
 					
-					if (alterar()) {
+					if (alterar(msgErro)) {
 						if(desabilitarCampos()){
 							btnAlterar.setEnabled(true);
 							btnLimpar.setEnabled(false);
 							btnGravar.setEnabled(false);
 						}
 					}
-					
+					else{
+						JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				else{
 					JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
-					msgErro = new StringBuilder();
 				}
-
+				msgErro = new StringBuilder();
 			}
 		};		
 
@@ -130,7 +131,7 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 				if(isCamposValidos(msgErro)){
 				
-					if (incluir()) {
+					if (incluir(msgErro)) {
 	
 						if(desabilitarCampos()){
 							acaoGravarAlteraracao();
@@ -139,6 +140,9 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 							btnGravar.setEnabled(false);							
 						}
 						
+					}
+					else{
+						JOptionPane.showMessageDialog(null, msgErro, "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 				
 				}
