@@ -1,19 +1,23 @@
 package daoimpl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bo.ProdutoMateriaPrimaBO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
 import vo.OrdemProducaoVO;
+import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IOrdemProducaoDAO;
+import daoservice.IProdutoMateriaPrimaDAO;
 import enumeradores.TipoStatus;
 
 public class OrdemProducaoDAO implements IOrdemProducaoDAO{
@@ -23,17 +27,40 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	private	PreparedStatement pstm;
 	private ResultSet rs;
 	
+	ProdutoMateriaPrimaBO prodMatPrimaBo;
+	IProdutoMateriaPrimaDAO prodMatPrimaDao;
+	
 	{
 		
 		fabrica = ConnectionFactory.getInstance();
+		prodMatPrimaBo = new ProdutoMateriaPrimaBO();
+		prodMatPrimaDao = new ProdutoMateriaPrimaDAO();
 		
 	}
 	
-	private Long getUltimoId(){
-	
+	public Long getUltimoIdGerado(){
 		
-		return null;
+		Long id = null;
 		
+		try {
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("select id_ordem_producao from ordem_producao where id_ordem_producao = (select max(id_ordem_producao) from ordem_producao)");
+		
+			rs = pstm.executeQuery();
+			
+			if(rs.next()){
+				id = rs.getLong("id_ordem_producao");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return id;
 	}
 
 	@Override
@@ -47,7 +74,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 			pstm = conexao.prepareStatement(
 					"insert into ordem_producao(qtde, data_ordem_producao, id_produto, id_funcionario_cantina, id_status) "
-					+ "values (?,?,?,?,?);",PreparedStatement.RETURN_GENERATED_KEYS);
+					+ "values (?,?,?,?,?);");
 			
 			pstm.setInt(1, ordemProd.getQtde());
 			pstm.setDate(2, new java.sql.Date(ordemProd.getData().getTime()));
@@ -57,7 +84,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 			pstm.executeUpdate();
 			
-			ordemProdInserida.setIdOrdemProducao(getUltimoId());
+			ordemProdInserida.setCodOrdemProducao(getUltimoIdGerado().toString());
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -85,6 +112,47 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	@Override
 	public boolean alterar(OrdemProducaoVO ordemProducao) {
 		
+		try{
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("update ordem_producao "
+					+ "set qtde = ?, id_produto = ?, id_funcionario_cantina = ?, id_status = ? "
+					+ "where id_ordem_producao = ?"
+			);
+
+			pstm.setInt(1, ordemProducao.getQtde());
+			pstm.setLong(2, ordemProducao.getProdutoVenda().getIdProduto());
+			pstm.setLong(3, ordemProducao.getFuncionarioCantina().getIdFuncionarioCantina());
+			pstm.setLong(4, ordemProducao.getStatus().getIdStatus());
+			pstm.setLong(5, ordemProducao.getIdOrdemProducao());
+			
+			if(pstm.executeUpdate() == 0){
+				conexao.rollback();
+				return false;
+			}
+			
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+				return false;
+				} catch (SQLException e1) {}
+		} finally {			
+			try {
+				conexao.close();
+				pstm.close();
+			} catch (SQLException e) {
+				return false;
+			}
+			
+		}
 		
 		return true;
 		
@@ -142,6 +210,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				ordemProducao.getProdutoVenda().setCodProduto(rs.getString("cod_produto"));
 				ordemProducao.getProdutoVenda().setDescricao(rs.getString("descricao"));
 				ordemProducao.getProdutoVenda().setPrecoVenda(rs.getDouble("preco_venda"));
+				ordemProducao.getProdutoVenda().setReceita(prodMatPrimaBo.consultarReceitaPorIdProduto(ordemProducao.getProdutoVenda().getIdProduto()));
 				
 				ordemProducao.getProdutoVenda().setUnidade(new UnidadeProdutoVO());
 				ordemProducao.getProdutoVenda().getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));

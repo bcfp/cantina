@@ -704,7 +704,7 @@ import enumeradores.TipoSolicitacao;
 			
 			txtQtdeMax.setText(produto.getEstoque().getQtdeMaxima().toString());
 			txtQtdeMin.setText(produto.getEstoque().getQtdeMinima().toString());
-			cbxUnidMatPrima.setSelectedItem(produto.getUnidade().getDescricao());
+			cbxUnidade.setSelectedItem(produto.getUnidade().getDescricao()); // TODO - não está selecionando a unidade correta, isso pq as instancias das Strings não são as mesmas
 			
 			if(produto instanceof ProdutoVendaVO){
 				

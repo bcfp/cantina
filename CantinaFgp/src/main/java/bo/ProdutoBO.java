@@ -35,6 +35,18 @@ public abstract class ProdutoBO<P extends ProdutoVO, D extends IProdutoDAO<P>> {
 		return produtoDao.deletar(produto.getIdProduto());
 		
 	}
+	
+	public boolean entradaEstoque(Long idProduto, Double qtd){
+		
+		return produtoDao.entradaEstoque(idProduto, qtd);
+		
+	}
+	
+	public boolean retiradaEstoque(Long idProduto, Double qtd){
+		
+		return produtoDao.retiradaEstoque(idProduto, qtd);
+		
+	}
 
 	public Boolean verificaDescricaoVazio(String descricao){
 		

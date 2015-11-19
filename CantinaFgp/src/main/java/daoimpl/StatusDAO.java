@@ -76,10 +76,9 @@ public class StatusDAO implements IStatusDAO{
 
 			conexao = fabrica.getConexao();
 
-			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = ? or tipo = ?");
+			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = ?");
 
 			pstm.setString(1, ts);
-			pstm.setString(2, TipoStatus.GENERICO.getTipo());
 			
 			rs = pstm.executeQuery();
 
@@ -103,12 +102,6 @@ public class StatusDAO implements IStatusDAO{
 					
 				}
 				
-				if(rs.getString("tipo").equals(TipoStatus.GENERICO.getTipo())){
-					
-					status.setTipoStatus(TipoStatus.GENERICO);
-					
-				}
-				
 
 				if(rs.getString("tipo").equals(TipoStatus.VENDA.getTipo())){
 					
@@ -116,8 +109,6 @@ public class StatusDAO implements IStatusDAO{
 					
 				}
 				
-				
-
 				listaStatus.add(status);
 			}
 

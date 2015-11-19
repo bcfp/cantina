@@ -149,9 +149,6 @@ public class CompraDAO implements ICompraDAO {
 				compra.setStatus(new StatusVO());
 				compra.getStatus().setDescricao("descricao_status");
 				String  tipoStatus = rs.getString("tipo");
-				if(tipoStatus.equals(TipoStatus.GENERICO)){
-					compra.getStatus().setTipoStatus(TipoStatus.GENERICO);
-				}
 				
 				if(tipoStatus.equals(TipoStatus.ORDEM_COMPRA)){
 					compra.getStatus().setTipoStatus(TipoStatus.ORDEM_COMPRA);

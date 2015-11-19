@@ -166,7 +166,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
 		
-		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_PRODUCAO);
 		
 		for (StatusVO statusVO : listaStatus) {
 			
@@ -188,9 +188,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela() {
 		
-		if(ordemProducao == null){
-			cbxStatus.setSelectedItem("Em Aberto");			
-		}
+		cbxStatus.setSelectedItem("Em Aberto");			
 		
 		cbxStatus.setEnabled(false);
 	
@@ -286,6 +284,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	public void abrirJanela(OrdemProducaoVO ordemProducao) {
 		
 		this.ordemProducao = ordemProducao;
+		funcionarioCantina = ordemProducao.getFuncionarioCantina();
+		produtoVenda = ordemProducao.getProdutoVenda();
 		
 		String status = ordemProducao.getStatus().getDescricao();
 		
@@ -318,7 +318,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		}
 				
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
-		cbxStatus.setSelectedItem(status);
+		cbxStatus.setSelectedItem(status); // TODO - resolver 
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProd.setText(ordemProducao.getQtde().toString());
@@ -332,6 +332,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		txtCodFunc.setEditable(false);
 		txtQtdeProd.setEditable(false);
 		btnConsultarFunc.setEnabled(false);
+		btnConsultarProd.setEnabled(false);
 		
 		abrirJanela();
 		
@@ -354,7 +355,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			txtCodProd.setText(produtoVenda.getCodProduto());
 			txtDescProd.setText(produtoVenda.getDescricao());
 						
-			receita = receitaBO.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
+			receita = receitaBO.consultarReceitaPorIdProduto(produtoVenda.getIdProduto());
 			
 			carregarGridReceita(receita);
 			
@@ -493,6 +494,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		if (ordemProdIncluida != null) {
 
+			txtCodOp.setText(ordemProdIncluida.getCodOrdemProducao());
+			
 			/*
 			 * TODO - Na inclusão deve ser verificado se o status é diferente de
 			 * 'em aberto', se for a qtde de cada matéria-prima deve ser
@@ -512,18 +515,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	public boolean alterar() {
-
+				
 		if (ordemProducaoBO.alterar(carregarOrdemProducao())) {
-
-			/*
-			 * TODO - Na alteração deve ser verificado se o status é concluído,
-			 * se for o produto deve ser incluído no estoque de produto venda a
-			 * inclusão deve ser feita junto da alteração
-			 */
 
 			JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
 
-		} else {
+		} 
+		else {
 			JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -535,7 +533,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private OrdemProducaoVO carregarOrdemProducao(){
 		
 		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-		ordemProducao.setData(new Date());
+		ordemProducao.setData(new Date()); // TODO - Bruno: voltar aqui
 		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 		ordemProducao.setFuncionarioCantina(funcionarioCantina);
 		ordemProducao.setProdutoVenda(produtoVenda);
@@ -593,7 +591,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			
 			if(isCamposValidos){
 				
-				if(!cbxStatus.getSelectedItem().equals("Concluída")){
+				if(cbxStatus.getSelectedItem().equals("Em Fabricação")){
 					
 					int qtdProdutos = ordemProducaoBO.stringToInteger(txtQtdeProd.getText());
 					
@@ -618,13 +616,37 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	protected boolean habilitarCampos() {
+		
+		String status = cbxStatus.getSelectedItem().toString();
+				
+		switch (status) {
+		case "Concluída":
+			
+			return false;
+			
+		case "Em Fabricação":
 
-		btnConsultarProd.setEnabled(true);
-		btnConsultarFunc.setEnabled(true);
-		cbxStatus.setEnabled(true);
-		txtCodProd.setEnabled(true);
-		txtCodFunc.setEnabled(true);
-		txtQtdeProd.setEnabled(true);
+			cbxStatus.setEnabled(true);
+
+			break;
+
+		case "Aguardando Compra":
+
+			cbxStatus.setEnabled(true);
+
+			break;
+
+		case "Em Aberto":
+
+			btnConsultarProd.setEnabled(true);
+			btnConsultarFunc.setEnabled(true);
+			cbxStatus.setEnabled(true);
+			txtCodProd.setEditable(true);
+			txtCodFunc.setEditable(true);
+			txtQtdeProd.setEditable(true);	
+			
+			break;
+		}
 		
 		return true;
 	
@@ -632,13 +654,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	protected boolean desabilitarCampos() {
-		
+				
 		btnConsultarProd.setEnabled(false);
 		btnConsultarFunc.setEnabled(false);
 		cbxStatus.setEnabled(false);
-		txtCodProd.setEnabled(false);
-		txtCodFunc.setEnabled(false);
-		txtQtdeProd.setEnabled(false);
+		txtCodProd.setEditable(false);
+		txtCodFunc.setEditable(false);
+		txtQtdeProd.setEditable(false);
 				
 		return true;
 	}

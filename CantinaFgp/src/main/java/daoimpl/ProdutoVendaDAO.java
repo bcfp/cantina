@@ -325,7 +325,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					
 					prodMatPrimaBo = new ProdutoMateriaPrimaBO();
 					
-					List<ProdutoMateriaPrimaVO> receitaBanco = prodMatPrimaBo.buscaReceitaPorIdProduto(produtoVenda.getIdProduto());
+					List<ProdutoMateriaPrimaVO> receitaBanco = prodMatPrimaBo.consultarReceitaPorIdProduto(produtoVenda.getIdProduto());
 					
 					if(receitaBanco == null){
 						conexao.rollback();
@@ -518,7 +518,8 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					+ "pc.estoque, pc.qtde_maxima, pc.qtde_minima "
 					+ "from produto_venda pv "
 					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
-					+ "inner join produto_venda_cantina pc on pc.id_produto_venda = pv.id_produto_venda ");
+					+ "inner join produto_venda_cantina pc on pc.id_produto_venda = pv.id_produto_venda "
+					+ "where pv.ativo = 1");
 			
 			rs = pstm.executeQuery();
 			
@@ -547,8 +548,10 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				produtoVenda.getEstoque().setQtdeMaxima(rs.getDouble("qtde_maxima"));
 				produtoVenda.getEstoque().setQtdeMinima(rs.getDouble("qtde_minima"));
 				
-				produtoVenda.setReceita(new ProdutoMateriaPrimaBO().buscaReceitaPorIdProduto(produtoVenda.getIdProduto()));
-			
+				if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
+					produtoVenda.setReceita(new ProdutoMateriaPrimaBO().consultarReceitaPorIdProduto(produtoVenda.getIdProduto()));
+				}
+				
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
@@ -651,5 +654,70 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		
 		return produtoVenda;
 	}
+	
+	
+	@Override
+	public boolean entradaEstoque(Long idProduto, Double qtd) {
+		
+		try{
+			
+			conexao = fabrica.getConexao();
+
+			pstm = conexao.prepareStatement("select estoque from produto_venda_cantina where id_produto_venda = ?");
+			
+			pstm.setLong(1, idProduto);
+			
+			rs = pstm.executeQuery();
+			
+			Integer qtdAtual = 0;
+			
+			if(rs.next()){
+				
+				qtdAtual = rs.getInt("estoque");
+				
+			}
+			
+			pstm = conexao.prepareStatement("update produto_venda_cantina set estoque = ? where id_produto_venda = ?");
+
+			pstm.setDouble(1, qtdAtual+qtd);
+			pstm.setLong(2, idProduto);
+			
+			if(pstm.executeUpdate() == 0){
+				conexao.rollback();
+				return false;
+			}
+			
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+				return false;
+				} catch (SQLException e1) {}
+		} finally {			
+			try {
+				conexao.close();
+				pstm.close();
+			} catch (SQLException e) {
+				return false;
+			}
+			
+		}
+		
+		return true;
+		
+	}
+
+	@Override
+	public boolean retiradaEstoque(Long idProduto, Double qtd) {
+		
+		return false;
+	}
+
 
 }

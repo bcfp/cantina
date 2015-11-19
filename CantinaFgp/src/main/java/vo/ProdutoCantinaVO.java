@@ -6,7 +6,7 @@ import enumeradores.TipoProduto;
 
 public class ProdutoCantinaVO extends GenericVO{
 	
-	private Long idEstoque;
+	private Long idProdutoCantina;
 	private ProdutoVO produto;
 	private CantinaVO cantina;
 	private Double qtdeMinima;
@@ -19,11 +19,11 @@ public class ProdutoCantinaVO extends GenericVO{
 	}
 
 	public Long getIdEstoque() {
-		return idEstoque;
+		return idProdutoCantina;
 	}
 
 	public void setIdEstoque(Long idEstoque) {
-		this.idEstoque = idEstoque;
+		this.idProdutoCantina = idEstoque;
 	}
 
 	public ProdutoVO getProduto() {

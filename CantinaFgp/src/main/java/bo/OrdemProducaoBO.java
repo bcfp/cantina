@@ -3,18 +3,22 @@ package bo;
 import java.util.List;
 
 import utils.UtilFuncoes;
-import vo.CompraVO;
 import vo.OrdemProducaoVO;
+import vo.ProdutoMateriaPrimaVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
 
 public class OrdemProducaoBO {
 	
 	private IOrdemProducaoDAO ordemProdDao;
+	private ProdutoVendaBO prodVendaBo;
+	private MateriaPrimaBO matPrimaBo;
 	
 	{
 		
 		ordemProdDao = new OrdemProducaoDAO();
+		prodVendaBo = new ProdutoVendaBO();
+		matPrimaBo = new MateriaPrimaBO();
 		
 	}
 	
@@ -82,7 +86,40 @@ public class OrdemProducaoBO {
 		
 	public boolean alterar(OrdemProducaoVO ordemProducao){
 		
-		return ordemProdDao.alterar(ordemProducao);
+		// TODO - Bruno: continuar aqui
+		
+		boolean alterado = false;
+		
+		if(ordemProdDao.alterar(ordemProducao)){
+			
+			alterado = true;
+			
+			String status = ordemProducao.getStatus().getDescricao();
+		
+			if(status.equals("Concluída")){
+								
+				if(!prodVendaBo.entradaEstoque(ordemProducao.getProdutoVenda().getIdProduto(), ordemProducao.getQtde().doubleValue())){
+					alterado = false;
+				}
+				
+			}
+			else if(status.equals("Em Fabricação")){
+				
+				List<ProdutoMateriaPrimaVO> receita = ordemProducao.getProdutoVenda().getReceita();
+				
+				for (ProdutoMateriaPrimaVO itemReceita : receita) {
+					
+					if(!matPrimaBo.retiradaEstoque(itemReceita.getMateriaPrima().getIdProduto(), itemReceita.getQtde()*ordemProducao.getQtde())){
+						alterado = false;
+					}
+					
+				}
+								
+			}
+			
+		}
+		
+		return alterado;
 		
 	}
 	
