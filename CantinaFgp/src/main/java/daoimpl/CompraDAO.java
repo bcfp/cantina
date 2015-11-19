@@ -95,7 +95,58 @@ public class CompraDAO implements ICompraDAO {
 	@Override
 	public boolean alterar(CompraVO compra) {
 		
-		// TODO - Fazer conexão com o banco
+		java.sql.Date dataSql = new java.sql.Date(compra.getData().getTime());
+		
+		try {
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement(
+					"update compra "
+					+ "set data_compra = ?, tipo_origem = ?, id_coringa_origem = ?, id_forma_pgto = ?, "
+					+ "id_fonecedor = ?, id_status_compra = ?");
+			
+			pstm.setDate(1, dataSql);
+			
+			if(compra.getGeradorCompra() instanceof OrdemProducaoVO){
+				
+				OrdemProducaoVO ordemProducao = (OrdemProducaoVO) compra.getGeradorCompra();
+				
+				pstm.setString(2, TipoGeradorCompra.ORDEM_PRODUCAO.getTipo());
+				pstm.setLong(3, ordemProducao.getIdOrdemProducao());
+			}
+			else{
+				
+				FuncionarioCantinaVO funcionarioCantina = (FuncionarioCantinaVO) compra.getGeradorCompra();
+				pstm.setString(2, TipoGeradorCompra.FUNCIONARIO_CANTINA.getTipo());
+				pstm.setLong(3, funcionarioCantina.getIdFuncionarioCantina());
+				
+			}
+			
+			pstm.setLong(4, compra.getFormaPgto().getIdFormaPgtoVenda());
+			pstm.setLong(5, compra.getFornecedor().getIdFornecedor());
+			pstm.setLong(6, compra.getStatus().getIdStatus());
+			
+			pstm.executeUpdate();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			return false;
+		}finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+				return false;
+			}
+		}
 		
 		return true;
 	}
@@ -103,7 +154,7 @@ public class CompraDAO implements ICompraDAO {
 	@Override
 	public boolean deletar(Long id) {
 		
-		// TODO - Fazer conexão com o banco
+		
 		
 		return true;
 	}
