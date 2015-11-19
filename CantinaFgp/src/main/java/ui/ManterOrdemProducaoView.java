@@ -554,7 +554,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		} 
 		else {
-			JOptionPane.showMessageDialog(null, "Erro ao alterar", "Erro", JOptionPane.ERROR_MESSAGE);
+			msgErro.append("Erro ao alterar\n");
 			return false;
 		}
 
@@ -581,14 +581,11 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		boolean isCamposValidos = true;
 		
 		if(ordemProducaoBO.isCampoFuncionarioVazio(txtNomeFunc.getText())){
-			
 			msgErro.append("Favor preencher o campo nome do funcionário\n");
 			isCamposValidos = false;
-			
 		}
 		
 		if(ordemProducaoBO.isCampoCodigoFuncionarioVazio(txtCodFunc.getText())){
-			
 			msgErro.append("Favor preencher o campo código do funcionário\n");
 			isCamposValidos = false;
 		}
@@ -604,7 +601,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		}
 		
 		if(ordemProducaoBO.isCampoQtdVazio(txtQtdeProd.getText())){
-			
 			msgErro.append("Favor preencher o campo quantidade do produto\n");
 			isCamposValidos = false;
 		}
@@ -615,12 +611,9 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		}
 		else{
 			if(ordemProducaoBO.isCampoQtdNegativo(txtQtdeProd.getText())){
-					
 				msgErro.append("Favor preencher o campo quantidade do produto com um valor maior que 0\n");
 				isCamposValidos = false;
-			
 			}
-			
 		}
 		
 		return isCamposValidos;
