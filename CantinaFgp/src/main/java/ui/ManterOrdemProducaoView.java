@@ -499,17 +499,12 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		if (ordemProdIncluida != null) {
 
 			txtCodOp.setText(ordemProdIncluida.getCodOrdemProducao());
-			
-			/*
-			 * TODO - Na inclusão deve ser verificado se o status é diferente de
-			 * 'em aberto', se for a qtde de cada matéria-prima deve ser
-			 * retirada do estoque.
-			 */
 
 			JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
 
-		} else {
-			JOptionPane.showMessageDialog(null, "Erro ao gravar", "Erro", JOptionPane.ERROR_MESSAGE);
+		} 
+		else {
+			msgErro.append("Erro ao gravar\n");
 			return false;
 		}
 
@@ -519,47 +514,41 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	public boolean alterar(StringBuilder msgErro) {
-		
-		statusEscolhido = listaStatus.get(cbxStatus.getSelectedIndex());
-		
-		String statusEscolhido = (String) cbxStatus.getSelectedItem();
+				
+		String statusEscolhidoTexto = (String) cbxStatus.getSelectedItem();
 				
 		for (StatusVO statusLista : listaStatus) {
 			
-			if(statusLista.getDescricao().equals(statusEscolhido)){
+			if(statusLista.getDescricao().equals(statusEscolhidoTexto)){
 				
-				ordemProducao.setStatus(statusLista);
+				statusEscolhido = statusLista;
 				
 			}
 			
 		}
 		
-		if(statusEscolhido.equals("Em Fabricação")){
+		if(statusEscolhido.getDescricao().equals("Em Fabricação")){
 			
 			if(statusAtual.getDescricao().equals("Em Fabricação")){
 				
-				JOptionPane.showMessageDialog(null, "Altere o status para a alteração", "Erro", JOptionPane.ERROR_MESSAGE);
+				msgErro.append("É necessário alterar o status para gravar a alteração da Ordem de Produção\n");
+				return false;
 				
 			}
 			else{
 				
-				int qtdProdutos = ordemProducaoBO.stringToInteger(txtQtdeProd.getText());
-				
-				for (ProdutoMateriaPrimaVO produtoMateriaPrimaVO : receita) {
+				if(!ordemProducaoBO.isQtdNecessaria(carregarOrdemProducao())){
 					
-					if(produtoMateriaPrimaVO.getQtde() * qtdProdutos > produtoMateriaPrimaVO.getMateriaPrima().getEstoque().getQtdeAtual()){
-						
-						msgErro.append("A quantidade de " + produtoMateriaPrimaVO.getMateriaPrima().getDescricao() + " necessária para fabricar esse produto está abaixo do estoque\n");
-						
-					}
+					msgErro.append("Há matérias-primas com estoque abaixo da quantidade necessária para a produção deste produto\n");
+					return false;
 					
 				}
 				
 			}
 		}
-	
-						
-		if (ordemProducaoBO.alterar(carregarOrdemProducao())) {
+			
+							
+		if (ordemProducaoBO.alterar(ordemProducao)) {
 
 			JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
 
@@ -579,6 +568,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		ordemProducao.setData(new Date()); // TODO - Bruno: voltar aqui
 		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 		ordemProducao.setFuncionarioCantina(funcionarioCantina);
+		produtoVenda.setReceita(receita);
 		ordemProducao.setProdutoVenda(produtoVenda);
 		ordemProducao.setStatus(statusEscolhido);
 		return ordemProducao;

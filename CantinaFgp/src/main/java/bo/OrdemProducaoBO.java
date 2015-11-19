@@ -5,6 +5,7 @@ import java.util.List;
 import utils.UtilFuncoes;
 import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
+import vo.ProdutoVendaVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
 
@@ -19,6 +20,22 @@ public class OrdemProducaoBO {
 		ordemProdDao = new OrdemProducaoDAO();
 		prodVendaBo = new ProdutoVendaBO();
 		matPrimaBo = new MateriaPrimaBO();
+		
+	}
+	
+	public boolean isQtdNecessaria(OrdemProducaoVO ordemProducao){
+		
+		for (ProdutoMateriaPrimaVO itemReceita : ordemProducao.getProdutoVenda().getReceita()) {
+			
+			if(itemReceita.getQtde() * ordemProducao.getQtde() > itemReceita.getMateriaPrima().getEstoque().getQtdeAtual()){
+				
+				return false;
+				
+			}
+			
+		}
+		
+		return true;
 		
 	}
 	
@@ -85,9 +102,7 @@ public class OrdemProducaoBO {
 	}
 		
 	public boolean alterar(OrdemProducaoVO ordemProducao){
-		
-		// TODO - Bruno: continuar aqui
-		
+				
 		boolean alterado = false;
 		
 		if(ordemProdDao.alterar(ordemProducao)){
