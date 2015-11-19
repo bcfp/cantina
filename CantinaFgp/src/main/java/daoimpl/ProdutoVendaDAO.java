@@ -718,6 +718,45 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		
 		return false;
 	}
+	
+	public boolean deletarProduto(ProdutoVendaVO produto){
+		
+		try {
+			
+			String sql = "update produto_venda set ativo = ? where id_produto_venda = ?";
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement(sql);
+			pstm.setInt(1, 0);
+			pstm.setLong(2, produto.getIdProduto());
+		
+			pstm.executeUpdate();
+			
+			
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+			return false;
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return false;
+			
+		} finally{
+			
+			try {
+				pstm.close();
+				conexao.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 
 }

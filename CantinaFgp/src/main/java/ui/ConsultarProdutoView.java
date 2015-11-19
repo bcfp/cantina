@@ -208,6 +208,13 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	@Override
 	public void deletar(ProdutoVO produto) {
 
+		if(produto instanceof ProdutoVendaVO){
+			
+			ProdutoVendaVO produtoVenda = (ProdutoVendaVO)produto;
+			prodVendaBo.deletar(produtoVenda);
+		}
+		
+		
 		JOptionPane.showMessageDialog(null, "Produto Excluido");
 				
 	}

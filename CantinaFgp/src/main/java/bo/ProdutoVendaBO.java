@@ -75,6 +75,11 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 		
 	}
 	
+	public boolean deletar(ProdutoVendaVO produto){
+		
+		return produtoVendaDao.deletarProduto(produto);
+	}
+	
 	
 
 	
