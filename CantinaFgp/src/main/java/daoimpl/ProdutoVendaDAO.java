@@ -168,8 +168,12 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		
 		try {
 			
-			conexao = fabrica.getConexao();
-			
+			if(conexao == null){
+				
+				conexao = fabrica.getConexao();
+				
+			}
+		
 			pstm = conexao.prepareStatement("select id_produto_venda from produto_venda where id_produto_venda = (select max(id_produto_venda) from produto_venda)");
 		
 			rs = pstm.executeQuery();
@@ -195,6 +199,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		try{
 						
 			conexao = fabrica.getConexao();
+			conexao.setAutoCommit(false);
 			
 			pstm = conexao.prepareStatement(
 					"insert into produto_venda"
@@ -216,72 +221,77 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			pstm.setBoolean(8, produtoVenda.getLote());
 			pstm.setLong(9, produtoVenda.getUnidade().getIdUnidadeProduto());
 			
-			if(pstm.executeUpdate() > 0){
+			pstm.executeUpdate();
 				
-				if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
+			if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
 
-					Long ultimoIdGerado = getUltimoIdGerado();
-					produtoVenda.setIdProduto(ultimoIdGerado);
-					
-					// Cadastrando matérias-primas
-					
-					pstm = conexao.prepareStatement("insert into receita (qtde, id_materia_prima, id_produto, id_unidade) values (?,?,?,?)");
+				Long ultimoIdGerado = getUltimoIdGerado();
+				produtoVenda.setIdProduto(ultimoIdGerado);
+				
+				// Cadastrando matérias-primas
+				
+				pstm = conexao.prepareStatement("insert into receita (qtde, id_materia_prima, id_produto, id_unidade) values (?,?,?,?)");
 
-					List<ProdutoMateriaPrimaVO> receita = produtoVenda.getReceita();
+				List<ProdutoMateriaPrimaVO> receita = produtoVenda.getReceita();
+				
+				for (ProdutoMateriaPrimaVO itemReceita : receita) {
 					
-					for (ProdutoMateriaPrimaVO itemReceita : receita) {
-						
-						pstm.setDouble(1, itemReceita.getQtde());
-						pstm.setLong(2, itemReceita.getMateriaPrima().getIdProduto());
-						pstm.setLong(3, itemReceita.getProdutoFabricado().getIdProduto());
-						pstm.setLong(4, itemReceita.getUnidade().getIdUnidadeProduto());
-						
-						if(pstm.executeUpdate() > 0){
-							
-							ProdutoCantinaVO estoque = produtoVenda.getEstoque();
-							
-							pstm = conexao.prepareStatement("insert into produto_venda_cantina (qtde_maxima, qtde_minima, estoque, ativo, id_cantina, id_produto_venda) values (?,?,?,?,?,?)");
+					pstm.setDouble(1, itemReceita.getQtde());
+					pstm.setLong(2, itemReceita.getMateriaPrima().getIdProduto());
+					pstm.setLong(3, itemReceita.getProdutoFabricado().getIdProduto());
+					pstm.setLong(4, itemReceita.getUnidade().getIdUnidadeProduto());
+					
+					pstm.executeUpdate();
 
-							pstm.setDouble(1, estoque.getQtdeMaxima());
-							pstm.setDouble(2, estoque.getQtdeMinima());
-							pstm.setDouble(3, 0);
-							pstm.setInt(4, 1);
-							pstm.setLong(5, 1);
-							pstm.setLong(6, produtoVenda.getIdProduto());
-							
-							if(pstm.executeUpdate() == 0){
-								conexao.rollback();
-								return null;
-							}
-							
-						}
-						else{
-							conexao.rollback();
-							return null;							
-						}
-						
-					}
 				}
+				
+				ProdutoCantinaVO estoque = produtoVenda.getEstoque();
+				
+				pstm = conexao.prepareStatement("insert into produto_venda_cantina (qtde_maxima, qtde_minima, estoque, ativo, id_cantina, id_produto_venda) values (?,?,?,?,?,?)");
+
+				pstm.setDouble(1, estoque.getQtdeMaxima());
+				pstm.setDouble(2, estoque.getQtdeMinima());
+				pstm.setDouble(3, 0);
+				pstm.setInt(4, 1);
+				pstm.setLong(5, 1);
+				pstm.setLong(6, produtoVenda.getIdProduto());
+				
+				pstm.executeUpdate();
 			}
-			else{
-				conexao.rollback();
-				return null;
-			}
-						
+			
+			conexao.commit();
 			prodIncluido = produtoVenda;
 			
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			try {conexao.rollback();} catch (SQLException e1) {}
+			
+			try {
+				e.printStackTrace();
+				conexao.rollback();
+				return null;
+				
+			} catch (SQLException e1) {
+				
+				e1.printStackTrace();
+				return null;
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			try {conexao.rollback();} catch (SQLException e1) {}
+			
+			try {
+				
+				e.printStackTrace();
+				conexao.rollback();
+				return null;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				return null;
+			}
 		} finally {
 			
 			try {
 				conexao.close();
 				pstm.close();
 			} catch (SQLException e) {
+				e.printStackTrace();
 				return null;
 			}
 			
