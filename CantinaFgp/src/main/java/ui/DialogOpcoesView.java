@@ -1,11 +1,12 @@
 ﻿package ui;
 
-import interfaces.ITelaManter;
 import interfaces.ITelaConsultar;
+import interfaces.ITelaManter;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -33,8 +34,8 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 
 	}
 
-
-	public void abrirJanela(T objeto, ITelaConsultar<T> telaConsultar, ITelaManter<T> telaManter) {
+	public void abrirJanela(T objeto, ITelaConsultar<T> telaConsultar,
+			ITelaManter<T> telaManter) {
 
 		this.objeto = objeto;
 		this.telaConsultar = telaConsultar;
@@ -50,8 +51,9 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				DialogOpcoesView.this.dispose();
-				
-				DialogOpcoesView.this.telaManter.abrirJanela(DialogOpcoesView.this.objeto);
+
+				DialogOpcoesView.this.telaManter
+						.abrirJanela(DialogOpcoesView.this.objeto);
 
 			}
 
@@ -65,7 +67,7 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 
 				int opcao = JOptionPane.showOptionDialog(null,
-						"Deseja realmente excluir?","Exclusão",
+						"Deseja realmente excluir?", "Exclusão",
 						JOptionPane.YES_OPTION, JOptionPane.NO_OPTION, null,
 						null, null);
 
@@ -74,8 +76,8 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 					DialogOpcoesView.this.dispose();
 
 					DialogOpcoesView.this.telaConsultar.deletar(DialogOpcoesView.this.objeto);
-					DialogOpcoesView.this.telaConsultar.consultar();
-
+					List<T> lista = DialogOpcoesView.this.telaConsultar.consultar();
+					DialogOpcoesView.this.telaConsultar.carregarGridItens(lista);
 				}
 
 			}

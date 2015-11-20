@@ -290,7 +290,8 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * 
 	 * @param listaItens - Lista de itens do tipo T
 	 */
-	private void carregarGridItens(List<T> listaItens) {
+	@Override
+	public void carregarGridItens(List<T> listaItens) {
 
 		getModeloTabGeneric().setNumRows(0); // funciona para zerar o q tinha antes
 		
