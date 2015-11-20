@@ -307,35 +307,35 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 	private void controladorStatus(){
 		
-		cbxStatus.removeAllItems();;
+		cbxStatus.removeAllItems();
 		
 		for (StatusVO statusLista : listaStatus) {
-			if(statusLista.getDescricao().equals(ordemProducao.getStatus().getDescricao())){
+			if(statusLista.equals(ordemProducao.getStatus())){
 				statusAtual = statusLista;
 			}
 		}
 		
 		cbxStatus.setSelectedItem(statusAtual);
 						
-		if(statusAtual == emAberto){
+		if(statusAtual.equals(emAberto)){
 
 			cbxStatus.addItem(emAberto);
 			cbxStatus.addItem(emFabricacao);
 			
 		}
-		else if(statusAtual == aguardandoCompra){
+		else if(statusAtual.equals(aguardandoCompra)){
 
 			cbxStatus.addItem(emAberto);
 			cbxStatus.addItem(emFabricacao);
 				
 		}
-		else if(statusAtual == emFabricacao){
+		else if(statusAtual.equals(emFabricacao)){
 
 			cbxStatus.addItem(emFabricacao);
 			cbxStatus.addItem(concluida);
 					
 		}
-		else if(statusAtual == concluida){
+		else if(statusAtual.equals(concluida)){
 
 			cbxStatus.addItem(concluida);
 			btnAlterar.setEnabled(false);			
