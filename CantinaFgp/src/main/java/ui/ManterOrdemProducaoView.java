@@ -45,7 +45,7 @@ import enumeradores.TipoStatus;
 
 public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> implements ITelaBuscar {
 
-	private JComboBox<String> cbxStatus;
+	private JComboBox<StatusVO> cbxStatus;
 	
 	private JTextField txtCodOp;
 	private JTextField txtCodProd;
@@ -89,9 +89,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private List<FuncionarioCantinaVO> listaFuncionarios;
 	private List<ProdutoVendaVO> listaProdutos;
 	private List<StatusVO> listaStatus;
-	private StatusVO statusAtual;
-		
-	private StatusVO statusEscolhido;
+	
+	private StatusVO statusAtual;	
+	private StatusVO emAberto;
+	private StatusVO aguardandoCompra;
+	private StatusVO emFabricacao;
+	private StatusVO concluida;
+	
 	private ProdutoVendaVO produtoVenda;
 	private FuncionarioCantinaVO funcionarioCantina;
 	
@@ -105,7 +109,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	{
 		
 		pnlCampos = new JPanel();
-		cbxStatus = new JComboBox<String>();
+		cbxStatus = new JComboBox<StatusVO>();
 		cbxStatus.setEnabled(false);
 		lblStatus = new JLabel("Status");
 		lblCodOp = new JLabel("Número");
@@ -162,20 +166,40 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		listaProdutos = new ArrayList<ProdutoVendaVO>();
 		listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
 		listaStatus = new ArrayList<StatusVO>();
-		
-		ordemProducao = new OrdemProducaoVO();
-		
+				
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
 		
 		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_PRODUCAO);
+		
+		for (StatusVO status : listaStatus) {
+			
+			if(status.getDescricao().equals("Em Aberto")){
+
+				emAberto = status;
 				
-		for (StatusVO statusVO : listaStatus) {
-			
-			cbxStatus.addItem(statusVO.getDescricao());
-			
+			}
+			else if(status.getDescricao().equals("Aguardando Compra")){
+				
+				aguardandoCompra = status;
+				
+			}
+			else if(status.getDescricao().equals("Em Fabricação")){
+				
+				emFabricacao = status;
+				
+			}
+			else if(status.getDescricao().equals("Concluída")){
+				
+				concluida = status;
+				
+			}
+
 		}
-				
+
+		ordemProducao = new OrdemProducaoVO();
+		ordemProducao.setStatus(emAberto);
+						
 	}
 	
 	// Construtores
@@ -276,7 +300,47 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			
 		});
 				
+		controladorStatus();
 		definicoesPagina();
+		
+	}
+	
+	private void controladorStatus(){
+		
+		cbxStatus.removeAllItems();;
+		
+		for (StatusVO statusLista : listaStatus) {
+			if(statusLista.getDescricao().equals(ordemProducao.getStatus().getDescricao())){
+				statusAtual = statusLista;
+			}
+		}
+		
+		cbxStatus.setSelectedItem(statusAtual);
+						
+		if(statusAtual == emAberto){
+
+			cbxStatus.addItem(emAberto);
+			cbxStatus.addItem(emFabricacao);
+			
+		}
+		else if(statusAtual == aguardandoCompra){
+
+			cbxStatus.addItem(emAberto);
+			cbxStatus.addItem(emFabricacao);
+				
+		}
+		else if(statusAtual == emFabricacao){
+
+			cbxStatus.addItem(emFabricacao);
+			cbxStatus.addItem(concluida);
+					
+		}
+		else if(statusAtual == concluida){
+
+			cbxStatus.addItem(concluida);
+			btnAlterar.setEnabled(false);			
+		}
+
 		
 	}
 		
@@ -286,43 +350,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		this.ordemProducao = ordemProducao;
 		funcionarioCantina = ordemProducao.getFuncionarioCantina();
 		produtoVenda = ordemProducao.getProdutoVenda();
-		
-		for (StatusVO statusLista : listaStatus) {
-			if(statusLista.getDescricao().equals(ordemProducao.getStatus().getDescricao())){
-				statusAtual = statusLista;
-			}
-		}
 						
-		if(statusAtual.getDescricao().equals("Concluída")){
-			btnAlterar.setEnabled(false);
-		}
-		else{
-			if(statusAtual.getDescricao().equals("Em Fabricação")){
-				
-				cbxStatus.removeAllItems();
-				
-				for (StatusVO st : listaStatus) {
-					
-					if(st.getDescricao().equals("Em Fabricação") || st.getDescricao().equals("Concluída")){
-											
-						cbxStatus.addItem(st.getDescricao());
-						
-					}
-					
-				}
-				
-			}
-			else{
-				if(statusAtual.getDescricao().equals("Em Aberto")){
-					
-					btnGerarOC.setEnabled(true);
-					
-				}
-			}
-		}
-				
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
-		cbxStatus.setSelectedItem(statusAtual.getDescricao());
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProd.setText(ordemProducao.getQtde().toString());
@@ -498,9 +527,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		if (ordemProdIncluida != null) {
 
+			statusAtual = ordemProdIncluida.getStatus();
+			
 			txtCodOp.setText(ordemProdIncluida.getCodOrdemProducao());
 
 			JOptionPane.showMessageDialog(null, "Ordem Produção Incluída");
+
+			controladorStatus();
 
 		} 
 		else {
@@ -514,22 +547,12 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 	@Override
 	public boolean alterar(StringBuilder msgErro) {
-				
-		String statusEscolhidoTexto = (String) cbxStatus.getSelectedItem();
-				
-		for (StatusVO statusLista : listaStatus) {
-			
-			if(statusLista.getDescricao().equals(statusEscolhidoTexto)){
-				
-				statusEscolhido = statusLista;
-				
-			}
-			
-		}
 		
-		if(statusEscolhido.getDescricao().equals("Em Fabricação")){
+		carregarOrdemProducao();
+		
+		if(ordemProducao.getStatus() == emFabricacao){
 			
-			if(statusAtual.getDescricao().equals("Em Fabricação")){
+			if(statusAtual == emFabricacao){
 				
 				msgErro.append("É necessário alterar o status para gravar a alteração da Ordem de Produção\n");
 				return false;
@@ -537,7 +560,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			}
 			else{
 				
-				if(!ordemProducaoBO.isQtdNecessaria(carregarOrdemProducao())){
+				if(!ordemProducaoBO.isQtdNecessaria(ordemProducao)){
 					
 					msgErro.append("Há matérias-primas com estoque abaixo da quantidade necessária para a produção deste produto\n");
 					return false;
@@ -546,12 +569,12 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 			}
 		}
-			
 							
 		if (ordemProducaoBO.alterar(ordemProducao)) {
 
 			JOptionPane.showMessageDialog(null, "Ordem Produção Alterada");
-
+			controladorStatus();	
+			
 		} 
 		else {
 			msgErro.append("Erro ao alterar\n");
@@ -561,16 +584,17 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		return true;
 
 	}
-	
-	private OrdemProducaoVO carregarOrdemProducao(){
 		
+	private OrdemProducaoVO carregarOrdemProducao(){
+				
 		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
 		ordemProducao.setData(new Date()); // TODO - Bruno: voltar aqui
 		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 		ordemProducao.setFuncionarioCantina(funcionarioCantina);
 		produtoVenda.setReceita(receita);
 		ordemProducao.setProdutoVenda(produtoVenda);
-		ordemProducao.setStatus(statusEscolhido);
+		ordemProducao.setStatus((StatusVO) cbxStatus.getSelectedItem());
+		
 		return ordemProducao;
 		
 	}
@@ -644,6 +668,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		case "Em Aberto":
 
+			btnGerarOC.setEnabled(true);
 			btnConsultarProd.setEnabled(true);
 			btnConsultarFunc.setEnabled(true);
 			cbxStatus.setEnabled(true);

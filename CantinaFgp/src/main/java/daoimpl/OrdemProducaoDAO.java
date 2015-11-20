@@ -84,7 +84,10 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 			pstm.executeUpdate();
 			
-			ordemProdInserida.setCodOrdemProducao(getUltimoIdGerado().toString());
+			Long idGerado = getUltimoIdGerado();
+
+			ordemProdInserida.setCodOrdemProducao(idGerado.toString());
+			ordemProdInserida.setIdOrdemProducao(idGerado);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

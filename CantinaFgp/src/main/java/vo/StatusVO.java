@@ -12,6 +12,11 @@ public class StatusVO extends GenericVO{
 
 	}
 
+	@Override
+	public String toString() {
+		return descricao;
+	}
+	
 	public Long getIdStatus() {
 		return idStatus;
 	}
