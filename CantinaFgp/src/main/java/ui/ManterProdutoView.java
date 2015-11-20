@@ -1354,8 +1354,18 @@ import enumeradores.TipoSolicitacao;
 					break;
 					
 				case PESQ_FORNECEDOR:
-				
-					return BancoFake.listaFornecedorGeneric;
+					
+					listaGenericos = new ArrayList<GenericVO>();
+					
+					List<FornecedorVO> listaFornecedores = prodVendaBo.consultarTodosFornecedores();
+					
+					for (FornecedorVO fornecedor : listaFornecedores) {
+						
+						listaGenericos.add(fornecedor);
+						
+					}
+					
+					return listaGenericos;
 
 			}
 		

@@ -279,15 +279,27 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	@Override
 	public List<GenericVO> buscarItem(Map<String, String> parametros) {
 		
+		List<GenericVO> listaGenericos = null;
+		
 		switch (acaoPesquisar) {
 						
 			case PESQ_FORNECEDOR:
-			
-				return BancoFake.listaFornecedorGeneric;
+				
+				listaGenericos = new ArrayList<GenericVO>();
+				
+				List<FornecedorVO> listaFornecedores = prodVendaBo.consultarTodosFornecedores();
+				
+				for (FornecedorVO fornecedor : listaFornecedores) {
+					
+					listaGenericos.add(fornecedor);
+					
+				}
+				
+				return listaGenericos;
 
 		}
 	
-		return null;
+		return listaGenericos;
 		
 	}
 

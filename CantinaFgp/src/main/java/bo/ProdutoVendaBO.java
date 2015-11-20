@@ -3,7 +3,9 @@ package bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import vo.FornecedorVO;
 import vo.ProdutoVendaVO;
+import daoimpl.FornecedorDAO;
 import daoimpl.ProdutoVendaDAO;
 import daoservice.IProdutoVendaDAO;
 import enumeradores.TipoProduto;
@@ -11,9 +13,15 @@ import enumeradores.TipoProduto;
 public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> {
 	
 	public static IProdutoVendaDAO produtoVendaDao;
+	public FornecedorDAO fornecedorDao;
 	
 	static{
 		produtoVendaDao = new ProdutoVendaDAO();
+	
+	}
+	
+	{
+		fornecedorDao = new FornecedorDAO();
 	}
 
 	public ProdutoVendaBO() {
@@ -80,7 +88,10 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 		return produtoVendaDao.deletarProduto(produto);
 	}
 	
-	
+	public List<FornecedorVO> consultarTodosFornecedores(){
+		
+		return fornecedorDao.consultar();
+	}
 
 	
 
