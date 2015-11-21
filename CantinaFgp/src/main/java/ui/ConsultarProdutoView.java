@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;

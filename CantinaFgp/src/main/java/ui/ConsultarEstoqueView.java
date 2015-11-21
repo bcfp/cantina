@@ -24,11 +24,15 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import bo.MateriaPrimaBO;
+import bo.ProdutoVendaBO;
 import utils.BancoFake;
 import utils.UtilFuncoes;
+import vo.MateriaPrimaVO;
 import vo.ProdutoCantinaVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
+import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
 import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
@@ -66,6 +70,9 @@ public class ConsultarEstoqueView extends JPanel{
 	private JLabel lblProdPesq;
 	private JLabel lblTipoProduto;
 	
+	private MateriaPrimaBO matPrimaBo;
+	private ProdutoVendaBO prodVendaBo;
+	private List<TipoProduto> tiposProduto;
 	
 	private List<ProdutoCantinaVO> listaEstoqueProdutos;
 	private List<ItemCompraVO> listaItensCompra;
@@ -79,6 +86,20 @@ public class ConsultarEstoqueView extends JPanel{
 		
 		listaItensCompra = new ArrayList<ItemCompraVO>();
 		listaOrdemProducao = new ArrayList<OrdemProducaoVO>();
+		
+		cbxTipoProduto = new JComboBox<String>();
+		
+		prodVendaBo = new ProdutoVendaBO();
+		matPrimaBo = new MateriaPrimaBO();
+		
+		tiposProduto = prodVendaBo.consultarTiposProduto();
+
+		for (TipoProduto tipoProduto : tiposProduto) {
+			
+			cbxTipoProduto.addItem(tipoProduto.getTipoProduto());
+			
+		}
+		
 	}
 	
 	
@@ -126,9 +147,7 @@ public class ConsultarEstoqueView extends JPanel{
 		txtCodProdPesq = new JTextField();
 		
 		txtDescricaoProd = new JTextField();
-		
-		cbxTipoProduto = new JComboBox<String>();
-		
+
 		ccxAbaixoEstoque = new JCheckBox("Abaixo do Estoque");
 		ccxAbaixoEstoque.setBackground(pnlCentro.getBackground());
 		ccxAbaixoEstoque.setFocusPainted(false);
@@ -215,9 +234,9 @@ public class ConsultarEstoqueView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				getListaOrdemProducao().clear();
+				listaOrdemProducao.clear();
 				
-				Iterator<ProdutoCantinaVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				Iterator<ProdutoCantinaVO> iEstoqueProduto = listaEstoqueProdutos.iterator();
 				OrdemProducaoVO ordemProducao;
 				ProdutoCantinaVO estoqueProduto;
 				
@@ -238,7 +257,7 @@ public class ConsultarEstoqueView extends JPanel{
 							ordemProducao.setProdutoVenda((ProdutoVendaVO) estoqueProduto.getProduto());
 							ordemProducao.setQtde(qtdeMax - qtdeAtual);
 							
-							getListaOrdemProducao().add(ordemProducao);
+							listaOrdemProducao.add(ordemProducao);
 						
 						}
 						
@@ -246,8 +265,8 @@ public class ConsultarEstoqueView extends JPanel{
 					
 				}
 				
-				if(getListaOrdemProducao().size() > 0){
-					new GeradorView(null, getListaOrdemProducao()).abrirTela();
+				if(listaOrdemProducao.size() > 0){
+					new GeradorView(null, listaOrdemProducao).abrirTela();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
@@ -262,9 +281,9 @@ public class ConsultarEstoqueView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				getListaItensCompra().clear();
+				listaItensCompra.clear();
 								
-				Iterator<ProdutoCantinaVO> iEstoqueProduto = getListaEstoqueProdutos().iterator();
+				Iterator<ProdutoCantinaVO> iEstoqueProduto = listaEstoqueProdutos.iterator();
 				ItemCompraVO itemCompra;
 				ProdutoCantinaVO estoqueProduto;
 				
@@ -279,15 +298,15 @@ public class ConsultarEstoqueView extends JPanel{
 							itemCompra.setProduto(estoqueProduto.getProduto());
 							itemCompra.setQtde(estoqueProduto.getQtdeMaxima() - estoqueProduto.getQtdeAtual());
 							itemCompra.setValor(estoqueProduto.getProduto().getPrecoCusto());
-							getListaItensCompra().add(itemCompra);
+							listaItensCompra.add(itemCompra);
 						}
 						
 					}
 					
 				}
 				
-				if(getListaItensCompra().size() > 0){
-					new GeradorView(null, getListaItensCompra()).abrirTela();
+				if(listaItensCompra.size() > 0){
+					new GeradorView(null, listaItensCompra).abrirTela();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
@@ -327,8 +346,8 @@ public class ConsultarEstoqueView extends JPanel{
 				btnGerarCompra.setEnabled(true);
 				btnGerarOrdemProd.setEnabled(true);
 				
-				setListaEstoqueProdutos(consultar());				
-				carregarGridItens(getListaEstoqueProdutos());
+				listaEstoqueProdutos = consultar();				
+				carregarGridItens(listaEstoqueProdutos);
 				
 			}
 			
@@ -378,39 +397,64 @@ public class ConsultarEstoqueView extends JPanel{
 	}
 
 	public List<ProdutoCantinaVO> consultar() {
-		return BancoFake.listaEstoqueProduto;
+		
+		List<ProdutoCantinaVO> listaPc = new ArrayList<ProdutoCantinaVO>();
+		
+		// Retornando matérias primas
+		
+		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getTipoProduto())){
+		
+			List<MateriaPrimaVO> materiasPrimas = matPrimaBo.consultarTodosProdutos();
+			
+			for (MateriaPrimaVO materiaPrima : materiasPrimas) {
+			
+				materiaPrima.getEstoque().setProduto(materiaPrima);
+				listaPc.add(materiaPrima.getEstoque());
+				
+			}
+			
+		}
+		else{
+
+			
+			List<ProdutoVendaVO> produtosVenda = prodVendaBo.consultarTodosProdutos();
+			
+			for (ProdutoVendaVO produtoVenda : produtosVenda) {
+				
+				// retornando produtos produzidos
+				
+				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getTipoProduto())){
+					
+					if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
+						
+						produtoVenda.getEstoque().setProduto(produtoVenda);
+						listaPc.add(produtoVenda.getEstoque());
+						
+					}
+					
+				}
+				else{
+					
+					// retornando produtos de revenda
+					
+					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getTipoProduto())){
+						
+						if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
+							
+							produtoVenda.getEstoque().setProduto(produtoVenda);
+							listaPc.add(produtoVenda.getEstoque());
+							
+						}
+						
+					}
+				}
+							
+			}			
+			
+		}
+				
+		return listaPc;
+		
 	}
-
-
-	public List<ProdutoCantinaVO> getListaEstoqueProdutos() {
-		return listaEstoqueProdutos;
-	}
-
-
-	public void setListaEstoqueProdutos(List<ProdutoCantinaVO> estoqueProdutos) {
-		this.listaEstoqueProdutos = estoqueProdutos;
-	}
-
-
-	public List<ItemCompraVO> getListaItensCompra() {
-		return listaItensCompra;
-	}
-
-
-	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
-		this.listaItensCompra = listaItensCompra;
-	}
-
-
-	public List<OrdemProducaoVO> getListaOrdemProducao() {
-		return listaOrdemProducao;
-	}
-
-
-	public void setListaOrdemProducao(List<OrdemProducaoVO> listaOrdemProducao) {
-		this.listaOrdemProducao = listaOrdemProducao;
-	}
-
-	
 
 }
