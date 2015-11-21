@@ -21,6 +21,9 @@ public class LoginDAO implements ILoginDAO {
 
 	@Override
 	public UsuarioVO logarUsuario(UsuarioVO usuario) {
+
+		System.out.println(usuario.getLogin().trim());
+		System.out.println(usuario.getSenha().length());
 		
 		UsuarioVO usuarioLogado = null;
 		
@@ -28,21 +31,19 @@ public class LoginDAO implements ILoginDAO {
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement(
-					"select u.id_usuario, u.senha, u.login_usuario, u.ativo from usuario "
-					+ "where u.login like ? and u.senha like ?");
+					"select u.id_usuario, u.senha, u.login_usuario, u.ativo from usuario u "
+					+ " where u.login_usuario = ? and u.senha = ? and u.ativo = 1");
 			
 			pstm.setString(1, usuario.getLogin());
 			pstm.setString(2, usuario.getSenha());
 			
 			rs = pstm.executeQuery();
-			
-			while(rs.next()){
-				
+						
+			if(rs.next()){
 				usuarioLogado = new UsuarioVO();
 				usuarioLogado.setIdUsuario(rs.getLong("id_usuario"));
 				usuarioLogado.setSenha(rs.getString("senha"));
 				usuarioLogado.setLogin(rs.getString("login_usuario"));
-				usuarioLogado.setAtivo(rs.getBoolean("ativo"));	
 			}
 			
 			

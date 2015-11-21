@@ -46,7 +46,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					+ "u.descricao, u.ativo "
 					+ "from produto_venda pv "
 					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
-					+ "where pv.cod_produto like ?  and pv.descricao like ?");
+					+ "where pv.cod_produto like ? and pv.descricao like ?");
 			
 			pstm.setString(1, "%" + cod + "%");
 			pstm.setString(2, "%" + nome + "%");

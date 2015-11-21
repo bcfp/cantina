@@ -1,21 +1,19 @@
 package daoimpl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bo.ProdutoMateriaPrimaBO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
 import vo.OrdemProducaoVO;
-import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.StatusVO;
 import vo.UnidadeProdutoVO;
+import bo.ProdutoMateriaPrimaBO;
 import daoservice.IOrdemProducaoDAO;
 import daoservice.IProdutoMateriaPrimaDAO;
 import enumeradores.TipoStatus;
