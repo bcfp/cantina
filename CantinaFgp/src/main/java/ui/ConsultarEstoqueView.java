@@ -24,16 +24,15 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import bo.MateriaPrimaBO;
-import bo.ProdutoVendaBO;
 import utils.BancoFake;
 import utils.UtilFuncoes;
-import vo.MateriaPrimaVO;
-import vo.ProdutoCantinaVO;
 import vo.ItemCompraVO;
+import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
-import vo.ProdutoVO;
+import vo.ProdutoCantinaVO;
 import vo.ProdutoVendaVO;
+import bo.MateriaPrimaBO;
+import bo.ProdutoVendaBO;
 import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 
@@ -236,13 +235,9 @@ public class ConsultarEstoqueView extends JPanel{
 				
 				listaOrdemProducao.clear();
 				
-				Iterator<ProdutoCantinaVO> iEstoqueProduto = listaEstoqueProdutos.iterator();
 				OrdemProducaoVO ordemProducao;
-				ProdutoCantinaVO estoqueProduto;
 				
-				while(iEstoqueProduto.hasNext()){
-					
-					estoqueProduto = iEstoqueProduto.next();
+				for (ProdutoCantinaVO estoqueProduto : listaEstoqueProdutos) {
 					
 					if(estoqueProduto.getProduto().getTipo() == TipoProduto.PRODUCAO){
 						
