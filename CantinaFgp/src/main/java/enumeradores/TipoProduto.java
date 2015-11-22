@@ -2,7 +2,7 @@ package enumeradores;
 
 public enum TipoProduto {
 
-	REVENDA("Revenda"), PRODUCAO("Produção"), MATERIA_PRIMA("Matéria Prima");
+	REVENDA("RV"), PRODUCAO("PR"), MATERIA_PRIMA("MP");
 	
 	private String tipoProduto;
 	

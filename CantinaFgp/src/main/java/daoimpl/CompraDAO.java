@@ -7,15 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bo.ProdutoMateriaPrimaBO;
 import utils.BancoFake;
 import vo.CompraVO;
 import vo.FormaPgtoVO;
 import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
+import vo.ItemCompraVO;
+import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
+import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import daoservice.ICompraDAO;
 import enumeradores.TipoGeradorCompra;
+import enumeradores.TipoProduto;
 import enumeradores.TipoStatus;
 
 public class CompraDAO implements ICompraDAO {
@@ -126,7 +131,133 @@ public class CompraDAO implements ICompraDAO {
 			pstm.setLong(5, compra.getFornecedor().getIdFornecedor());
 			pstm.setLong(6, compra.getStatus().getIdStatus());
 			
-			pstm.executeUpdate();
+			if(pstm.executeUpdate() > 0){
+				
+				List<ItemCompraVO> itensCompraBanco = consultarItensCompraPorIdCompra(compra.getIdCompra());
+				
+				if(itensCompraBanco == null){
+					conexao.rollback();
+					return false;
+				}
+				
+				List<ItemCompraVO> itensCompraAtual = compra.getItensCompra();
+				
+				List<ItemCompraVO> itensCompraIncluir = new ArrayList<ItemCompraVO>();
+				List<ItemCompraVO> itensCompraAlterar = new ArrayList<ItemCompraVO>();
+				List<ItemCompraVO> itensCompraExcluir = new ArrayList<ItemCompraVO>();
+				
+				for (ItemCompraVO itemCompra : itensCompraAtual) {
+					
+					Boolean itemCompraNovo = true;
+					
+					ItemCompraVO itemComAtual = itemCompra;
+					
+					for (ItemCompraVO itemCompraBanco : itensCompraBanco) {
+						
+						ItemCompraVO itemComBanco = itemCompraBanco;
+						
+						if(itemComAtual.getCompra().getIdCompra() == itemComBanco.getCompra().getIdCompra()){
+							
+							itensCompraAlterar.add(itemCompra);
+							itemCompraNovo = false;
+															
+						}
+						
+					}
+					
+					if(itemCompraNovo){
+						
+						itensCompraIncluir.add(itemCompra);
+					}
+					
+				}
+				
+				for (ItemCompraVO itemCompraBanco : itensCompraBanco) {
+					
+					Boolean itemCompraExcluir = true;
+					
+					ItemCompraVO itemComBanco = itemCompraBanco;
+					
+					for (ItemCompraVO itemCompra : itensCompraAtual) {
+						
+						ItemCompraVO itemCom = itemCompra;
+						
+						if(itemComBanco.getCompra().getIdCompra() == itemCom.getCompra().getIdCompra()){
+							itemCompraExcluir = false;
+						}
+						
+					}
+					
+					if(itemCompraExcluir){
+						
+						itensCompraExcluir.add(itemCompraBanco);
+						
+					}
+					
+				}
+				
+				if(itensCompraIncluir.size() > 0){
+					
+					pstm = conexao.prepareStatement("insert into item_compra (qtde, valor, id_coriga_produto, tipo, id_compra, id_produto_venda)"
+							+ " values (?,?,?,?,?,?");
+					
+					for (ItemCompraVO itemCompra : itensCompraIncluir){
+						pstm.setDouble(1, itemCompra.getQtde());
+						pstm.setDouble(2, itemCompra.getValor());
+						pstm.setLong(3, itemCompra.getProduto().getIdProduto());
+						pstm.setString(4, itemCompra.getProduto().getTipo().getTipoProduto());
+						pstm.setLong(5, itemCompra.getCompra().getIdCompra());
+						pstm.setLong(6, itemCompra.getProduto().getIdProduto());
+						
+						if(pstm.executeUpdate() == 0){
+							conexao.rollback();
+							return false;
+						}
+						
+						
+					}
+				}
+				
+				if(itensCompraAlterar.size() > 0){
+					
+					pstm = conexao.prepareStatement("update item_compra set qtde = ?, valor = ?, id_coringa_produto = ?, tipo = ?, id_compra = ?");
+					
+					for(ItemCompraVO itemCompra : itensCompraAlterar){
+						
+						pstm.setDouble(1, itemCompra.getQtde());
+						pstm.setDouble(2, itemCompra.getValor());
+						pstm.setLong(3, itemCompra.getProduto().getIdProduto());
+						pstm.setString(4, itemCompra.getProduto().getTipo().getTipoProduto());
+						pstm.setLong(5, itemCompra.getCompra().getIdCompra());
+						
+						if(pstm.executeUpdate() == 0){
+							conexao.rollback();
+							return false;
+						}
+					}
+				}
+				
+				if(itensCompraExcluir.size() > 0){
+					
+					pstm = conexao.prepareStatement("delete from item_compra where id_item_compra = ?");
+					
+					for(ItemCompraVO itemCompra : itensCompraExcluir){
+						
+						pstm.setLong(1, itemCompra.getIdItemCompra());
+						
+						if(pstm.executeUpdate() == 0){
+							conexao.rollback();
+							return false;
+						}
+					}
+				} 
+				
+				
+			}
+			
+			
+			
+			
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -233,5 +364,71 @@ public class CompraDAO implements ICompraDAO {
 		
 		return null;
 	}
+	
+	private List<ItemCompraVO>	consultarItensCompraPorIdCompra(Long idCompra){
+		
+		List<ItemCompraVO> listaItensCompra =  new ArrayList<ItemCompraVO>();
+		
+		try {
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement(
+					"select id_item_compra, qtde, valor, id_coringa_produto, tipo, id_compra "
+					+ "where id_compra = ?");
+			
+			pstm.setLong(1, idCompra);
+			
+			rs = pstm.executeQuery();
+			
+			ItemCompraVO itemCompra = null;
+			
+			while(rs.next()){
+				
+				itemCompra = new ItemCompraVO();
+				itemCompra.setIdItemCompra(rs.getLong("id_item_compra"));
+				itemCompra.setQtde(rs.getDouble("qtde"));
+				itemCompra.setValor(rs.getDouble("valor"));
+				if(rs.getString("tipo").equals(TipoProduto.REVENDA)){
+					
+					itemCompra.getProduto().setTipo(TipoProduto.REVENDA);
+					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				}
+				if(rs.getString("tipo").equals(TipoProduto.PRODUCAO)){
+					
+					itemCompra.getProduto().setTipo(TipoProduto.PRODUCAO);
+					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				}
+				if(rs.getString("tipo").equals(TipoProduto.MATERIA_PRIMA)){
+					
+					itemCompra.getProduto().setTipo(TipoProduto.MATERIA_PRIMA);
+					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				}
+				itemCompra.setCompra(new CompraVO());
+				itemCompra.getCompra().setIdCompra(rs.getLong("id_compra"));
+				
+				listaItensCompra.add(itemCompra);
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs != null){
+					rs.close();
+				}
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return listaItensCompra;
+	}
+	
+	
 
 }

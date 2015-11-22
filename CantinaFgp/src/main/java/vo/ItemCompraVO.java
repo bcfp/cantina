@@ -3,7 +3,8 @@ package vo;
 import enumeradores.TipoProduto;
 
 public class ItemCompraVO extends GenericVO {
-
+	
+	private Long idItemCompra;
 	private CompraVO compra;
 	private ProdutoVO produto;
 	private Double qtde;
@@ -44,5 +45,15 @@ public class ItemCompraVO extends GenericVO {
 	public void setProduto(ProdutoVO produto) {
 		this.produto = produto;
 	}
+
+	public Long getIdItemCompra() {
+		return idItemCompra;
+	}
+
+	public void setIdItemCompra(Long idItemCompra) {
+		this.idItemCompra = idItemCompra;
+	}
+	
+	
 	
 }
