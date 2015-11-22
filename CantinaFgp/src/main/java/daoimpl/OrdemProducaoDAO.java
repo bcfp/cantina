@@ -201,7 +201,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				ordemProducao.setQtde(rs.getInt("qtde"));
 				
 				ordemProducao.setFuncionarioCantina(new FuncionarioCantinaVO());
-				ordemProducao.getFuncionarioCantina().setIdFuncionarioCantina(rs.getInt("id_funcionario_cantina"));
+				ordemProducao.getFuncionarioCantina().setIdFuncionarioCantina(rs.getLong("id_funcionario_cantina"));
 				ordemProducao.getFuncionarioCantina().setFuncionario(new FuncionarioVO());
 				ordemProducao.getFuncionarioCantina().getFuncionario().setCodPessoa(rs.getString("cod_funcionario"));
 				ordemProducao.getFuncionarioCantina().getFuncionario().setNome(rs.getString("nome"));

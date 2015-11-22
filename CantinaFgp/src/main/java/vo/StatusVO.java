@@ -17,6 +17,31 @@ public class StatusVO extends GenericVO{
 		return descricao;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj instanceof StatusVO){
+		
+			StatusVO status = (StatusVO) obj;
+			
+			if(descricao == null){
+				return false;
+			}
+			
+			return status.getDescricao().equals(descricao);
+			
+		}
+			
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		return this.descricao.hashCode();
+		
+	};
+	
 	public Long getIdStatus() {
 		return idStatus;
 	}

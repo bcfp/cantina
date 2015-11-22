@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.BancoFake;
 import vo.CantinaVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
@@ -58,7 +57,7 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 				funcionarioCantina.setCargo(rs.getString("cargo"));
 				funcionarioCantina.setDataContratacao(rs.getDate("data_contratacao"));
 				funcionarioCantina.setDataSaida(rs.getDate("data_saida"));
-				funcionarioCantina.setIdFuncionarioCantina(rs.getInt("id_funcionario_cantina"));
+				funcionarioCantina.setIdFuncionarioCantina(rs.getLong("id_funcionario_cantina"));
 				
 				funcionario = new FuncionarioVO();
 				funcionario.setCodPessoa(rs.getString("cod_funcionario"));

@@ -27,8 +27,10 @@ import javax.swing.table.DefaultTableModel;
 
 import vo.CompraVO;
 import vo.FuncionarioCantinaVO;
+import vo.FuncionarioVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
+import vo.StatusVO;
 import enumeradores.TipoSolicitacao;
 
 public class GeradorView extends JDialog {
@@ -44,7 +46,7 @@ public class GeradorView extends JDialog {
 	
 	private JCheckBox ccxListarTodos;
 	
-	private JButton btnGerarCompra;
+	private JButton btnGerar;
 	
 	private JTable tabProdutos;
 	private DefaultTableModel modeloTabProdCompra;
@@ -56,6 +58,7 @@ public class GeradorView extends JDialog {
 	private List<ItemCompraVO> listaItensCompraSelecionados;
 	private List<OrdemProducaoVO> listaOrdensProducao;
 	
+	private FuncionarioCantinaVO funcionario;
 	private IGeradorCompra geradorCompra;
 	
 	
@@ -69,7 +72,7 @@ public class GeradorView extends JDialog {
 		lblTituloCabecalho = new JLabel();
 		lblSelecione = new JLabel();
 		fonteCabecalho = new Font("Verdana", Font.BOLD, 20);
-		btnGerarCompra = new JButton("Gerar");
+		btnGerar = new JButton("Gerar");
 		tabProdutos = new JTable();
 		modeloTabProdCompra = new DefaultTableModel() {
 
@@ -101,7 +104,7 @@ public class GeradorView extends JDialog {
 		lblTituloCabecalho.setText("Gerar Compra");
 		lblSelecione.setText("Selecione um ou mais produtos");
 		this.geradorCompra = geradorCompra;
-		setListaItensCompra(listaItensCompra);
+		this.listaItensCompra = listaItensCompra;
 		
 		gerarCompra();
 		
@@ -111,8 +114,8 @@ public class GeradorView extends JDialog {
 	
 		lblTituloCabecalho.setText("Gerar Ordem de Produção");		
 		lblSelecione.setText("Selecione um produto");
-		geradorCompra = funcionario;
-		setListaOrdensProducao(listaOrdensProducao);
+		this.funcionario = funcionario;
+		this.listaOrdensProducao = listaOrdensProducao;
 		tabProdutos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		gerarOrdemProducao();
@@ -134,7 +137,7 @@ public class GeradorView extends JDialog {
 		pnlCentro.add(barraTabProdCompra);
 						
 		pnlRodape.setBackground(Color.WHITE);
-		pnlRodape.add(btnGerarCompra);
+		pnlRodape.add(btnGerar);
 		
 		lblSelecione.setBounds(10, 10, 200, 20);
 		pnlCentro.add(lblSelecione);
@@ -159,7 +162,7 @@ public class GeradorView extends JDialog {
 	
 	private void gerarCompra() {
 		
-		btnGerarCompra.addActionListener(new ActionListener() {
+		btnGerar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
@@ -168,7 +171,7 @@ public class GeradorView extends JDialog {
 				for(int x = 0; x < tabProdutos.getRowCount(); x++){
 					
 					if(tabProdutos.isRowSelected(x)){
-						listaItensCompraSelecionados.add(GeradorView.this.getListaItensCompra().get(x));
+						listaItensCompraSelecionados.add(GeradorView.this.listaItensCompra.get(x));
 					}
 					
 				}
@@ -200,13 +203,13 @@ public class GeradorView extends JDialog {
 			
 		});
 		
-		carregarGridItensCompra(getListaItensCompra());
+		carregarGridItensCompra(listaItensCompra);
 		
 	}
 		
 	private void gerarOrdemProducao() {
 				
-		btnGerarCompra.addActionListener(new ActionListener() {
+		btnGerar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -214,15 +217,22 @@ public class GeradorView extends JDialog {
 					JOptionPane.showMessageDialog(null, "Favor selecionar um produto");
 				}
 				else{
+					
+					OrdemProducaoVO ordemProducao = listaOrdensProducao.get(tabProdutos.getSelectedRow());
+					ordemProducao.setFuncionarioCantina(funcionario);
+					ordemProducao.setStatus(new StatusVO());
+					ordemProducao.getStatus().setDescricao("Em Aberto");
+
 					GeradorView.this.dispose();
 					new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
-					.abrirJanela(getListaOrdensProducao().get(tabProdutos.getSelectedRow()));
+					.abrirJanela(ordemProducao);
+
 				}
 				
 			}
 		});
 		
-		carregarGridOrdensProducao(getListaOrdensProducao());
+		carregarGridOrdensProducao(listaOrdensProducao);
 		
 	}
 	
@@ -284,25 +294,6 @@ public class GeradorView extends JDialog {
 		
 		}
 		
-	}
-
-
-	public List<ItemCompraVO> getListaItensCompra() {
-		return listaItensCompra;
-	}
-
-	public void setListaItensCompra(List<ItemCompraVO> listaItensCompra) {
-		this.listaItensCompra = listaItensCompra;
-	}
-
-
-	public List<OrdemProducaoVO> getListaOrdensProducao() {
-		return listaOrdensProducao;
-	}
-
-
-	public void setListaOrdensProducao(List<OrdemProducaoVO> listaOrdensProducao) {
-		this.listaOrdensProducao = listaOrdensProducao;
 	}
 
 }

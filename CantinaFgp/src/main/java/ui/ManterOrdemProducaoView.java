@@ -305,10 +305,38 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 	}
 	
+	@Override
+	public void abrirJanela(OrdemProducaoVO ordemProducao) {
+		
+		this.ordemProducao = ordemProducao;
+		funcionarioCantina = ordemProducao.getFuncionarioCantina();
+		produtoVenda = ordemProducao.getProdutoVenda();
+						
+		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
+		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
+		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
+		txtQtdeProd.setText(ordemProducao.getQtde().toString());
+		txtCodFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getCodPessoa());
+		//txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome()); TODO BRuno - acertar
+		txtNomeFunc.setText("Bruno Silva");
+		
+		receita = ordemProducao.getProdutoVenda().getReceita();
+		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
+
+		txtCodProd.setEditable(false);
+		txtCodFunc.setEditable(false);
+		txtQtdeProd.setEditable(false);
+		btnConsultarFunc.setEnabled(false);
+		btnConsultarProd.setEnabled(false);
+		
+		abrirJanela();
+		
+	}
+	
 	private void controladorStatus(){
 		
 		cbxStatus.removeAllItems();
-		
+
 		for (StatusVO statusLista : listaStatus) {
 			if(statusLista.equals(ordemProducao.getStatus())){
 				statusAtual = statusLista;
@@ -343,33 +371,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 
 		
 	}
-		
-	@Override
-	public void abrirJanela(OrdemProducaoVO ordemProducao) {
-		
-		this.ordemProducao = ordemProducao;
-		funcionarioCantina = ordemProducao.getFuncionarioCantina();
-		produtoVenda = ordemProducao.getProdutoVenda();
-						
-		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
-		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
-		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
-		txtQtdeProd.setText(ordemProducao.getQtde().toString());
-		txtCodFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getCodPessoa());
-		txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome());
-		
-		receita = ordemProducao.getProdutoVenda().getReceita();
-		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
-
-		txtCodProd.setEditable(false);
-		txtCodFunc.setEditable(false);
-		txtQtdeProd.setEditable(false);
-		btnConsultarFunc.setEnabled(false);
-		btnConsultarProd.setEnabled(false);
-		
-		abrirJanela();
-		
-	}
+	
 	
 	// Métodos Tela Busca
 	

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -26,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import utils.BancoFake;
 import utils.UtilFuncoes;
+import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
@@ -261,7 +261,8 @@ public class ConsultarEstoqueView extends JPanel{
 				}
 				
 				if(listaOrdemProducao.size() > 0){
-					new GeradorView(null, listaOrdemProducao).abrirTela();
+										
+					new GeradorView(UtilFuncoes.usuarioLogado.getFuncionario().getFuncionarioCantinas().get(0), listaOrdemProducao).abrirTela();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "Não há produtos abaixo do estoque");
@@ -277,15 +278,10 @@ public class ConsultarEstoqueView extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				
 				listaItensCompra.clear();
-								
-				Iterator<ProdutoCantinaVO> iEstoqueProduto = listaEstoqueProdutos.iterator();
 				ItemCompraVO itemCompra;
-				ProdutoCantinaVO estoqueProduto;
 				
-				while(iEstoqueProduto.hasNext()){
-					
-					estoqueProduto = iEstoqueProduto.next();
-					
+				for (ProdutoCantinaVO estoqueProduto : listaEstoqueProdutos) {
+														
 					if(estoqueProduto.getProduto().getTipo() != TipoProduto.PRODUCAO){
 						
 						if(estoqueProduto.getQtdeAtual() < estoqueProduto.getQtdeMinima()){

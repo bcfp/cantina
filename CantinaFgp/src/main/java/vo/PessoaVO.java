@@ -1,15 +1,14 @@
 package vo;
 
 import java.util.Date;
-import java.util.List;
 
 public abstract class PessoaVO extends GenericVO {
 
 	private Long idPessoa;
 	private String codPessoa;
 	private String nome;
-	private List<String> email;
-	private List<String> telefone;
+	private String email;
+	private String telefone;
 	private String rg;
 	private String cpf;
 	private Date dataNascimento;
@@ -34,22 +33,6 @@ public abstract class PessoaVO extends GenericVO {
 		this.nome = nome;
 	}
 	
-	public List<String> getEmail() {
-		return email;
-	}
-
-	public void setEmail(List<String> email) {
-		this.email = email;
-	}
-
-	public List<String> getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(List<String> telefone) {
-		this.telefone = telefone;
-	}
-
 	public String getRg() {
 		return rg;
 	}
@@ -80,6 +63,22 @@ public abstract class PessoaVO extends GenericVO {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	
 }

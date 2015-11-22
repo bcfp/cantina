@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FuncionarioCantinaVO extends GenericVO implements IGeradorCompra {
 
-	private Integer idFuncionarioCantina;
+	private Long idFuncionarioCantina;
 	private FuncionarioVO funcionario;
 	private CantinaVO cantina;
 	private String cargo;
@@ -43,14 +43,6 @@ public class FuncionarioCantinaVO extends GenericVO implements IGeradorCompra {
 
 	public void setDataSaida(Date dataSaida) {
 		this.dataSaida = dataSaida;
-	}
-
-	public Integer getIdFuncionarioCantina() {
-		return idFuncionarioCantina;
-	}
-
-	public void setIdFuncionarioCantina(Integer idFuncionarioCantina) {
-		this.idFuncionarioCantina = idFuncionarioCantina;
 	}
 
 	public FuncionarioVO getFuncionario() {
@@ -91,6 +83,14 @@ public class FuncionarioCantinaVO extends GenericVO implements IGeradorCompra {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Long getIdFuncionarioCantina() {
+		return idFuncionarioCantina;
+	}
+
+	public void setIdFuncionarioCantina(Long idFuncionarioCantina) {
+		this.idFuncionarioCantina = idFuncionarioCantina;
 	}
 	
 }

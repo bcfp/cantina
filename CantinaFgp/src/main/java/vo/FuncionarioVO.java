@@ -2,7 +2,7 @@ package vo;
 
 import java.util.List;
 
-public final class FuncionarioVO extends PessoaVO{
+public final class FuncionarioVO extends PessoaVO {
 	
 	private UsuarioVO usuario;
 	private List<FuncionarioCantinaVO> funcionarioCantinas;
