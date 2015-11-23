@@ -121,9 +121,7 @@ public class CompraBO {
 
 	public boolean deletar(CompraVO compra) {
 
-		CompraVO c = compra;
-
-		return compraDao.deletar(c.getIdCompra());
+		return compraDao.deletarCompra(compra);
 
 	}
 

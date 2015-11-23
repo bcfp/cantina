@@ -304,7 +304,7 @@ public class CompraDAO implements ICompraDAO {
 					+ "inner join forma_pgto fp on c.id_forma_pgto = fp.id_forma_pgto "
 					+ "inner join fornecedor f on c.id_fornecedor = f.id_fornecedor "
 					+ "inner join status s on c.id_status_compra = s.id_status "
-					+ "where f.ativo = 1";
+					+ "where f.ativo = 1 and c.ativo = 1";
 			
 			pstm = conexao.prepareStatement(sql);
 			
@@ -429,6 +429,38 @@ public class CompraDAO implements ICompraDAO {
 		return listaItensCompra;
 	}
 	
-	
+	public boolean deletarCompra(CompraVO compra) {
+		
+		String sql = "update compra set ativo = 0 where id_compra = ?";
+		
+		try {
+			
+			conexao = fabrica.getConexao();
+			pstm = conexao.prepareStatement(sql);
+			
+			pstm.setLong(1, compra.getIdCompra());
+			
+			pstm.executeUpdate();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			return false;
+		}finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+			} catch (SQLException e) {
+			
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+	}
 
 }
