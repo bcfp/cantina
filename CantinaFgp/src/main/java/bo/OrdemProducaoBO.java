@@ -5,7 +5,6 @@ import java.util.List;
 import utils.UtilFuncoes;
 import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
-import vo.ProdutoVendaVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
 

@@ -249,7 +249,64 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 
 	@Override
 	public boolean entradaEstoque(Long idProduto, Double qtd) {
-		return false;
+		
+		ResultSet rs = null;
+		
+		try{
+			
+			conexao = fabrica.getConexao();
+
+			pstm = conexao.prepareStatement("select estoque from materia_prima_cantina where id_materia_prima = ?");
+			
+			pstm.setLong(1, idProduto);
+			
+			rs = pstm.executeQuery();
+			
+			Integer qtdAtual = 0;
+			
+			if(rs.next()){
+				
+				qtdAtual = rs.getInt("estoque");
+				
+			}
+			
+			pstm = conexao.prepareStatement("update materia_prima_cantina set estoque = ? where id_materia_prima = ?");
+
+			pstm.setDouble(1, qtdAtual+qtd);
+			pstm.setLong(2, idProduto);
+			
+			if(pstm.executeUpdate() == 0){
+				conexao.rollback();
+				return false;
+			}
+			
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+				return false;
+				} catch (SQLException e1) {}
+		} finally {			
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs!=null){
+					rs.close();	
+				}
+			} catch (SQLException e) {
+				return false;
+			}
+			
+		}
+		
+		return true;
+		
 	}
 
 	@Override

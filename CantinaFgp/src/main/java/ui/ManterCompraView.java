@@ -47,12 +47,13 @@ import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
+import enumeradores.TipoStatus;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
 	// Atributos Tela
 	
-	private JComboBox<StatusVO> cbxStatusCompra;
+	private JComboBox<StatusVO> cbxStatus;
 	private JComboBox<String> cbxFormaPgto;
 	
 	private JXDatePicker dtpDataCompra;
@@ -117,6 +118,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private List<StatusVO> listaStatus;
 	private List<FormaPgtoVO> listaFormasPgto;
 	
+	private StatusVO statusAtual;	
+	private StatusVO emAberto;
+	private StatusVO aguardandoEntrega;
+	private StatusVO concluida;
+	
 	private Double totalCompra;
 	
 	private Boolean editableTabItemCompra;
@@ -135,7 +141,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		dtpDataCompra = new JXDatePicker(new Date());
 		
-		cbxStatusCompra = new JComboBox<StatusVO>();
+		cbxStatus = new JComboBox<StatusVO>();
 		cbxFormaPgto = new JComboBox<String>();
 
 		lblFuncionario = new JLabel("Funcionário");
@@ -244,7 +250,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		btnBuscarProd.setBounds(espXTxt + 80, espY + espEntre * 3, 100, altura);
 		
 		lblStatusCompra.setBounds(480, espY, 80, altura);
-		cbxStatusCompra.setBounds(530, espY, 130, altura);
+		cbxStatus.setBounds(530, espY, 130, altura);
 		
 		lblDataCompra.setBounds(250, espY, 80, altura);
 		dtpDataCompra.setBounds(290, espY, 140, altura);
@@ -324,7 +330,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		pnlCampos.add(barraTabItemCompra);
 		pnlCampos.add(dtpDataCompra);
 		pnlCampos.add(cbxFormaPgto);
-		pnlCampos.add(cbxStatusCompra);
+		pnlCampos.add(cbxStatus);
 		pnlCampos.add(lblFuncionario);
 		pnlCampos.add(lblValorTotal);
 		pnlCampos.add(lblTotal);
@@ -404,6 +410,29 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			
 		});
 		
+		listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		
+		for (StatusVO status : listaStatus) {
+			
+			if(status.getDescricao().equals("Em Aberto")){
+
+				emAberto = status;
+				
+			}
+			else if(status.getDescricao().equals("Aguardando Entrega")){
+				
+				aguardandoEntrega = status;
+				
+			}
+			else if(status.getDescricao().equals("Concluída")){
+				
+				concluida = status;
+				
+			}
+
+		}
+		
+		
 	}
 	
 	// Construtor
@@ -417,9 +446,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public void abrirJanela() {
 		
+		compra.setStatus(emAberto);
+		
 		editableTabItemCompra = true;
 		
-		carregarStatusCompra();
+		controladorStatus();
 		this.setVisible(true);
 		
 	}
@@ -435,7 +466,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		listaItensCompra = compra.getItensCompra();
 		carregarGridItens(listaItensCompra);
 		this.compra.setStatus(compra.getStatus());
-		carregarStatusCompra();
+		
 		
 		if(geradorCompra instanceof FuncionarioCantinaVO){
 
@@ -450,28 +481,35 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		txtCodFornCompra.setText(fornecedor.getIdFornecedor().toString());
 		txtFornCompra.setText(fornecedor.getNome());
 		cbxFormaPgto.setSelectedItem(compra.getFormaPgto().getDescricao());
+		
+		controladorStatus();
 			
 		this.setVisible(true);
 		
 	}
 	
-	private void carregarStatusCompra(){
+	private void controladorStatus(){
 		
-		listaStatus = compraBo.carregarStatusCompra(compra);
+		cbxStatus.removeAllItems();	
 		
-		for (StatusVO statusVo : listaStatus) {
-			
-			//cbxStatusCompra.addItem(statusVo.getDescricao());
-			
+		for (StatusVO statusLista : listaStatus) {
+			if(statusLista.equals(compra.getStatus())){
+				statusAtual = statusLista;
+			}
 		}
-		
-		if(compra!=null && compra.getStatus() != null){
-			cbxStatusCompra.setSelectedItem(compra.getStatus().getDescricao());			
+								
+		if(statusAtual.equals(emAberto) || statusAtual.equals(aguardandoEntrega)){
+			cbxStatus.addItem(emAberto);
+			cbxStatus.addItem(aguardandoEntrega);
+			cbxStatus.addItem(concluida);
 		}
-		else{
-			// TODO - status index alterar isso aqui
-			//cbxStatusCompra.setSelectedIndex(3);
+		else if(statusAtual.equals(concluida)){
+			cbxStatus.addItem(concluida);
+			btnAlterar.setEnabled(false);			
 		}
+
+		cbxStatus.setSelectedItem(statusAtual);
+
 		
 	}
 	
@@ -559,9 +597,9 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		if (compraIncluida != null) {
 
 			txtCodOc.setText(compraIncluida.getIdCompra().toString());
-
+			controladorStatus();
 			JOptionPane.showMessageDialog(null, "Compra incluída");
-
+		
 			return true;
 
 		}
@@ -578,6 +616,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		if (compraBo.alterar(carregarCompra())) {
 
+			controladorStatus();
 			JOptionPane.showMessageDialog(null, "Compra alterada", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
 			return true;
@@ -591,11 +630,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private CompraVO carregarCompra(){
 		
 		compra.setData(dtpDataCompra.getDate());
-		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
 		compra.setFormaPgto(listaFormasPgto.get(cbxFormaPgto.getSelectedIndex()));
 		compra.setFornecedor(fornecedor);
 		compra.setItensCompra(listaItensCompra);
 		compra.setGeradorCompra(geradorCompra);
+		compra.setStatus((StatusVO) cbxStatus.getSelectedItem());
 		
 		return compra;
 		
@@ -670,7 +709,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		editableTabItemCompra = true;
 		dtpDataCompra.setEditable(true);
-		cbxStatusCompra.setEnabled(true);
+		cbxStatus.setEnabled(true);
 		btnBuscarProd.setEnabled(true);
 		txtCodOc.setEditable(true);	
 		txtCodProdCompra.setEditable(true);
@@ -692,7 +731,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		editableTabItemCompra = false;
 		dtpDataCompra.setEditable(false);
-		cbxStatusCompra.setEnabled(false);
+		cbxStatus.setEnabled(false);
 		btnBuscarProd.setEnabled(false);
 		txtCodOc.setEditable(false);
 		txtCodProdCompra.setEditable(false);

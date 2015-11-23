@@ -169,6 +169,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 		produtoVenda = new ProdutoVendaVO();
 		funcionarioCantina = new FuncionarioCantinaVO();
+
+		ordemProducao = new OrdemProducaoVO();
 		
 		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_PRODUCAO);
 		
@@ -196,9 +198,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			}
 
 		}
-
-		ordemProducao = new OrdemProducaoVO();
-		ordemProducao.setStatus(emAberto);
 						
 	}
 	
@@ -213,6 +212,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 	@Override
 	public void abrirJanela() {
+		
+		ordemProducao.setStatus(emAberto);
 		
 		cbxStatus.setEnabled(false);
 	
@@ -336,15 +337,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private void controladorStatus(){
 		
 		cbxStatus.removeAllItems();
-
+		
 		for (StatusVO statusLista : listaStatus) {
 			if(statusLista.equals(ordemProducao.getStatus())){
 				statusAtual = statusLista;
 			}
 		}
-		
-		cbxStatus.setSelectedItem(statusAtual);
-						
+								
 		if(statusAtual.equals(emAberto)){
 
 			cbxStatus.addItem(emAberto);
@@ -369,6 +368,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			btnAlterar.setEnabled(false);			
 		}
 
+		cbxStatus.setSelectedItem(statusAtual);
 		
 	}
 	

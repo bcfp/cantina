@@ -387,7 +387,7 @@ public class CompraDAO implements ICompraDAO {
 			conexao = fabrica.getConexao();
 			
 			String sql = "select c.id_compra, c.data_compra, c.tipo_origem, c.id_coringa_origem, "
-					+ "fp.id_forma_pgto, fp.descricao, f.id_fornecedor, f.nome, f.contato, s.id_status, s.descricao as descricao_status, s.tipo "
+					+ "fp.id_forma_pgto, fp.descricao, f.id_fornecedor, f.nome, f.contato, s.id_status, s.id_status, s.descricao as descricao_status, s.tipo "
 					+ "from compra c "
 					+ "inner join forma_pgto fp on c.id_forma_pgto = fp.id_forma_pgto "
 					+ "inner join fornecedor f on c.id_fornecedor = f.id_fornecedor "
@@ -426,7 +426,8 @@ public class CompraDAO implements ICompraDAO {
 				}
 				
 				compra.setStatus(new StatusVO());
-				compra.getStatus().setDescricao("descricao_status");
+				compra.getStatus().setIdStatus(rs.getLong("id_status"));
+
 				String  tipoStatus = rs.getString("tipo");
 				
 				if(tipoStatus.equals(TipoStatus.ORDEM_COMPRA)){
@@ -436,7 +437,8 @@ public class CompraDAO implements ICompraDAO {
 				if(tipoStatus.equals(TipoStatus.ORDEM_PRODUCAO)){
 					compra.getStatus().setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
 				}
-				compra.getStatus().setIdStatus(rs.getLong("id_status"));
+				
+				compra.getStatus().setDescricao(rs.getString("descricao_status"));
 				
 				compra.setItensCompra(consultarItensCompraPorCompra(compra));
 				

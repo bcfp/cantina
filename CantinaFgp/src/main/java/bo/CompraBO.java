@@ -7,20 +7,22 @@ import utils.UtilFuncoes;
 import vo.CompraVO;
 import vo.FornecedorVO;
 import vo.ItemCompraVO;
-import vo.StatusVO;
+import vo.MateriaPrimaVO;
+import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
 import daoimpl.CompraDAO;
-import daoimpl.StatusDAO;
 import daoservice.ICompraDAO;
-import enumeradores.TipoStatus;
 
 public class CompraBO {
 
 	private ICompraDAO compraDao;
-	private StatusDAO statusDao;
+	private ProdutoVendaBO prodVendaBo;
+	private MateriaPrimaBO matPrimaBo;
 
 	{
 		compraDao = new CompraDAO();
-		statusDao = new StatusDAO();
+		prodVendaBo = new ProdutoVendaBO();
+		matPrimaBo = new MateriaPrimaBO();		
 	}
 	
 	// Métodos
@@ -69,31 +71,6 @@ public class CompraBO {
 		
 	}
 	
-	public List<StatusVO> carregarStatusCompra(CompraVO compra){
-		
-		List<StatusVO> listaStatus = statusDao.consultar(TipoStatus.ORDEM_COMPRA);
-		
-		/*
-		if(compra != null && compra.getStatus() != null){
-			
-			StatusVO statusCompra = compra.getStatus();
-			
-			if(statusCompra.getDescricao().equals("Aguardando Entrega")){
-				
-				for (int i = 0; i < listaStatus.size(); i++) {
-					if(listaStatus.get(i).getDescricao().equals("Em Aberto")){
-						listaStatus.remove(i);
-					}
-				}
-					
-			}
-		}
-		*/
-		
-		return listaStatus;
-		
-	}
-	
 	public boolean isListaItensCompraValida(List<ItemCompraVO> listaItensCompra){
 		
 		return !(listaItensCompra == null || listaItensCompra.size() == 0);
@@ -111,9 +88,42 @@ public class CompraBO {
 	}
 
 	public boolean alterar(CompraVO compra) {
-				
-		return compraDao.alterar(compra);
+			
+	boolean alterado = false;
+	
+	if(compraDao.alterar(compra)){
 		
+		alterado = true;
+		
+		String status = compra.getStatus().getDescricao();
+	
+		if(status.equals("Concluída")){
+			
+			List<ItemCompraVO> itensCompra = compra.getItensCompra();
+			
+			for (ItemCompraVO itemCompra : itensCompra) {
+				
+				ProdutoVO produto = itemCompra.getProduto();
+				
+				if(produto instanceof ProdutoVendaVO){
+					if(!prodVendaBo.entradaEstoque(produto.getIdProduto(), itemCompra.getQtde())){
+						alterado = false;
+					}
+				}
+				else if(produto instanceof MateriaPrimaVO){
+					if(!matPrimaBo.entradaEstoque(produto.getIdProduto(), itemCompra.getQtde())){
+						alterado = false;
+					}
+				}
+				
+			}
+			
+		}
+	
+	}
+		
+		return alterado;
+
 	}
 
 	public boolean deletar(CompraVO compra) {

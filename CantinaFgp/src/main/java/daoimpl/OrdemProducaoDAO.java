@@ -229,6 +229,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				
 				ordemProducao.getStatus().setDescricao(rs.getString("descricao_status"));
 				
+				
 				listaOrdensProducao.add(ordemProducao);
 				
 			}
