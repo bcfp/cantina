@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,7 @@ import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
 import vo.ItemCompraVO;
+import vo.MateriaPrimaVO;
 import vo.ProdutoVO;
 import vo.ProdutoVendaVO;
 import vo.StatusVO;
@@ -39,15 +42,17 @@ import bo.CompraBO;
 import bo.FormaPgtoBO;
 import bo.FornecedorBO;
 import bo.FuncionarioBO;
+import bo.MateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import bo.StatusBO;
+import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
 	// Atributos Tela
 	
-	private JComboBox<String> cbxStatusCompra;
+	private JComboBox<StatusVO> cbxStatusCompra;
 	private JComboBox<String> cbxFormaPgto;
 	
 	private JXDatePicker dtpDataCompra;
@@ -100,6 +105,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private FornecedorBO fornecedorBo;
 	private FuncionarioBO funcionarioBo;
 	private ProdutoVendaBO produtoVendaBo;
+	private MateriaPrimaBO materiaPrimaBo;
 
 	private CompraVO compra;
 	private List<ItemCompraVO> listaItensCompra;
@@ -112,6 +118,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private List<FormaPgtoVO> listaFormasPgto;
 	
 	private Double totalCompra;
+	
+	private Boolean editableTabItemCompra;
 
 	
 	// Bloco de inicialização
@@ -127,7 +135,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		dtpDataCompra = new JXDatePicker(new Date());
 		
-		cbxStatusCompra = new JComboBox<String>();
+		cbxStatusCompra = new JComboBox<StatusVO>();
 		cbxFormaPgto = new JComboBox<String>();
 
 		lblFuncionario = new JLabel("Funcionário");
@@ -166,6 +174,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		fornecedorBo = new FornecedorBO();
 		funcionarioBo = new FuncionarioBO();
 		produtoVendaBo = new ProdutoVendaBO();
+		materiaPrimaBo = new MateriaPrimaBO();
 		
 		btnBuscarFunc = new JButton("Consultar");
 		btnBuscarFunc.addActionListener(new ActionListener() {
@@ -176,7 +185,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 				acaoPesquisar = PESQ_FUNCIONARIO;
 				
 				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome"}).abrirJanela();
-				
 				
 			}
 		});
@@ -276,6 +284,32 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		});
 
 		tabItemCompra.setModel(modeloTabItemCompra);
+
+		tabItemCompra.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if(editableTabItemCompra){
+					if(tabItemCompra.getSelectedRow() != -1 && e.getClickCount() == 2){
+						
+						int x = JOptionPane.showConfirmDialog(null, 
+															"Deseja realmente excluir o produto?", 
+															"Confirmação", 
+															JOptionPane.YES_OPTION);
+						
+						if(x == JOptionPane.YES_NO_OPTION){
+							
+							listaItensCompra.remove(tabItemCompra.getSelectedRow());
+							carregarGridItens(listaItensCompra);
+							
+						}
+						
+					}
+				}
+				
+			}
+		});
 
 		barraTabItemCompra = new JScrollPane(
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -383,6 +417,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	public void abrirJanela() {
 		
+		editableTabItemCompra = true;
+		
 		carregarStatusCompra();
 		this.setVisible(true);
 		
@@ -393,6 +429,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		desabilitarCampos();
 
+		this.compra = compra;
 		fornecedor = compra.getFornecedor();
 		geradorCompra = compra.getGeradorCompra();
 		listaItensCompra = compra.getItensCompra();
@@ -400,10 +437,18 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		this.compra.setStatus(compra.getStatus());
 		carregarStatusCompra();
 		
+		if(geradorCompra instanceof FuncionarioCantinaVO){
+
+			txtCodFuncionario.setText(((FuncionarioCantinaVO)geradorCompra).getFuncionario().getCodPessoa());
+			txtFuncionario.setText(((FuncionarioCantinaVO)geradorCompra).getFuncionario().getNome());
+			
+		}
+		
+		
 		txtCodOc.setText(compra.getCodCompra());
 		dtpDataCompra.setDate(compra.getData());
-		txtCodFornCompra.setText(compra.getFornecedor().getCodFornecedor());
-		txtFornCompra.setText(compra.getFornecedor().getNome());
+		txtCodFornCompra.setText(fornecedor.getIdFornecedor().toString());
+		txtFornCompra.setText(fornecedor.getNome());
 		cbxFormaPgto.setSelectedItem(compra.getFormaPgto().getDescricao());
 			
 		this.setVisible(true);
@@ -416,7 +461,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		for (StatusVO statusVo : listaStatus) {
 			
-			cbxStatusCompra.addItem(statusVo.getDescricao());
+			//cbxStatusCompra.addItem(statusVo.getDescricao());
 			
 		}
 		
@@ -485,6 +530,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 							if (!produtoNaLista) {
 								ItemCompraVO itemCompra = new ItemCompraVO();
 
+								itemCompra.setCompra(compra);
 								itemCompra.setProduto(produto);
 								itemCompra.setQtde(qtde);
 								itemCompra.setValor(valor);
@@ -512,7 +558,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		if (compraIncluida != null) {
 
-			txtCodOc.setText(compraIncluida.getCodCompra());
+			txtCodOc.setText(compraIncluida.getIdCompra().toString());
 
 			JOptionPane.showMessageDialog(null, "Compra incluída");
 
@@ -546,7 +592,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		compra.setData(dtpDataCompra.getDate());
 		compra.setStatus(listaStatus.get(cbxStatusCompra.getSelectedIndex()));
-		compra.setFormaPgto(listaFormasPgto.get(cbxStatusCompra.getSelectedIndex()));
+		compra.setFormaPgto(listaFormasPgto.get(cbxFormaPgto.getSelectedIndex()));
 		compra.setFornecedor(fornecedor);
 		compra.setItensCompra(listaItensCompra);
 		compra.setGeradorCompra(geradorCompra);
@@ -622,6 +668,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			return false;
 		}
 		
+		editableTabItemCompra = true;
 		dtpDataCompra.setEditable(true);
 		cbxStatusCompra.setEnabled(true);
 		btnBuscarProd.setEnabled(true);
@@ -632,6 +679,9 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		btnBuscarForn.setEnabled(true);
 		txtCodFornCompra.setEditable(true);
 		cbxFormaPgto.setEnabled(true);
+		btnBuscarFunc.setEnabled(true);
+		txtCodFuncionario.setEditable(true);
+		txtFuncionario.setEditable(true);
 		
 		return true;
 		
@@ -640,6 +690,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	protected boolean desabilitarCampos(){
 		
+		editableTabItemCompra = false;
 		dtpDataCompra.setEditable(false);
 		cbxStatusCompra.setEnabled(false);
 		btnBuscarProd.setEnabled(false);
@@ -649,8 +700,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		txtValorProdCompra.setEditable(false);
 		btnAddProd.setEnabled(false);
 		btnBuscarForn.setEnabled(false);
+		btnBuscarFunc.setEnabled(false);
 		txtCodFornCompra.setEditable(false);
 		cbxFormaPgto.setEnabled(false);
+		txtCodFuncionario.setEditable(false);
+		txtFuncionario.setEditable(false);
 		
 		return true;
 	}
@@ -669,9 +723,15 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.filtrarProdutoPorCodigoENome(txtCodProdCompra.getText(), txtProdCompra.getText());
 		
 				for (ProdutoVendaVO produtoVenda : listaProdutos) {
-					
-					listaGenerica.add(produtoVenda);
-					
+					if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
+						listaGenerica.add(produtoVenda);
+					}
+				} 
+				
+				List<MateriaPrimaVO> listaMatPrimas = materiaPrimaBo.filtrarProdutoPorCodigoENome(txtCodProdCompra.getText(), txtProdCompra.getText());
+		
+				for (MateriaPrimaVO materiaPrima : listaMatPrimas) {
+					listaGenerica.add(materiaPrima);
 				}
 				
 				return listaGenerica;

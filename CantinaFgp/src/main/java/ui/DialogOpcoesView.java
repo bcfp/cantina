@@ -34,8 +34,7 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 
 	}
 
-	public void abrirJanela(T objeto, ITelaConsultar<T> telaConsultar,
-			ITelaManter<T> telaManter) {
+	public void abrirJanela(T objeto, ITelaConsultar<T> telaConsultar, ITelaManter<T> telaManter) {
 
 		this.objeto = objeto;
 		this.telaConsultar = telaConsultar;
@@ -52,8 +51,7 @@ public class DialogOpcoesView<T extends GenericVO> extends JDialog {
 
 				DialogOpcoesView.this.dispose();
 
-				DialogOpcoesView.this.telaManter
-						.abrirJanela(DialogOpcoesView.this.objeto);
+				DialogOpcoesView.this.telaManter.abrirJanela(DialogOpcoesView.this.objeto);
 
 			}
 

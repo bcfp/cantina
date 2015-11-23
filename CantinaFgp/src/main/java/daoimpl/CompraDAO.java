@@ -12,8 +12,14 @@ import vo.FormaPgtoVO;
 import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
+import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
+import vo.ProdutoVO;
+import vo.ProdutoVendaVO;
 import vo.StatusVO;
+import bo.FuncionarioBO;
+import bo.MateriaPrimaBO;
+import bo.ProdutoVendaBO;
 import daoservice.ICompraDAO;
 import enumeradores.TipoGeradorCompra;
 import enumeradores.TipoProduto;
@@ -25,10 +31,16 @@ public class CompraDAO implements ICompraDAO {
 	private ConnectionFactory fabrica;
 	private	PreparedStatement pstm;
 	private ResultSet rs;
+	private ProdutoVendaBO prodVendaBo;
+	private MateriaPrimaBO matPrimaBo;
+	private FuncionarioBO funcionarioBo;
 	
 	{
 		
 		fabrica = ConnectionFactory.getInstance();
+		prodVendaBo = new ProdutoVendaBO();
+		matPrimaBo = new MateriaPrimaBO();
+		funcionarioBo = new FuncionarioBO();
 		
 	}
 	
@@ -83,7 +95,7 @@ public class CompraDAO implements ICompraDAO {
 				pstm.setString(4, TipoProduto.MATERIA_PRIMA.getTipoProduto());
 			}
 			
-			pstm.setLong(5, getUltimoIdGerado());
+			pstm.setLong(5, itemCompra.getCompra().getIdCompra());
 			
 			pstm.executeUpdate();
 			
@@ -142,20 +154,31 @@ public class CompraDAO implements ICompraDAO {
 			pstm.setInt(7, 1);
 			
 			pstm.executeUpdate();
+			
+			compra.setIdCompra(getUltimoIdGerado());
 					
 			for (ItemCompraVO itemCompra : compra.getItensCompra()) {
 				
-				incluirItemCompra(itemCompra);
+				itemCompra.setCompra(compra);
+				
+				if(!incluirItemCompra(itemCompra)){
+					conexao.rollback();
+				}
 				
 			}
 			
 			
 		} catch (ClassNotFoundException e) {
-			
 			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
 			return null;
 		}finally{
 			
@@ -185,7 +208,8 @@ public class CompraDAO implements ICompraDAO {
 			pstm = conexao.prepareStatement(
 					"update compra "
 					+ "set data_compra = ?, tipo_origem = ?, id_coringa_origem = ?, id_forma_pgto = ?, "
-					+ "id_fonecedor = ?, id_status_compra = ?");
+					+ "id_fornecedor = ?, id_status_compra = ? "
+					+ "where id_compra = ?");
 			
 			pstm.setDate(1, dataSql);
 			
@@ -208,9 +232,11 @@ public class CompraDAO implements ICompraDAO {
 			pstm.setLong(5, compra.getFornecedor().getIdFornecedor());
 			pstm.setLong(6, compra.getStatus().getIdStatus());
 			
+			pstm.setLong(7, compra.getIdCompra());
+			
 			if(pstm.executeUpdate() > 0){
 				
-				List<ItemCompraVO> itensCompraBanco = consultarItensCompraPorIdCompra(compra.getIdCompra());
+				List<ItemCompraVO> itensCompraBanco = consultarItensCompraPorCompra(compra);
 				
 				if(itensCompraBanco == null){
 					conexao.rollback();
@@ -223,19 +249,15 @@ public class CompraDAO implements ICompraDAO {
 				List<ItemCompraVO> itensCompraAlterar = new ArrayList<ItemCompraVO>();
 				List<ItemCompraVO> itensCompraExcluir = new ArrayList<ItemCompraVO>();
 				
-				for (ItemCompraVO itemCompra : itensCompraAtual) {
+				for (ItemCompraVO itemCompraAtual : itensCompraAtual) {
 					
 					Boolean itemCompraNovo = true;
-					
-					ItemCompraVO itemComAtual = itemCompra;
-					
+										
 					for (ItemCompraVO itemCompraBanco : itensCompraBanco) {
-						
-						ItemCompraVO itemComBanco = itemCompraBanco;
-						
-						if(itemComAtual.getCompra().getIdCompra() == itemComBanco.getCompra().getIdCompra()){
+												
+						if(itemCompraAtual.getIdItemCompra() == itemCompraBanco.getIdItemCompra()){
 							
-							itensCompraAlterar.add(itemCompra);
+							itensCompraAlterar.add(itemCompraAtual);
 							itemCompraNovo = false;
 															
 						}
@@ -243,8 +265,7 @@ public class CompraDAO implements ICompraDAO {
 					}
 					
 					if(itemCompraNovo){
-						
-						itensCompraIncluir.add(itemCompra);
+						itensCompraIncluir.add(itemCompraAtual);
 					}
 					
 				}
@@ -252,39 +273,33 @@ public class CompraDAO implements ICompraDAO {
 				for (ItemCompraVO itemCompraBanco : itensCompraBanco) {
 					
 					Boolean itemCompraExcluir = true;
-					
-					ItemCompraVO itemComBanco = itemCompraBanco;
-					
-					for (ItemCompraVO itemCompra : itensCompraAtual) {
-						
-						ItemCompraVO itemCom = itemCompra;
-						
-						if(itemComBanco.getCompra().getIdCompra() == itemCom.getCompra().getIdCompra()){
+										
+					for (ItemCompraVO itemCompraAtual : itensCompraAtual) {
+											
+						if(itemCompraBanco.getIdItemCompra() == itemCompraAtual.getIdItemCompra()){
 							itemCompraExcluir = false;
 						}
 						
 					}
 					
 					if(itemCompraExcluir){
-						
 						itensCompraExcluir.add(itemCompraBanco);
-						
 					}
 					
 				}
 				
 				if(itensCompraIncluir.size() > 0){
 					
-					pstm = conexao.prepareStatement("insert into item_compra (qtde, valor, id_coriga_produto, tipo, id_compra, id_produto_venda)"
-							+ " values (?,?,?,?,?,?");
-					
+					pstm = conexao.prepareStatement("insert into item_compra (qtde, valor, id_coringa_produto, tipo, id_compra)"
+							+ " values (?,?,?,?,?)");
+										
 					for (ItemCompraVO itemCompra : itensCompraIncluir){
+						
 						pstm.setDouble(1, itemCompra.getQtde());
 						pstm.setDouble(2, itemCompra.getValor());
 						pstm.setLong(3, itemCompra.getProduto().getIdProduto());
 						pstm.setString(4, itemCompra.getProduto().getTipo().getTipoProduto());
 						pstm.setLong(5, itemCompra.getCompra().getIdCompra());
-						pstm.setLong(6, itemCompra.getProduto().getIdProduto());
 						
 						if(pstm.executeUpdate() == 0){
 							conexao.rollback();
@@ -297,7 +312,8 @@ public class CompraDAO implements ICompraDAO {
 				
 				if(itensCompraAlterar.size() > 0){
 					
-					pstm = conexao.prepareStatement("update item_compra set qtde = ?, valor = ?, id_coringa_produto = ?, tipo = ?, id_compra = ?");
+					pstm = conexao.prepareStatement("update item_compra set qtde = ?, valor = ?, id_coringa_produto = ?, tipo = ?, id_compra = ?  "
+							+ "where id_item_compra = ?");
 					
 					for(ItemCompraVO itemCompra : itensCompraAlterar){
 						
@@ -306,11 +322,13 @@ public class CompraDAO implements ICompraDAO {
 						pstm.setLong(3, itemCompra.getProduto().getIdProduto());
 						pstm.setString(4, itemCompra.getProduto().getTipo().getTipoProduto());
 						pstm.setLong(5, itemCompra.getCompra().getIdCompra());
+						pstm.setLong(6, itemCompra.getIdItemCompra()); // TODO
 						
 						if(pstm.executeUpdate() == 0){
 							conexao.rollback();
 							return false;
 						}
+						
 					}
 				}
 				
@@ -357,12 +375,9 @@ public class CompraDAO implements ICompraDAO {
 
 	@Override
 	public boolean deletar(Long id) {
-		
-		
-		
 		return true;
 	}
-
+	
 	@Override
 	public List<CompraVO> consultar() {
 		
@@ -388,9 +403,10 @@ public class CompraDAO implements ICompraDAO {
 			while(rs.next()){
 				
 				compra = new CompraVO();
+				
+				compra.setIdCompra(rs.getLong("id_compra"));
 				compra.setCodCompra(rs.getString("id_compra"));
 				compra.setData(rs.getDate("data_compra"));
-				compra.setIdCompra(rs.getLong("id_compra"));
 				
 				compra.setFormaPgto(new FormaPgtoVO());
 				compra.getFormaPgto().setIdFormaPgtoVenda(rs.getLong("id_forma_pgto"));
@@ -400,6 +416,14 @@ public class CompraDAO implements ICompraDAO {
 				compra.getFornecedor().setIdFornecedor(rs.getLong("id_fornecedor"));
 				compra.getFornecedor().setNome(rs.getString("nome"));
 				compra.getFornecedor().setContato(rs.getString("contato"));
+				
+				String origem = rs.getString("tipo_origem");
+				
+				if(origem.equals(TipoGeradorCompra.FUNCIONARIO_CANTINA.getTipo())){
+					
+					compra.setGeradorCompra(funcionarioBo.consultarPorId(rs.getLong("id_coringa_origem")));
+					
+				}
 				
 				compra.setStatus(new StatusVO());
 				compra.getStatus().setDescricao("descricao_status");
@@ -412,7 +436,9 @@ public class CompraDAO implements ICompraDAO {
 				if(tipoStatus.equals(TipoStatus.ORDEM_PRODUCAO)){
 					compra.getStatus().setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
 				}
-				compra.getStatus().setIdStatus(rs.getLong("id_status"));				
+				compra.getStatus().setIdStatus(rs.getLong("id_status"));
+				
+				compra.setItensCompra(consultarItensCompraPorCompra(compra));
 				
 				listaCompras.add(compra);
 				
@@ -438,18 +464,21 @@ public class CompraDAO implements ICompraDAO {
 		return null;
 	}
 	
-	private List<ItemCompraVO>	consultarItensCompraPorIdCompra(Long idCompra){
+	private List<ItemCompraVO> consultarItensCompraPorCompra(CompraVO compra){
 		
 		List<ItemCompraVO> listaItensCompra =  new ArrayList<ItemCompraVO>();
+		
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
 		
 		try {
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement(
 					"select id_item_compra, qtde, valor, id_coringa_produto, tipo, id_compra "
-					+ "where id_compra = ?");
+					+ "from item_compra where id_compra = ?");
 			
-			pstm.setLong(1, idCompra);
+			pstm.setLong(1, compra.getIdCompra());
 			
 			rs = pstm.executeQuery();
 			
@@ -458,26 +487,26 @@ public class CompraDAO implements ICompraDAO {
 			while(rs.next()){
 				
 				itemCompra = new ItemCompraVO();
-				itemCompra.setIdItemCompra(rs.getLong("id_item_compra"));
+				itemCompra.setIdItemCompra(rs.getLong("id_item_compra")); // TODO
 				itemCompra.setQtde(rs.getDouble("qtde"));
 				itemCompra.setValor(rs.getDouble("valor"));
-				if(rs.getString("tipo").equals(TipoProduto.REVENDA)){
-					
-					itemCompra.getProduto().setTipo(TipoProduto.REVENDA);
-					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				
+				String tipo = rs.getString("tipo");
+				
+				ProdutoVO produto = null;
+				
+				if(tipo.equals(TipoProduto.REVENDA.getTipoProduto())){
+					produto = prodVendaBo.consultarProdutoPorId(rs.getLong("id_coringa_produto"));
 				}
-				if(rs.getString("tipo").equals(TipoProduto.PRODUCAO)){
-					
-					itemCompra.getProduto().setTipo(TipoProduto.PRODUCAO);
-					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				else if(tipo.equals(TipoProduto.MATERIA_PRIMA.getTipoProduto())){
+					produto = matPrimaBo.consultarProdutoPorId(rs.getLong("id_coringa_produto"));
 				}
-				if(rs.getString("tipo").equals(TipoProduto.MATERIA_PRIMA)){
-					
-					itemCompra.getProduto().setTipo(TipoProduto.MATERIA_PRIMA);
-					itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
-				}
-				itemCompra.setCompra(new CompraVO());
-				itemCompra.getCompra().setIdCompra(rs.getLong("id_compra"));
+
+				itemCompra.setProduto(produto);
+				
+				itemCompra.getProduto().setIdProduto(rs.getLong("id_coringa_produto"));
+				
+				itemCompra.setCompra(compra);
 				
 				listaItensCompra.add(itemCompra);
 				
@@ -489,12 +518,10 @@ public class CompraDAO implements ICompraDAO {
 			e.printStackTrace();
 		}finally{
 			try {
-				conexao.close();
 				pstm.close();
 				if(rs != null){
 					rs.close();
 				}
-				
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}

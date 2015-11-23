@@ -17,7 +17,6 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 	
 	static{
 		produtoVendaDao = new ProdutoVendaDAO();
-	
 	}
 	
 	{

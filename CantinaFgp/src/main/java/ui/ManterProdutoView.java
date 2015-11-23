@@ -28,7 +28,6 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
-import utils.BancoFake;
 import vo.FornecedorVO;
 import vo.GenericVO;
 import vo.MateriaPrimaVO;
@@ -704,7 +703,7 @@ import enumeradores.TipoSolicitacao;
 			
 			txtQtdeMax.setText(produto.getEstoque().getQtdeMaxima().toString());
 			txtQtdeMin.setText(produto.getEstoque().getQtdeMinima().toString());
-			cbxUnidade.setSelectedItem(produto.getUnidade().getDescricao()); // TODO - não está selecionando a unidade correta, isso pq as instancias das Strings não são as mesmas
+			cbxUnidade.setSelectedItem(produto.getUnidade().getDescricao());
 			
 			if(produto instanceof ProdutoVendaVO){
 				

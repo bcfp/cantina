@@ -598,21 +598,22 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	@Override
 	public ProdutoVendaVO consultarPorId(Long id) {
 		
-		ProdutoVendaVO produtoVenda = new ProdutoVendaVO();
+		ProdutoVendaVO produtoVenda = null;
 		
 		try {
 			
 			conexao = fabrica.getConexao();
 			
-			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado,"
-					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo from produto_venda pv where id_produto_venda = ? inner join unidade u on u.id_unidade = pv.id_unidade");
-			
+			pstm = conexao.prepareStatement("select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.ativo as p_ativo, pv.preco_custo, pv.preco_venda, pv.fabricado, "
+					+ "pv.lote, pv.id_unidade, u.descricao, u.ativo as u_ativo "
+					+ "from produto_venda pv "
+					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
+					+ "where id_produto_venda = ?");
 			
 			pstm.setLong(1, id);
 			
 			rs = pstm.executeQuery();
 		
-			
 			if(rs.next()){
 				
 				produtoVenda = new ProdutoVendaVO();
@@ -622,22 +623,17 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
 				else{
-					if(rs.getBoolean("revenda")){
-						produtoVenda.setTipo(TipoProduto.REVENDA);
-					}
-					else{
-						produtoVenda.setTipo(TipoProduto.MATERIA_PRIMA);
-					}
+					produtoVenda.setTipo(TipoProduto.REVENDA);
 				}
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setLote(rs.getBoolean("lote"));
 				produtoVenda.setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoVenda.setPrecoVenda(rs.getDouble("preco_venda"));
-				produtoVenda.setAtivo(rs.getBoolean("ativo"));
+				produtoVenda.setAtivo(rs.getBoolean("p_ativo"));
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
 				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
-				produtoVenda.getUnidade().setStatus(rs.getBoolean("ativo"));
+				produtoVenda.getUnidade().setStatus(rs.getBoolean("u_ativo"));
 				
 			}
 			
@@ -653,7 +649,6 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				conexao.close();
 				pstm.close();
 				if(rs != null){
-					
 					rs.close();
 				}
 			} catch (SQLException e) {

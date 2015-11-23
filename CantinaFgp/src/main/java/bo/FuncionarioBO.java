@@ -22,4 +22,10 @@ public class FuncionarioBO {
 		
 	}
 	
+	public FuncionarioCantinaVO consultarPorId(Long id){
+		
+		return funcionarioCantinaDao.consultarPorId(id);
+		
+	}
+	
 }

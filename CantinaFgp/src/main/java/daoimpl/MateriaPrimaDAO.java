@@ -9,6 +9,7 @@ import java.util.List;
 
 import vo.MateriaPrimaVO;
 import vo.ProdutoCantinaVO;
+import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
 import daoservice.IMateriaPrimaDAO;
 import enumeradores.TipoProduto;
@@ -122,7 +123,60 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 	@Override
 	public MateriaPrimaVO consultarPorId(Long id) {
 		
-		return null;
+		MateriaPrimaVO materiaPrima = null;
+		
+		try {
+			
+			conexao = fabrica.getConexao();
+			
+			pstm = conexao.prepareStatement("select mp.id_materia_prima, mp.cod_materia_prima, mp.descricao, mp.ativo as mp_ativo, mp.preco_custo, "
+					+ "mp.lote, mp.id_unidade, u.descricao, u.ativo as u_ativo "
+					+ "from materia_prima mp "
+					+ "inner join unidade u on u.id_unidade = mp.id_unidade "
+					+ "where id_materia_prima = ?");
+			
+			pstm.setLong(1, id);
+			
+			rs = pstm.executeQuery();
+		
+			if(rs.next()){
+				
+				materiaPrima = new MateriaPrimaVO();
+				materiaPrima.setIdProduto(rs.getLong("id_materia_prima"));
+				materiaPrima.setCodProduto(rs.getString("cod_materia_prima"));
+				materiaPrima.setDescricao(rs.getString("descricao"));
+				materiaPrima.setTipo(TipoProduto.MATERIA_PRIMA);
+				materiaPrima.setLote(rs.getBoolean("lote"));
+				materiaPrima.setPrecoCusto(rs.getDouble("preco_custo"));
+				materiaPrima.setAtivo(rs.getBoolean("mp_ativo"));
+				materiaPrima.setUnidade(new UnidadeProdutoVO());
+				materiaPrima.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
+				materiaPrima.getUnidade().setDescricao(rs.getString("descricao"));
+				materiaPrima.getUnidade().setStatus(rs.getBoolean("u_ativo"));
+				
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		finally{
+			
+			try {
+				conexao.close();
+				pstm.close();
+				if(rs != null){
+					rs.close();
+				}
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		
+		return materiaPrima;
 	}
 
 	@Override
@@ -158,6 +212,7 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 				materiaPrima.setQtdeEstoque(rs.getDouble("qtd_estoque"));
 				materiaPrima.setAtivo(rs.getBoolean("ativo"));
 				materiaPrima.setLote(rs.getBoolean("lote"));
+				materiaPrima.setTipo(TipoProduto.MATERIA_PRIMA);
 				materiaPrima.setPrecoCusto(rs.getDouble("preco_custo"));
 				materiaPrima.setUnidade(new UnidadeProdutoVO());
 				materiaPrima.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));

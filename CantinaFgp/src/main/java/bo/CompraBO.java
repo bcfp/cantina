@@ -65,7 +65,7 @@ public class CompraBO {
 	
 	public boolean isFornecedorValido(FornecedorVO fornecedor){
 		
-		return !(fornecedor == null || fornecedor.getCodFornecedor() == null || fornecedor.getCodFornecedor().equals(""));
+		return !(fornecedor == null || fornecedor.getIdFornecedor() == null || fornecedor.getIdFornecedor().equals(""));
 		
 	}
 	
@@ -111,10 +111,7 @@ public class CompraBO {
 	}
 
 	public boolean alterar(CompraVO compra) {
-		
-		StatusVO status = compra.getStatus();
-		
-		
+				
 		return compraDao.alterar(compra);
 		
 	}
