@@ -7,16 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bo.ProdutoMateriaPrimaBO;
-import utils.BancoFake;
 import vo.CompraVO;
 import vo.FormaPgtoVO;
 import vo.FornecedorVO;
 import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
-import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
-import vo.ProdutoMateriaPrimaVO;
 import vo.StatusVO;
 import daoservice.ICompraDAO;
 import enumeradores.TipoGeradorCompra;
@@ -36,6 +32,80 @@ public class CompraDAO implements ICompraDAO {
 		
 	}
 	
+	private Long getUltimoIdGerado(){
+		
+		Long id = null;
+		
+		try {
+						
+			PreparedStatement pstm = conexao.prepareStatement("select id_compra from compra where id_compra = (select max(id_compra) from compra)");
+		
+			rs = pstm.executeQuery();
+			
+			if(rs.next()){
+				id = rs.getLong("id_compra");
+			}
+			
+		} catch (SQLException e) {
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {e1.printStackTrace();}
+			e.printStackTrace();
+		}
+		finally{
+			
+			try {
+				pstm.close();
+			} catch (SQLException e) {}
+		
+		}
+		
+		return id;
+	}
+	
+	private boolean incluirItemCompra(ItemCompraVO itemCompra){
+		
+		try {
+			
+			PreparedStatement pstm = conexao.prepareStatement("insert into item_compra (qtde, valor, id_coringa_produto, tipo, id_compra) values (?,?,?,?,?)");
+			
+			pstm.setDouble(1, itemCompra.getQtde());
+			pstm.setDouble(2, itemCompra.getValor());
+			pstm.setLong(3, itemCompra.getProduto().getIdProduto());
+			
+			if(itemCompra.getProduto().getTipo().equals(TipoProduto.PRODUCAO)){
+				pstm.setString(4, TipoProduto.PRODUCAO.getTipoProduto());
+			}
+			else if(itemCompra.getProduto().getTipo().equals(TipoProduto.REVENDA)){
+				pstm.setString(4, TipoProduto.REVENDA.getTipoProduto());
+			}
+			else if(itemCompra.getProduto().getTipo().equals(TipoProduto.MATERIA_PRIMA)){
+				pstm.setString(4, TipoProduto.MATERIA_PRIMA.getTipoProduto());
+			}
+			
+			pstm.setLong(5, getUltimoIdGerado());
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				conexao.rollback();
+			} catch (SQLException e1) {}
+			return false;
+		}
+		finally{
+			
+			try {
+				pstm.close();
+			} catch (SQLException e) {}
+		
+		}
+		
+		return true;
+		
+	}
+	
 	@Override
 	public CompraVO incluir(CompraVO compra) {
 		
@@ -44,8 +114,8 @@ public class CompraDAO implements ICompraDAO {
 		try {
 			conexao = fabrica.getConexao();
 			
-			String sql = "insert into compra (data_compra, tipo_origem, id_coringa_origem, id_forma_pgto, id_fornecedor, id_status_compra) "
-					+ "values (?,?,?,?,?,?)";
+			String sql = "insert into compra (data_compra, tipo_origem, id_coringa_origem, id_forma_pgto, id_fornecedor, id_status_compra, ativo) "
+					+ "values (?,?,?,?,?,?,?)";
 			
 			pstm = conexao.prepareStatement(sql);
 			pstm.setDate(1, dataSql);
@@ -69,9 +139,16 @@ public class CompraDAO implements ICompraDAO {
 			pstm.setLong(4, compra.getFormaPgto().getIdFormaPgtoVenda());
 			pstm.setLong(5, compra.getFornecedor().getIdFornecedor());
 			pstm.setLong(6, compra.getStatus().getIdStatus());
-			
+			pstm.setInt(7, 1);
 			
 			pstm.executeUpdate();
+					
+			for (ItemCompraVO itemCompra : compra.getItensCompra()) {
+				
+				incluirItemCompra(itemCompra);
+				
+			}
+			
 			
 		} catch (ClassNotFoundException e) {
 			
@@ -252,11 +329,7 @@ public class CompraDAO implements ICompraDAO {
 					}
 				} 
 				
-				
 			}
-			
-			
-			
 			
 			
 		} catch (ClassNotFoundException e) {

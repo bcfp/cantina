@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,6 @@ import bo.FuncionarioBO;
 import bo.ProdutoVendaBO;
 import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
-import enumeradores.TipoStatus;
 
 public class ManterCompraView extends ManterFrameView<CompraVO> implements ITelaBuscar {
 	
@@ -522,7 +520,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 		}
 		else{
-			JOptionPane.showMessageDialog(null, "Falha ao incluir a compra", "Erro", JOptionPane.YES_OPTION);
+			msgErro.append("Falha ao incluir a compra");
 		}
 		
 		return false;
@@ -585,14 +583,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		modeloTabItemCompra.setNumRows(0);
 		
-		Iterator<ItemCompraVO> iIc = itensCompra.iterator();
-		
 		Double total = 0d;
 		totalCompra = 0d;
 		
-		while(iIc.hasNext()){
-			
-			ItemCompraVO ic = (ItemCompraVO) iIc.next();
+		for (ItemCompraVO ic : itensCompra) {
 			
 			String[] registro = new String[5];
 

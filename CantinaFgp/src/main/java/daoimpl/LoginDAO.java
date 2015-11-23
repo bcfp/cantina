@@ -118,8 +118,9 @@ public class LoginDAO implements ILoginDAO {
 				usuarioLogado.getFuncionario().setDataNascimento(rs.getDate("data_nascimento"));
 			}
 			
-			usuarioLogado.getFuncionario().setFuncionarioCantinas(buscarCantinasPorFuncionario(usuarioLogado.getFuncionario()));
-			
+			if(usuarioLogado != null){
+				usuarioLogado.getFuncionario().setFuncionarioCantinas(buscarCantinasPorFuncionario(usuarioLogado.getFuncionario()));
+			}
 			
 		} catch (ClassNotFoundException e) {
 			

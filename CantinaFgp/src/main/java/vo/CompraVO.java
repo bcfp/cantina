@@ -16,6 +16,7 @@ public class CompraVO extends GenericVO {
 	private List<ItemCompraVO> itensCompra;
 	private UnidadeProdutoVO unidade;
 	private StatusVO status;
+	private Boolean ativo;
 	
 	public CompraVO() {
 		
@@ -96,6 +97,14 @@ public class CompraVO extends GenericVO {
 
 	public void setStatus(StatusVO status) {
 		this.status = status;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 }

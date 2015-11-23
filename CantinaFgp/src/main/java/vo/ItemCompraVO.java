@@ -1,6 +1,5 @@
 package vo;
 
-import enumeradores.TipoProduto;
 
 public class ItemCompraVO extends GenericVO {
 	
