@@ -23,7 +23,6 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
-import utils.BancoFake;
 import vo.ClienteVO;
 import vo.GenericVO;
 import vo.ItemVendaVO;
@@ -323,7 +322,10 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 
 	@Override
 	public boolean isCamposValidos(StringBuilder msgErro) {
-		return true;
+		
+		
+		return false;
+	
 	}
 
 	@Override
@@ -352,11 +354,11 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 			
 			case PESQ_PRODUTO:
 				
-				return BancoFake.listaProdutosGeneric;
+				return null;
 				
 			case PESQ_CLIENTE:
 				
-				return BancoFake.listaClientesGeneric;
+				return null;
 
 		}
 		

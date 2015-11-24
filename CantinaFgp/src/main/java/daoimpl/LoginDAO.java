@@ -99,8 +99,6 @@ public class LoginDAO implements ILoginDAO {
 			pstm.setString(2, usuario.getSenha());
 			
 			rs = pstm.executeQuery();
-			
-			// TODO - Descobrir o porquê do nome retornar null
 						
 			if(rs.next()){
 				usuarioLogado = new UsuarioVO();
@@ -114,14 +112,14 @@ public class LoginDAO implements ILoginDAO {
 				usuarioLogado.getFuncionario().setRg(rs.getString("rg"));
 				usuarioLogado.getFuncionario().setCpf(rs.getString("cpf"));
 				usuarioLogado.getFuncionario().setEmail(rs.getString("email"));
-				usuarioLogado.getFuncionario().setNome(rs.getString("telefone"));
+				usuarioLogado.getFuncionario().setTelefone(rs.getString("telefone"));
 				usuarioLogado.getFuncionario().setDataNascimento(rs.getDate("data_nascimento"));
 			}
 			
 			if(usuarioLogado != null){
 				usuarioLogado.getFuncionario().setFuncionarioCantinas(buscarCantinasPorFuncionario(usuarioLogado.getFuncionario()));
 			}
-			
+						
 		} catch (ClassNotFoundException e) {
 			
 			e.printStackTrace();

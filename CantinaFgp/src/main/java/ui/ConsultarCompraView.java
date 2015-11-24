@@ -180,8 +180,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 	public ConsultarCompraView() {
 
-		super("Compra", new String[] { "Código", "Fornecedor", "Data" }, 10,
-				275, 665, 190);
+		super("Compra", new String[] { "Código", "Fornecedor", "Data", "Status" }, 10, 275, 665, 190);
 
 		acoesBotoes();
 
@@ -239,11 +238,12 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	@Override
 	protected String[] definirGridItens(CompraVO compra) {
 
-		String[] registro = new String[3];
+		String[] registro = new String[4];
 
 		registro[0] = compra.getCodCompra();
 		registro[1] = compra.getFornecedor().getNome();
 		registro[2] = compra.getData().toString();
+		registro[3] = compra.getStatus().getDescricao();
 
 		return registro;
 
@@ -264,6 +264,9 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 		if (compraBo.deletar(compra)) {
 			JOptionPane.showMessageDialog(null, "Compra excluída");
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Não é permitido excluir uma compra concluída");
 		}
 
 	}

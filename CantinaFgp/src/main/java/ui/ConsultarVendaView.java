@@ -18,7 +18,6 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.ClienteVO;
 import vo.FuncionarioCantinaVO;
 import vo.GenericVO;
@@ -254,7 +253,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 
 	@Override
 	public List<VendaVO> consultar() {
-		return BancoFake.listaVendas;
+		return null;
 	}
 
 	// Métodos ITelaBuscar
@@ -265,13 +264,13 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		switch (acaoPesquisar) {
 		
 			case PESQ_PRODUTO:
-				return BancoFake.listaProdutosGeneric;
+				return null;
 				
 			case PESQ_CLIENTE:
-				return BancoFake.listaClientesGeneric;
+				return null;
 				
 			case PESQ_FUNCIONARIO:
-				return BancoFake.listaFuncCantinaGeneric;
+				return null;
 
 		}
 		

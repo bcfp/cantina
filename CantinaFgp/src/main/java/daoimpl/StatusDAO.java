@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.BancoFake;
 import vo.StatusVO;
 import daoservice.IStatusDAO;
 import enumeradores.TipoStatus;

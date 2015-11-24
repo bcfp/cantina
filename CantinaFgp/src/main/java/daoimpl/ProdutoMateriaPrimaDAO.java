@@ -7,16 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import daoservice.IDAO;
-import daoservice.IProdutoMateriaPrimaDAO;
-import enumeradores.TipoProduto;
-import utils.BancoFake;
-import vo.EstoqueMateriaPrimaVO;
 import vo.MateriaPrimaVO;
 import vo.ProdutoCantinaVO;
 import vo.ProdutoMateriaPrimaVO;
 import vo.ProdutoVendaVO;
 import vo.UnidadeProdutoVO;
+import daoservice.IProdutoMateriaPrimaDAO;
+import enumeradores.TipoProduto;
 
 public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 	
@@ -98,6 +95,7 @@ public class ProdutoMateriaPrimaDAO implements IProdutoMateriaPrimaDAO {
 				produtoMateriaPrima.getMateriaPrima().setIdProduto(rs.getLong("id_materia_prima"));
 				produtoMateriaPrima.getMateriaPrima().setPrecoCusto(rs.getDouble("preco_custo"));
 				produtoMateriaPrima.getMateriaPrima().setLote(rs.getBoolean("lote"));
+				produtoMateriaPrima.getMateriaPrima().setTipo(TipoProduto.MATERIA_PRIMA);
 				
 				produtoMateriaPrima.setUnidade(new UnidadeProdutoVO());
 				produtoMateriaPrima.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));

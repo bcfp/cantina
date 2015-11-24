@@ -171,6 +171,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		funcionarioCantina = new FuncionarioCantinaVO();
 
 		ordemProducao = new OrdemProducaoVO();
+		ordemProducao.setStatus(emAberto);
 		
 		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_PRODUCAO);
 		
@@ -213,9 +214,9 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela() {
 		
-		ordemProducao.setStatus(emAberto);
-		
 		cbxStatus.setEnabled(false);
+		
+		statusAtual = emAberto;
 	
 		btnGerarOC.addActionListener(new ActionListener() {
 
@@ -312,14 +313,13 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		this.ordemProducao = ordemProducao;
 		funcionarioCantina = ordemProducao.getFuncionarioCantina();
 		produtoVenda = ordemProducao.getProdutoVenda();
-						
+								
 		txtCodOp.setText(ordemProducao.getCodOrdemProducao());
 		txtCodProd.setText(ordemProducao.getProdutoVenda().getCodProduto());
 		txtDescProd.setText(ordemProducao.getProdutoVenda().getDescricao());
 		txtQtdeProd.setText(ordemProducao.getQtde().toString());
 		txtCodFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getCodPessoa());
-		//txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome()); TODO BRuno - acertar
-		txtNomeFunc.setText("Bruno Silva");
+		txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome());
 		
 		receita = ordemProducao.getProdutoVenda().getReceita();
 		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
@@ -590,7 +590,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private OrdemProducaoVO carregarOrdemProducao(){
 				
 		ordemProducao.setCodOrdemProducao(txtCodOp.getText());
-		ordemProducao.setData(new Date()); // TODO - Bruno: voltar aqui
+		ordemProducao.setData(new Date());
 		ordemProducao.setQtde(Integer.parseInt(txtQtdeProd.getText()));
 		ordemProducao.setFuncionarioCantina(funcionarioCantina);
 		produtoVenda.setReceita(receita);

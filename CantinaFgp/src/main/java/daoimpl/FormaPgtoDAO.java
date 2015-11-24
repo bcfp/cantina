@@ -7,9 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
-
-import utils.BancoFake;
 import vo.FormaPgtoVO;
 import daoservice.IFormaPgtoDAO;
 

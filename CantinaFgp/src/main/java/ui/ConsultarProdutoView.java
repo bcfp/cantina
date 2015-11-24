@@ -93,7 +93,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 
 		for (TipoProduto tipoProduto : tiposProduto) {
 			
-			cbxTipoProduto.addItem(tipoProduto.getTipoProduto());
+			cbxTipoProduto.addItem(tipoProduto.getDescricao());
 			
 		}
 		
@@ -105,7 +105,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	
 	public ConsultarProdutoView() {
 		
-		super("Produto", new String[] {"Código", "Descricao", "Tipo", "Valor Venda", "Estoque"}, 10, 220, 665, 190);
+		super("Produto", new String[] {"Código", "Descricao", "Tipo", "Estoque"}, 10, 220, 665, 190);
 		this.setSize(750, 480);
 		definicoesPagina();
 		
@@ -184,10 +184,12 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	@Override
 	protected String[] definirGridItens(ProdutoVO produto) {
 		
-		String[] registro = new String[2];
+		String[] registro = new String[4];
 
 		registro[0] = produto.getCodProduto();
 		registro[1] = produto.getDescricao();
+		registro[2] = produto.getTipo().getDescricao();
+		registro[3] = produto.getEstoque().getQtdeAtual().toString();
 		
 		return registro;
 	}
@@ -225,7 +227,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 		
 		// Retornando matérias primas
 		
-		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getTipoProduto())){
+		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getDescricao())){
 
 			produtos = new ArrayList<ProdutoVO>();			
 			List<MateriaPrimaVO> materiasPrimas = matPrimaBo.consultarTodosProdutos();
@@ -245,7 +247,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 				
 				// retornando produtos produzidos
 				
-				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getTipoProduto())){
+				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getDescricao())){
 					
 					if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
 						produtos.add(produtoVenda);
@@ -256,7 +258,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 					
 					// retornando produtos de revenda
 					
-					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getTipoProduto())){
+					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getDescricao())){
 						
 						if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
 							produtos.add(produtoVenda);

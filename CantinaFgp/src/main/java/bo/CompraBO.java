@@ -128,6 +128,10 @@ public class CompraBO {
 
 	public boolean deletar(CompraVO compra) {
 
+		if(compra.getStatus().getDescricao().equals("Concluída")){
+			return false;
+		}
+		
 		return compraDao.deletarCompra(compra);
 
 	}

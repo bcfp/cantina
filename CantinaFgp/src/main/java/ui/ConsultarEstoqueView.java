@@ -23,9 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import utils.BancoFake;
 import utils.UtilFuncoes;
-import vo.FuncionarioCantinaVO;
 import vo.ItemCompraVO;
 import vo.MateriaPrimaVO;
 import vo.OrdemProducaoVO;
@@ -95,7 +93,7 @@ public class ConsultarEstoqueView extends JPanel{
 
 		for (TipoProduto tipoProduto : tiposProduto) {
 			
-			cbxTipoProduto.addItem(tipoProduto.getTipoProduto());
+			cbxTipoProduto.addItem(tipoProduto.getDescricao());
 			
 		}
 		
@@ -193,7 +191,7 @@ public class ConsultarEstoqueView extends JPanel{
 		
 		modeloTabEstoque.setColumnIdentifiers(new String[] {
 
-				"Código","Produto",	"Tipo",	"Qtde", "Mínima", "Qtde Maxima"
+				"Código","Produto",	"Tipo",	"Qtde", "Qtde Mínima", "Qtde Maxima"
 
 		});
 		
@@ -209,7 +207,7 @@ public class ConsultarEstoqueView extends JPanel{
 				if(e.getClickCount()==2){
 					if(tabEstoque.getSelectedRow() != -1){
 
-						ProdutoCantinaVO estoque = BancoFake.listaEstoqueProduto.get(tabEstoque.getSelectedRow());	
+						ProdutoCantinaVO estoque = listaEstoqueProdutos.get(tabEstoque.getSelectedRow());	
 																
 						new ManterProdutoView(TipoSolicitacao.DETALHAR, "Detalhar Produto").abrirJanela(estoque.getProduto());
 
@@ -334,9 +332,6 @@ public class ConsultarEstoqueView extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				btnGerarCompra.setEnabled(true);
-				btnGerarOrdemProd.setEnabled(true);
-				
 				listaEstoqueProdutos = consultar();				
 				carregarGridItens(listaEstoqueProdutos);
 				
@@ -374,7 +369,7 @@ public class ConsultarEstoqueView extends JPanel{
 
 				registro[0] = estoque.getProduto().getCodProduto();
 				registro[1] = estoque.getProduto().getDescricao();
-				registro[2] = estoque.getProduto().getTipo().getTipoProduto();
+				registro[2] = estoque.getProduto().getTipo().getDescricao();
 				registro[3] = estoque.getQtdeAtual().toString();
 				registro[4] = estoque.getQtdeMinima().toString();
 				registro[5] = estoque.getQtdeMaxima().toString();
@@ -393,8 +388,11 @@ public class ConsultarEstoqueView extends JPanel{
 		
 		// Retornando matérias primas
 		
-		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getTipoProduto())){
-		
+		if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.MATERIA_PRIMA.getDescricao())){
+			
+			btnGerarCompra.setEnabled(true);
+			btnGerarOrdemProd.setEnabled(false);
+			
 			List<MateriaPrimaVO> materiasPrimas = matPrimaBo.consultarTodosProdutos();
 			
 			for (MateriaPrimaVO materiaPrima : materiasPrimas) {
@@ -406,7 +404,6 @@ public class ConsultarEstoqueView extends JPanel{
 			
 		}
 		else{
-
 			
 			List<ProdutoVendaVO> produtosVenda = prodVendaBo.consultarTodosProdutos();
 			
@@ -414,9 +411,12 @@ public class ConsultarEstoqueView extends JPanel{
 				
 				// retornando produtos produzidos
 				
-				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getTipoProduto())){
-					
+				if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.PRODUCAO.getDescricao())){
+										
 					if(produtoVenda.getTipo().equals(TipoProduto.PRODUCAO)){
+						
+						btnGerarCompra.setEnabled(false);
+						btnGerarOrdemProd.setEnabled(true);
 						
 						produtoVenda.getEstoque().setProduto(produtoVenda);
 						listaPc.add(produtoVenda.getEstoque());
@@ -428,9 +428,12 @@ public class ConsultarEstoqueView extends JPanel{
 					
 					// retornando produtos de revenda
 					
-					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getTipoProduto())){
+					if(cbxTipoProduto.getSelectedItem().equals(TipoProduto.REVENDA.getDescricao())){
 						
 						if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
+							
+							btnGerarCompra.setEnabled(true);
+							btnGerarOrdemProd.setEnabled(false);
 							
 							produtoVenda.getEstoque().setProduto(produtoVenda);
 							listaPc.add(produtoVenda.getEstoque());

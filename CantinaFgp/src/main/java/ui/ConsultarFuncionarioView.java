@@ -1,13 +1,12 @@
 ﻿package ui;
 
-import java.util.List;
-
 import interfaces.ITelaManter;
+
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.FuncionarioVO;
 import enumeradores.TipoSolicitacao;
 
@@ -48,7 +47,7 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 
 	@Override
 	public List<FuncionarioVO> consultar() {
-		return BancoFake.listaFuncionarios;
+		return null;
 	}
 	
 }

@@ -523,8 +523,8 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 			conexao = fabrica.getConexao();
 			
 			pstm = conexao.prepareStatement(
-					"select pv.id_produto_venda, pv.cod_produto, pv.descricao, pv.qtd_estoque, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
-					+ "u.descricao, u.ativo, "
+					"select pv.id_produto_venda, pv.cod_produto, pv.descricao as nome_produto, pv.qtd_estoque, pv.ativo, pv.preco_custo, pv.preco_venda, pv.fabricado, pv.lote, pv.id_unidade, "
+					+ "u.descricao as nome_unidade, u.ativo, "
 					+ "pc.estoque, pc.qtde_maxima, pc.qtde_minima "
 					+ "from produto_venda pv "
 					+ "inner join unidade u on u.id_unidade = pv.id_unidade "
@@ -540,7 +540,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				produtoVenda = new ProdutoVendaVO();
 				produtoVenda.setIdProduto(rs.getLong("id_produto_venda"));
 				produtoVenda.setCodProduto(rs.getString("cod_produto"));
-				produtoVenda.setDescricao(rs.getString("descricao"));
+				produtoVenda.setDescricao(rs.getString("nome_produto"));
 				if(rs.getBoolean("fabricado")){
 					produtoVenda.setTipo(TipoProduto.PRODUCAO);
 				}
@@ -564,7 +564,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 				
 				produtoVenda.setUnidade(new UnidadeProdutoVO());
 				produtoVenda.getUnidade().setIdUnidadeProduto(rs.getLong("id_unidade"));
-				produtoVenda.getUnidade().setDescricao(rs.getString("descricao"));
+				produtoVenda.getUnidade().setDescricao(rs.getString("nome_unidade"));
 				produtoVenda.getUnidade().setStatus(rs.getBoolean("ativo"));
 				
 				listaProdutosVenda.add(produtoVenda);
@@ -724,6 +724,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 		return false;
 	}
 	
+	@Override
 	public boolean deletarProduto(ProdutoVendaVO produto){
 		
 		try {

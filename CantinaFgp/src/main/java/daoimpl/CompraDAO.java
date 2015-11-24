@@ -322,7 +322,7 @@ public class CompraDAO implements ICompraDAO {
 						pstm.setLong(3, itemCompra.getProduto().getIdProduto());
 						pstm.setString(4, itemCompra.getProduto().getTipo().getTipoProduto());
 						pstm.setLong(5, itemCompra.getCompra().getIdCompra());
-						pstm.setLong(6, itemCompra.getIdItemCompra()); // TODO
+						pstm.setLong(6, itemCompra.getIdItemCompra());
 						
 						if(pstm.executeUpdate() == 0){
 							conexao.rollback();
@@ -489,7 +489,7 @@ public class CompraDAO implements ICompraDAO {
 			while(rs.next()){
 				
 				itemCompra = new ItemCompraVO();
-				itemCompra.setIdItemCompra(rs.getLong("id_item_compra")); // TODO
+				itemCompra.setIdItemCompra(rs.getLong("id_item_compra"));
 				itemCompra.setQtde(rs.getDouble("qtde"));
 				itemCompra.setValor(rs.getDouble("valor"));
 				

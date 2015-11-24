@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import utils.UtilFuncoes;
 import vo.CompraVO;
 import vo.FuncionarioCantinaVO;
 import vo.FuncionarioVO;
@@ -181,8 +182,13 @@ public class GeradorView extends JDialog {
 				}
 				else{
 					GeradorView.this.dispose();
-					new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(
-							new CompraVO(geradorCompra, listaItensCompraSelecionados));
+					
+					CompraVO compra = new CompraVO(geradorCompra, listaItensCompraSelecionados);
+					compra.setStatus(new StatusVO());
+					compra.getStatus().setDescricao("Em Aberto");
+					compra.setGeradorCompra(UtilFuncoes.usuarioLogado.getFuncionario().getFuncionarioCantinas().get(0));
+					
+					new ManterCompraView(TipoSolicitacao.INCLUIR, "Cadastrar Compra").abrirJanela(compra);
 				}
 				
 			}

@@ -1,14 +1,12 @@
 ﻿package ui;
 
-import java.util.List;
-
 import interfaces.ITelaManter;
 
-import javax.swing.JButton;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 
 import ui.templates.ConsultarPanelView;
-import utils.BancoFake;
 import vo.CantinaVO;
 import enumeradores.TipoSolicitacao;
 
@@ -48,7 +46,7 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 
 	@Override
 	public List<CantinaVO> consultar() {
-		return BancoFake.listaCantinas;
+		return null;
 	}
 	
 }
