@@ -1,25 +1,28 @@
 package enumeradores;
 
+import java.util.List;
+
+import vo.StatusVO;
+import bo.StatusBO;
+
 public enum TipoStatus {
 
 	ORDEM_COMPRA("OC"), ORDEM_PRODUCAO("OP"), VENDA("OV");
 	
+	private StatusBO statusBo;
 	private String tipo;
-	
-	TipoStatus(){
 		
+	TipoStatus(String tipo){
+		statusBo = new StatusBO();
+		this.tipo = tipo;
 	}
 	
-	TipoStatus(String tipo){
-		this.setTipo(tipo);
-	}
-
 	public String getTipo() {
 		return tipo;
 	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+		
+	public List<StatusVO> consultarTodosStatus() {
+		return statusBo.consultarTodosStatus(this);
 	}
 	
 }

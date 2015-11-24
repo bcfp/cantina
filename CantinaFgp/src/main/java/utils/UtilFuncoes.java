@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 
 import vo.UsuarioVO;
 
-
 public class UtilFuncoes {
 	
 	public static UsuarioVO usuarioLogado;

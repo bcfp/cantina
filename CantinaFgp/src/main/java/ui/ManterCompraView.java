@@ -102,14 +102,13 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private static final String PESQ_PRODUTO = "produto";
 
 	private CompraBO compraBo;
-	private StatusBO statusBo;
 	private FormaPgtoBO formaPgtoBo;
 	private FornecedorBO fornecedorBo;
 	private FuncionarioBO funcionarioBo;
 	private ProdutoVendaBO produtoVendaBo;
 	private MateriaPrimaBO materiaPrimaBo;
 
-	private CompraVO compraa;
+	private CompraVO compra;
 	private List<ItemCompraVO> listaItensCompra;
 	private ProdutoVO produto;
 	private FornecedorVO fornecedor;
@@ -372,11 +371,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		totalCompra = 0d;
 				
-		statusBo = new StatusBO();
 		compraBo = new CompraBO();
 		
-		compraa = new CompraVO();
-		compraa.setStatus(emAberto);
+		compra = new CompraVO();
+		compra.setStatus(emAberto);
 		
 		listaStatus = new ArrayList<StatusVO>();
 		
@@ -412,11 +410,11 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			
 		});
 		
-		listaStatus = statusBo.consultarTodosStatus(TipoStatus.ORDEM_COMPRA);
+		listaStatus = TipoStatus.ORDEM_COMPRA.consultarTodosStatus();
 		
 		for (StatusVO status : listaStatus) {
 			
-			if(status.getDescricao().equals("Em Aberto")){
+			if(status.getDescricao().equals(TipoStatus.ORDEM_COMPRA)){
 
 				emAberto = status;
 				
@@ -462,12 +460,12 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		desabilitarCampos();
 
-		this.compraa = compra;
+		this.compra = compra;
 		fornecedor = compra.getFornecedor();
 		geradorCompra = compra.getGeradorCompra();
 		listaItensCompra = compra.getItensCompra();
 		carregarGridItens(listaItensCompra);
-		this.compraa.setStatus(compra.getStatus());
+		this.compra.setStatus(compra.getStatus());
 		
 		
 		if(geradorCompra instanceof FuncionarioCantinaVO){
@@ -501,7 +499,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		cbxStatus.removeAllItems();	
 		
 		for (StatusVO statusLista : listaStatus) {
-			if(statusLista.equals(compraa.getStatus())){
+			if(statusLista.equals(compra.getStatus())){
 				statusAtual = statusLista;
 			}
 		}
@@ -576,7 +574,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 							if (!produtoNaLista) {
 								ItemCompraVO itemCompra = new ItemCompraVO();
 
-								itemCompra.setCompra(compraa);
+								itemCompra.setCompra(compra);
 								itemCompra.setProduto(produto);
 								itemCompra.setQtde(qtde);
 								itemCompra.setValor(valor);
@@ -637,14 +635,14 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	private CompraVO carregarCompra(){
 		
-		compraa.setData(dtpDataCompra.getDate());
-		compraa.setFormaPgto(listaFormasPgto.get(cbxFormaPgto.getSelectedIndex()));
-		compraa.setFornecedor(fornecedor);
-		compraa.setItensCompra(listaItensCompra);
-		compraa.setGeradorCompra(geradorCompra);
-		compraa.setStatus((StatusVO) cbxStatus.getSelectedItem());
+		compra.setData(dtpDataCompra.getDate());
+		compra.setFormaPgto(listaFormasPgto.get(cbxFormaPgto.getSelectedIndex()));
+		compra.setFornecedor(fornecedor);
+		compra.setItensCompra(listaItensCompra);
+		compra.setGeradorCompra(geradorCompra);
+		compra.setStatus((StatusVO) cbxStatus.getSelectedItem());
 		
-		return compraa;
+		return compra;
 		
 	}
 	
@@ -715,7 +713,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	@Override
 	protected boolean habilitarCampos() {
 		
-		if(!compraBo.isAlteracaoPermitida(compraa)){
+		if(!compraBo.isAlteracaoPermitida(compra)){
 			JOptionPane.showMessageDialog(null, "Esta compra não pode ser alterada", "Solicitação Negada", JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}

@@ -28,7 +28,6 @@ import javax.swing.table.DefaultTableModel;
 import utils.UtilFuncoes;
 import vo.CompraVO;
 import vo.FuncionarioCantinaVO;
-import vo.FuncionarioVO;
 import vo.ItemCompraVO;
 import vo.OrdemProducaoVO;
 import vo.StatusVO;
@@ -230,8 +229,7 @@ public class GeradorView extends JDialog {
 					ordemProducao.getStatus().setDescricao("Em Aberto");
 
 					GeradorView.this.dispose();
-					new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção")
-					.abrirJanela(ordemProducao);
+					new ManterOrdemProducaoView(TipoSolicitacao.INCLUIR, "Cadastrar Ordem de Produção").abrirJanela(ordemProducao);
 
 				}
 				
@@ -274,15 +272,15 @@ public class GeradorView extends JDialog {
 	
 	/**
 	 * 
-	 * @param listaItensCompra
+	 * @param ordensProducao
 	 */
-	private void carregarGridOrdensProducao(List<OrdemProducaoVO> listaItensCompra) {
+	private void carregarGridOrdensProducao(List<OrdemProducaoVO> ordensProducao) {
 
 		modeloTabProdCompra.setNumRows(0);
 		
-		if(listaItensCompra != null){
+		if(ordensProducao != null){
 			
-			Iterator<OrdemProducaoVO> iListaOrdemProducao = listaItensCompra.iterator();
+			Iterator<OrdemProducaoVO> iListaOrdemProducao = ordensProducao.iterator();
 			
 			while(iListaOrdemProducao.hasNext()){
 				

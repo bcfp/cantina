@@ -53,19 +53,19 @@ public class StatusDAO implements IStatusDAO{
 	}
 
 	@Override
-	public List<StatusVO> consultar(TipoStatus tipo) {
+	public List<StatusVO> consultar(TipoStatus tipoStatus) {
 		
 			List<StatusVO> listaStatus = null;
-			String ts = "";
+			String tipo = "";
 			
-			if(tipo.equals(TipoStatus.ORDEM_PRODUCAO)){
-				ts = TipoStatus.ORDEM_PRODUCAO.getTipo();
+			if(tipoStatus.equals(TipoStatus.ORDEM_PRODUCAO)){
+				tipo = TipoStatus.ORDEM_PRODUCAO.getTipo();
 			}
-			else if(tipo.equals(TipoStatus.ORDEM_COMPRA)){
-				ts = TipoStatus.ORDEM_COMPRA.getTipo();
+			else if(tipoStatus.equals(TipoStatus.ORDEM_COMPRA)){
+				tipo = TipoStatus.ORDEM_COMPRA.getTipo();
 			}
-			else if(tipo.equals(TipoStatus.VENDA)){
-				ts = TipoStatus.VENDA.getTipo();
+			else if(tipoStatus.equals(TipoStatus.VENDA)){
+				tipo = TipoStatus.VENDA.getTipo();
 			}
 	
 
@@ -77,7 +77,7 @@ public class StatusDAO implements IStatusDAO{
 
 			pstm = conexao.prepareStatement("select id_status, descricao, tipo from status where tipo = ?");
 
-			pstm.setString(1, ts);
+			pstm.setString(1, tipo);
 			
 			rs = pstm.executeQuery();
 

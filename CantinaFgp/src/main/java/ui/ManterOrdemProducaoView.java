@@ -78,7 +78,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 	private ProdutoVendaBO produtoVendaBO;
 	private ProdutoMateriaPrimaBO receitaBO;
-	private StatusBO statusBO;
 	private FuncionarioBO funcionarioBO;
 	private OrdemProducaoBO ordemProducaoBO;
 	
@@ -156,7 +155,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 		produtoVendaBO = new ProdutoVendaBO();
 		receitaBO = new ProdutoMateriaPrimaBO();
-		statusBO = new StatusBO();
 		funcionarioBO = new FuncionarioBO();
 		ordemProducaoBO = new OrdemProducaoBO();
 		
@@ -173,7 +171,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		ordemProducao = new OrdemProducaoVO();
 		ordemProducao.setStatus(emAberto);
 		
-		listaStatus = statusBO.consultarTodosStatus(TipoStatus.ORDEM_PRODUCAO);
+		listaStatus = TipoStatus.ORDEM_PRODUCAO.consultarTodosStatus();
 		
 		for (StatusVO status : listaStatus) {
 			

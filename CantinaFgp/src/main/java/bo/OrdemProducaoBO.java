@@ -138,10 +138,8 @@ public class OrdemProducaoBO {
 	}
 	
 	public boolean deletar(OrdemProducaoVO ordemProducao){
-		
-		OrdemProducaoVO op = ordemProducao;
-		
-		return ordemProdDao.deletar(op.getIdOrdemProducao());
+				
+		return ordemProdDao.deletar(ordemProducao.getIdOrdemProducao());
 		
 	}
 

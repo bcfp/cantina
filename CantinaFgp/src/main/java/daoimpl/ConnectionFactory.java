@@ -33,9 +33,9 @@ public class ConnectionFactory {
 		//CONEXAO CAINÃ FABRICA 
 		// conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "caina123");
 		//CONEXAO Bruno FABRICA 
-		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "bts278193");
+		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "bts278193");
 		//CONEXAO Bruno CASA 
-		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:50074/CANTINA", "sa", "123456");
+		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:50074/CANTINA", "sa", "123456");
 		return conexao;
 		
 	}
@@ -43,7 +43,6 @@ public class ConnectionFactory {
 	public void fecharConexao() throws SQLException {
 
 		if (conexao != null) {
-
 			conexao.close();
 		}
 
