@@ -5,9 +5,9 @@ import java.util.Map;
 
 import vo.GenericVO;
 
-public interface ITelaBuscar {
+public interface ITelaBuscar{
 
-	List<GenericVO> buscarItem(Map<String, String> parametrosBusca);
+	List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametrosBusca);
 	void carregarItemSelecionado(GenericVO item);
 	String[] carregarGridTelaBusca(GenericVO item);
 	

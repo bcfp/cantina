@@ -278,7 +278,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	// Métodos ITelaBuscar
 	
 	@Override
-	public List<GenericVO> buscarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
 		
 		List<GenericVO> listaGenericos = null;
 		

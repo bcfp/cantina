@@ -52,6 +52,9 @@ public class BuscarDialogView extends JDialog{
 	private List<GenericVO> listaItens;
 		
 	private ITelaBuscar telaBuscar;
+
+	public static final String CODIGO = "Código";
+	public static final String NOME = "Nome";
 	
 	
 	// Bloco de Inicialização
@@ -99,10 +102,10 @@ public class BuscarDialogView extends JDialog{
 				
 				Map<String, String> parametros = new HashMap<String, String>();
 
-				parametros.put(lblCodItem.getText(), txtCodItem.getText());
-				parametros.put(lblNomeItem.getText(), txtNomeItem.getText());
+				parametros.put(CODIGO, txtCodItem.getText());
+				parametros.put(NOME, txtNomeItem.getText());
 				
-				listaItens = telaBuscar.buscarItem(parametros);
+				listaItens = telaBuscar.buscarItemPorCodigoENome(parametros);
 				
 				carregarGridItens(listaItens);
 				
@@ -160,9 +163,9 @@ public class BuscarDialogView extends JDialog{
 		
 		pnlCentro.setBackground(Color.GRAY);
 		pnlCentro.setLayout(null);
-		
-		lblNomeItem.setText("Nome");
-		lblCodItem.setText("Código");
+
+		lblCodItem.setText(CODIGO);
+		lblNomeItem.setText(NOME);
 		
 		int espXLbl = 20;
 		int espXTxt = espXLbl + 90;

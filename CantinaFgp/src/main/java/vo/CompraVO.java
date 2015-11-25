@@ -2,6 +2,7 @@ package vo;
 
 import interfaces.IGeradorCompra;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CompraVO extends GenericVO {
 	private Boolean ativo;
 	
 	public CompraVO() {
-		
+		itensCompra = new ArrayList<ItemCompraVO>();
 	}
 	
 	public CompraVO(IGeradorCompra geradorCompra, List<ItemCompraVO> itensCompra) {

@@ -39,7 +39,6 @@ import bo.FuncionarioBO;
 import bo.OrdemProducaoBO;
 import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
-import bo.StatusBO;
 import enumeradores.TipoSolicitacao;
 import enumeradores.TipoStatus;
 
@@ -91,7 +90,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 	private StatusVO statusAtual;	
 	private StatusVO emAberto;
-	private StatusVO aguardandoCompra;
 	private StatusVO emFabricacao;
 	private StatusVO concluida;
 	
@@ -175,22 +173,17 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 		for (StatusVO status : listaStatus) {
 			
-			if(status.getDescricao().equals("Em Aberto")){
+			if(status.getDescricao().equals(TipoStatus.EM_ABERTO)){
 
 				emAberto = status;
 				
 			}
-			else if(status.getDescricao().equals("Aguardando Compra")){
-				
-				aguardandoCompra = status;
-				
-			}
-			else if(status.getDescricao().equals("Em Fabricação")){
+			else if(status.getDescricao().equals(TipoStatus.EM_FABRICACAO)){
 				
 				emFabricacao = status;
 				
 			}
-			else if(status.getDescricao().equals("Concluída")){
+			else if(status.getDescricao().equals(TipoStatus.CONCLUIDA)){
 				
 				concluida = status;
 				
@@ -212,10 +205,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	public void abrirJanela() {
 		
-		cbxStatus.setEnabled(false);
-		
 		statusAtual = emAberto;
-	
+				
 		btnGerarOC.addActionListener(new ActionListener() {
 
 			@Override
@@ -320,7 +311,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		txtNomeFunc.setText(ordemProducao.getFuncionarioCantina().getFuncionario().getNome());
 		
 		receita = ordemProducao.getProdutoVenda().getReceita();
-		carregarGridReceita(ordemProducao.getProdutoVenda().getReceita());
+		carregarGridReceita(receita);
 
 		txtCodProd.setEditable(false);
 		txtCodFunc.setEditable(false);
@@ -348,12 +339,6 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 			cbxStatus.addItem(emFabricacao);
 			
 		}
-		else if(statusAtual.equals(aguardandoCompra)){
-
-			cbxStatus.addItem(emAberto);
-			cbxStatus.addItem(emFabricacao);
-				
-		}
 		else if(statusAtual.equals(emFabricacao)){
 
 			cbxStatus.addItem(emFabricacao);
@@ -374,7 +359,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	// Métodos Tela Busca
 	
 	/**
-	 * Carrega na tela ManterOrdemProducao o item selecionado na tela de consulta
+	 * Carrega na tela ManterOrdemProducao o item selecionado na tela de busca
 	 */
 	@Override
 	public void carregarItemSelecionado(GenericVO item) {
@@ -411,14 +396,14 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	
 
 	@Override
-	public List<GenericVO> buscarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
 		
 		List<GenericVO> listaGenericos = new ArrayList<GenericVO>();
 		switch (acaoPesquisar) {
 		
 			case PESQ_PRODUTO:
 				
-				listaProdutos = produtoVendaBO.filtrarProdutoFabricadoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));	
+				listaProdutos = produtoVendaBO.buscarProdutoFabricadoPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));	
 				
 				for (ProdutoVendaVO produtoVendaVO : listaProdutos) {
 					listaGenericos.add(produtoVendaVO);
@@ -428,7 +413,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				
 			case PESQ_FUNC:
 				
-				listaFuncionarios = funcionarioBO.filtrarFuncionariosPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+				listaFuncionarios = funcionarioBO.buscarFuncionariosPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));
 				
 				for (FuncionarioCantinaVO funcionarioVO : listaFuncionarios) {					
 					listaGenericos.add(funcionarioVO);
@@ -550,9 +535,9 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		
 		carregarOrdemProducao();
 		
-		if(ordemProducao.getStatus() == emFabricacao){
+		if(ordemProducao.getStatus().equals(emFabricacao)){
 			
-			if(statusAtual == emFabricacao){
+			if(statusAtual.equals(emFabricacao)){
 				
 				msgErro.append("É necessário alterar o status para gravar a alteração da Ordem de Produção\n");
 				return false;
@@ -650,23 +635,17 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		String status = cbxStatus.getSelectedItem().toString();
 				
 		switch (status) {
-		case "Concluída":
+		case TipoStatus.CONCLUIDA:
 			
 			return false;
 			
-		case "Em Fabricação":
+		case TipoStatus.EM_FABRICACAO:
 
 			cbxStatus.setEnabled(true);
 
 			break;
 
-		case "Aguardando Compra":
-
-			cbxStatus.setEnabled(true);
-
-			break;
-
-		case "Em Aberto":
+		case TipoStatus.EM_ABERTO:
 
 			btnGerarOC.setEnabled(true);
 			btnConsultarProd.setEnabled(true);

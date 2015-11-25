@@ -45,7 +45,6 @@ import bo.FornecedorBO;
 import bo.FuncionarioBO;
 import bo.MateriaPrimaBO;
 import bo.ProdutoVendaBO;
-import bo.StatusBO;
 import enumeradores.TipoProduto;
 import enumeradores.TipoSolicitacao;
 import enumeradores.TipoStatus;
@@ -109,7 +108,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private MateriaPrimaBO materiaPrimaBo;
 
 	private CompraVO compra;
-	private List<ItemCompraVO> listaItensCompra;
 	private ProdutoVO produto;
 	private FornecedorVO fornecedor;
 	private FuncionarioCantinaVO funcionario;
@@ -306,8 +304,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 						
 						if(x == JOptionPane.YES_NO_OPTION){
 							
-							listaItensCompra.remove(tabItemCompra.getSelectedRow());
-							carregarGridItens(listaItensCompra);
+							compra.getItensCompra().remove(tabItemCompra.getSelectedRow());
+							carregarGridItens(compra.getItensCompra());
 							
 						}
 						
@@ -387,9 +385,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			cbxFormaPgto.addItem(formaPgto.getDescricao());
 			
 		}
-		
-		listaItensCompra = new ArrayList<ItemCompraVO>();
-				
+						
 		btnAddProd.addActionListener(new ActionListener() {
 			
 			@Override
@@ -414,17 +410,17 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		
 		for (StatusVO status : listaStatus) {
 			
-			if(status.getDescricao().equals(TipoStatus.ORDEM_COMPRA)){
+			if(status.getDescricao().equals(TipoStatus.EM_ABERTO)){
 
 				emAberto = status;
 				
 			}
-			else if(status.getDescricao().equals("Aguardando Entrega")){
+			else if(status.getDescricao().equals(TipoStatus.AGUARDANDO_ENTREGA)){
 				
 				aguardandoEntrega = status;
 				
 			}
-			else if(status.getDescricao().equals("Concluída")){
+			else if(status.getDescricao().equals(TipoStatus.CONCLUIDA)){
 				
 				concluida = status;
 				
@@ -445,8 +441,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	
 	@Override
 	public void abrirJanela() {
-		
-		statusAtual = emAberto;
+				
+		statusAtual = emAberto;		
 		
 		editableTabItemCompra = true;
 		
@@ -463,11 +459,9 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		this.compra = compra;
 		fornecedor = compra.getFornecedor();
 		geradorCompra = compra.getGeradorCompra();
-		listaItensCompra = compra.getItensCompra();
-		carregarGridItens(listaItensCompra);
-		this.compra.setStatus(compra.getStatus());
 		
-		
+		carregarGridItens(compra.getItensCompra());
+				
 		if(geradorCompra instanceof FuncionarioCantinaVO){
 
 			txtCodFuncionario.setText(((FuncionarioCantinaVO)geradorCompra).getFuncionario().getCodPessoa());
@@ -475,6 +469,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			
 		}
 		
+		// TODO - Bruno, melhorar isso aqui
 		if(fornecedor!=null){
 			txtCodFornCompra.setText(fornecedor.getIdFornecedor().toString());
 			txtFornCompra.setText(fornecedor.getNome());
@@ -553,19 +548,19 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 
 							Double qtdeInserida = qtde;
 							Double qtdeLista = 0d;
-							int sizeLista = listaItensCompra.size();
+							int sizeLista = compra.getItensCompra().size();
 							boolean produtoNaLista = false;
 
 							for (int l = 0; l < sizeLista; l++) {
 
-								if (produto.getCodProduto() == listaItensCompra.get(l).getProduto().getCodProduto()
-										&& valor.toString().equals(listaItensCompra.get(l).getValor().toString())) {
+								if (produto.getCodProduto() == compra.getItensCompra().get(l).getProduto().getCodProduto()
+										&& valor.toString().equals(compra.getItensCompra().get(l).getValor().toString())) {
 
 									produtoNaLista = true;
 
-									qtdeLista = listaItensCompra.get(l).getQtde();
+									qtdeLista = compra.getItensCompra().get(l).getQtde();
 
-									listaItensCompra.get(l).setQtde(qtdeLista + qtdeInserida);
+									compra.getItensCompra().get(l).setQtde(qtdeLista + qtdeInserida);
 
 								}
 
@@ -579,10 +574,10 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 								itemCompra.setQtde(qtde);
 								itemCompra.setValor(valor);
 
-								listaItensCompra.add(itemCompra);
+								compra.getItensCompra().add(itemCompra);
 							}
 
-							carregarGridItens(listaItensCompra);
+							carregarGridItens(compra.getItensCompra());
 
 							return true;
 
@@ -638,7 +633,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		compra.setData(dtpDataCompra.getDate());
 		compra.setFormaPgto(listaFormasPgto.get(cbxFormaPgto.getSelectedIndex()));
 		compra.setFornecedor(fornecedor);
-		compra.setItensCompra(listaItensCompra);
 		compra.setGeradorCompra(geradorCompra);
 		compra.setStatus((StatusVO) cbxStatus.getSelectedItem());
 		
@@ -656,7 +650,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			isCamposValidos = false;
 		}
 		
-		if(!compraBo.isListaItensCompraValida(listaItensCompra)){
+		if(!compraBo.isListaItensCompraValida(compra.getItensCompra())){
 			msgErro.append("Favor incluir ao menos um produto na compra\n");
 			isCamposValidos = false;
 		}
@@ -762,7 +756,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	// Métodos ITelaBuscar
 
 	@Override
-	public List<GenericVO> buscarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
 				
 		List<GenericVO> listaGenerica = new ArrayList<GenericVO>();
 		
@@ -770,7 +764,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			
 			case PESQ_PRODUTO:
 				
-				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.filtrarProdutoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+				List<ProdutoVendaVO> listaProdutos = produtoVendaBo.buscarProdutoPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));
 		
 				for (ProdutoVendaVO produtoVenda : listaProdutos) {
 					if(produtoVenda.getTipo().equals(TipoProduto.REVENDA)){
@@ -778,7 +772,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 					}
 				} 
 				
-				List<MateriaPrimaVO> listaMatPrimas = materiaPrimaBo.filtrarProdutoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+				List<MateriaPrimaVO> listaMatPrimas = materiaPrimaBo.buscarProdutoPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));
 		
 				for (MateriaPrimaVO materiaPrima : listaMatPrimas) {
 					listaGenerica.add(materiaPrima);
@@ -799,7 +793,7 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 				
 			case PESQ_FUNCIONARIO:
 				
-				List<FuncionarioCantinaVO> listaFuncionarios = funcionarioBo.filtrarFuncionariosPorCodigoENome(txtCodFuncionario.getText(), txtFuncionario.getText());
+				List<FuncionarioCantinaVO> listaFuncionarios = funcionarioBo.buscarFuncionariosPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));
 				
 				for (FuncionarioCantinaVO funcionarioCantina : listaFuncionarios) {
 					

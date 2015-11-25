@@ -24,7 +24,7 @@ public class FuncionarioCantinaDAO implements IFuncionarioCantinaDAO {
 		fabrica = ConnectionFactory.getInstance();
 	}
 	
-	public List<FuncionarioCantinaVO> consultarPorCodigoENome(String cod, String nome){
+	public List<FuncionarioCantinaVO> buscarPorCodigoENome(String cod, String nome){
 		
 		List<FuncionarioCantinaVO> listaFuncionarios = new ArrayList<FuncionarioCantinaVO>();
 		

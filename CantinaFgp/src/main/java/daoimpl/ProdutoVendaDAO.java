@@ -32,7 +32,7 @@ public class ProdutoVendaDAO implements IProdutoVendaDAO{
 	}
 	
 	@Override
-	public List<ProdutoVendaVO> consultarPorCodigoENome(String cod, String nome){
+	public List<ProdutoVendaVO> buscarPorCodigoENome(String cod, String nome){
 		
 		List<ProdutoVendaVO> listaProdutosVenda = new ArrayList<ProdutoVendaVO>();
 		

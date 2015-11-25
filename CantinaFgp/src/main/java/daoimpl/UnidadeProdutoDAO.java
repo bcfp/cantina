@@ -99,7 +99,7 @@ public class UnidadeProdutoDAO implements IUnidadeProdutoDAO {
 	}
 
 	@Override
-	public List<UnidadeProdutoVO> consultarPorCodigoENome(String cod, String nome) {
+	public List<UnidadeProdutoVO> buscarPorCodigoENome(String cod, String nome) {
 		
 		return null;
 	}

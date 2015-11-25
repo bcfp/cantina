@@ -259,7 +259,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	// Métodos ITelaBuscar
 	
 	@Override
-	public List<GenericVO> buscarItem(Map<String, String> parametros) {
+	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
 		
 		switch (acaoPesquisar) {
 		

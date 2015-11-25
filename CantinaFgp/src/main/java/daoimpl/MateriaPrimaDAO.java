@@ -180,7 +180,7 @@ public class MateriaPrimaDAO implements IMateriaPrimaDAO {
 	}
 
 	@Override
-	public List<MateriaPrimaVO> consultarPorCodigoENome(String cod, String nome) {
+	public List<MateriaPrimaVO> buscarPorCodigoENome(String cod, String nome) {
 		
 		List<MateriaPrimaVO> listaMateriasPrimas = new ArrayList<MateriaPrimaVO>();
 		

@@ -1335,7 +1335,7 @@ import enumeradores.TipoSolicitacao;
 		// Métodos ITelaBuscar
 
 		@Override
-		public List<GenericVO> buscarItem(Map<String, String> parametros) {
+		public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
 			
 			List<GenericVO> listaGenericos = null;
 			
@@ -1345,7 +1345,7 @@ import enumeradores.TipoSolicitacao;
 					
 					listaGenericos = new ArrayList<GenericVO>();
 					
-					List<MateriaPrimaVO> materiasPrimas = matPrimaBo.filtrarProdutoPorCodigoENome(parametros.get("Código"), parametros.get("Nome"));
+					List<MateriaPrimaVO> materiasPrimas = matPrimaBo.buscarProdutoPorCodigoENome(parametros.get(BuscarDialogView.CODIGO), parametros.get(BuscarDialogView.NOME));
 					
 					for (MateriaPrimaVO materiaPrima : materiasPrimas) {
 						listaGenericos.add(materiaPrima);

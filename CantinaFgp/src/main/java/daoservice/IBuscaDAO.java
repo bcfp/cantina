@@ -6,6 +6,6 @@ import vo.GenericVO;
 
 public interface IBuscaDAO<T extends GenericVO> {
 
-	List<T> consultarPorCodigoENome(String cod, String nome);
+	List<T> buscarPorCodigoENome(String cod, String nome);
 	
 }

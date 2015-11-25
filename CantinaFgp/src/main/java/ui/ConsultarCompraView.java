@@ -279,7 +279,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	// Métodos ITelaBuscar
 
 	@Override
-	public List<GenericVO> buscarItem(Map<String, String> parametrosBusca) {
+	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametrosBusca) {
 		return null;
 	}
 

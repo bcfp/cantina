@@ -44,9 +44,9 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 		
 	}
 	
-	public List<ProdutoVendaVO> filtrarProdutoFabricadoPorCodigoENome(String nome, String cod){
+	public List<ProdutoVendaVO> buscarProdutoFabricadoPorCodigoENome(String nome, String cod){
 		
-		List<ProdutoVendaVO> produtosVenda = filtrarProdutoPorCodigoENome(nome, cod);
+		List<ProdutoVendaVO> produtosVenda = buscarProdutoPorCodigoENome(nome, cod);
 		List<ProdutoVendaVO> produtosFabricados = new ArrayList<ProdutoVendaVO>();
 		
 		for (ProdutoVendaVO produtoVenda : produtosVenda) {
@@ -65,7 +65,7 @@ public class ProdutoVendaBO extends ProdutoBO<ProdutoVendaVO, IProdutoVendaDAO> 
 	
 	public List<ProdutoVendaVO> filtrarProdutoRevendaPorCodigoENome(String nome, String cod){
 		
-		List<ProdutoVendaVO> produtosVenda = filtrarProdutoPorCodigoENome(nome, cod);
+		List<ProdutoVendaVO> produtosVenda = buscarProdutoPorCodigoENome(nome, cod);
 		List<ProdutoVendaVO> produtosRevenda = new ArrayList<ProdutoVendaVO>();
 		
 		for (ProdutoVendaVO produtoVenda : produtosVenda) {
