@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import utils.UtilFuncoes;
@@ -85,9 +86,9 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	private JLabel lblTotal;
 	private Font fonteTotal;
 	
-	private JButton btnBuscarProd;
-	private JButton btnBuscarForn;
-	private JButton btnBuscarFunc;
+	private BtnBuscar btnBuscarProd;
+	private BtnBuscar btnBuscarForn;
+	private BtnBuscar btnBuscarFunc;
 	private JButton btnAddProd;
 	
 	private JPanel pnlCampos;
@@ -180,45 +181,28 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		produtoVendaBo = new ProdutoVendaBO();
 		materiaPrimaBo = new MateriaPrimaBO();
 		
-		btnBuscarFunc = new JButton("Consultar");
+		btnBuscarFunc = new BtnBuscar(this);
 		btnBuscarFunc.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
 				acaoPesquisar = PESQ_FUNCIONARIO;
-				
-				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome"}).abrirJanela();
-				
 			}
 		});
 		
-		btnBuscarForn = new JButton("Consultar");
+		btnBuscarForn = new BtnBuscar(this);
 		btnBuscarForn.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				acaoPesquisar = PESQ_FORNECEDOR;
-				
-				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome", "Contato"}).abrirJanela();
-				
 			}
-			
 		});
 		
-		btnBuscarProd = new JButton("Consultar");
+		btnBuscarProd = new BtnBuscar(this);
 		btnBuscarProd.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				acaoPesquisar = PESQ_PRODUTO;
-				
-				new BuscarDialogView(ManterCompraView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
-												
 			}
-			
 		});
 		
 		int espXLbl = 20;
@@ -846,6 +830,30 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 	}
 
 	@Override
+	public String[] definirGridTelaBusca() {
+				
+		switch (acaoPesquisar) {
+			
+			case PESQ_PRODUTO:
+								
+				return new String[] {"Código", "Nome", "Valor de venda"};
+				
+			case PESQ_FORNECEDOR:
+								
+				return new String[] {"Código", "Nome", "Contato"};
+				
+			case PESQ_FUNCIONARIO:
+				
+				return new String[] {"Código", "Nome"};
+		
+		}
+		
+		return null;
+		
+	}
+
+
+	@Override
 	public String[] carregarGridTelaBusca(GenericVO item) {
 				
 		if(item instanceof ProdutoVO){
@@ -888,9 +896,6 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 			}
 		}
 			
-
-		
 		return null;
 	}
-
 }

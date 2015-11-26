@@ -17,7 +17,7 @@ public class ConsultarClienteView extends ConsultarPanelView<ClienteVO>{
 	}
 	
 	@Override
-	protected String[] definirGridItens(ClienteVO cliente) {
+	protected String[] carregarGridItens(ClienteVO cliente) {
 		
 		String[] registro = new String[2];
 

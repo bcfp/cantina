@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
 import vo.CompraVO;
@@ -55,9 +56,9 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	private JTextField txtCodFuncionario;
 	private JTextField txtFuncionario;
 
-	private JButton btnBuscarForn;
-	private JButton btnBuscarProd;
-	private JButton btnBuscarFunc;
+	private BtnBuscar btnBuscarForn;
+	private BtnBuscar btnBuscarProd;
+	private BtnBuscar btnBuscarFunc;
 
 	private String acaoPesquisar;
 	private static final String PESQ_FORNECEDOR = "fornecedor";
@@ -101,9 +102,9 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 		txtProduto.setEditable(false);
 		txtFornecedor.setEditable(false);
 
-		btnBuscarForn = new JButton("Consultar");
-		btnBuscarProd = new JButton("Consultar");
-		btnBuscarFunc = new JButton("Consultar");
+		btnBuscarForn = new BtnBuscar(this);
+		btnBuscarProd = new BtnBuscar(this);
+		btnBuscarFunc = new BtnBuscar(this);
 
 		int espXLbl = 20;
 		int espXTxt = 100;
@@ -195,12 +196,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_FUNCIONARIO;
-
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {
-						"Código", "Funcionário" }).abrirJanela();
-
 			}
 
 		});
@@ -209,12 +205,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_PRODUTO;
-
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {
-						"Código", "Produto" }).abrirJanela();
-
 			}
 
 		});
@@ -223,12 +214,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_FORNECEDOR;
-
-				new BuscarDialogView(ConsultarCompraView.this, new String[] {
-						"Código", "Fornecedor" }).abrirJanela();
-
 			}
 
 		});
@@ -236,7 +222,7 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	}
 
 	@Override
-	protected String[] definirGridItens(CompraVO compra) {
+	protected String[] carregarGridItens(CompraVO compra) {
 
 		String[] registro = new String[4];
 
@@ -279,18 +265,24 @@ public class ConsultarCompraView extends ConsultarPanelView<CompraVO> implements
 	// Métodos ITelaBuscar
 
 	@Override
+	public String[] definirGridTelaBusca() {
+		// new String[] { "Código", "Produto" } / new String[] { "Código", "Fornecedor" } / new String[] {"Código", "Funcionário" }
+		return null;
+	}
+
+	@Override
 	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametrosBusca) {
+		return null;
+	}
+
+	@Override
+	public String[] carregarGridTelaBusca(GenericVO item) {
 		return null;
 	}
 
 	@Override
 	public void carregarItemSelecionado(GenericVO item) {
 
-	}
-
-	@Override
-	public String[] carregarGridTelaBusca(GenericVO item) {
-		return null;
 	}
 
 }

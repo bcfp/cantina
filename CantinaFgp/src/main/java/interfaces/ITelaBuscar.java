@@ -10,5 +10,6 @@ public interface ITelaBuscar{
 	List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametrosBusca);
 	void carregarItemSelecionado(GenericVO item);
 	String[] carregarGridTelaBusca(GenericVO item);
+	String[] definirGridTelaBusca();
 	
 }

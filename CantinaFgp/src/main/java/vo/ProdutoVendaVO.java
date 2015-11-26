@@ -9,7 +9,7 @@ public class ProdutoVendaVO extends ProdutoVO{
  	private List<ProdutoMateriaPrimaVO> receita;
 	
 	public ProdutoVendaVO() {
-	 
+		
 	}
 
 	public Double getPrecoVenda() {

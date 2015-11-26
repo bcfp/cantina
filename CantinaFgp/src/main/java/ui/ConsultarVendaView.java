@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
 import vo.ClienteVO;
@@ -56,9 +57,9 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	private JTextField txtCodFuncionario;
 	private JTextField txtFuncionario;
 
-	private JButton btnBuscarCliente;
-	private JButton btnBuscarProd;
-	private JButton btnBuscarFunc;
+	private BtnBuscar btnBuscarCliente;
+	private BtnBuscar btnBuscarProd;
+	private BtnBuscar btnBuscarFunc;
 	
 	private String acaoPesquisar;
 	private static final String PESQ_CLIENTE = "cliente";
@@ -100,44 +101,32 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		txtProduto.setEditable(false);
 		txtCliente.setEditable(false);
 		
-		btnBuscarCliente = new JButton("Consultar");
+		btnBuscarCliente = new BtnBuscar(this);
 		btnBuscarCliente.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_CLIENTE;
-				
-				new BuscarDialogView(ConsultarVendaView.this, new String[] {"Código","Cliente"}).abrirJanela();
-				
 			}
 			
 		});
 		
-		btnBuscarProd = new JButton("Consultar");
+		btnBuscarProd = new BtnBuscar(this);
 		btnBuscarProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_PRODUTO;
-				
-				new BuscarDialogView(ConsultarVendaView.this, new String[] {"Código","Produto"}).abrirJanela();
-				
 			}
 			
 		});
 		
-		btnBuscarFunc = new JButton("Consultar");
+		btnBuscarFunc = new BtnBuscar(this);
 		btnBuscarFunc.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				acaoPesquisar = PESQ_FUNCIONARIO;
-				
-				new BuscarDialogView(ConsultarVendaView.this, new String[] {"Código","Funcionário"}).abrirJanela();
-				
 			}
 			
 		});
@@ -223,7 +212,7 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 	// Métodos
 
 	@Override
-	protected String[] definirGridItens(VendaVO venda) {
+	protected String[] carregarGridItens(VendaVO venda) {
 		
 		String[] registro = new String[2];
 
@@ -353,6 +342,29 @@ public class ConsultarVendaView extends ConsultarPanelView<VendaVO> implements I
 		}
 		
 		return registro;
+		
+	}
+
+	@Override
+	public String[] definirGridTelaBusca() {
+				
+		switch (acaoPesquisar) {
+		
+			case PESQ_PRODUTO:
+				
+				return new String[] {"Código","Produto"};
+				
+			case PESQ_CLIENTE:
+				
+				return new String[] {"Código","Cliente"};
+				
+			case PESQ_FUNCIONARIO:
+				
+				return new String[] {"Código","Funcionário"};
+
+		}
+		
+		return null;
 		
 	}
 

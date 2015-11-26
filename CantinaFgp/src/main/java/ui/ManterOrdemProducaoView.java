@@ -25,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import utils.UtilFuncoes;
@@ -65,8 +66,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	private JLabel lblNomeFunc;
 	
 	private JButton btnGerarOC;
-	private JButton btnConsultarProd;
-	private JButton btnConsultarFunc;
+	private BtnBuscar btnBuscarProd;
+	private BtnBuscar btnBuscarFunc;
 
 	private JTable tabMatPrimas;
 	private DefaultTableModel modeloTabMatPrimas;
@@ -130,8 +131,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		btnGerarOC = new JButton("Gerar OC");
 		btnGerarOC.setEnabled(false);
 		
-		btnConsultarProd = new JButton("Consultar");
-		btnConsultarFunc = new JButton("Consultar");
+		btnBuscarProd = new BtnBuscar(this);
+		btnBuscarFunc = new BtnBuscar(this);
 		
 		tabMatPrimas = new JTable();
 		modeloTabMatPrimas = new DefaultTableModel() {
@@ -246,28 +247,20 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		});
 		
 		
-		btnConsultarProd.addActionListener(new ActionListener() {
+		btnBuscarProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-								
 				acaoPesquisar = PESQ_PRODUTO;
-				
-				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
-												
 			}
 			
 		});
 				
-		btnConsultarFunc.addActionListener(new ActionListener() {
+		btnBuscarFunc.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				acaoPesquisar = PESQ_FUNC;
-				
-				new BuscarDialogView(ManterOrdemProducaoView.this, new String[] {"Código", "Nome"}).abrirJanela();
-												
+				acaoPesquisar = PESQ_FUNC;	
 			}
 		});	
 		
@@ -316,8 +309,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		txtCodProd.setEditable(false);
 		txtCodFunc.setEditable(false);
 		txtQtdeProd.setEditable(false);
-		btnConsultarFunc.setEnabled(false);
-		btnConsultarProd.setEnabled(false);
+		btnBuscarFunc.setEnabled(false);
+		btnBuscarProd.setEnabled(false);
 		
 		abrirJanela();
 		
@@ -426,6 +419,26 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 				return null;
 				
 			}
+		
+	}
+
+
+	@Override
+	public String[] definirGridTelaBusca() {
+		
+		switch (acaoPesquisar) {
+		
+			case PESQ_PRODUTO:
+
+				return new String[] {"Código", "Nome", "Valor de venda"};
+				
+			case PESQ_FUNC:
+				
+				return new String[] {"Código", "Nome"};
+				
+			}
+		
+		return null;
 		
 	}
 
@@ -648,8 +661,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		case TipoStatus.EM_ABERTO:
 
 			btnGerarOC.setEnabled(true);
-			btnConsultarProd.setEnabled(true);
-			btnConsultarFunc.setEnabled(true);
+			btnBuscarProd.setEnabled(true);
+			btnBuscarFunc.setEnabled(true);
 			cbxStatus.setEnabled(true);
 			txtCodProd.setEditable(true);
 			txtCodFunc.setEditable(true);
@@ -665,8 +678,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 	@Override
 	protected boolean desabilitarCampos() {
 				
-		btnConsultarProd.setEnabled(false);
-		btnConsultarFunc.setEnabled(false);
+		btnBuscarProd.setEnabled(false);
+		btnBuscarFunc.setEnabled(false);
 		cbxStatus.setEnabled(false);
 		txtCodProd.setEditable(false);
 		txtCodFunc.setEditable(false);
@@ -712,7 +725,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		lblQtdeProdVenda.setBounds(espXLbl, espY + espEntre * 5, 80, altura);
 		
 		txtCodProd.setBounds(espXTxt, espY + espEntre * 3, 50, altura);
-		btnConsultarProd.setBounds(espXTxt + 60, espY + espEntre * 3, 90, altura);
+		btnBuscarProd.setBounds(espXTxt + 60, espY + espEntre * 3, 90, altura);
 		txtDescProd.setBounds(espXTxt, espY + espEntre * 4, 220, altura);
 		txtQtdeProd.setBounds(espXTxt, espY + espEntre * 5, 70, altura);
 
@@ -721,7 +734,7 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		lblNomeFunc.setBounds(espXLbl2, espY + espEntre * 4, 80, altura);
 
 		txtCodFunc.setBounds(espXTxt2, espY + espEntre * 3, 50, altura);
-		btnConsultarFunc.setBounds(espXTxt2 + 60, espY + espEntre * 3, 90, altura);
+		btnBuscarFunc.setBounds(espXTxt2 + 60, espY + espEntre * 3, 90, altura);
 		txtNomeFunc.setBounds(espXTxt2, espY + espEntre * 4, 150, altura);
 		
 		tabMatPrimas.setModel(modeloTabMatPrimas);
@@ -745,8 +758,8 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		pnlCampos.add(txtCodProd);
 		pnlCampos.add(txtDescProd);
 		pnlCampos.add(txtQtdeProd);
-		pnlCampos.add(btnConsultarProd);
-		pnlCampos.add(btnConsultarFunc);
+		pnlCampos.add(btnBuscarProd);
+		pnlCampos.add(btnBuscarFunc);
 		pnlCampos.add(lblFuncionario);
 		pnlCampos.add(lblCodFunc);
 		pnlCampos.add(lblNomeFunc);

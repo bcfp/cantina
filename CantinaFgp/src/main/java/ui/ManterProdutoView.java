@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ManterFrameView;
 import vo.FornecedorVO;
@@ -131,7 +132,7 @@ import enumeradores.TipoSolicitacao;
 		private JTextField txtFornecedor;
 		private JTextField txtContatoForn;
 				
-		private JButton btnBuscarForn;
+		private BtnBuscar btnBuscarForn;
 		private JButton btnAddForn;
 
 		private JTable tabForn;
@@ -263,7 +264,7 @@ import enumeradores.TipoSolicitacao;
 			txtFornecedor = new JTextField();
 			txtContatoForn = new JTextField();
 						
-			btnBuscarForn = new JButton("Buscar");
+			btnBuscarForn = new BtnBuscar(this);
 			btnAddForn = new JButton(" + ");
 			
 			tabForn = new JTable();
@@ -850,11 +851,7 @@ import enumeradores.TipoSolicitacao;
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					acaoPesquisar = PESQ_FORNECEDOR;
-
-					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Fornecedor", "Contato"}).abrirJanela();
-					
 				}
 				
 			});
@@ -911,11 +908,7 @@ import enumeradores.TipoSolicitacao;
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					acaoPesquisar = PESQ_MAT_PRIMA;
-
-					new BuscarDialogView(ManterProdutoView.this, new String[]{"Código", "Matéria Prima", "Unidade"}).abrirJanela();
-					
 				}
 				
 			});
@@ -1440,6 +1433,25 @@ import enumeradores.TipoSolicitacao;
 			}
 			
 			return registro;
+		}
+
+		@Override
+		public String[] definirGridTelaBusca() {
+			
+			switch (acaoPesquisar) {
+			
+				case PESQ_MAT_PRIMA:
+										
+				return new String[]{"Código", "Matéria Prima", "Unidade"};
+					
+				case PESQ_FORNECEDOR:					
+					
+				return new String[]{"Código", "Fornecedor", "Contato"};
+
+			}
+			
+			return null;
+			
 		}
 		
 	}

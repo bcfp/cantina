@@ -17,7 +17,7 @@ public class ConsultarCantinaView extends ConsultarPanelView<CantinaVO>{
 	}
 
 	@Override
-	protected String[] definirGridItens(CantinaVO cantina) {
+	protected String[] carregarGridItens(CantinaVO cantina) {
 		
 		String[] registro = new String[2];
 

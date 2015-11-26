@@ -41,9 +41,7 @@ public class BuscarDialogView extends JDialog{
 	private JScrollPane barraTabItens;
 	private JLabel lblNomeItem;
 	private JLabel lblCodItem;
-	
-	private String[] titulosTab;
-	
+		
 	private JTextField txtNomeItem;
 	private JTextField txtCodItem;
 	
@@ -83,9 +81,8 @@ public class BuscarDialogView extends JDialog{
 	
 	// Construtores
 	
-	public BuscarDialogView(ITelaBuscar telaBuscar, String[] titulosTab) {
+	public BuscarDialogView(ITelaBuscar telaBuscar) {
 		this.telaBuscar = telaBuscar;
-		this.titulosTab = titulosTab;
 	}
 		
 	
@@ -184,7 +181,7 @@ public class BuscarDialogView extends JDialog{
 		// TABELA
 		
 
-		modeloTabItens.setColumnIdentifiers(titulosTab);
+		modeloTabItens.setColumnIdentifiers(telaBuscar.definirGridTelaBusca());
 		tabItens.setModel(modeloTabItens);
 		barraTabItens.setViewportView(tabItens);
 

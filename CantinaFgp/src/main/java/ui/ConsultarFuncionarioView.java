@@ -17,7 +17,7 @@ public class ConsultarFuncionarioView extends ConsultarPanelView<FuncionarioVO> 
 	}
 
 	@Override
-	protected String[] definirGridItens(FuncionarioVO funcionario) {
+	protected String[] carregarGridItens(FuncionarioVO funcionario) {
 			
 			String[] registro = new String[2];
 

@@ -304,7 +304,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 				T item = iItem.next();
 				
 				// Insere na tabela o item retornado do método abstrato carregarGridItens, implementado na classe filha 
-				getModeloTabGeneric().addRow(definirGridItens(item));	
+				getModeloTabGeneric().addRow(carregarGridItens(item));	
 				
 			}
 		}
@@ -322,7 +322,7 @@ public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel imp
 	 * @param item - Item do tipo T que deverá ser inserido na tabela
 	 * @return String[] - Deve ser retornado um vetor de String com os valores na ordem que deverão ser inseridos na tabela de consulta
 	 */
-	protected abstract String[] definirGridItens(T item);
+	protected abstract String[] carregarGridItens(T item);
 		
 	/**
 	 * Ao implementar este método, deve ser feita uma lógica para retornar uma tela de incluir um item do tipo T

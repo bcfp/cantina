@@ -116,7 +116,7 @@ public class ConsultarOrdemProducaoView extends ConsultarPanelView<OrdemProducao
 	// Métodos
 		
 	@Override
-	protected String[] definirGridItens(OrdemProducaoVO ordemProducao) {
+	protected String[] carregarGridItens(OrdemProducaoVO ordemProducao) {
 			
 		String[] registro = new String[5];
 

@@ -10,6 +10,10 @@ public enum TipoStatus {
 	ORDEM_COMPRA("OC"), 
 	ORDEM_PRODUCAO("OP"), 
 	VENDA("OV");
+	
+	{
+		statusBo = new StatusBO();
+	}
 		
 	private StatusBO statusBo;
 	private String tipo;
@@ -19,8 +23,7 @@ public enum TipoStatus {
 	public static final String AGUARDANDO_ENTREGA = "Aguardando Entrega";
 	public static final String EM_FABRICACAO = "Em Fabricação";
 		
-	TipoStatus(String tipo){
-		statusBo = new StatusBO();
+	TipoStatus(String tipo){		
 		this.tipo = tipo;
 	}
 	

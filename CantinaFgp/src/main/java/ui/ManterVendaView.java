@@ -21,11 +21,10 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
-import ui.templates.BuscarDialogView;
+import ui.templates.BtnBuscar;
 import ui.templates.ManterFrameView;
 import vo.ClienteVO;
 import vo.GenericVO;
-import vo.ItemVendaVO;
 import vo.ProdutoVendaVO;
 import vo.VendaVO;
 import enumeradores.TipoSolicitacao;
@@ -68,15 +67,13 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 	private JLabel lblValorTotal;
 	private Font fonteTotal;
 	
-	private JButton btnBuscarProd;
-	private JButton btnBuscarCliente;
+	private BtnBuscar btnBuscarProd;
+	private BtnBuscar btnBuscarCliente;
 	private JButton btnAddProd;
 	
 	private String acaoPesquisar;
 	private static final String PESQ_CLIENTE = "cliente";
 	private static final String PESQ_PRODUTO = "produto";
-	
-	private List<ItemVendaVO> listaItensVenda;
 	
 	private JPanel pnlCampos;
 	private JTable tabItemCompra;
@@ -133,30 +130,22 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 		txtFuncionario = new JTextField();
 		txtFuncionario.setEditable(false);
 		
-		btnBuscarCliente = new JButton("Consultar");
+		btnBuscarCliente = new BtnBuscar(this);
 		btnBuscarCliente.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				acaoPesquisar = PESQ_CLIENTE;
-				
-				new BuscarDialogView(ManterVendaView.this, new String[] {"Código", "Nome"}).abrirJanela();
-				
 			}
 			
 		});
 		
-		btnBuscarProd = new JButton("Consultar");
+		btnBuscarProd = new BtnBuscar(this);
 		btnBuscarProd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				acaoPesquisar = PESQ_PRODUTO;
-				
-				new BuscarDialogView(ManterVendaView.this, new String[] {"Código", "Nome", "Valor de venda"}).abrirJanela();
-												
 			}
 			
 		});
@@ -423,6 +412,25 @@ public class ManterVendaView extends ManterFrameView<VendaVO> implements ITelaBu
 				
 			}
 			
+		}
+		
+		return null;
+	}
+
+
+	@Override
+	public String[] definirGridTelaBusca() {
+		
+		switch (acaoPesquisar) {
+			
+			case PESQ_PRODUTO:
+				
+				return new String[] {"Código", "Nome", "Valor de Venda"};
+				
+			case PESQ_CLIENTE:
+				
+				return new String[] {"Código", "Nome"};
+		
 		}
 		
 		return null;

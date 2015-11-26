@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import ui.templates.BtnBuscar;
 import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
 import vo.FornecedorVO;
@@ -49,7 +50,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	private JRadioButton rdoLote;
 	private JComboBox<String> cbxTipoProduto;
 	
-	private JButton btnBuscarForn;
+	private BtnBuscar btnBuscarForn;
 	
 	// ITelaBusca
 
@@ -85,7 +86,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 		
 		
 		rdoLote = new JRadioButton("Lote");
-		btnBuscarForn = new JButton("Consultar");
+		btnBuscarForn = new BtnBuscar(this);
 		
 		cbxTipoProduto = new JComboBox<String>();
 		
@@ -149,9 +150,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				acaoPesquisar = PESQ_FORNECEDOR;
-				
-				new BuscarDialogView(ConsultarProdutoView.this, new String[]{"Código", "Fornecedor"}).abrirJanela();;				
+				acaoPesquisar = PESQ_FORNECEDOR;		
 				
 			}
 			
@@ -182,7 +181,7 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	// Métodos ConsultarPanelView
 
 	@Override
-	protected String[] definirGridItens(ProdutoVO produto) {
+	protected String[] carregarGridItens(ProdutoVO produto) {
 		
 		String[] registro = new String[4];
 
@@ -276,6 +275,11 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	}
 
 	// Métodos ITelaBuscar
+
+	@Override
+	public String[] definirGridTelaBusca() {
+		return new String[]{"Código", "Fornecedor"};
+	}
 	
 	@Override
 	public List<GenericVO> buscarItemPorCodigoENome(Map<String, String> parametros) {
