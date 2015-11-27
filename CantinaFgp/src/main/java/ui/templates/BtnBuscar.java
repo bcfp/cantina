@@ -14,7 +14,6 @@ public class BtnBuscar extends JButton {
 	public BtnBuscar(ITelaBuscar tela) {
 		super("Buscar");
 		this.tela = tela;
-		
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

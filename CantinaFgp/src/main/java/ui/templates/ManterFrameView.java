@@ -119,8 +119,6 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 	private void acaoGravarInclusao() {
 		
-		btnGravar.removeActionListener(acaoBtnGravar);
-
 		acaoBtnGravar = new ActionListener() {
 
 			@Override
@@ -246,7 +244,6 @@ public abstract class ManterFrameView<T extends GenericVO> extends JFrame implem
 
 	protected abstract boolean habilitarCampos();
 	protected abstract boolean desabilitarCampos();
-
 	protected abstract void limparCampos();
 
 }

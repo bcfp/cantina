@@ -1122,7 +1122,6 @@ import enumeradores.TipoSolicitacao;
 			txtNome.setEditable(true);
 			rdoLote.setEnabled(true);
 
-			
 			txtPrecoCusto.setEditable(true);
 			txtPrecoVenda.setEditable(true);
 			txtQtdeMax.setEditable(true);
