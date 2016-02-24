@@ -28,14 +28,15 @@ public class ConnectionFactory {
 	public Connection getConexao() throws ClassNotFoundException, SQLException{
 		
 		Class.forName("net.sourceforge.jtds.jdbc.Driver");
+		//CONEXAO Bruno FABRICA 
+		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "bts278193");
+		
+		//CONEXAO Bruno CASA 
+		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:50074/CANTINA", "sa", "123456");
 		//CONEXAO CAINÃ NOTE
 		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "cantina", "123");
 		//CONEXAO CAINÃ FABRICA 
 		// conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "caina123");
-		//CONEXAO Bruno FABRICA 
-		conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/CANTINA", "sa", "bts278193");
-		//CONEXAO Bruno CASA 
-		//conexao = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:50074/CANTINA", "sa", "123456");
 		return conexao;
 		
 	}

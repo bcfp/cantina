@@ -7,6 +7,7 @@ import vo.OrdemProducaoVO;
 import vo.ProdutoMateriaPrimaVO;
 import daoimpl.OrdemProducaoDAO;
 import daoservice.IOrdemProducaoDAO;
+import static enumeradores.TipoStatus.*;
 
 public class OrdemProducaoBO {
 	
@@ -40,7 +41,7 @@ public class OrdemProducaoBO {
 	
 	public boolean isAlteracaoPermitida(OrdemProducaoVO ordemProducao){
 		
-		if(ordemProducao.getStatus().getDescricao().equals("Em Aberto")){
+		if(ordemProducao.getStatus().getDescricao().equals(EM_ABERTO)){
 			return true;
 		}
 		
@@ -110,14 +111,14 @@ public class OrdemProducaoBO {
 			
 			String status = ordemProducao.getStatus().getDescricao();
 		
-			if(status.equals("Concluída")){
+			if(status.equals(CONCLUIDA)){
 								
 				if(!prodVendaBo.entradaEstoque(ordemProducao.getProdutoVenda().getIdProduto(), ordemProducao.getQtde().doubleValue())){
 					alterado = false;
 				}
 				
 			}
-			else if(status.equals("Em Fabricação")){
+			else if(status.equals(EM_FABRICACAO)){
 				
 				List<ProdutoMateriaPrimaVO> receita = ordemProducao.getProdutoVenda().getReceita();
 				

@@ -52,6 +52,10 @@ public class LoginView extends JFrame {//JFrame é uma classe para janela
 	
 	public void abrirJanela() throws ParseException{
 		
+		PrincipalView home = new PrincipalView();
+		home.abrirJanela();
+		
+		/*
 		loginBo = new LoginBO();
 			
 		// Cabeçalho
@@ -266,6 +270,9 @@ public class LoginView extends JFrame {//JFrame é uma classe para janela
 			this.setTitle("Login do Sistema");
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
+		
+	
+		 * */
 		
 	}
 	

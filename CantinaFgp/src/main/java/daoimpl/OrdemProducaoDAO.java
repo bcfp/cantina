@@ -1,5 +1,8 @@
 package daoimpl;
 
+import static enumeradores.TipoStatus.ORDEM_PRODUCAO;
+
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,13 +19,13 @@ import vo.UnidadeProdutoVO;
 import bo.ProdutoMateriaPrimaBO;
 import daoservice.IOrdemProducaoDAO;
 import daoservice.IProdutoMateriaPrimaDAO;
-import enumeradores.TipoStatus;
 
 public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 	
 	private Connection conexao;
 	private ConnectionFactory fabrica;
 	private	PreparedStatement pstm;
+	private CallableStatement cstm;
 	private ResultSet rs;
 	
 	ProdutoMateriaPrimaBO prodMatPrimaBo;
@@ -69,18 +72,21 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		try {
 						
 			conexao = fabrica.getConexao();
+			cstm = conexao.prepareCall("{call pr_incluir_ordem_producao(?,?,?,?,?)}");
 			
+			/*
 			pstm = conexao.prepareStatement(
 					"insert into ordem_producao(qtde, data_ordem_producao, id_produto, id_funcionario_cantina, id_status) "
 					+ "values (?,?,?,?,?);");
+			*/
 			
-			pstm.setInt(1, ordemProd.getQtde());
-			pstm.setDate(2, new java.sql.Date(ordemProd.getData().getTime()));
-			pstm.setLong(3, ordemProd.getProdutoVenda().getIdProduto());
-			pstm.setLong(4, ordemProd.getFuncionarioCantina().getIdFuncionarioCantina());
-			pstm.setLong(5, ordemProd.getStatus().getIdStatus());
+			cstm.setInt(1, ordemProd.getQtde());
+			cstm.setDate(2, new java.sql.Date(ordemProd.getData().getTime()));
+			cstm.setLong(3, ordemProd.getProdutoVenda().getIdProduto());
+			cstm.setLong(4, ordemProd.getFuncionarioCantina().getIdFuncionarioCantina());
+			cstm.setLong(5, ordemProd.getStatus().getIdStatus());
 			
-			pstm.executeUpdate();
+			cstm.executeUpdate();
 			
 			Long idGerado = getUltimoIdGerado();
 
@@ -97,13 +103,11 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			
 			try {
 				conexao.close();
-				pstm.close();
-			} catch (SQLException e) {
-				
+				cstm.close();
+			} catch (SQLException e) {				
 				e.printStackTrace();
 				return null;
 			}
-			
 			
 		}
 		
@@ -116,19 +120,21 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		try{
 			
 			conexao = fabrica.getConexao();
+			cstm = conexao.prepareCall("{call pr_alterar_ordem_producao(?,?,?,?,?)}");
 			
+			/*
 			pstm = conexao.prepareStatement("update ordem_producao "
 					+ "set qtde = ?, id_produto = ?, id_funcionario_cantina = ?, id_status = ? "
 					+ "where id_ordem_producao = ?"
-			);
+			);*/
 
-			pstm.setInt(1, ordemProducao.getQtde());
-			pstm.setLong(2, ordemProducao.getProdutoVenda().getIdProduto());
-			pstm.setLong(3, ordemProducao.getFuncionarioCantina().getIdFuncionarioCantina());
-			pstm.setLong(4, ordemProducao.getStatus().getIdStatus());
-			pstm.setLong(5, ordemProducao.getIdOrdemProducao());
+			cstm.setInt(1, ordemProducao.getQtde());
+			cstm.setLong(2, ordemProducao.getProdutoVenda().getIdProduto());
+			cstm.setLong(3, ordemProducao.getFuncionarioCantina().getIdFuncionarioCantina());
+			cstm.setLong(4, ordemProducao.getStatus().getIdStatus());
+			cstm.setLong(5, ordemProducao.getIdOrdemProducao());
 			
-			if(pstm.executeUpdate() == 0){
+			if(cstm.executeUpdate() == 0){
 				conexao.rollback();
 				return false;
 			}
@@ -148,7 +154,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		} finally {			
 			try {
 				conexao.close();
-				pstm.close();
+				cstm.close();
 			} catch (SQLException e) {
 				return false;
 			}
@@ -172,8 +178,12 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 		List<OrdemProducaoVO> listaOrdensProducao = new ArrayList<OrdemProducaoVO>();
 		
 		try {
+
 			conexao = fabrica.getConexao();
+			cstm = conexao.prepareCall("{call pr_consultar_ordens_producao()}");
+			rs = cstm.executeQuery();
 			
+			/*			
 			String sql = "select op.qtde, op.data_ordem_producao, op.id_ordem_producao, p.id_produto_venda, p.cod_produto, p.descricao, p.preco_venda, "
 					+ "u.id_unidade,  u.descricao as descricao_unidade, u.abreviatura, f.id_funcionario_cantina, pf.cod_funcionario, "
 					+ "pe.nome, s.id_status, s.descricao as descricao_status, s.tipo "
@@ -187,10 +197,9 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 					+ "where p.fabricado = 1 and p.ativo = 1 and u.ativo = 1";
 			
 			pstm = conexao.prepareStatement(sql);
+			*/
 			
 			OrdemProducaoVO ordemProducao = null;
-			
-			rs = pstm.executeQuery();
 			
 			while(rs.next()){
 				
@@ -223,8 +232,8 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				
 				String  tipoStatus = rs.getString("tipo");
 				
-				if(tipoStatus.equals(TipoStatus.ORDEM_PRODUCAO)){
-					ordemProducao.getStatus().setTipoStatus(TipoStatus.ORDEM_PRODUCAO);
+				if(tipoStatus.equals(ORDEM_PRODUCAO)){
+					ordemProducao.getStatus().setTipoStatus(ORDEM_PRODUCAO);
 				}
 				
 				ordemProducao.getStatus().setDescricao(rs.getString("descricao_status"));
@@ -247,7 +256,7 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 				if(rs != null){
 					rs.close();
 				}
-				pstm.close();
+				cstm.close();
 				conexao.close();
 				
 			} catch (SQLException e) {
