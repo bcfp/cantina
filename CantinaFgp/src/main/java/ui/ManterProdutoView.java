@@ -704,7 +704,6 @@ import enumeradores.TipoSolicitacao;
 			
 			txtQtdeMax.setText(produto.getEstoque().getQtdeMaxima().toString());
 			txtQtdeMin.setText(produto.getEstoque().getQtdeMinima().toString());
-			System.out.println("aa: "+produto.getUnidade().getDescricao());
 			cbxUnidade.setSelectedItem(produto.getUnidade().getDescricao());
 			
 			if(produto instanceof ProdutoVendaVO){

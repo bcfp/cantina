@@ -140,17 +140,18 @@ public class OrdemProducaoDAO implements IOrdemProducaoDAO{
 			}
 			
 		}catch (ClassNotFoundException e) {
-			e.printStackTrace();
 			try {
 				conexao.rollback();
 			} catch (SQLException e1) {}
-			return false;
-		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
+			
+		} catch (SQLException e) {
 			try {
-				conexao.rollback();
-				return false;
+				conexao.rollback();				
 				} catch (SQLException e1) {}
+			e.printStackTrace();
+			return false;
 		} finally {			
 			try {
 				conexao.close();
