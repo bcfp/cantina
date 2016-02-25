@@ -41,7 +41,7 @@ import bo.OrdemProducaoBO;
 import bo.ProdutoMateriaPrimaBO;
 import bo.ProdutoVendaBO;
 import enumeradores.TipoSolicitacao;
-import enumeradores.TipoStatus;
+import static enumeradores.TipoStatus.*;
 
 public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> implements ITelaBuscar {
 
@@ -170,21 +170,21 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		ordemProducao = new OrdemProducaoVO();
 		ordemProducao.setStatus(emAberto);
 		
-		listaStatus = TipoStatus.ORDEM_PRODUCAO.consultarTodosStatus();
+		listaStatus = ORDEM_PRODUCAO.consultarTodosStatus();
 		
 		for (StatusVO status : listaStatus) {
 			
-			if(status.getDescricao().equals(TipoStatus.EM_ABERTO)){
+			if(status.getDescricao().equals(EM_ABERTO)){
 
 				emAberto = status;
 				
 			}
-			else if(status.getDescricao().equals(TipoStatus.EM_FABRICACAO)){
+			else if(status.getDescricao().equals(EM_FABRICACAO)){
 				
 				emFabricacao = status;
 				
 			}
-			else if(status.getDescricao().equals(TipoStatus.CONCLUIDA)){
+			else if(status.getDescricao().equals(CONCLUIDA)){
 				
 				concluida = status;
 				
@@ -648,17 +648,17 @@ public class ManterOrdemProducaoView extends ManterFrameView<OrdemProducaoVO> im
 		String status = cbxStatus.getSelectedItem().toString();
 				
 		switch (status) {
-		case TipoStatus.CONCLUIDA:
+		case CONCLUIDA:
 			
 			return false;
 			
-		case TipoStatus.EM_FABRICACAO:
+		case EM_FABRICACAO:
 
 			cbxStatus.setEnabled(true);
 
 			break;
 
-		case TipoStatus.EM_ABERTO:
+		case EM_ABERTO:
 
 			btnGerarOC.setEnabled(true);
 			btnBuscarProd.setEnabled(true);
