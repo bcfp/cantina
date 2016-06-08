@@ -37,8 +37,7 @@ import vo.GenericVO;
  * definir o tipo dos parâmetros dos métodos da tela de consulta.
  */
 public abstract class ConsultarPanelView<T extends GenericVO> extends JPanel implements ITelaConsultar<T>{
-	
-	
+		
 	// Atributos da Janela
 	
 	private JPanel pnlCabecalho;
