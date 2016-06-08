@@ -846,7 +846,7 @@ import enumeradores.TipoSolicitacao;
 				}
 			});
 			
-				btnBuscarForn.addActionListener(new ActionListener() {
+			btnBuscarForn.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
