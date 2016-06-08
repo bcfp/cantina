@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,7 +17,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import ui.templates.BtnBuscar;
-import ui.templates.BuscarDialogView;
 import ui.templates.ConsultarPanelView;
 import vo.FornecedorVO;
 import vo.GenericVO;
@@ -107,7 +105,6 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	public ConsultarProdutoView() {
 		
 		super("Produto", new String[] {"Código", "Descricao", "Tipo", "Estoque"}, 10, 220, 665, 190);
-		this.setSize(750, 480);
 		definicoesPagina();
 		
 	}
@@ -115,6 +112,8 @@ public class ConsultarProdutoView extends ConsultarPanelView<ProdutoVO> implemen
 	// Métodos
 	
 	private void definicoesPagina(){
+		
+		setSize(750, 480);
 				
 		int espXLbl = 20;
 		int espXTxt = 100;
