@@ -15,12 +15,10 @@ public class OrdemProducaoBO {
 	private ProdutoVendaBO prodVendaBo;
 	private MateriaPrimaBO matPrimaBo;
 	
-	{
-		
+	{		
 		ordemProdDao = new OrdemProducaoDAO();
 		prodVendaBo = new ProdutoVendaBO();
 		matPrimaBo = new MateriaPrimaBO();
-		
 	}
 	
 	public boolean isQtdNecessaria(OrdemProducaoVO ordemProducao){
