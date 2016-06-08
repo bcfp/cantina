@@ -42,10 +42,8 @@ public class PrincipalView extends TelaView implements ComponentListener{
 	private JPanel panelCentro;
 
 	// BLOCO DE INICIALIZAÇÃO
-	{
-		
+	{		
 		abrirJanela();
-		
 	}
 
 
@@ -331,16 +329,16 @@ public class PrincipalView extends TelaView implements ComponentListener{
 
 	private void abrirPanelConsulta(JPanel panelConsultar){
 
-		this.getContentPane().setVisible(false);
-		this.getContentPane().setVisible(true);
+		getContentPane().setVisible(false);
+		getContentPane().setVisible(true);
 		
-		this.getContentPane().removeAll();
+		getContentPane().removeAll();
 		
-		this.centralizarPanel(panelConsultar);
+		centralizarPanel(panelConsultar);
 		
-		this.getContentPane().add(panelConsultar);
+		getContentPane().add(panelConsultar);
 		
-		this.validate();
+		validate();
 		
 	}
 	
