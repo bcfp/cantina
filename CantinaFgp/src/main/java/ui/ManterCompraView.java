@@ -590,10 +590,8 @@ public class ManterCompraView extends ManterFrameView<CompraVO> implements ITela
 		}
 		else{
 			msgErro.append("Falha ao incluir a compra");
-		}
-		
-		return false;
-		
+		}		
+		return false;		
 	}
 	
 	@Override
